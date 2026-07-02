@@ -637,6 +637,46 @@ function ame_bazaar_get_tailoring_service_schema() {
 }
 
 /**
+ * Get AboutPage Schema.
+ */
+function ame_bazaar_get_about_page_schema() {
+	if ( ! is_page_template( 'templates/template-about.php' ) && ! is_page( 'about' ) && ! is_page( 'about-us' ) ) {
+		return false;
+	}
+	$schema = array(
+		'@type'       => 'AboutPage',
+		'@id'         => get_permalink() . '#aboutpage',
+		'url'         => get_permalink(),
+		'name'        => get_the_title(),
+		'description' => wp_strip_all_tags( get_the_excerpt() ),
+		'isPartOf'    => array(
+			'@id' => home_url( '/#website' ),
+		),
+	);
+	return apply_filters( 'ame_bazaar_about_page_schema', $schema );
+}
+
+/**
+ * Get ContactPage Schema.
+ */
+function ame_bazaar_get_contact_page_schema() {
+	if ( ! is_page_template( 'templates/template-contact.php' ) && ! is_page( 'contact' ) && ! is_page( 'contact-us' ) ) {
+		return false;
+	}
+	$schema = array(
+		'@type'       => 'ContactPage',
+		'@id'         => get_permalink() . '#contactpage',
+		'url'         => get_permalink(),
+		'name'        => get_the_title(),
+		'description' => wp_strip_all_tags( get_the_excerpt() ),
+		'isPartOf'    => array(
+			'@id' => home_url( '/#website' ),
+		),
+	);
+	return apply_filters( 'ame_bazaar_contact_page_schema', $schema );
+}
+
+/**
  * Output combined connected JSON-LD Entity Graph in the head.
  */
 function ame_bazaar_output_schema() {
@@ -724,6 +764,18 @@ function ame_bazaar_output_schema() {
 	$faq = ame_bazaar_get_faq_schema();
 	if ( $faq ) {
 		$graph[] = $faq;
+	}
+
+	// 12. AboutPage Entity (Conditional)
+	$about = ame_bazaar_get_about_page_schema();
+	if ( $about ) {
+		$graph[] = $about;
+	}
+
+	// 13. ContactPage Entity (Conditional)
+	$contact = ame_bazaar_get_contact_page_schema();
+	if ( $contact ) {
+		$graph[] = $contact;
 	}
 
 	if ( empty( $graph ) ) {

@@ -84,6 +84,26 @@ function ame_bazaar_output_seo_meta() {
 add_action( 'wp_head', 'ame_bazaar_output_seo_meta', 5 );
 
 /**
+ * Filter document title parts for clean, keyword-optimized titles.
+ */
+function ame_bazaar_custom_document_title_parts( $title_parts ) {
+	// Bypass if Rank Math, Yoast SEO, or SEOPress is active
+	if ( class_exists( 'RankMath' ) || defined( 'WPSEO_VERSION' ) || class_exists( 'WPSEO_Frontend' ) || defined( 'SEOPRESS_VERSION' ) ) {
+		return $title_parts;
+	}
+
+	if ( is_front_page() || is_home() ) {
+		$title_parts['title']   = __( 'AME Bazaar', 'ame-bazaar' );
+		$title_parts['tagline'] = __( 'Premium Family Fashion & Custom Tailoring Store, Kirari Delhi', 'ame-bazaar' );
+	} elseif ( is_singular( 'product' ) ) {
+		$title_parts['title'] = sprintf( __( 'Buy %s', 'ame-bazaar' ), get_the_title() );
+		$title_parts['site']  = __( 'AME Bazaar Delhi', 'ame-bazaar' );
+	}
+	return $title_parts;
+}
+add_filter( 'document_title_parts', 'ame_bazaar_custom_document_title_parts', 10 );
+
+/**
  * Filter image attachment attributes to ensure fallback ALT tag exists.
  *
  * @param array   $attr       Attributes for the image markup.
@@ -105,3 +125,4 @@ function ame_bazaar_image_alt_fallback( $attr, $attachment ) {
 	return $attr;
 }
 add_filter( 'wp_get_attachment_image_attributes', 'ame_bazaar_image_alt_fallback', 10, 2 );
+
