@@ -1,0 +1,123 @@
+/*
+Theme Name: AME Bazaar Astra Child
+Theme URI: https://github.com/Yashu-maheshwari/ame-bazaar-code-
+Author: Yashu Maheshwari & Gemini
+Author URI: https://github.com/Yashu-maheshwari
+Description: Premium Astra child theme foundation for the AME Bazaar digital platform.
+Template: astra
+Version: 1.0.0
+Text Domain: ame-bazaar
+*/
+
+/* Theme foundation styles live in assets/css/main.css. */
+:root {
+	--ame-color-navy: #002347;
+	--ame-color-gold: #d4af37;
+	--ame-color-gold-dark: #916c02;
+	--ame-color-cream: #f8f7f4;
+	--ame-color-white: #ffffff;
+	--ame-color-slate: #334155;
+	--ame-color-charcoal: #1f2937;
+	--ame-color-border: #dbe2ea;
+	--ame-radius-sm: 0.5rem;
+	--ame-radius-md: 1rem;
+	--ame-radius-lg: 1.5rem;
+	--ame-shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.06);
+	--ame-shadow-md: 0 10px 30px rgba(15, 23, 42, 0.08);
+	--ame-shadow-lg: 0 20px 60px rgba(15, 23, 42, 0.12);
+	--ame-font-body: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+	--ame-font-heading: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+
+	--ame-content-width: 1200px;
+	--ame-container-padding: clamp(1rem, 3vw, 2rem);
+	--ame-section-padding: clamp(3rem, 7vw, 6rem);
+	--ame-transition: 180ms ease;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+	margin: 0;
+	font-family: var(--ame-font-body);
+	color: var(--ame-color-charcoal);
+	background: var(--ame-color-white);
+	line-height: 1.6;
+	text-rendering: optimizeLegibility;
+	-webkit-font-smoothing: antialiased;
+}
+
+img { max-width: 100%; height: auto; display: block; }
+
+a {
+	color: inherit;
+	text-decoration-thickness: 0.08em;
+	text-underline-offset: 0.18em;
+	transition: color var(--ame-transition), opacity var(--ame-transition),
+		background-color var(--ame-transition), border-color var(--ame-transition);
+}
+a:hover { color: var(--ame-color-navy); }
+
+button, input, select, textarea { font: inherit; }
+
+:focus-visible {
+	outline: 3px solid var(--ame-color-gold);
+	outline-offset: 3px;
+}
+
+.screen-reader-text {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	padding: 0;
+	margin: -1px;
+	overflow: hidden;
+	clip: rect(0, 0, 0, 0);
+	white-space: nowrap;
+	border: 0;
+}
+
+.screen-reader-text:focus {
+	position: static;
+	width: auto;
+	height: auto;
+	margin: 0;
+	overflow: visible;
+	clip: auto;
+	white-space: normal;
+}
+
+.ame-bazaar-container {
+	width: min(var(--ame-content-width), calc(100% - (var(--ame-container-padding) * 2)));
+	margin-inline: auto;
+}
+
+.ame-bazaar-section { padding-block: var(--ame-section-padding); }
+
+.ame-bazaar-surface { background: var(--ame-color-cream); }
+
+.ame-bazaar-shell {
+	min-height: 100vh;
+	background: var(--ame-color-white);
+}
+
+.ame-bazaar-stack {
+	display: grid;
+	gap: 1.5rem;
+}
+
+.ame-bazaar-btn {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	gap: 0.5rem;
+	padding: 0.9rem 1.4rem;
+	border-radius: 999px;
+	border: 1px solid transparent;
+	font-weight: 600;
+	letter-spacing: 0.01em;
+	text-decoration: none;
+	cursor: pointer;
+}
+.ame-bazaar-btn--primary { background: var(--ame-color-navy); color: var(--ame-color-white); }
+.ame-bazaar-btn--secondary { background: transparent; color: var(--ame-color-navy); border-color: currentColor; }
+.ame-bazaar-btn:hover { transform: translateY(-1px); box-shadow: var(--ame-shadow-sm); }

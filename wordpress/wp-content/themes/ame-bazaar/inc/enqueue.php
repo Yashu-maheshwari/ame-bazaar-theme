@@ -1,0 +1,56 @@
+<?php
+/**
+ * Asset loading.
+ *
+ * @package Ame_Bazaar
+ */
+
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
+function ame_bazaar_asset_version( $relative_path ) {
+	$path = trailingslashit( AME_BAZAAR_PATH ) . ltrim( $relative_path, '/' );
+
+	return file_exists( $path ) ? (string) filemtime( $path ) : AME_BAZAAR_VERSION;
+}
+
+function ame_bazaar_enqueue_assets() {
+	$parent_style_version = wp_get_theme( get_template() )->get( 'Version' );
+
+	wp_enqueue_style(
+		'ame-bazaar-parent-style',
+		get_template_directory_uri() . '/style.css',
+		array(),
+		$parent_style_version
+	);
+
+
+
+	wp_enqueue_style(
+		'ame-bazaar-style',
+		get_stylesheet_uri(),
+		array( 'ame-bazaar-parent-style' ),
+		AME_BAZAAR_VERSION
+	);
+
+	wp_enqueue_style(
+		'ame-bazaar-main',
+		ame_bazaar_asset_uri( 'assets/css/main.css' ),
+		array( 'ame-bazaar-style' ),
+		ame_bazaar_asset_version( 'assets/css/main.css' )
+	);
+
+	wp_enqueue_script(
+		'ame-bazaar-global',
+		ame_bazaar_asset_uri( 'assets/js/global.js' ),
+		array(),
+		ame_bazaar_asset_version( 'assets/js/global.js' ),
+		true
+	);
+
+	if ( is_singular() && comments_open() && get_option( 'thread_comments' ) ) {
+		wp_enqueue_script( 'comment-reply' );
+	}
+}
+add_action( 'wp_enqueue_scripts', 'ame_bazaar_enqueue_assets' );
