@@ -52,11 +52,21 @@ function ame_bazaar_loop_product_thumbnail_with_actions() {
 	$is_featured = $product->is_featured();
 	$stock_status = $product->get_stock_status();
 
+	// Grab second image from gallery for hover image swap
+	$gallery_image_ids = $product->get_gallery_image_ids();
+	$hover_img_url = '';
+	if ( ! empty( $gallery_image_ids ) ) {
+		$hover_img_url = wp_get_attachment_image_url( $gallery_image_ids[0], 'medium' );
+	}
+
 	echo '<div class="ame-product-visual-wrap">';
 	echo '<a href="' . esc_url( get_permalink() ) . '" class="ame-product-img-link" tabindex="-1" aria-hidden="true">';
 	
 	if ( $img_url ) {
 		echo '<img src="' . esc_url( $img_url ) . '" alt="' . esc_attr( get_the_title() ) . '" class="ame-product-img" loading="lazy">';
+		if ( $hover_img_url ) {
+			echo '<img src="' . esc_url( $hover_img_url ) . '" alt="" class="ame-product-img-hover" loading="lazy">';
+		}
 	} else {
 		// Elegant Design System Placeholder
 		?>
@@ -89,6 +99,10 @@ function ame_bazaar_loop_product_thumbnail_with_actions() {
 	}
 	if ( 'outofstock' === $stock_status ) {
 		echo '<span class="ame-badge-outofstock">' . esc_html__( 'Out of Stock', 'ame-bazaar' ) . '</span>';
+	} else {
+		// Kirari local and customization badges
+		echo '<span class="ame-badge-new">' . esc_html__( 'Kirari Store Pick-up', 'ame-bazaar' ) . '</span>';
+		echo '<span class="ame-badge-limited" style="background:#e0f2fe; color:#0369a1;">' . esc_html__( 'Tailoring Available', 'ame-bazaar' ) . '</span>';
 	}
 	echo '</div>';
 
@@ -329,16 +343,52 @@ function ame_bazaar_enhance_product_schema( $markup, $product ) {
 		'telephone' => '+91 99999 99999',
 	);
 	
+	// Advanced AI attributes
+	$markup['brand'] = array(
+		'@type' => 'Brand',
+		'name'  => 'AME Bazaar',
+	);
+	$markup['material'] = 'Pure Mulmul Cotton / Silk';
+	$markup['pattern'] = 'Embroidered Handloom / Ethnic Solid';
+	$markup['audience'] = array(
+		'@type' => 'PeopleAudience',
+		'suggestedGender' => 'Unisex',
+		'suggestedMinAge' => 18,
+	);
+	
+	// Return Policy & Shipping Details Schema
+	$markup['hasMerchantReturnPolicy'] = array(
+		'@type' => 'MerchantReturnPolicy',
+		'applicableCountry' => 'IN',
+		'returnPolicyCategory' => 'https://schema.org/MerchantReturnFiniteReturnPeriod',
+		'returnFees' => 'https://schema.org/FreeReturn',
+		'merchantReturnDays' => 7,
+		'returnMethod' => 'https://schema.org/ReturnInStore',
+	);
+
+	$markup['shippingDetails'][] = array(
+		'@type' => 'ProductShippingDetails',
+		'shippingDestination' => array(
+			'@type' => 'DefinedRegion',
+			'addressCountry' => 'IN',
+		),
+		'shippingRate' => array(
+			'@type' => 'MonetaryAmount',
+			'value' => 0,
+			'currency' => 'INR',
+		),
+	);
+	
 	$markup['additionalProperty'][] = array(
 		'@type' => 'PropertyValue',
 		'name'  => 'Tailoring Option',
-		'value' => 'On-site tailoring and fitting alteration services available',
+		'value' => 'On-site tailoring and fitting alteration services available within 30 minutes',
 	);
 
 	$markup['additionalProperty'][] = array(
 		'@type' => 'PropertyValue',
-		'name'  => 'Delivery Area',
-		'value' => 'Local Delhi area shipping and in-store pick-up available',
+		'name'  => 'Local Store trial',
+		'value' => 'Trial available at Mubarakpur Road Kirari store in Delhi',
 	);
 	
 	return $markup;
@@ -346,7 +396,92 @@ function ame_bazaar_enhance_product_schema( $markup, $product ) {
 add_filter( 'woocommerce_structured_data_product', 'ame_bazaar_enhance_product_schema', 10, 2 );
 
 /**
- * 8. Mobile Sticky Add to Cart layout injector.
+ * 8. Local Retail Features summary module.
+ */
+function ame_bazaar_render_local_retail_features() {
+	global $product;
+	?>
+	<div class="ame-local-retail-card" style="margin-top: 1.5rem; padding: 1.5rem; background: var(--ame-color-cream); border: 1px solid var(--ame-color-border); border-radius: var(--ame-radius-md);">
+		<h4 class="ame-local-retail-title" style="display:flex; align-items:center; gap:0.5rem; margin:0 0 1rem 0; font-size:1rem; font-weight:800; color:var(--ame-color-navy);">
+			<svg class="ame-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width:18px; height:18px; color:var(--ame-color-gold-dark);"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+			<span><?php esc_html_e( 'In-Store Delhi Services', 'ame-bazaar' ); ?></span>
+		</h4>
+		<ul class="ame-local-services-list" style="list-style:none; padding:0; margin:0 0 1.5rem 0; display:flex; flex-direction:column; gap:0.6rem; font-size:0.85rem; color:var(--ame-color-slate);">
+			<li style="display:flex; gap:0.4rem;"><strong>Kirari Store Status:</strong> In-stock & available for immediate trial.</li>
+			<li style="display:flex; gap:0.4rem;"><strong>Alteration Timeline:</strong> Fittings and hem adjustments completed in 30 minutes.</li>
+			<li style="display:flex; gap:0.4rem;"><strong>Trial room:</strong> Try before purchase at Mubarakpur Road outlet.</li>
+		</ul>
+		<div class="ame-local-retail-actions" style="display:flex; gap:0.8rem; flex-wrap:wrap;">
+			<a href="tel:+919999999999" class="ame-btn-outline" style="padding:0.6rem 1rem; font-size:0.75rem; text-decoration:none;">
+				<svg class="ame-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px; height:14px;"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2v3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+				<span>Call Store</span>
+			</a>
+			<a href="https://wa.me/919999999999?text=Hi%20I%20am%20interested%20in%20<?php echo rawurlencode( get_the_title() ); ?>" class="ame-btn-secondary" style="padding:0.6rem 1rem; font-size:0.75rem; text-decoration:none;" target="_blank" rel="noopener">
+				<svg class="ame-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px; height:14px;"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>
+				<span>WhatsApp Enquiry</span>
+			</a>
+		</div>
+	</div>
+	<?php
+}
+add_action( 'woocommerce_single_product_summary', 'ame_bazaar_render_local_retail_features', 35 );
+
+/**
+ * 9. Smart Bought Together Recommendations Package.
+ */
+function ame_bazaar_frequently_bought_together() {
+	global $product;
+	if ( ! is_product() ) return;
+	
+	// Query 2 related products as suggestions
+	$related_ids = wc_get_related_products( get_the_ID(), 2 );
+	if ( empty( $related_ids ) ) return;
+	
+	$query = new WP_Query( array(
+		'post_type' => 'product',
+		'post__in' => $related_ids,
+	) );
+	
+	if ( ! $query->have_posts() ) return;
+	
+	?>
+	<section class="ame-frequently-bought-together">
+		<h3 class="ame-recommendations-title"><?php esc_html_e( 'Frequently Bought Together / Complete the Look', 'ame-bazaar' ); ?></h3>
+		<div class="ame-fbt-flex-container">
+			
+			<div class="ame-fbt-products-line">
+				<div class="ame-fbt-item">
+					<?php echo get_the_post_thumbnail( get_the_ID(), 'thumbnail', array( 'class' => 'ame-fbt-img' ) ); ?>
+					<div class="ame-fbt-info">
+						<span class="ame-fbt-name"><?php the_title(); ?></span>
+						<span class="ame-fbt-price"><?php echo $product->get_price_html(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></span>
+					</div>
+				</div>
+				
+				<?php while ( $query->have_posts() ) : $query->the_post(); global $product; ?>
+					<div class="ame-fbt-plus-icon">+</div>
+					<div class="ame-fbt-item">
+						<?php echo get_the_post_thumbnail( get_the_ID(), 'thumbnail', array( 'class' => 'ame-fbt-img' ) ); ?>
+						<div class="ame-fbt-info">
+							<span class="ame-fbt-name"><?php the_title(); ?></span>
+							<span class="ame-fbt-price"><?php echo $product->get_price_html(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></span>
+						</div>
+					</div>
+				<?php endwhile; wp_reset_postdata(); ?>
+			</div>
+			
+			<div class="ame-fbt-summary-box">
+				<p class="ame-fbt-total-label">Custom coordinator set suggestions</p>
+				<a href="?add-to-cart=<?php echo esc_attr( get_the_ID() ); ?>" class="ame-btn-primary ame-fbt-add-btn"><?php esc_html_e( 'Add Package to Cart', 'ame-bazaar' ); ?></a>
+			</div>
+		</div>
+	</section>
+	<?php
+}
+add_action( 'woocommerce_after_single_product_summary', 'ame_bazaar_frequently_bought_together', 12 );
+
+/**
+ * 10. Mobile Sticky Add to Cart layout injector.
  */
 function ame_bazaar_sticky_add_to_cart_mobile() {
 	if ( ! is_product() ) {
@@ -368,5 +503,6 @@ function ame_bazaar_sticky_add_to_cart_mobile() {
 }
 add_action( 'wp_footer', 'ame_bazaar_sticky_add_to_cart_mobile' );
 
-// End of WooCommerce Integration. Rerun trigger 2.
+// End of WooCommerce Integration. Rerun trigger 3.
+
 
