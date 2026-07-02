@@ -100,7 +100,7 @@ function ame_bazaar_save_custom_product_fields( $post_id ) {
 add_action( 'woocommerce_process_product_meta', 'ame_bazaar_save_custom_product_fields' );
 
 /**
- * 2. Custom AME Store operations dashboard registered to WordPress backend admin.
+ * 2. Custom AME Store operations dashboard and Business Settings registered to WordPress backend admin.
  */
 function ame_bazaar_register_store_dashboard() {
 	add_menu_page(
@@ -111,6 +111,15 @@ function ame_bazaar_register_store_dashboard() {
 		'ame_bazaar_render_admin_store_dashboard',
 		'dashicons-chart-area',
 		56
+	);
+
+	add_submenu_page(
+		'ame-store-dashboard',
+		__( 'AME Business Settings', 'ame-bazaar' ),
+		__( 'Business Settings', 'ame-bazaar' ),
+		'manage_options',
+		'ame-business-settings',
+		'ame_bazaar_render_business_settings_page'
 	);
 }
 add_action( 'admin_menu', 'ame_bazaar_register_store_dashboard' );
@@ -268,4 +277,185 @@ function ame_bazaar_product_search_meta_where( $where ) {
 	return $where;
 }
 add_filter( 'posts_where', 'ame_bazaar_product_search_meta_where' );
+
+/**
+ * 6. Helper to fetch global business settings.
+ */
+function ame_bazaar_get_business_setting( $key, $default = '' ) {
+	$val = get_option( 'ame_bazaar_' . $key );
+	if ( ! $val ) {
+		// Fallback to customizer theme mods if available
+		$val = get_theme_mod( 'ame_bazaar_' . $key );
+	}
+	return $val ? $val : $default;
+}
+
+/**
+ * 7. Render Business Settings Admin Options Form Page.
+ */
+function ame_bazaar_render_business_settings_page() {
+	// Save form changes
+	if ( isset( $_POST['ame_save_settings'] ) && check_admin_referer( 'ame_business_settings_save', 'ame_nonce' ) ) {
+		$keys = array(
+			'store_name', 'address', 'phone', 'whatsapp', 'email', 'maps_url',
+			'hours', 'instagram', 'facebook', 'youtube', 'gbp_url'
+		);
+		foreach ( $keys as $key ) {
+			if ( isset( $_POST[ $key ] ) ) {
+				update_option( 'ame_bazaar_' . $key, sanitize_text_field( wp_unslash( $_POST[ $key ] ) ) );
+			}
+		}
+		echo '<div class="notice notice-success is-dismissible"><p>Settings saved successfully.</p></div>';
+	}
+	
+	$store_name = ame_bazaar_get_business_setting( 'store_name', 'AME Bazaar' );
+	$address    = ame_bazaar_get_business_setting( 'address', 'Kirari, Delhi' );
+	$phone      = ame_bazaar_get_business_setting( 'phone', '+91 99999 99999' );
+	$whatsapp   = ame_bazaar_get_business_setting( 'whatsapp', '+91 99999 99999' );
+	$email      = ame_bazaar_get_business_setting( 'email', 'contact@amebazaar.com' );
+	$maps_url   = ame_bazaar_get_business_setting( 'maps_url', 'https://maps.google.com/?q=AME+Bazaar+Kirari+Delhi' );
+	$hours      = ame_bazaar_get_business_setting( 'hours', 'Mo-Su 09:00–22:00' );
+	$instagram  = ame_bazaar_get_business_setting( 'instagram', 'https://www.instagram.com/amebazaar' );
+	$facebook   = ame_bazaar_get_business_setting( 'facebook', 'https://www.facebook.com/amebazaar' );
+	$youtube    = ame_bazaar_get_business_setting( 'youtube', '#' );
+	$gbp_url    = ame_bazaar_get_business_setting( 'gbp_url', '#' );
+	
+	?>
+	<div class="wrap">
+		<h1><?php esc_html_e( 'AME Bazaar Business Profile & Settings', 'ame-bazaar' ); ?></h1>
+		<form method="post" action="" style="background:#fff; border:1px solid #ccd0d4; padding:2rem; border-radius:5px; margin-top:1.5rem; max-width:800px;">
+			<?php wp_nonce_field( 'ame_business_settings_save', 'ame_nonce' ); ?>
+			
+			<table class="form-table">
+				<tr>
+					<th><label for="store_name"><?php esc_html_e( 'Store Name', 'ame-bazaar' ); ?></label></th>
+					<td><input type="text" id="store_name" name="store_name" value="<?php echo esc_attr( $store_name ); ?>" class="regular-text" /></td>
+				</tr>
+				<tr>
+					<th><label for="address"><?php esc_html_e( 'Store Address', 'ame-bazaar' ); ?></label></th>
+					<td><input type="text" id="address" name="address" value="<?php echo esc_attr( $address ); ?>" class="regular-text" /></td>
+				</tr>
+				<tr>
+					<th><label for="phone"><?php esc_html_e( 'Contact Phone Number', 'ame-bazaar' ); ?></label></th>
+					<td><input type="text" id="phone" name="phone" value="<?php echo esc_attr( $phone ); ?>" class="regular-text" /></td>
+				</tr>
+				<tr>
+					<th><label for="whatsapp"><?php esc_html_e( 'WhatsApp Helpline', 'ame-bazaar' ); ?></label></th>
+					<td><input type="text" id="whatsapp" name="whatsapp" value="<?php echo esc_attr( $whatsapp ); ?>" class="regular-text" /></td>
+				</tr>
+				<tr>
+					<th><label for="email"><?php esc_html_e( 'Business Email', 'ame-bazaar' ); ?></label></th>
+					<td><input type="email" id="email" name="email" value="<?php echo esc_attr( $email ); ?>" class="regular-text" /></td>
+				</tr>
+				<tr>
+					<th><label for="maps_url"><?php esc_html_e( 'Google Maps URL', 'ame-bazaar' ); ?></label></th>
+					<td><input type="text" id="maps_url" name="maps_url" value="<?php echo esc_attr( $maps_url ); ?>" class="large-text" /></td>
+				</tr>
+				<tr>
+					<th><label for="hours"><?php esc_html_e( 'Business Hours', 'ame-bazaar' ); ?></label></th>
+					<td><input type="text" id="hours" name="hours" value="<?php echo esc_attr( $hours ); ?>" class="regular-text" /></td>
+				</tr>
+				<tr>
+					<th><label for="instagram"><?php esc_html_e( 'Instagram Profile URL', 'ame-bazaar' ); ?></label></th>
+					<td><input type="text" id="instagram" name="instagram" value="<?php echo esc_attr( $instagram ); ?>" class="regular-text" /></td>
+				</tr>
+				<tr>
+					<th><label for="facebook"><?php esc_html_e( 'Facebook Profile URL', 'ame-bazaar' ); ?></label></th>
+					<td><input type="text" id="facebook" name="facebook" value="<?php echo esc_attr( $facebook ); ?>" class="regular-text" /></td>
+				</tr>
+				<tr>
+					<th><label for="youtube"><?php esc_html_e( 'YouTube Profile URL', 'ame-bazaar' ); ?></label></th>
+					<td><input type="text" id="youtube" name="youtube" value="<?php echo esc_attr( $youtube ); ?>" class="regular-text" /></td>
+				</tr>
+				<tr>
+					<th><label for="gbp_url"><?php esc_html_e( 'Google Business Profile Link', 'ame-bazaar' ); ?></label></th>
+					<td><input type="text" id="gbp_url" name="gbp_url" value="<?php echo esc_attr( $gbp_url ); ?>" class="large-text" /></td>
+				</tr>
+			</table>
+			
+			<p class="submit">
+				<input type="submit" name="ame_save_settings" class="button button-primary" value="<?php esc_attr_e( 'Save Profile Details', 'ame-bazaar' ); ?>" />
+			</p>
+		</form>
+	</div>
+	<?php
+}
+
+/**
+ * 8. Performance Preconnects and Preloads inside wp_head.
+ */
+function ame_bazaar_head_preload_preconnect() {
+	echo '<link rel="preconnect" href="https://fonts.googleapis.com">' . "\n";
+	echo '<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>' . "\n";
+	$logo = ame_bazaar_get_custom_logo_url();
+	if ( $logo ) {
+		echo '<link rel="preload" as="image" href="' . esc_url( $logo ) . '">' . "\n";
+	}
+}
+add_action( 'wp_head', 'ame_bazaar_head_preload_preconnect', 1 );
+
+/**
+ * 9. Crawling, Sitemap.xml, LLMs.txt and Robots.txt dynamic handler.
+ */
+function ame_bazaar_robots_txt( $output, $public ) {
+	$sitemap_url = home_url( '/sitemap.xml' );
+	$output .= "Sitemap: {$sitemap_url}\n";
+	$output .= "User-agent: *\nDisallow: /wp-admin/\nAllow: /wp-admin/admin-ajax.php\n";
+	return $output;
+}
+add_filter( 'robots_txt', 'ame_bazaar_robots_txt' );
+
+function ame_bazaar_handle_dynamic_text_files() {
+	$request = $_SERVER['REQUEST_URI'];
+	
+	if ( strpos( $request, 'sitemap.xml' ) !== false ) {
+		header( 'Content-Type: application/xml; charset=utf-8' );
+		echo '<?xml version="1.0" encoding="UTF-8"?>';
+		echo '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">';
+		echo '<url><loc>' . esc_url( home_url( '/' ) ) . '</loc><changefreq>daily</changefreq><priority>1.0</priority></url>';
+		
+		// Load products
+		$query = new WP_Query( array( 'post_type' => 'product', 'posts_per_page' => 100 ) );
+		while ( $query->have_posts() ) {
+			$query->the_post();
+			echo '<url><loc>' . esc_url( get_permalink() ) . '</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>';
+		}
+		wp_reset_postdata();
+		
+		echo '</urlset>';
+		exit;
+	}
+	
+	if ( strpos( $request, 'llms.txt' ) !== false ) {
+		header( 'Content-Type: text/plain; charset=utf-8' );
+		echo "# AME Bazaar - LLMs Discovery File\n\n";
+		echo "This file provides index paths for AI crawlers.\n\n";
+		echo "## Main URLs\n";
+		echo "- Home: " . esc_url( home_url( '/' ) ) . "\n";
+		echo "- Shop: " . esc_url( wc_get_page_permalink( 'shop' ) ) . "\n";
+		echo "- Location: Mubarakpur Road, Kirari, Delhi\n";
+		exit;
+	}
+}
+add_action( 'init', 'ame_bazaar_handle_dynamic_text_files' );
+
+/**
+ * 10. WhatsApp Floating Button Footer Injector.
+ */
+function ame_bazaar_whatsapp_floating_button() {
+	$whatsapp = ame_bazaar_get_business_setting( 'whatsapp', '+91 99999 99999' );
+	$clean_wa = preg_replace( '/[^0-9+]/', '', $whatsapp );
+	$text     = 'Hi AME Bazaar, I have a query about your products!';
+	if ( is_product() ) {
+		$text = 'Hi AME Bazaar, I am interested in purchasing ' . get_the_title() . '. Can you help?';
+	}
+	$url = 'https://wa.me/' . ltrim( $clean_wa, '+' ) . '?text=' . rawurlencode( $text );
+	?>
+	<a href="<?php echo esc_url( $url ); ?>" class="ame-whatsapp-float" target="_blank" rel="noopener noreferrer" aria-label="Chat on WhatsApp">
+		<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:28px; height:28px;"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>
+	</a>
+	<?php
+}
+add_action( 'wp_footer', 'ame_bazaar_whatsapp_floating_button', 40 );
+
 
