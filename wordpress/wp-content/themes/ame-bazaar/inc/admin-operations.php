@@ -743,7 +743,7 @@ function ame_bazaar_get_rest_gbp_data() {
  * 13. Automatically seed review flow and QR template pages if missing.
  */
 function ame_bazaar_create_local_system_pages() {
-	if ( ! is_admin() ) {
+	if ( get_transient( 'ame_bazaar_pages_seeded' ) ) {
 		return;
 	}
 
@@ -774,8 +774,13 @@ function ame_bazaar_create_local_system_pages() {
 			),
 		) );
 	}
+
+	// Flush rewrite rules to make sure pages work immediately
+	flush_rewrite_rules();
+
+	set_transient( 'ame_bazaar_pages_seeded', 'yes', YEAR_IN_SECONDS );
 }
-add_action( 'admin_init', 'ame_bazaar_create_local_system_pages' );
+add_action( 'init', 'ame_bazaar_create_local_system_pages' );
 
 
 
