@@ -10,6 +10,12 @@
 	const menuClose = document.getElementById('ame-menu-close-btn');
 	const menuOverlayBg = document.getElementById('ame-menu-overlay-bg');
 
+	// Search Elements
+	const searchOpenBtn = document.getElementById('ame-search-open-btn');
+	const searchCloseBtn = document.getElementById('ame-search-close-btn');
+	const searchOverlay = document.getElementById('ame-desktop-search-overlay');
+	const searchInput = document.getElementById('ame-search-input');
+
 	// Active focus trap targets
 	let focusTrapCleanup = null;
 
@@ -108,16 +114,51 @@
 	if (menuOverlayBg) menuOverlayBg.addEventListener('click', closeMenu);
 
 	/* ==========================================================================
-	   4. GLOBAL KEYBOARD LISTENERS (ESC key close)
+	   4. DESKTOP SEARCH OVERLAY CONTROLS
+	   ========================================================================== */
+	const openSearch = () => {
+		if (!searchOverlay) return;
+		searchOverlay.classList.add('is-active');
+		document.body.style.overflow = 'hidden';
+
+		if (focusTrapCleanup) focusTrapCleanup();
+		focusTrapCleanup = createFocusTrap(searchOverlay);
+
+		setTimeout(() => {
+			if (searchInput) searchInput.focus();
+		}, 100);
+	};
+
+	const closeSearch = () => {
+		if (!searchOverlay) return;
+		searchOverlay.classList.remove('is-active');
+		document.body.style.overflow = '';
+
+		if (focusTrapCleanup) {
+			focusTrapCleanup();
+			focusTrapCleanup = null;
+		}
+	};
+
+	if (searchOpenBtn) searchOpenBtn.addEventListener('click', openSearch);
+	if (searchCloseBtn) searchCloseBtn.addEventListener('click', closeSearch);
+
+	/* ==========================================================================
+	   5. GLOBAL KEYBOARD LISTENERS (ESC key close)
 	   ========================================================================== */
 	document.addEventListener('keydown', (e) => {
 		if (e.key === 'Escape') {
 			if (menuDrawer && menuDrawer.classList.contains('is-active')) {
 				closeMenu();
 			}
+			if (searchOverlay && searchOverlay.classList.contains('is-active')) {
+				closeSearch();
+			}
 		}
+	});
+
 	/* ==========================================================================
-	   5. READING PROGRESS INDICATOR
+	   6. READING PROGRESS INDICATOR
 	   ========================================================================== */
 	const progressIndicator = document.getElementById('ame-reading-progress-bar');
 	if (progressIndicator) {

@@ -86,6 +86,13 @@ $maps_url = get_theme_mod( 'ame_bazaar_maps_url', 'https://maps.google.com/?q=AM
 				</svg>
 			</a>
 
+			<!-- Future Wishlist Placeholder -->
+			<a href="#" class="ame-action-btn ame-wishlist-link" aria-label="<?php esc_attr_e( 'Wishlist (Future Integration)', 'ame-bazaar' ); ?>">
+				<svg class="ame-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+					<path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+				</svg>
+			</a>
+
 			<!-- Future Cart Placeholder -->
 			<a href="#" class="ame-action-btn ame-cart-link" aria-label="<?php esc_attr_e( 'Shopping Cart (Future Integration)', 'ame-bazaar' ); ?>">
 				<svg class="ame-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -196,4 +203,24 @@ $maps_url = get_theme_mod( 'ame_bazaar_maps_url', 'https://maps.google.com/?q=AM
 	
 	<!-- Overlay background for closing -->
 	<div class="ame-mobile-drawer-overlay" id="ame-menu-overlay-bg" aria-hidden="true"></div>
+</div>
+
+<!-- Desktop Search Overlay -->
+<div class="ame-search-overlay" id="ame-desktop-search-overlay" role="dialog" aria-modal="true" aria-hidden="true" aria-label="<?php esc_attr_e( 'Search site', 'ame-bazaar' ); ?>">
+	<div class="ame-search-overlay-inner">
+		<form role="search" method="get" class="ame-search-form" action="<?php echo esc_url( home_url( '/' ) ); ?>">
+			<label class="screen-reader-text" for="ame-search-input"><?php esc_html_e( 'Search for:', 'ame-bazaar' ); ?></label>
+			<input type="search" id="ame-search-input" class="ame-search-input" placeholder="<?php esc_attr_e( 'Search store...', 'ame-bazaar' ); ?>" value="<?php echo get_search_query(); ?>" name="s" required />
+			<button type="submit" class="ame-search-submit" aria-label="<?php esc_attr_e( 'Search', 'ame-bazaar' ); ?>">
+				<svg class="ame-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+					<circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+				</svg>
+			</button>
+		</form>
+		<button class="ame-search-close-btn" id="ame-search-close-btn" aria-label="<?php esc_attr_e( 'Close Search', 'ame-bazaar' ); ?>">
+			<svg class="ame-icon-close" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+				<line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line>
+			</svg>
+		</button>
+	</div>
 </div>
