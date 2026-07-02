@@ -94,12 +94,14 @@ function ame_bazaar_get_website_schema() {
  * @return array
  */
 function ame_bazaar_get_organization_schema() {
-	$brand_name   = ame_bazaar_get_brand_name();
-	$phone        = get_theme_mod( 'ame_bazaar_phone', '+91 99999 99999' );
-	$email        = get_theme_mod( 'ame_bazaar_email', 'contact@amebazaar.com' );
-	$whatsapp_url = get_theme_mod( 'ame_bazaar_whatsapp_url', '' );
-	$facebook     = get_theme_mod( 'ame_bazaar_facebook_url', 'https://www.facebook.com/amebazaar' );
-	$instagram    = get_theme_mod( 'ame_bazaar_instagram_url', 'https://www.instagram.com/amebazaar' );
+	$brand_name   = ame_bazaar_get_business_setting( 'store_name', 'AME Bazaar' );
+	$phone        = ame_bazaar_get_business_setting( 'phone', '+91 99999 99999' );
+	$email        = ame_bazaar_get_business_setting( 'email', 'contact@amebazaar.com' );
+	$whatsapp     = ame_bazaar_get_business_setting( 'whatsapp', '+91 99999 99999' );
+	$clean_wa     = preg_replace( '/[^0-9+]/', '', $whatsapp );
+	$whatsapp_url = 'https://wa.me/' . ltrim( $clean_wa, '+' );
+	$facebook     = ame_bazaar_get_business_setting( 'facebook', 'https://www.facebook.com/amebazaar' );
+	$instagram    = ame_bazaar_get_business_setting( 'instagram', 'https://www.instagram.com/amebazaar' );
 
 	$schema = array(
 		'@type' => 'Organization',
@@ -153,26 +155,26 @@ function ame_bazaar_get_organization_schema() {
  * @return array
  */
 function ame_bazaar_get_clothing_store_schema() {
-	$brand_name = ame_bazaar_get_brand_name();
-	$phone      = get_theme_mod( 'ame_bazaar_phone', '+91 99999 99999' );
-	$maps_url   = get_theme_mod( 'ame_bazaar_maps_url', 'https://maps.google.com/?q=AME+Bazaar+Kirari+Delhi' );
+	$brand_name = ame_bazaar_get_business_setting( 'store_name', 'AME Bazaar' );
+	$phone      = ame_bazaar_get_business_setting( 'phone', '+91 99999 99999' );
+	$maps_url   = ame_bazaar_get_business_setting( 'maps_url', 'https://maps.google.com/?q=AME+Bazaar+Kirari+Delhi' );
 
-	// Coordinates from theme config (Customizer)
-	$lat = get_theme_mod( 'ame_bazaar_latitude', '28.7051' );
-	$lng = get_theme_mod( 'ame_bazaar_longitude', '77.0583' );
+	// Coordinates
+	$lat = ame_bazaar_get_business_setting( 'latitude', '28.7051' );
+	$lng = ame_bazaar_get_business_setting( 'longitude', '77.0583' );
 
 	// Address details
-	$street  = get_theme_mod( 'ame_bazaar_street_address', 'Mubarakpur Road' );
-	$city    = get_theme_mod( 'ame_bazaar_locality', 'Kirari' );
-	$state   = get_theme_mod( 'ame_bazaar_region', 'Delhi' );
-	$zip     = get_theme_mod( 'ame_bazaar_postal_code', '110086' );
-	$country = get_theme_mod( 'ame_bazaar_country', 'IN' );
+	$street  = ame_bazaar_get_business_setting( 'address', 'Mubarakpur Road' );
+	$city    = ame_bazaar_get_business_setting( 'city', 'Kirari' );
+	$state   = ame_bazaar_get_business_setting( 'state', 'Delhi' );
+	$zip     = ame_bazaar_get_business_setting( 'postal_code', '110086' );
+	$country = ame_bazaar_get_business_setting( 'country', 'IN' );
 
 	// Additional info
 	$areas_served = get_theme_mod( 'ame_bazaar_areas_served', 'Kirari, Mubarakpur, Meer Vihar, Baljit Vihar, Prem Nagar, Nangloi, Budh Vihar, Rohini' );
 	$price_range  = get_theme_mod( 'ame_bazaar_price_range', '₹100–₹1000' );
-	$facebook     = get_theme_mod( 'ame_bazaar_facebook_url', 'https://www.facebook.com/amebazaar' );
-	$instagram    = get_theme_mod( 'ame_bazaar_instagram_url', 'https://www.instagram.com/amebazaar' );
+	$facebook     = ame_bazaar_get_business_setting( 'facebook', 'https://www.facebook.com/amebazaar' );
+	$instagram    = ame_bazaar_get_business_setting( 'instagram', 'https://www.instagram.com/amebazaar' );
 
 	$schema = array(
 		'@type'              => 'ClothingStore',

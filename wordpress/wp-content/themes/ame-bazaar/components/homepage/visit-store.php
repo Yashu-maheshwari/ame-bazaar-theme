@@ -9,11 +9,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-$phone_number = get_theme_mod( 'ame_bazaar_phone', '+91 99999 99999' );
+$phone_number = ame_bazaar_get_business_setting( 'phone', '+91 99999 99999' );
 $phone_tel_link = preg_replace( '/[^0-9+]/', '', $phone_number );
-$maps_url = get_theme_mod( 'ame_bazaar_maps_url', 'https://maps.google.com/?q=AME+Bazaar+Kirari+Delhi' );
-$address = get_theme_mod( 'ame_bazaar_address', 'Mubarakpur Road, Kirari, Delhi - 110086' );
-$hours = get_theme_mod( 'ame_bazaar_hours', 'Monday - Sunday: 10:00 AM - 9:00 PM' );
+$maps_url = ame_bazaar_get_business_setting( 'maps_url', 'https://maps.google.com/?q=AME+Bazaar+Kirari+Delhi' );
+$address = ame_bazaar_get_business_setting( 'address', 'Mubarakpur Road' ) . ', ' . ame_bazaar_get_business_setting( 'city', 'Kirari' ) . ', ' . ame_bazaar_get_business_setting( 'state', 'Delhi' ) . ' - ' . ame_bazaar_get_business_setting( 'postal_code', '110086' );
+$hours = ame_bazaar_get_business_setting( 'hours', 'Mo-Su 09:00–22:00' );
 ?>
 
 <section class="ame-visit-store-section" aria-labelledby="ame-visit-store-title">

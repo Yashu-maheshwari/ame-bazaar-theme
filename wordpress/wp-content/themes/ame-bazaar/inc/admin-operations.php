@@ -297,50 +297,99 @@ function ame_bazaar_render_business_settings_page() {
 	// Save form changes
 	if ( isset( $_POST['ame_save_settings'] ) && check_admin_referer( 'ame_business_settings_save', 'ame_nonce' ) ) {
 		$keys = array(
-			'store_name', 'address', 'phone', 'whatsapp', 'email', 'maps_url',
-			'hours', 'instagram', 'facebook', 'youtube', 'gbp_url'
+			'store_name', 'short_description', 'address', 'city', 'state', 'postal_code', 'country',
+			'phone', 'whatsapp', 'email', 'maps_url', 'latitude', 'longitude',
+			'hours', 'holiday_hours', 'instagram', 'facebook', 'youtube', 'gbp_url',
+			'google_reviews_rating', 'google_reviews_count',
+			'store_pickup_available', 'tailoring_available', 'parking_available', 'home_delivery_available'
 		);
 		foreach ( $keys as $key ) {
-			if ( isset( $_POST[ $key ] ) ) {
+			if ( strpos( $key, '_available' ) !== false ) {
+				$val = isset( $_POST[ $key ] ) ? 'yes' : 'no';
+				update_option( 'ame_bazaar_' . $key, $val );
+			} elseif ( isset( $_POST[ $key ] ) ) {
 				update_option( 'ame_bazaar_' . $key, sanitize_text_field( wp_unslash( $_POST[ $key ] ) ) );
 			}
 		}
-		echo '<div class="notice notice-success is-dismissible"><p>Settings saved successfully.</p></div>';
+		// Clear transient cache so settings update instantly
+		delete_transient( 'ame_bazaar_store_stats' );
+		echo '<div class="notice notice-success is-dismissible"><p>Business Profile settings saved successfully.</p></div>';
 	}
 	
-	$store_name = ame_bazaar_get_business_setting( 'store_name', 'AME Bazaar' );
-	$address    = ame_bazaar_get_business_setting( 'address', 'Kirari, Delhi' );
-	$phone      = ame_bazaar_get_business_setting( 'phone', '+91 99999 99999' );
-	$whatsapp   = ame_bazaar_get_business_setting( 'whatsapp', '+91 99999 99999' );
-	$email      = ame_bazaar_get_business_setting( 'email', 'contact@amebazaar.com' );
-	$maps_url   = ame_bazaar_get_business_setting( 'maps_url', 'https://maps.google.com/?q=AME+Bazaar+Kirari+Delhi' );
-	$hours      = ame_bazaar_get_business_setting( 'hours', 'Mo-Su 09:00–22:00' );
-	$instagram  = ame_bazaar_get_business_setting( 'instagram', 'https://www.instagram.com/amebazaar' );
-	$facebook   = ame_bazaar_get_business_setting( 'facebook', 'https://www.facebook.com/amebazaar' );
-	$youtube    = ame_bazaar_get_business_setting( 'youtube', '#' );
-	$gbp_url    = ame_bazaar_get_business_setting( 'gbp_url', '#' );
+	$store_name        = ame_bazaar_get_business_setting( 'store_name', 'AME Bazaar' );
+	$short_desc        = ame_bazaar_get_business_setting( 'short_description', 'Apparel Maheshwari Enterprises offers premium fashion ethnic wear.' );
+	$address           = ame_bazaar_get_business_setting( 'address', 'Mubarakpur Road' );
+	$city              = ame_bazaar_get_business_setting( 'city', 'Kirari' );
+	$state             = ame_bazaar_get_business_setting( 'state', 'Delhi' );
+	$postal_code       = ame_bazaar_get_business_setting( 'postal_code', '110086' );
+	$country           = ame_bazaar_get_business_setting( 'country', 'IN' );
+	$phone             = ame_bazaar_get_business_setting( 'phone', '+91 99999 99999' );
+	$whatsapp          = ame_bazaar_get_business_setting( 'whatsapp', '+91 99999 99999' );
+	$email             = ame_bazaar_get_business_setting( 'email', 'contact@amebazaar.com' );
+	$maps_url          = ame_bazaar_get_business_setting( 'maps_url', 'https://maps.google.com/?q=AME+Bazaar+Kirari+Delhi' );
+	$latitude          = ame_bazaar_get_business_setting( 'latitude', '28.7051' );
+	$longitude         = ame_bazaar_get_business_setting( 'longitude', '77.0583' );
+	$hours             = ame_bazaar_get_business_setting( 'hours', 'Mo-Su 09:00–22:00' );
+	$holiday_hours     = ame_bazaar_get_business_setting( 'holiday_hours', 'Diwali: Closed' );
+	$instagram         = ame_bazaar_get_business_setting( 'instagram', 'https://www.instagram.com/amebazaar' );
+	$facebook          = ame_bazaar_get_business_setting( 'facebook', 'https://www.facebook.com/amebazaar' );
+	$youtube           = ame_bazaar_get_business_setting( 'youtube', '#' );
+	$gbp_url           = ame_bazaar_get_business_setting( 'gbp_url', '#' );
+	$reviews_rating    = ame_bazaar_get_business_setting( 'google_reviews_rating', '4.9' );
+	$reviews_count     = ame_bazaar_get_business_setting( 'google_reviews_count', '524' );
+	
+	$pickup_avail      = ame_bazaar_get_business_setting( 'store_pickup_available', 'yes' );
+	$tailoring_avail   = ame_bazaar_get_business_setting( 'tailoring_available', 'yes' );
+	$parking_avail     = ame_bazaar_get_business_setting( 'parking_available', 'yes' );
+	$delivery_avail    = ame_bazaar_get_business_setting( 'home_delivery_available', 'yes' );
 	
 	?>
 	<div class="wrap">
-		<h1><?php esc_html_e( 'AME Bazaar Business Profile & Settings', 'ame-bazaar' ); ?></h1>
+		<h1><?php esc_html_e( 'AME Bazaar Business Profile & Trust Management', 'ame-bazaar' ); ?></h1>
 		<form method="post" action="" style="background:#fff; border:1px solid #ccd0d4; padding:2rem; border-radius:5px; margin-top:1.5rem; max-width:800px;">
 			<?php wp_nonce_field( 'ame_business_settings_save', 'ame_nonce' ); ?>
 			
+			<h2><?php esc_html_e( '1. Store Identity & Local Address', 'ame-bazaar' ); ?></h2>
 			<table class="form-table">
 				<tr>
-					<th><label for="store_name"><?php esc_html_e( 'Store Name', 'ame-bazaar' ); ?></label></th>
+					<th><label for="store_name"><?php esc_html_e( 'Business Name', 'ame-bazaar' ); ?></label></th>
 					<td><input type="text" id="store_name" name="store_name" value="<?php echo esc_attr( $store_name ); ?>" class="regular-text" /></td>
 				</tr>
 				<tr>
-					<th><label for="address"><?php esc_html_e( 'Store Address', 'ame-bazaar' ); ?></label></th>
+					<th><label for="short_description"><?php esc_html_e( 'Short Description', 'ame-bazaar' ); ?></label></th>
+					<td><textarea id="short_description" name="short_description" class="large-text" rows="3"><?php echo esc_textarea( $short_desc ); ?></textarea></td>
+				</tr>
+				<tr>
+					<th><label for="address"><?php esc_html_e( 'Street Address', 'ame-bazaar' ); ?></label></th>
 					<td><input type="text" id="address" name="address" value="<?php echo esc_attr( $address ); ?>" class="regular-text" /></td>
 				</tr>
 				<tr>
-					<th><label for="phone"><?php esc_html_e( 'Contact Phone Number', 'ame-bazaar' ); ?></label></th>
+					<th><label for="city"><?php esc_html_e( 'City / Locality', 'ame-bazaar' ); ?></label></th>
+					<td><input type="text" id="city" name="city" value="<?php echo esc_attr( $city ); ?>" class="regular-text" /></td>
+				</tr>
+				<tr>
+					<th><label for="state"><?php esc_html_e( 'State / Region', 'ame-bazaar' ); ?></label></th>
+					<td><input type="text" id="state" name="state" value="<?php echo esc_attr( $state ); ?>" class="regular-text" /></td>
+				</tr>
+				<tr>
+					<th><label for="postal_code"><?php esc_html_e( 'Postal / ZIP Code', 'ame-bazaar' ); ?></label></th>
+					<td><input type="text" id="postal_code" name="postal_code" value="<?php echo esc_attr( $postal_code ); ?>" class="regular-text" /></td>
+				</tr>
+				<tr>
+					<th><label for="country"><?php esc_html_e( 'Country ISO Code', 'ame-bazaar' ); ?></label></th>
+					<td><input type="text" id="country" name="country" value="<?php echo esc_attr( $country ); ?>" class="small-text" /></td>
+				</tr>
+			</table>
+
+			<hr />
+			<h2><?php esc_html_e( '2. Contact Points & Social Maps', 'ame-bazaar' ); ?></h2>
+			<table class="form-table">
+				<tr>
+					<th><label for="phone"><?php esc_html_e( 'Contact Phone', 'ame-bazaar' ); ?></label></th>
 					<td><input type="text" id="phone" name="phone" value="<?php echo esc_attr( $phone ); ?>" class="regular-text" /></td>
 				</tr>
 				<tr>
-					<th><label for="whatsapp"><?php esc_html_e( 'WhatsApp Helpline', 'ame-bazaar' ); ?></label></th>
+					<th><label for="whatsapp"><?php esc_html_e( 'WhatsApp Number', 'ame-bazaar' ); ?></label></th>
 					<td><input type="text" id="whatsapp" name="whatsapp" value="<?php echo esc_attr( $whatsapp ); ?>" class="regular-text" /></td>
 				</tr>
 				<tr>
@@ -352,19 +401,23 @@ function ame_bazaar_render_business_settings_page() {
 					<td><input type="text" id="maps_url" name="maps_url" value="<?php echo esc_attr( $maps_url ); ?>" class="large-text" /></td>
 				</tr>
 				<tr>
-					<th><label for="hours"><?php esc_html_e( 'Business Hours', 'ame-bazaar' ); ?></label></th>
-					<td><input type="text" id="hours" name="hours" value="<?php echo esc_attr( $hours ); ?>" class="regular-text" /></td>
+					<th><label for="latitude"><?php esc_html_e( 'Latitude Coordinate', 'ame-bazaar' ); ?></label></th>
+					<td><input type="text" id="latitude" name="latitude" value="<?php echo esc_attr( $latitude ); ?>" class="small-text" /></td>
 				</tr>
 				<tr>
-					<th><label for="instagram"><?php esc_html_e( 'Instagram Profile URL', 'ame-bazaar' ); ?></label></th>
+					<th><label for="longitude"><?php esc_html_e( 'Longitude Coordinate', 'ame-bazaar' ); ?></label></th>
+					<td><input type="text" id="longitude" name="longitude" value="<?php echo esc_attr( $longitude ); ?>" class="small-text" /></td>
+				</tr>
+				<tr>
+					<th><label for="instagram"><?php esc_html_e( 'Instagram URL', 'ame-bazaar' ); ?></label></th>
 					<td><input type="text" id="instagram" name="instagram" value="<?php echo esc_attr( $instagram ); ?>" class="regular-text" /></td>
 				</tr>
 				<tr>
-					<th><label for="facebook"><?php esc_html_e( 'Facebook Profile URL', 'ame-bazaar' ); ?></label></th>
+					<th><label for="facebook"><?php esc_html_e( 'Facebook URL', 'ame-bazaar' ); ?></label></th>
 					<td><input type="text" id="facebook" name="facebook" value="<?php echo esc_attr( $facebook ); ?>" class="regular-text" /></td>
 				</tr>
 				<tr>
-					<th><label for="youtube"><?php esc_html_e( 'YouTube Profile URL', 'ame-bazaar' ); ?></label></th>
+					<th><label for="youtube"><?php esc_html_e( 'YouTube URL', 'ame-bazaar' ); ?></label></th>
 					<td><input type="text" id="youtube" name="youtube" value="<?php echo esc_attr( $youtube ); ?>" class="regular-text" /></td>
 				</tr>
 				<tr>
@@ -372,7 +425,42 @@ function ame_bazaar_render_business_settings_page() {
 					<td><input type="text" id="gbp_url" name="gbp_url" value="<?php echo esc_attr( $gbp_url ); ?>" class="large-text" /></td>
 				</tr>
 			</table>
-			
+
+			<hr />
+			<h2><?php esc_html_e( '3. Store Hours & Services Availability', 'ame-bazaar' ); ?></h2>
+			<table class="form-table">
+				<tr>
+					<th><label for="hours"><?php esc_html_e( 'Opening Hours', 'ame-bazaar' ); ?></label></th>
+					<td><input type="text" id="hours" name="hours" value="<?php echo esc_attr( $hours ); ?>" class="regular-text" /></td>
+				</tr>
+				<tr>
+					<th><label for="holiday_hours"><?php esc_html_e( 'Holiday Hours Exception', 'ame-bazaar' ); ?></label></th>
+					<td><input type="text" id="holiday_hours" name="holiday_hours" value="<?php echo esc_attr( $holiday_hours ); ?>" class="regular-text" /></td>
+				</tr>
+				<tr>
+					<th><?php esc_html_e( 'Pickup & Alteration Facilities', 'ame-bazaar' ); ?></th>
+					<td>
+						<label><input type="checkbox" name="store_pickup_available" value="1" <?php checked( $pickup_avail, 'yes' ); ?> /> Store Pickup Available</label><br />
+						<label><input type="checkbox" name="tailoring_available" value="1" <?php checked( $tailoring_avail, 'yes' ); ?> /> Custom Tailoring Available</label><br />
+						<label><input type="checkbox" name="parking_available" value="1" <?php checked( $parking_avail, 'yes' ); ?> /> Free Valet Parking Available</label><br />
+						<label><input type="checkbox" name="home_delivery_available" value="1" <?php checked( $delivery_avail, 'yes' ); ?> /> Delhi-NCR Home Delivery Available</label>
+					</td>
+				</tr>
+			</table>
+
+			<hr />
+			<h2><?php esc_html_e( '4. Google Reviews Data (Local Trust)', 'ame-bazaar' ); ?></h2>
+			<table class="form-table">
+				<tr>
+					<th><label for="google_reviews_rating"><?php esc_html_e( 'Overall Google Rating Value', 'ame-bazaar' ); ?></label></th>
+					<td><input type="text" id="google_reviews_rating" name="google_reviews_rating" value="<?php echo esc_attr( $reviews_rating ); ?>" class="small-text" /> <small>e.g. 4.9</small></td>
+				</tr>
+				<tr>
+					<th><label for="google_reviews_count"><?php esc_html_e( 'Total Google Review Count', 'ame-bazaar' ); ?></label></th>
+					<td><input type="number" id="google_reviews_count" name="google_reviews_count" value="<?php echo esc_attr( $reviews_count ); ?>" class="small-text" /> <small>e.g. 524</small></td>
+				</tr>
+			</table>
+
 			<p class="submit">
 				<input type="submit" name="ame_save_settings" class="button button-primary" value="<?php esc_attr_e( 'Save Profile Details', 'ame-bazaar' ); ?>" />
 			</p>
