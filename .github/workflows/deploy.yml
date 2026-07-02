@@ -22,7 +22,7 @@ jobs:
           echo "Setting up SSH directory..."
           mkdir -p ~/.ssh
           
-          # Write SSH key using printf (correct format verification)
+          # Write SSH key using printf (secret corrected run)
           printf "%b\n" "$SSH_PRIVATE_KEY" | tr -d '\r' > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
           echo "SSH setup completed."
