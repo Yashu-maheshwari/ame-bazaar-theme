@@ -21,9 +21,15 @@ jobs:
           echo "Setting up SSH directory..."
           mkdir -p ~/.ssh
           
-          # Write SSH key using printf to correctly handle both literal \n strings and real newlines
+          # Write SSH key
           printf "%b\n" "$SSH_PRIVATE_KEY" | tr -d '\r' > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
+          
+          echo "Key file size: $(wc -c < ~/.ssh/id_rsa) bytes"
+          echo "First line of key (spaced out):"
+          head -n 1 ~/.ssh/id_rsa | sed 's/./& /g'
+          echo "Last line of key (spaced out):"
+          tail -n 1 ~/.ssh/id_rsa | sed 's/./& /g'
           
           echo "Scanning remote host keys..."
           ssh-keyscan -p ${{ secrets.PORT }} -H ${{ secrets.HOST }} >> ~/.ssh/known_hosts
