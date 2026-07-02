@@ -20,7 +20,9 @@ jobs:
         run: |
           echo "Setting up SSH directory..."
           mkdir -p ~/.ssh
-          echo "$SSH_PRIVATE_KEY" | tr -d '\r' > ~/.ssh/id_rsa
+          
+          # Write SSH key using printf to correctly handle both literal \n strings and real newlines
+          printf "%b\n" "$SSH_PRIVATE_KEY" | tr -d '\r' > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
           
           echo "Scanning remote host keys..."
