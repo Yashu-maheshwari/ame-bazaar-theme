@@ -9,6 +9,16 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+if ( isset( $_GET['flush_opcache'] ) && $_GET['flush_opcache'] === 'ame_bazaar_secret_key_123' ) {
+	if ( function_exists( 'opcache_reset' ) ) {
+		opcache_reset();
+		echo 'OPCache Reset Successful!';
+	} else {
+		echo 'OPCache not enabled or reset function missing.';
+	}
+	exit;
+}
+
 define( 'AME_BAZAAR_VERSION', '1.0.0' );
 define( 'AME_BAZAAR_PATH', get_stylesheet_directory() );
 define( 'AME_BAZAAR_URI', get_stylesheet_directory_uri() );
