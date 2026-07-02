@@ -1,0 +1,42 @@
+name: Deploy Theme to Hostinger
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    name: Deploy WordPress Theme
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup SSH
+        run: |
+          echo "Setting up SSH directory..."
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" | tr -d '\r' > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          
+          echo "Scanning remote host keys..."
+          ssh-keyscan -p ${{ secrets.PORT }} -H ${{ secrets.HOST }} >> ~/.ssh/known_hosts
+          echo "SSH setup completed."
+
+      - name: Verify Remote Connection and Path
+        run: |
+          echo "Checking remote SSH connection and creating theme directory if missing..."
+          ssh -p ${{ secrets.PORT }} -o StrictHostKeyChecking=no ${{ secrets.USERNAME }}@${{ secrets.HOST }} \
+            "mkdir -p public_html/wp-content/themes/ame-bazaar/"
+          echo "Verification complete: Remote path verified/created."
+
+      - name: Deploy Theme Files via Rsync
+        run: |
+          echo "Starting rsync transfer..."
+          rsync --archive --compress --delete --verbose \
+            -e "ssh -p ${{ secrets.PORT }} -o StrictHostKeyChecking=no" \
+            wordpress/wp-content/themes/ame-bazaar/ \
+            ${{ secrets.USERNAME }}@${{ secrets.HOST }}:public_html/wp-content/themes/ame-bazaar/
+          echo "Deployment successful!"
