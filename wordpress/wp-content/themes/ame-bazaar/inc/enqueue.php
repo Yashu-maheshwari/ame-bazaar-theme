@@ -49,6 +49,15 @@ function ame_bazaar_enqueue_assets() {
 		true
 	);
 
+	wp_localize_script(
+		'ame-bazaar-global',
+		'ameBazaarAjax',
+		array(
+			'ajaxurl' => admin_url( 'admin-ajax.php' ),
+			'nonce'   => wp_create_nonce( 'ame_bazaar_search_nonce' ),
+		)
+	);
+
 	if ( is_singular() && comments_open() && get_option( 'thread_comments' ) ) {
 		wp_enqueue_script( 'comment-reply' );
 	}

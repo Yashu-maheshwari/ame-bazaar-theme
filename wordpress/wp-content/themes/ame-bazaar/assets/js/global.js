@@ -358,7 +358,7 @@
 		});
 	}
 
-	// Update Escape key listener to close Styleguide Modals/Drawers too
+	// Update Escape key listener to close Styleguide Modals/Drawers and Mini-Cart too
 	document.addEventListener('keydown', (e) => {
 		if (e.key === 'Escape') {
 			if (demoModal && demoModal.classList.contains('is-active')) {
@@ -367,6 +367,156 @@
 			if (demoDrawer && demoDrawer.classList.contains('is-active')) {
 				closeDrawer();
 			}
+			if (miniCartDrawer && miniCartDrawer.classList.contains('is-active')) {
+				closeMiniCart();
+			}
+		}
+	});
+
+	/* ==========================================================================
+	   8. WOOCOMMERCE COMMERCE ACTIONS (MINI CART, SEARCH, WISHLIST, STICKY CART)
+	   ========================================================================== */
+
+	// 8.1 MINI CART DRAWER
+	const miniCartDrawer = document.getElementById('ame-mini-cart-drawer');
+	const cartTriggers = document.querySelectorAll('.ame-cart-link');
+	
+	const openMiniCart = (e) => {
+		if (e) e.preventDefault();
+		if (!miniCartDrawer) return;
+		miniCartDrawer.classList.add('is-active');
+		miniCartDrawer.removeAttribute('aria-hidden');
+		document.body.style.overflow = 'hidden';
+		
+		if (focusTrapCleanup) focusTrapCleanup();
+		focusTrapCleanup = createFocusTrap(miniCartDrawer);
+	};
+	
+	const closeMiniCart = () => {
+		if (!miniCartDrawer) return;
+		miniCartDrawer.classList.remove('is-active');
+		miniCartDrawer.setAttribute('aria-hidden', 'true');
+		document.body.style.overflow = '';
+		
+		if (focusTrapCleanup) {
+			focusTrapCleanup();
+			focusTrapCleanup = null;
+		}
+	};
+	
+	cartTriggers.forEach(trigger => trigger.addEventListener('click', openMiniCart));
+	if (miniCartDrawer) {
+		miniCartDrawer.querySelectorAll('#ame-cart-close-btn, #ame-cart-overlay-bg').forEach(el => {
+			el.addEventListener('click', closeMiniCart);
+		});
+	}
+
+	// 8.2 AJAX SEARCH SUGGESTIONS
+	const searchInputs = document.querySelectorAll('#ame-search-input, #ame-mobile-search-input');
+	searchInputs.forEach(input => {
+		let debounceTimer;
+		let suggestionBox = document.createElement('div');
+		suggestionBox.className = 'ame-search-suggestions-overlay';
+		input.parentNode.appendChild(suggestionBox);
+
+		input.addEventListener('input', () => {
+			clearTimeout(debounceTimer);
+			const query = input.value.trim();
+			
+			if (query.length < 3) {
+				suggestionBox.innerHTML = '';
+				suggestionBox.style.display = 'none';
+				return;
+			}
+			
+			debounceTimer = setTimeout(() => {
+				if (typeof ameBazaarAjax === 'undefined') return;
+
+				const formData = new FormData();
+				formData.append('action', 'ame_bazaar_search');
+				formData.append('query', query);
+				formData.append('nonce', ameBazaarAjax.nonce);
+
+				fetch(ameBazaarAjax.ajaxurl, {
+					method: 'POST',
+					body: formData
+				})
+				.then(res => res.json())
+				.then(response => {
+					if (response.success && response.data.length > 0) {
+						suggestionBox.innerHTML = '';
+						const ul = document.createElement('ul');
+						ul.className = 'ame-suggestions-list';
+						
+						response.data.forEach(item => {
+							const li = document.createElement('li');
+							li.className = 'ame-suggestion-item';
+							li.innerHTML = `
+								<a href="${item.link}" class="ame-suggestion-link">
+									${item.image ? `<img src="${item.image}" alt="" class="ame-suggestion-img">` : ''}
+									<div class="ame-suggestion-info">
+										<span class="ame-suggestion-title">${item.title}</span>
+										<span class="ame-suggestion-price">${item.price}</span>
+									</div>
+								</a>
+							`;
+							ul.appendChild(li);
+						});
+						suggestionBox.appendChild(ul);
+						suggestionBox.style.display = 'block';
+					} else {
+						suggestionBox.innerHTML = '<p class="ame-no-suggestions">No products found</p>';
+						suggestionBox.style.display = 'block';
+					}
+				})
+				.catch(err => console.error(err));
+			}, 300);
+		});
+
+		// Close suggestions when clicking outside
+		document.addEventListener('click', (e) => {
+			if (!input.contains(e.target) && !suggestionBox.contains(e.target)) {
+				suggestionBox.style.display = 'none';
+			}
+		});
+	});
+
+	// 8.3 MOBILE STICKY ADD TO CART
+	const stickyCartMobile = document.getElementById('ame-mobile-sticky-cart');
+	const mainAddCartBtn = document.querySelector('.single_add_to_cart_button');
+	if (stickyCartMobile && mainAddCartBtn) {
+		const handleScroll = () => {
+			if (window.innerWidth >= 768) {
+				stickyCartMobile.style.display = 'none';
+				stickyCartMobile.setAttribute('aria-hidden', 'true');
+				return;
+			}
+			const rect = mainAddCartBtn.getBoundingClientRect();
+			const isOutOfView = rect.bottom < 0;
+			
+			if (isOutOfView) {
+				stickyCartMobile.style.display = 'flex';
+				stickyCartMobile.removeAttribute('aria-hidden');
+			} else {
+				stickyCartMobile.style.display = 'none';
+				stickyCartMobile.setAttribute('aria-hidden', 'true');
+			}
+		};
+		window.addEventListener('scroll', handleScroll, { passive: true });
+	}
+
+	// 8.4 WISHLIST & COMPARE TOAST TRIGGER
+	document.addEventListener('click', (e) => {
+		const wishlistBtn = e.target.closest('.ame-wishlist-action-btn');
+		if (wishlistBtn) {
+			e.preventDefault();
+			showToast('Product added to Wishlist! (Architecture Demo, No plugin required)', 'success');
+		}
+
+		const compareBtn = e.target.closest('.ame-compare-action-btn');
+		if (compareBtn) {
+			e.preventDefault();
+			showToast('Product added to Compare! (Architecture Demo, No plugin required)', 'success');
 		}
 	});
 })();
