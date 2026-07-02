@@ -130,7 +130,7 @@ function ame_bazaar_customize_register( $wp_customize ) {
 		'type'     => 'text',
 	) );
 
-	// Define 4 categories config
+	// Define 6 categories config
 	$categories = array(
 		'men' => array(
 			'label' => 'Men\'s Wear',
@@ -144,9 +144,17 @@ function ame_bazaar_customize_register( $wp_customize ) {
 			'label' => 'Kids Wear',
 			'desc'  => 'Comfortable, soft, and durable wear for boys, girls, and babies. Crafted with skin-friendly fabrics for active kids.',
 		),
+		'sarees' => array(
+			'label' => 'Sarees',
+			'desc'  => 'Exquisite traditional and modern sarees. Handloomed fabrics, elegant patterns, and vibrant colors for every occasion.',
+		),
 		'accessories' => array(
 			'label' => 'Accessories',
 			'desc'  => 'Timeless fashion accessories, premium leather belts, wallets, and bags to complete your everyday aesthetic.',
+		),
+		'tailoring' => array(
+			'label' => 'Tailoring',
+			'desc'  => 'Dedicated custom tailoring and on-site alteration facility. Get a flawless fit on ethnic coordinates and trousers.',
 		),
 	);
 
@@ -740,6 +748,32 @@ function ame_bazaar_customize_register( $wp_customize ) {
 		'label'    => __( 'Store Email Address', 'ame-bazaar' ),
 		'section'  => 'ame_bazaar_footer_section',
 		'settings' => 'ame_bazaar_email',
+		'type'     => 'text',
+	) );
+
+	// Store Address
+	$wp_customize->add_setting( 'ame_bazaar_address', array(
+		'default'           => 'Mubarakpur Road, Kirari, Delhi - 110086',
+		'sanitize_callback' => 'sanitize_text_field',
+		'transport'         => 'refresh',
+	) );
+	$wp_customize->add_control( 'ame_bazaar_address_control', array(
+		'label'    => __( 'Store Physical Address', 'ame-bazaar' ),
+		'section'  => 'ame_bazaar_header_section',
+		'settings' => 'ame_bazaar_address',
+		'type'     => 'text',
+	) );
+
+	// Business Hours
+	$wp_customize->add_setting( 'ame_bazaar_hours', array(
+		'default'           => 'Monday - Sunday: 10:00 AM - 9:00 PM',
+		'sanitize_callback' => 'sanitize_text_field',
+		'transport'         => 'refresh',
+	) );
+	$wp_customize->add_control( 'ame_bazaar_hours_control', array(
+		'label'    => __( 'Store Business Hours', 'ame-bazaar' ),
+		'section'  => 'ame_bazaar_header_section',
+		'settings' => 'ame_bazaar_hours',
 		'type'     => 'text',
 	) );
 }

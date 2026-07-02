@@ -25,14 +25,22 @@ $categories = array(
 		'label'       => 'Kids Wear',
 		'default_img' => ame_bazaar_asset_uri( 'assets/images/kids-wear.png' ),
 	),
+	'sarees' => array(
+		'label'       => 'Sarees',
+		'default_img' => '', // Responsive placeholder
+	),
 	'accessories' => array(
 		'label'       => 'Accessories',
+		'default_img' => '', // Responsive placeholder
+	),
+	'tailoring' => array(
+		'label'       => 'Tailoring',
 		'default_img' => '', // Responsive placeholder
 	),
 );
 ?>
 
-<section class="ame-categories-section" aria-labelledby="ame-categories-title">
+<section class="ame-categories-section" id="categories" aria-labelledby="ame-categories-title">
 	<div class="ame-bazaar-container">
 		
 		<!-- Section Header -->

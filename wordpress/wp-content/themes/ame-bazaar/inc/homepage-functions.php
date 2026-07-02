@@ -15,31 +15,56 @@ function ame_bazaar_render_hero() {
 }
 add_action( 'ame_bazaar_homepage', 'ame_bazaar_render_hero', 10 );
 
-// 2. Category Section
+// 2. Trust Bar Section
+function ame_bazaar_render_trust_bar() {
+	get_template_part( 'components/homepage/trust-bar' );
+}
+add_action( 'ame_bazaar_homepage', 'ame_bazaar_render_trust_bar', 15 );
+
+// 3. Category Section
 function ame_bazaar_render_categories() {
 	get_template_part( 'components/categories/categories' );
 }
 add_action( 'ame_bazaar_homepage', 'ame_bazaar_render_categories', 20 );
 
-// 3. Why AME Bazaar
+// 4. Featured Collections Section
+function ame_bazaar_render_featured_collections() {
+	get_template_part( 'components/homepage/featured-collections' );
+}
+add_action( 'ame_bazaar_homepage', 'ame_bazaar_render_featured_collections', 25 );
+
+// 5. Why AME Bazaar
 function ame_bazaar_render_why_choose_us() {
 	get_template_part( 'components/why-choose-us/why-choose-us' );
 }
 add_action( 'ame_bazaar_homepage', 'ame_bazaar_render_why_choose_us', 30 );
 
-
-
-// 5. Customer Reviews
+// 6. Customer Reviews
 function ame_bazaar_render_reviews() {
 	get_template_part( 'components/reviews/reviews' );
 }
-add_action( 'ame_bazaar_homepage', 'ame_bazaar_render_reviews', 50 );
+add_action( 'ame_bazaar_homepage', 'ame_bazaar_render_reviews', 35 );
 
-// 5b. About AME Bazaar & Local Info
+// 7. Visit Our Store
+function ame_bazaar_render_visit_store() {
+	get_template_part( 'components/homepage/visit-store' );
+}
+add_action( 'ame_bazaar_homepage', 'ame_bazaar_render_visit_store', 40 );
+
+// 8. About AME Bazaar & Local Info
 function ame_bazaar_render_about_business() {
 	get_template_part( 'components/about-business/about-business' );
 }
-add_action( 'ame_bazaar_homepage', 'ame_bazaar_render_about_business', 55 );
+add_action( 'ame_bazaar_homepage', 'ame_bazaar_render_about_business', 45 );
 
+// 9. Blog Preview Section
+function ame_bazaar_render_blog_preview() {
+	get_template_part( 'components/homepage/blog-preview' );
+}
+add_action( 'ame_bazaar_homepage', 'ame_bazaar_render_blog_preview', 50 );
 
-
+// 10. WhatsApp & Newsletter CTA Section
+function ame_bazaar_render_whatsapp_cta() {
+	get_template_part( 'components/homepage/whatsapp-cta' );
+}
+add_action( 'ame_bazaar_homepage', 'ame_bazaar_render_whatsapp_cta', 55 );
