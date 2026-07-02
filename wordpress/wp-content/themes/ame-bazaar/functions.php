@@ -25,6 +25,16 @@ require_once AME_BAZAAR_PATH . '/inc/content-framework.php';
 require_once AME_BAZAAR_PATH . '/inc/woocommerce.php';
 require_once AME_BAZAAR_PATH . '/inc/admin-operations.php';
 require_once AME_BAZAAR_PATH . '/components/local-entity/trust-cards.php';
+require_once AME_BAZAAR_PATH . '/components/local-entity/review-card.php';
+require_once AME_BAZAAR_PATH . '/components/local-entity/review-summary.php';
+require_once AME_BAZAAR_PATH . '/components/local-entity/review-slider.php';
+require_once AME_BAZAAR_PATH . '/components/local-entity/review-badge.php';
+require_once AME_BAZAAR_PATH . '/components/local-entity/review-cta.php';
+require_once AME_BAZAAR_PATH . '/components/local-entity/google-rating-widget.php';
+require_once AME_BAZAAR_PATH . '/components/local-entity/trust-block.php';
+require_once AME_BAZAAR_PATH . '/components/local-entity/customer-highlights.php';
+require_once AME_BAZAAR_PATH . '/components/local-entity/popular-review-keywords.php';
+
 
 
 

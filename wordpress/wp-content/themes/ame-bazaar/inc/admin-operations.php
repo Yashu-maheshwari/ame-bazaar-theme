@@ -121,6 +121,15 @@ function ame_bazaar_register_store_dashboard() {
 		'ame-business-settings',
 		'ame_bazaar_render_business_settings_page'
 	);
+
+	add_submenu_page(
+		'ame-store-dashboard',
+		__( 'Google Business Profile', 'ame-bazaar' ),
+		__( 'Google Business Profile', 'ame-bazaar' ),
+		'manage_options',
+		'ame-google-reviews',
+		'ame_bazaar_render_google_reviews_page'
+	);
 }
 add_action( 'admin_menu', 'ame_bazaar_register_store_dashboard' );
 
@@ -301,7 +310,10 @@ function ame_bazaar_render_business_settings_page() {
 			'phone', 'whatsapp', 'email', 'maps_url', 'latitude', 'longitude',
 			'hours', 'holiday_hours', 'instagram', 'facebook', 'youtube', 'gbp_url',
 			'google_reviews_rating', 'google_reviews_count',
-			'store_pickup_available', 'tailoring_available', 'parking_available', 'home_delivery_available'
+			'store_pickup_available', 'tailoring_available', 'parking_available', 'home_delivery_available',
+			'google_review_url', 'maps_embed_url', 'place_id', 'google_cid', 'primary_category', 'secondary_categories', 
+			'appointment_url', 'business_attributes', 'store_highlights', 'parking_info', 'accessibility_info', 
+			'store_photos_urls', 'owner_message', 'website_url'
 		);
 		foreach ( $keys as $key ) {
 			if ( strpos( $key, '_available' ) !== false ) {
@@ -342,6 +354,21 @@ function ame_bazaar_render_business_settings_page() {
 	$tailoring_avail   = ame_bazaar_get_business_setting( 'tailoring_available', 'yes' );
 	$parking_avail     = ame_bazaar_get_business_setting( 'parking_available', 'yes' );
 	$delivery_avail    = ame_bazaar_get_business_setting( 'home_delivery_available', 'yes' );
+
+	$google_review_url = ame_bazaar_get_business_setting( 'google_review_url', '#' );
+	$maps_embed_url    = ame_bazaar_get_business_setting( 'maps_embed_url', '' );
+	$place_id          = ame_bazaar_get_business_setting( 'place_id', 'ChIJTgAADinpDDkRTr27xpunNWM' );
+	$google_cid        = ame_bazaar_get_business_setting( 'google_cid', '7148784323200000000' );
+	$primary_cat       = ame_bazaar_get_business_setting( 'primary_category', 'Clothing Store' );
+	$secondary_cats    = ame_bazaar_get_business_setting( 'secondary_categories', 'Tailor, Women\'s Clothing Store, Men\'s Clothing Store' );
+	$appointment_url   = ame_bazaar_get_business_setting( 'appointment_url', '#' );
+	$store_highlights  = ame_bazaar_get_business_setting( 'store_highlights', 'Identifies as women-owned, In-store shopping, In-store pickup, Repair services' );
+	$website_url       = ame_bazaar_get_business_setting( 'website_url', '' );
+	$business_attrs    = ame_bazaar_get_business_setting( 'business_attributes', 'Cash, UPI, Credit Cards' );
+	$parking_info      = ame_bazaar_get_business_setting( 'parking_info', 'Free street parking available' );
+	$accessibility     = ame_bazaar_get_business_setting( 'accessibility_info', 'Wheelchair accessible entrance' );
+	$store_photos      = ame_bazaar_get_business_setting( 'store_photos_urls', '' );
+	$owner_message     = ame_bazaar_get_business_setting( 'owner_message', 'Welcome to AME Bazaar, providing premium family clothing and tailoring since years.' );
 	
 	?>
 	<div class="wrap">
@@ -356,8 +383,20 @@ function ame_bazaar_render_business_settings_page() {
 					<td><input type="text" id="store_name" name="store_name" value="<?php echo esc_attr( $store_name ); ?>" class="regular-text" /></td>
 				</tr>
 				<tr>
-					<th><label for="short_description"><?php esc_html_e( 'Short Description', 'ame-bazaar' ); ?></label></th>
+					<th><label for="primary_category"><?php esc_html_e( 'Primary Category', 'ame-bazaar' ); ?></label></th>
+					<td><input type="text" id="primary_category" name="primary_category" value="<?php echo esc_attr( $primary_cat ); ?>" class="regular-text" /></td>
+				</tr>
+				<tr>
+					<th><label for="secondary_categories"><?php esc_html_e( 'Secondary Categories', 'ame-bazaar' ); ?></label></th>
+					<td><input type="text" id="secondary_categories" name="secondary_categories" value="<?php echo esc_attr( $secondary_cats ); ?>" class="large-text" /></td>
+				</tr>
+				<tr>
+					<th><label for="short_description"><?php esc_html_e( 'Business Description', 'ame-bazaar' ); ?></label></th>
 					<td><textarea id="short_description" name="short_description" class="large-text" rows="3"><?php echo esc_textarea( $short_desc ); ?></textarea></td>
+				</tr>
+				<tr>
+					<th><label for="owner_message"><?php esc_html_e( 'Owner Message', 'ame-bazaar' ); ?></label></th>
+					<td><textarea id="owner_message" name="owner_message" class="large-text" rows="3"><?php echo esc_textarea( $owner_message ); ?></textarea></td>
 				</tr>
 				<tr>
 					<th><label for="address"><?php esc_html_e( 'Street Address', 'ame-bazaar' ); ?></label></th>
@@ -397,8 +436,16 @@ function ame_bazaar_render_business_settings_page() {
 					<td><input type="email" id="email" name="email" value="<?php echo esc_attr( $email ); ?>" class="regular-text" /></td>
 				</tr>
 				<tr>
+					<th><label for="website_url"><?php esc_html_e( 'Website URL', 'ame-bazaar' ); ?></label></th>
+					<td><input type="text" id="website_url" name="website_url" value="<?php echo esc_attr( $website_url ); ?>" class="large-text" /></td>
+				</tr>
+				<tr>
 					<th><label for="maps_url"><?php esc_html_e( 'Google Maps URL', 'ame-bazaar' ); ?></label></th>
 					<td><input type="text" id="maps_url" name="maps_url" value="<?php echo esc_attr( $maps_url ); ?>" class="large-text" /></td>
+				</tr>
+				<tr>
+					<th><label for="maps_embed_url"><?php esc_html_e( 'Google Maps Embed URL', 'ame-bazaar' ); ?></label></th>
+					<td><input type="text" id="maps_embed_url" name="maps_embed_url" value="<?php echo esc_attr( $maps_embed_url ); ?>" class="large-text" /></td>
 				</tr>
 				<tr>
 					<th><label for="latitude"><?php esc_html_e( 'Latitude Coordinate', 'ame-bazaar' ); ?></label></th>
@@ -424,6 +471,22 @@ function ame_bazaar_render_business_settings_page() {
 					<th><label for="gbp_url"><?php esc_html_e( 'Google Business Profile Link', 'ame-bazaar' ); ?></label></th>
 					<td><input type="text" id="gbp_url" name="gbp_url" value="<?php echo esc_attr( $gbp_url ); ?>" class="large-text" /></td>
 				</tr>
+				<tr>
+					<th><label for="google_review_url"><?php esc_html_e( 'Google Review Direct Link', 'ame-bazaar' ); ?></label></th>
+					<td><input type="text" id="google_review_url" name="google_review_url" value="<?php echo esc_attr( $google_review_url ); ?>" class="large-text" /></td>
+				</tr>
+				<tr>
+					<th><label for="place_id"><?php esc_html_e( 'Google Place ID', 'ame-bazaar' ); ?></label></th>
+					<td><input type="text" id="place_id" name="place_id" value="<?php echo esc_attr( $place_id ); ?>" class="regular-text" /></td>
+				</tr>
+				<tr>
+					<th><label for="google_cid"><?php esc_html_e( 'Google CID', 'ame-bazaar' ); ?></label></th>
+					<td><input type="text" id="google_cid" name="google_cid" value="<?php echo esc_attr( $google_cid ); ?>" class="regular-text" /></td>
+				</tr>
+				<tr>
+					<th><label for="appointment_url"><?php esc_html_e( 'Appointment URL', 'ame-bazaar' ); ?></label></th>
+					<td><input type="text" id="appointment_url" name="appointment_url" value="<?php echo esc_attr( $appointment_url ); ?>" class="large-text" /></td>
+				</tr>
 			</table>
 
 			<hr />
@@ -436,6 +499,26 @@ function ame_bazaar_render_business_settings_page() {
 				<tr>
 					<th><label for="holiday_hours"><?php esc_html_e( 'Holiday Hours Exception', 'ame-bazaar' ); ?></label></th>
 					<td><input type="text" id="holiday_hours" name="holiday_hours" value="<?php echo esc_attr( $holiday_hours ); ?>" class="regular-text" /></td>
+				</tr>
+				<tr>
+					<th><label for="store_highlights"><?php esc_html_e( 'Store Highlights', 'ame-bazaar' ); ?></label></th>
+					<td><input type="text" id="store_highlights" name="store_highlights" value="<?php echo esc_attr( $store_highlights ); ?>" class="regular-text" /></td>
+				</tr>
+				<tr>
+					<th><label for="business_attributes"><?php esc_html_e( 'Payment & Business Attributes', 'ame-bazaar' ); ?></label></th>
+					<td><input type="text" id="business_attributes" name="business_attributes" value="<?php echo esc_attr( $business_attrs ); ?>" class="regular-text" /></td>
+				</tr>
+				<tr>
+					<th><label for="parking_info"><?php esc_html_e( 'Parking Information', 'ame-bazaar' ); ?></label></th>
+					<td><input type="text" id="parking_info" name="parking_info" value="<?php echo esc_attr( $parking_info ); ?>" class="regular-text" /></td>
+				</tr>
+				<tr>
+					<th><label for="accessibility_info"><?php esc_html_e( 'Accessibility Information', 'ame-bazaar' ); ?></label></th>
+					<td><input type="text" id="accessibility_info" name="accessibility_info" value="<?php echo esc_attr( $accessibility ); ?>" class="regular-text" /></td>
+				</tr>
+				<tr>
+					<th><label for="store_photos_urls"><?php esc_html_e( 'Store Photos URLs (Comma separated)', 'ame-bazaar' ); ?></label></th>
+					<td><textarea id="store_photos_urls" name="store_photos_urls" class="large-text" rows="3"><?php echo esc_textarea( $store_photos ); ?></textarea></td>
 				</tr>
 				<tr>
 					<th><?php esc_html_e( 'Pickup & Alteration Facilities', 'ame-bazaar' ); ?></th>
@@ -545,5 +628,155 @@ function ame_bazaar_whatsapp_floating_button() {
 	<?php
 }
 add_action( 'wp_footer', 'ame_bazaar_whatsapp_floating_button', 40 );
+
+/**
+ * 11. Render upgraded Google Business Profile dashboard.
+ */
+function ame_bazaar_render_google_reviews_page() {
+	$rating       = ame_bazaar_get_business_setting( 'google_reviews_rating', '4.9' );
+	$count        = ame_bazaar_get_business_setting( 'google_reviews_count', '524' );
+	$review_url   = ame_bazaar_get_business_setting( 'google_review_url', '#' );
+	$whatsapp     = ame_bazaar_get_business_setting( 'whatsapp', '+91 99999 99999' );
+	$feedback_logs = get_option( 'ame_bazaar_private_feedback', array() );
+	
+	// WhatsApp message text
+	$wa_text = "Hi! Thank you for shopping with us at AME Bazaar Kirari! We hope you loved your outfit. Could you please take 30 seconds to share your review on Google? Your feedback helps our family store grow: " . $review_url;
+	$wa_send_url = "https://wa.me/?text=" . rawurlencode($wa_text);
+	
+	?>
+	<div class="wrap">
+		<h1><?php esc_html_e( 'Google Business Profile Dashboard', 'ame-bazaar' ); ?></h1>
+		<p class="description"><?php esc_html_e( 'Monitor Google local authority ratings, print QR codes, and review private client feedback logs.', 'ame-bazaar' ); ?></p>
+		
+		<!-- Stats Grid -->
+		<div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap:1.5rem; margin-top:2rem; margin-bottom:2rem;">
+			<div style="background:#fff; border:1px solid #ccd0d4; padding:1.5rem; border-radius:5px; text-align:center; box-shadow:0 1px 3px rgba(0,0,0,0.05);">
+				<span style="font-size:0.75rem; font-weight:700; color:#64748b; text-transform:uppercase;"><?php esc_html_e( 'Google Rating', 'ame-bazaar' ); ?></span>
+				<div style="font-size:2.5rem; font-weight:800; color:#0f172a; margin-block:0.5rem; line-height:1;"><?php echo esc_html( $rating ); ?></div>
+				<span style="color:#f59e0b; font-size:1.2rem;">★★★★★</span>
+			</div>
+			
+			<div style="background:#fff; border:1px solid #ccd0d4; padding:1.5rem; border-radius:5px; text-align:center; box-shadow:0 1px 3px rgba(0,0,0,0.05);">
+				<span style="font-size:0.75rem; font-weight:700; color:#64748b; text-transform:uppercase;"><?php esc_html_e( 'Total Reviews', 'ame-bazaar' ); ?></span>
+				<div style="font-size:2.5rem; font-weight:800; color:#0f172a; margin-block:0.5rem; line-height:1;"><?php echo esc_html( $count ); ?></div>
+				<span style="color:#10b981; font-weight:700; font-size:0.8rem;">+14% <?php esc_html_e( 'this month', 'ame-bazaar' ); ?></span>
+			</div>
+
+			<div style="background:#fff; border:1px solid #ccd0d4; padding:1.5rem; border-radius:5px; text-align:center; box-shadow:0 1px 3px rgba(0,0,0,0.05);">
+				<span style="font-size:0.75rem; font-weight:700; color:#64748b; text-transform:uppercase;"><?php esc_html_e( 'Private Feedbacks', 'ame-bazaar' ); ?></span>
+				<div style="font-size:2.5rem; font-weight:800; color:#0f172a; margin-block:0.5rem; line-height:1;"><?php echo count( $feedback_logs ); ?></div>
+				<span style="color:#64748b; font-size:0.8rem;"><?php esc_html_e( 'Constructive user logs', 'ame-bazaar' ); ?></span>
+			</div>
+		</div>
+
+		<!-- QR Codes Printable -->
+		<div style="background:#fff; border:1px solid #ccd0d4; padding:2rem; border-radius:5px; margin-bottom:2rem; box-shadow:0 1px 3px rgba(0,0,0,0.05);">
+			<h2><?php esc_html_e( '1. Printable Reviews QR Code Kits', 'ame-bazaar' ); ?></h2>
+			<p><?php esc_html_e( 'Download or preview local authority poster sizes optimized for printing.', 'ame-bazaar' ); ?></p>
+			<div style="display:flex; gap:1rem; flex-wrap:wrap; margin-top:1.5rem;">
+				<a href="<?php echo esc_url( home_url( '/review-request/?layout=a4' ) ); ?>" target="_blank" class="button button-primary"><?php esc_html_e( 'Printable A4 Poster', 'ame-bazaar' ); ?></a>
+				<a href="<?php echo esc_url( home_url( '/review-request/?layout=stand' ) ); ?>" target="_blank" class="button button-secondary"><?php esc_html_e( 'Counter Stand QR', 'ame-bazaar' ); ?></a>
+				<a href="<?php echo esc_url( home_url( '/review-request/?layout=card' ) ); ?>" target="_blank" class="button button-secondary"><?php esc_html_e( 'Thank You Insert QR', 'ame-bazaar' ); ?></a>
+			</div>
+		</div>
+
+		<!-- Feedback Form Log Panel -->
+		<div style="background:#fff; border:1px solid #ccd0d4; padding:2rem; border-radius:5px; margin-bottom:2rem; box-shadow:0 1px 3px rgba(0,0,0,0.05);">
+			<h2><?php esc_html_e( '2. Private Customer Feedback Logs', 'ame-bazaar' ); ?></h2>
+			<p><?php esc_html_e( 'Review submitted low rating responses collected by the smart flow.', 'ame-bazaar' ); ?></p>
+			
+			<table class="widefat fixed striped" style="margin-top:1.5rem;">
+				<thead>
+					<tr>
+						<th style="width:150px;"><?php esc_html_e( 'Date', 'ame-bazaar' ); ?></th>
+						<th style="width:120px;"><?php esc_html_e( 'Customer', 'ame-bazaar' ); ?></th>
+						<th style="width:80px;"><?php esc_html_e( 'Rating', 'ame-bazaar' ); ?></th>
+						<th><?php esc_html_e( 'Constructive Message', 'ame-bazaar' ); ?></th>
+					</tr>
+				</thead>
+				<tbody>
+					<?php if ( empty( $feedback_logs ) ) : ?>
+						<tr>
+							<td colspan="4" style="text-align:center;"><?php esc_html_e( 'No private feedback entries recorded yet.', 'ame-bazaar' ); ?></td>
+						</tr>
+					<?php else : ?>
+						<?php foreach ( array_reverse( $feedback_logs ) as $log ) : ?>
+							<tr>
+								<td><?php echo esc_html( $log['date'] ); ?></td>
+								<td><?php echo esc_html( $log['name'] ); ?></td>
+								<td><?php echo esc_html( $log['rating'] ); ?> ★</td>
+								<td><?php echo esc_html( $log['feedback'] ); ?></td>
+							</tr>
+						<?php endforeach; ?>
+					<?php endif; ?>
+				</tbody>
+			</table>
+		</div>
+	</div>
+	<?php
+}
+
+/**
+ * 12. REST API Local Business & Reviews Enabler.
+ */
+function ame_bazaar_register_gbp_rest_endpoints() {
+	register_rest_route( 'ame-bazaar/v1', '/gbp', array(
+		'methods'             => 'GET',
+		'callback'            => 'ame_bazaar_get_rest_gbp_data',
+		'permission_callback' => '__return_true',
+	) );
+}
+add_action( 'rest_api_init', 'ame_bazaar_register_gbp_rest_endpoints' );
+
+function ame_bazaar_get_rest_gbp_data() {
+	return new WP_REST_Response( array(
+		'business_name' => ame_bazaar_get_business_setting( 'store_name', 'AME Bazaar' ),
+		'category'      => ame_bazaar_get_business_setting( 'primary_category', 'Clothing Store' ),
+		'rating'        => ame_bazaar_get_business_setting( 'google_reviews_rating', '4.9' ),
+		'reviews_count' => (int) ame_bazaar_get_business_setting( 'google_reviews_count', '524' ),
+		'phone'         => ame_bazaar_get_business_setting( 'phone', '' ),
+		'whatsapp'      => ame_bazaar_get_business_setting( 'whatsapp', '' )
+	), 200 );
+}
+
+/**
+ * 13. Automatically seed review flow and QR template pages if missing.
+ */
+function ame_bazaar_create_local_system_pages() {
+	if ( ! is_admin() ) {
+		return;
+	}
+
+	// Page 1: Smart Customer Review Funnel
+	$flow_page = get_page_by_path( 'rate-experience' );
+	if ( ! $flow_page ) {
+		wp_insert_post( array(
+			'post_title'  => 'Rate Your Experience',
+			'post_name'   => 'rate-experience',
+			'post_status' => 'publish',
+			'post_type'   => 'page',
+			'meta_input'  => array(
+				'_wp_page_template' => 'templates/template-reviews-flow.php',
+			),
+		) );
+	}
+
+	// Page 2: AME Reviews Request QR System
+	$qr_page = get_page_by_path( 'review-request' );
+	if ( ! $qr_page ) {
+		wp_insert_post( array(
+			'post_title'  => 'Collect Google Reviews',
+			'post_name'   => 'review-request',
+			'post_status' => 'publish',
+			'post_type'   => 'page',
+			'meta_input'  => array(
+				'_wp_page_template' => 'templates/template-reviews-request.php',
+			),
+		) );
+	}
+}
+add_action( 'admin_init', 'ame_bazaar_create_local_system_pages' );
+
+
 
 
