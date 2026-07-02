@@ -3606,6 +3606,967 @@
 	justify-content: center;
 }
 
+/* ==========================================================================
+   STYLE GUIDE & REUSABLE DESIGN SYSTEM COMPONENTS
+   ========================================================================== */
+
+/* 1. BUTTON COMPONENT STYLES */
+.ame-btn-primary,
+.ame-btn-secondary,
+.ame-btn-outline,
+.ame-btn-ghost {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	gap: 0.6rem;
+	font-weight: 700;
+	font-size: 0.85rem;
+	text-transform: uppercase;
+	letter-spacing: 0.05em;
+	padding: 0.85rem 1.75rem;
+	border-radius: var(--ame-radius-sm);
+	cursor: pointer;
+	transition: all var(--ame-transition);
+	border: 2px solid transparent;
+	line-height: 1;
+	text-decoration: none;
+}
+
+.ame-btn-primary {
+	background: var(--ame-color-navy);
+	color: var(--ame-color-white);
+	border-color: var(--ame-color-navy);
+}
+
+.ame-btn-primary:hover:not(:disabled) {
+	background: var(--ame-color-gold-dark);
+	border-color: var(--ame-color-gold-dark);
+	color: var(--ame-color-white);
+}
+
+.ame-btn-secondary {
+	background: var(--ame-color-gold);
+	color: var(--ame-color-navy);
+	border-color: var(--ame-color-gold);
+}
+
+.ame-btn-secondary:hover:not(:disabled) {
+	background: var(--ame-color-navy);
+	border-color: var(--ame-color-navy);
+	color: var(--ame-color-white);
+}
+
+.ame-btn-outline {
+	background: transparent;
+	color: var(--ame-color-navy);
+	border-color: var(--ame-color-navy);
+}
+
+.ame-btn-outline:hover:not(:disabled) {
+	background: var(--ame-color-cream);
+	color: var(--ame-color-gold-dark);
+	border-color: var(--ame-color-gold-dark);
+}
+
+.ame-btn-ghost {
+	background: transparent;
+	color: var(--ame-color-slate);
+	padding-inline: 1rem;
+}
+
+.ame-btn-ghost:hover:not(:disabled) {
+	background: var(--ame-color-cream);
+	color: var(--ame-color-navy);
+}
+
+.ame-btn-icon {
+	background: transparent;
+	border: 1px solid var(--ame-color-border);
+	color: var(--ame-color-charcoal);
+	width: 42px;
+	height: 42px;
+	border-radius: 50%;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	cursor: pointer;
+	transition: all var(--ame-transition);
+}
+
+.ame-btn-icon:hover {
+	background: var(--ame-color-cream);
+	color: var(--ame-color-navy);
+	border-color: var(--ame-color-navy);
+}
+
+/* Button States */
+.ame-btn-loading {
+	position: relative;
+	pointer-events: none;
+}
+
+.ame-btn-loading span {
+	opacity: 0.7;
+}
+
+.ame-spinner {
+	animation: ameRotate 0.8s linear infinite;
+	width: 16px;
+	height: 16px;
+	flex-shrink: 0;
+}
+
+:disabled,
+.ame-btn-disabled {
+	opacity: 0.5 !important;
+	cursor: not-allowed !important;
+	pointer-events: none !important;
+}
+
+/* 2. REUSABLE CARD VARIATIONS */
+.ame-review-card {
+	background: var(--ame-color-white);
+	border: 1px solid var(--ame-color-border);
+	border-radius: var(--ame-radius-md);
+	padding: 2rem;
+	box-shadow: var(--ame-shadow-sm);
+	display: flex;
+	flex-direction: column;
+	gap: 1rem;
+}
+
+.ame-feature-card {
+	background: var(--ame-color-white);
+	border: 1px solid var(--ame-color-border);
+	border-radius: var(--ame-radius-md);
+	padding: 2rem;
+	box-shadow: var(--ame-shadow-sm);
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	gap: 1rem;
+	transition: transform var(--ame-transition), box-shadow var(--ame-transition);
+}
+
+.ame-feature-card:hover {
+	transform: translateY(-4px);
+	box-shadow: var(--ame-shadow-md);
+}
+
+.ame-feature-icon-wrap {
+	background: var(--ame-color-cream);
+	color: var(--ame-color-navy);
+	padding: 0.75rem;
+	border-radius: var(--ame-radius-sm);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.ame-feature-title {
+	font-size: 1.15rem;
+	font-weight: 700;
+	margin: 0;
+	color: var(--ame-color-navy);
+}
+
+.ame-feature-desc {
+	font-size: 0.85rem;
+	line-height: 1.6;
+	color: var(--ame-color-slate);
+	margin: 0;
+}
+
+/* 3. TYPOGRAPHY CLASSES */
+.ame-h1 { font-size: clamp(2rem, 5vw, 3.5rem); font-weight: 800; line-height: 1.15; color: var(--ame-color-navy); margin-bottom: 1.5rem; font-family: var(--ame-font-heading); }
+.ame-h2 { font-size: clamp(1.8rem, 4vw, 2.5rem); font-weight: 800; line-height: 1.2; color: var(--ame-color-navy); margin-bottom: 1.25rem; font-family: var(--ame-font-heading); }
+.ame-h3 { font-size: clamp(1.4rem, 3vw, 1.8rem); font-weight: 700; line-height: 1.3; color: var(--ame-color-navy); margin-bottom: 1rem; font-family: var(--ame-font-heading); }
+.ame-h4 { font-size: clamp(1.2rem, 2.5vw, 1.4rem); font-weight: 700; line-height: 1.3; color: var(--ame-color-navy); margin-bottom: 0.75rem; font-family: var(--ame-font-heading); }
+.ame-h5 { font-size: 1.1rem; font-weight: 700; line-height: 1.4; color: var(--ame-color-navy); margin-bottom: 0.5rem; font-family: var(--ame-font-heading); }
+.ame-h6 { font-size: 0.95rem; font-weight: 700; line-height: 1.4; color: var(--ame-color-slate); margin-bottom: 0.5rem; font-family: var(--ame-font-heading); text-transform: uppercase; letter-spacing: 0.05em; }
+.ame-body { font-size: 0.95rem; line-height: 1.7; color: var(--ame-color-charcoal); }
+.ame-small { font-size: 0.8rem; line-height: 1.6; color: var(--ame-color-slate); }
+.ame-caption { font-size: 0.75rem; line-height: 1.5; color: var(--ame-color-slate); font-style: italic; }
+.ame-label-style { font-size: 0.8rem; font-weight: 700; color: var(--ame-color-charcoal); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.4rem; display: block; }
+.ame-link { color: var(--ame-color-gold-dark); text-decoration: none; font-weight: 600; transition: color var(--ame-transition); }
+.ame-link:hover { color: var(--ame-color-navy); text-decoration: underline; }
+
+/* 4. FORM SYSTEM */
+.ame-input-field,
+.ame-search-field,
+.ame-select-field,
+.ame-textarea-field {
+	width: 100%;
+	padding: 0.85rem 1rem;
+	border: 1px solid var(--ame-color-border);
+	background: var(--ame-color-white);
+	color: var(--ame-color-charcoal);
+	border-radius: var(--ame-radius-sm);
+	font-size: 0.95rem;
+	font-family: inherit;
+	outline: none;
+	transition: all var(--ame-transition);
+}
+
+.ame-input-field:focus,
+.ame-search-field:focus,
+.ame-select-field:focus,
+.ame-textarea-field:focus {
+	border-color: var(--ame-color-navy);
+	box-shadow: 0 0 0 3px rgba(0, 35, 71, 0.06);
+}
+
+.ame-input-error {
+	border-color: #dc2626 !important;
+}
+
+.ame-validation-error {
+	display: block;
+	font-size: 0.75rem;
+	color: #dc2626;
+	margin-top: 0.4rem;
+	font-weight: 600;
+}
+
+.ame-validation-success {
+	display: block;
+	font-size: 0.75rem;
+	color: #059669;
+	margin-top: 0.4rem;
+	font-weight: 600;
+}
+
+/* Checkbox & Radio */
+.ame-checkbox,
+.ame-radio {
+	accent-color: var(--ame-color-navy);
+	width: 16px;
+	height: 16px;
+	cursor: pointer;
+}
+
+.ame-checkbox-wrap,
+.ame-radio-wrap {
+	display: flex;
+	align-items: center;
+	gap: 0.6rem;
+}
+
+.ame-checkbox-label,
+.ame-radio-label {
+	font-size: 0.9rem;
+	font-weight: 600;
+	color: var(--ame-color-charcoal);
+	cursor: pointer;
+}
+
+/* Switch Toggle */
+.ame-toggle-wrap {
+	display: flex;
+	align-items: center;
+	gap: 0.8rem;
+}
+
+.ame-toggle-switch {
+	position: relative;
+	display: inline-block;
+	width: 44px;
+	height: 24px;
+}
+
+.ame-toggle-input {
+	opacity: 0;
+	width: 0;
+	height: 0;
+}
+
+.ame-toggle-slider {
+	position: absolute;
+	cursor: pointer;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background-color: var(--ame-color-border);
+	transition: .3s;
+	border-radius: 24px;
+}
+
+.ame-toggle-slider:before {
+	position: absolute;
+	content: "";
+	height: 18px;
+	width: 18px;
+	left: 3px;
+	bottom: 3px;
+	background-color: white;
+	transition: .3s;
+	border-radius: 50%;
+}
+
+.ame-toggle-input:checked + .ame-toggle-slider {
+	background-color: var(--ame-color-navy);
+}
+
+.ame-toggle-input:checked + .ame-toggle-slider:before {
+	transform: translateX(20px);
+}
+
+.ame-toggle-label {
+	font-size: 0.9rem;
+	font-weight: 600;
+	color: var(--ame-color-charcoal);
+}
+
+/* 5. PRODUCT BADGES */
+.ame-badge-sale,
+.ame-badge-new,
+.ame-badge-bestseller,
+.ame-badge-outofstock,
+.ame-badge-limited {
+	display: inline-flex;
+	padding: 0.35rem 0.75rem;
+	font-size: 0.7rem;
+	font-weight: 700;
+	text-transform: uppercase;
+	letter-spacing: 0.08em;
+	border-radius: 2px;
+	width: fit-content;
+	line-height: 1;
+}
+
+.ame-badge-sale { background: #fee2e2; color: #b91c1c; }
+.ame-badge-new { background: #ecfdf5; color: #047857; }
+.ame-badge-bestseller { background: #fef9c3; color: #854d0e; }
+.ame-badge-outofstock { background: #f3f4f6; color: #4b5563; }
+.ame-badge-limited { background: #ffedd5; color: #c2410c; }
+
+/* 6. STATUS ALERTS */
+.ame-alert-stack {
+	display: flex;
+	flex-direction: column;
+	gap: 0.8rem;
+}
+
+.ame-alert {
+	display: flex;
+	align-items: flex-start;
+	gap: 0.8rem;
+	padding: 1rem 1.25rem;
+	border-radius: var(--ame-radius-sm);
+	font-size: 0.85rem;
+	line-height: 1.5;
+	font-weight: 600;
+	border: 1px solid transparent;
+}
+
+.ame-alert-icon {
+	width: 18px;
+	height: 18px;
+	flex-shrink: 0;
+	margin-top: 0.1rem;
+}
+
+.ame-alert-success { background: #ecfdf5; border-color: #a7f3d0; color: #065f46; }
+.ame-alert-warning { background: #fffbeb; border-color: #fde68a; color: #78350f; }
+.ame-alert-error { background: #fef2f2; border-color: #fca5a5; color: #991b1b; }
+.ame-alert-info { background: #eff6ff; border-color: #bfdbfe; color: #1e3a8a; }
+
+/* 7. LOADING & SKELETONS */
+.ame-skeleton {
+	background: linear-gradient(90deg, #f1f5f9 25%, #e2e8f0 50%, #f1f5f9 75%);
+	background-size: 200% 100%;
+	animation: ameLoadingPulse 1.5s infinite;
+	border-radius: 4px;
+}
+
+.ame-skeleton-text {
+	height: 12px;
+	margin-bottom: 0.6rem;
+	width: 100%;
+}
+
+.ame-skeleton-rect {
+	width: 100%;
+	height: 100%;
+}
+
+.ame-product-placeholder {
+	border: 1px solid var(--ame-color-border);
+	border-radius: var(--ame-radius-md);
+	padding: 1rem;
+	background: var(--ame-color-white);
+}
+
+/* 8. BREADCRUMBS */
+.ame-breadcrumbs-nav {
+	padding: 0.5rem 0;
+}
+
+.ame-breadcrumbs-list {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	list-style: none;
+	padding: 0;
+	margin: 0;
+	gap: 0.5rem;
+}
+
+.ame-breadcrumb-item {
+	font-size: 0.85rem;
+	font-weight: 600;
+}
+
+.ame-breadcrumb-link {
+	color: var(--ame-color-slate);
+	text-decoration: none;
+	transition: color var(--ame-transition);
+}
+
+.ame-breadcrumb-link:hover {
+	color: var(--ame-color-gold-dark);
+}
+
+.ame-breadcrumb-separator {
+	color: var(--ame-color-border);
+	font-size: 0.8rem;
+}
+
+.ame-breadcrumb-item-current {
+	color: var(--ame-color-navy);
+}
+
+/* 9. PAGINATION */
+.ame-pagination-list {
+	display: flex;
+	list-style: none;
+	padding: 0;
+	margin: 0;
+	gap: 0.4rem;
+}
+
+.ame-pagination-link {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	min-width: 38px;
+	height: 38px;
+	border: 1px solid var(--ame-color-border);
+	border-radius: var(--ame-radius-sm);
+	color: var(--ame-color-charcoal);
+	text-decoration: none;
+	font-size: 0.9rem;
+	font-weight: 700;
+	transition: all var(--ame-transition);
+}
+
+.ame-pagination-link:hover {
+	background: var(--ame-color-cream);
+	border-color: var(--ame-color-navy);
+	color: var(--ame-color-navy);
+}
+
+.ame-pagination-link-active {
+	background: var(--ame-color-navy);
+	border-color: var(--ame-color-navy);
+	color: var(--ame-color-white) !important;
+}
+
+/* 10. EMPTY STATES */
+.ame-empty-state {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	text-align: center;
+	padding: 3rem 2rem;
+	background: var(--ame-color-white);
+	border-radius: var(--ame-radius-md);
+	border: 1px dashed var(--ame-color-border);
+}
+
+.ame-empty-icon-wrap {
+	color: var(--ame-color-slate);
+	margin-bottom: 1.25rem;
+}
+
+.ame-empty-icon {
+	width: 48px;
+	height: 48px;
+}
+
+.ame-empty-title {
+	font-size: 1.25rem;
+	font-weight: 700;
+	color: var(--ame-color-navy);
+	margin: 0 0 0.5rem 0;
+}
+
+.ame-empty-desc {
+	font-size: 0.9rem;
+	color: var(--ame-color-slate);
+	max-width: 360px;
+	margin: 0 0 1.5rem 0;
+	line-height: 1.5;
+}
+
+/* 11 & 12. OVERLAY MODALS & DRAWERS */
+.ame-modal,
+.ame-drawer {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	z-index: 99999;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	opacity: 0;
+	visibility: hidden;
+	transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.ame-modal.is-active,
+.ame-drawer.is-active {
+	opacity: 1;
+	visibility: visible;
+}
+
+.ame-modal-overlay,
+.ame-drawer-overlay {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background: rgba(0, 35, 71, 0.45);
+	z-index: 1000;
+}
+
+.ame-modal-inner {
+	background: var(--ame-color-white);
+	border-radius: var(--ame-radius-md);
+	box-shadow: var(--ame-shadow-lg);
+	width: 100%;
+	max-width: 500px;
+	z-index: 1001;
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	overflow: hidden;
+	transform: scale(0.95);
+	transition: transform 0.3s ease;
+}
+
+.ame-modal.is-active .ame-modal-inner {
+	transform: scale(1);
+}
+
+.ame-modal-header,
+.ame-drawer-header {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: 1.25rem 1.5rem;
+	border-bottom: 1px solid var(--ame-color-border);
+}
+
+.ame-modal-title,
+.ame-drawer-title {
+	font-size: 1.15rem;
+	font-weight: 700;
+	color: var(--ame-color-navy);
+	margin: 0;
+}
+
+.ame-modal-close-btn,
+.ame-drawer-close-btn {
+	background: none;
+	border: none;
+	font-size: 1.5rem;
+	line-height: 1;
+	cursor: pointer;
+	color: var(--ame-color-slate);
+	padding: 0.25rem;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.ame-modal-body,
+.ame-drawer-body {
+	padding: 1.5rem;
+	overflow-y: auto;
+}
+
+.ame-modal-footer {
+	padding: 1.25rem 1.5rem;
+	border-top: 1px solid var(--ame-color-border);
+	display: flex;
+	justify-content: flex-end;
+	gap: 0.8rem;
+}
+
+/* Slide-in Drawers */
+.ame-drawer {
+	justify-content: flex-end;
+}
+
+.ame-drawer-inner {
+	background: var(--ame-color-white);
+	width: 380px;
+	max-width: 85%;
+	height: 100%;
+	z-index: 1001;
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	box-shadow: var(--ame-shadow-lg);
+	transform: translateX(100%);
+	transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.ame-drawer.is-active .ame-drawer-inner {
+	transform: translateX(0);
+}
+
+/* 13. TOAST MESSAGES */
+.ame-toast-container {
+	position: fixed;
+	bottom: 2rem;
+	right: 2rem;
+	z-index: 999999;
+	display: flex;
+	flex-direction: column;
+	gap: 0.8rem;
+	max-width: 350px;
+	width: 100%;
+}
+
+.ame-toast {
+	background: var(--ame-color-white);
+	border-left: 4px solid var(--ame-color-navy);
+	box-shadow: var(--ame-shadow-lg);
+	padding: 1rem 1.25rem;
+	border-radius: var(--ame-radius-sm);
+	font-size: 0.85rem;
+	font-weight: 600;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	color: var(--ame-color-charcoal);
+	animation: ameSlideInRight 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+	border: 1px solid var(--ame-color-border);
+	border-left-width: 4px;
+}
+
+.ame-toast-success { border-left-color: #059669; }
+.ame-toast-error { border-left-color: #dc2626; }
+
+.ame-toast-close {
+	background: none;
+	border: none;
+	cursor: pointer;
+	color: var(--ame-color-slate);
+	font-size: 1.1rem;
+	line-height: 1;
+	padding: 0.2rem;
+}
+
+/* 14. ACCORDIONS */
+.ame-accordion {
+	display: flex;
+	flex-direction: column;
+	border: 1px solid var(--ame-color-border);
+	border-radius: var(--ame-radius-md);
+	overflow: hidden;
+}
+
+.ame-accordion-item {
+	border-bottom: 1px solid var(--ame-color-border);
+}
+
+.ame-accordion-item:last-child {
+	border-bottom: none;
+}
+
+.ame-accordion-header {
+	width: 100%;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 1.25rem 1.5rem;
+	background: var(--ame-color-white);
+	border: none;
+	text-align: left;
+	font-size: 0.95rem;
+	font-weight: 700;
+	color: var(--ame-color-navy);
+	cursor: pointer;
+	transition: background var(--ame-transition);
+}
+
+.ame-accordion-header:hover {
+	background: var(--ame-color-cream);
+}
+
+.ame-accordion-chevron {
+	width: 16px;
+	height: 16px;
+	color: var(--ame-color-slate);
+	transition: transform var(--ame-transition);
+}
+
+.ame-accordion-header[aria-expanded="true"] .ame-accordion-chevron {
+	transform: rotate(180deg);
+}
+
+.ame-accordion-panel {
+	background: var(--ame-color-white);
+	overflow: hidden;
+	transition: max-height 0.3s ease;
+}
+
+.ame-accordion-content {
+	padding: 0 1.5rem 1.5rem 1.5rem;
+	font-size: 0.9rem;
+	line-height: 1.6;
+	color: var(--ame-color-slate);
+}
+
+/* 15. TABS SYSTEM */
+.ame-tabs {
+	display: flex;
+	flex-direction: column;
+	gap: 1.5rem;
+}
+
+.ame-tabs-list {
+	display: flex;
+	border-bottom: 1px solid var(--ame-color-border);
+	gap: 1.5rem;
+	overflow-x: auto;
+}
+
+.ame-tab-btn {
+	background: none;
+	border: none;
+	font-size: 0.85rem;
+	font-weight: 700;
+	text-transform: uppercase;
+	letter-spacing: 0.05em;
+	color: var(--ame-color-slate);
+	padding: 0.8rem 0;
+	cursor: pointer;
+	position: relative;
+	transition: color var(--ame-transition);
+}
+
+.ame-tab-btn:hover {
+	color: var(--ame-color-navy);
+}
+
+.ame-tab-btn-active {
+	color: var(--ame-color-navy);
+}
+
+.ame-tab-btn-active::after {
+	content: '';
+	position: absolute;
+	bottom: -1px;
+	left: 0;
+	width: 100%;
+	height: 2px;
+	background: var(--ame-color-gold);
+}
+
+.ame-tab-panel {
+	display: none;
+	animation: ameFadeIn 0.3s ease;
+}
+
+.ame-tab-panel-active {
+	display: block;
+}
+
+/* 17. STYLEGUIDE SECTIONS & UTILITIES */
+.ame-styleguide-wrapper {
+	padding-block: 4rem 8rem;
+	background: var(--ame-color-white);
+}
+
+.ame-styleguide-hero {
+	text-align: center;
+	margin-bottom: 5rem;
+	border-bottom: 1px solid var(--ame-color-border);
+	padding-bottom: 3rem;
+}
+
+.ame-styleguide-title {
+	font-size: clamp(2.2rem, 6vw, 3.8rem);
+	font-weight: 800;
+	color: var(--ame-color-navy);
+	margin-bottom: 0.8rem;
+}
+
+.ame-styleguide-subtitle {
+	font-size: 1.1rem;
+	color: var(--ame-color-slate);
+}
+
+.ame-sg-section {
+	margin-bottom: 4.5rem;
+}
+
+.ame-sg-section-title {
+	font-size: 1.35rem;
+	font-weight: 800;
+	text-transform: uppercase;
+	letter-spacing: 0.08em;
+	color: var(--ame-color-navy);
+	border-left: 4px solid var(--ame-color-gold);
+	padding-left: 1rem;
+	margin-bottom: 2rem;
+}
+
+.ame-sg-card {
+	background: var(--ame-color-cream);
+	border: 1px solid var(--ame-color-border);
+	border-radius: var(--ame-radius-md);
+	padding: 2.5rem;
+}
+
+.ame-btn-showcase-grid {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 2rem;
+	align-items: flex-end;
+}
+
+.ame-sg-item {
+	display: flex;
+	flex-direction: column;
+	gap: 0.5rem;
+	width: 100%;
+}
+
+.ame-sg-label {
+	font-size: 0.75rem;
+	font-weight: 700;
+	text-transform: uppercase;
+	color: var(--ame-color-slate);
+	letter-spacing: 0.04em;
+}
+
+.ame-sg-form-layout {
+	display: flex;
+	flex-direction: column;
+	gap: 1.8rem;
+}
+
+.ame-badge-row {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 1rem;
+}
+
+.ame-loading-showcase,
+.ame-interactive-showcase-grid {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 2rem;
+}
+
+/* 18. GRID SYSTEM UTILITIES */
+.ame-grid {
+	display: grid;
+	grid-template-columns: 1fr;
+	gap: 2rem;
+}
+
+.ame-grid-2 {
+	grid-template-columns: 1fr;
+}
+
+@media (min-width: 640px) {
+	.ame-grid-2 {
+		grid-template-columns: repeat(2, 1fr);
+	}
+}
+
+.ame-grid-3 {
+	grid-template-columns: 1fr;
+}
+
+@media (min-width: 640px) {
+	.ame-grid-3 {
+		grid-template-columns: repeat(2, 1fr);
+	}
+}
+
+@media (min-width: 1024px) {
+	.ame-grid-3 {
+		grid-template-columns: repeat(3, 1fr);
+	}
+}
+
+.ame-grid-4 {
+	grid-template-columns: 1fr;
+}
+
+@media (min-width: 640px) {
+	.ame-grid-4 {
+		grid-template-columns: repeat(2, 1fr);
+	}
+}
+
+@media (min-width: 1024px) {
+	.ame-grid-4 {
+		grid-template-columns: repeat(4, 1fr);
+	}
+}
+
+/* 19. SPACING UTILITIES */
+.ame-my-4 { margin-block: 1rem; }
+.ame-my-8 { margin-block: 2rem; }
+.ame-p-4 { padding: 1rem; }
+.ame-p-8 { padding: 2rem; }
+
+/* 20. ANIMATION KEYFRAMES & UTILITIES */
+@keyframes ameRotate {
+	100% { transform: rotate(360deg); }
+}
+
+@keyframes ameLoadingPulse {
+	0% { background-position: 200% 0; }
+	100% { background-position: -200% 0; }
+}
+
+@keyframes ameFadeIn {
+	from { opacity: 0; }
+	to { opacity: 1; }
+}
+
+@keyframes ameSlideUp {
+	from { transform: translateY(15px); opacity: 0; }
+	to { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes ameSlideInRight {
+	from { transform: translateX(100%); opacity: 0; }
+	to { transform: translateX(0); opacity: 1; }
+}
+
+.ame-fade-in {
+	animation: ameFadeIn 0.5s ease forwards;
+}
+
+.ame-slide-up {
+	animation: ameSlideUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+
 
 
 

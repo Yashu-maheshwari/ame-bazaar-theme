@@ -172,4 +172,201 @@
 		window.addEventListener('scroll', updateProgress, { passive: true });
 		updateProgress();
 	}
+
+	/* ==========================================================================
+	   7. DESIGN SYSTEM INTERACTIVE COMPONENTS (MODAL, DRAWER, TOAST, ACCORDION, TABS)
+	   ========================================================================== */
+
+	// 7.1 MODAL & DRAWER TOGGLES
+	const demoModal = document.getElementById('sg-demo-modal');
+	const triggerModal = document.getElementById('trigger-sg-modal');
+	const demoDrawer = document.getElementById('sg-demo-drawer');
+	const triggerDrawer = document.getElementById('trigger-sg-drawer');
+
+	const openModal = () => {
+		if (!demoModal) return;
+		demoModal.classList.add('is-active');
+		demoModal.removeAttribute('aria-hidden');
+		document.body.style.overflow = 'hidden';
+
+		if (focusTrapCleanup) focusTrapCleanup();
+		focusTrapCleanup = createFocusTrap(demoModal);
+	};
+
+	const closeModal = () => {
+		if (!demoModal) return;
+		demoModal.classList.remove('is-active');
+		demoModal.setAttribute('aria-hidden', 'true');
+		document.body.style.overflow = '';
+
+		if (focusTrapCleanup) {
+			focusTrapCleanup();
+			focusTrapCleanup = null;
+		}
+	};
+
+	const openDrawer = () => {
+		if (!demoDrawer) return;
+		demoDrawer.classList.add('is-active');
+		demoDrawer.removeAttribute('aria-hidden');
+		document.body.style.overflow = 'hidden';
+
+		if (focusTrapCleanup) focusTrapCleanup();
+		focusTrapCleanup = createFocusTrap(demoDrawer);
+	};
+
+	const closeDrawer = () => {
+		if (!demoDrawer) return;
+		demoDrawer.classList.remove('is-active');
+		demoDrawer.setAttribute('aria-hidden', 'true');
+		document.body.style.overflow = '';
+
+		if (focusTrapCleanup) {
+			focusTrapCleanup();
+			focusTrapCleanup = null;
+		}
+	};
+
+	if (triggerModal) triggerModal.addEventListener('click', openModal);
+	if (demoModal) {
+		demoModal.querySelectorAll('.ame-modal-close-btn, .ame-modal-overlay').forEach(el => {
+			el.addEventListener('click', closeModal);
+		});
+	}
+
+	if (triggerDrawer) triggerDrawer.addEventListener('click', openDrawer);
+	if (demoDrawer) {
+		demoDrawer.querySelectorAll('.ame-drawer-close-btn, .ame-drawer-overlay').forEach(el => {
+			el.addEventListener('click', closeDrawer);
+		});
+	}
+
+	// 7.2 ACCORDION INTERACTION
+	const accordions = document.querySelectorAll('.ame-accordion-header');
+	accordions.forEach(header => {
+		header.addEventListener('click', () => {
+			const panelId = header.getAttribute('aria-controls');
+			const panel = document.getElementById(panelId);
+			const isExpanded = header.getAttribute('aria-expanded') === 'true';
+
+			header.setAttribute('aria-expanded', !isExpanded);
+			if (panel) {
+				if (isExpanded) {
+					panel.style.maxHeight = panel.scrollHeight + 'px';
+					setTimeout(() => {
+						panel.style.maxHeight = '0';
+						panel.setAttribute('hidden', '');
+					}, 10);
+				} else {
+					panel.removeAttribute('hidden');
+					panel.style.maxHeight = '0';
+					setTimeout(() => {
+						panel.style.maxHeight = panel.scrollHeight + 'px';
+					}, 10);
+					setTimeout(() => {
+						panel.style.maxHeight = '';
+					}, 300);
+				}
+			}
+		});
+	});
+
+	// 7.3 TABS INTERACTION
+	const tabs = document.querySelectorAll('.ame-tab-btn');
+	tabs.forEach(tab => {
+		tab.addEventListener('click', () => {
+			const tabList = tab.closest('.ame-tabs-list');
+			const tabsContainer = tab.closest('.ame-tabs');
+			if (!tabList || !tabsContainer) return;
+
+			// Deactivate all tabs in list
+			tabList.querySelectorAll('.ame-tab-btn').forEach(t => {
+				t.classList.remove('ame-tab-btn-active');
+				t.setAttribute('aria-selected', 'false');
+				t.setAttribute('tabindex', '-1');
+			});
+
+			// Hide all panels
+			tabsContainer.querySelectorAll('.ame-tab-panel').forEach(p => {
+				p.classList.remove('ame-tab-panel-active');
+				p.setAttribute('hidden', '');
+			});
+
+			// Activate current tab
+			tab.classList.add('ame-tab-btn-active');
+			tab.setAttribute('aria-selected', 'true');
+			tab.removeAttribute('tabindex');
+
+			// Show current panel
+			const panelId = tab.getAttribute('aria-controls');
+			const panel = document.getElementById(panelId);
+			if (panel) {
+				panel.classList.add('ame-tab-panel-active');
+				panel.removeAttribute('hidden');
+			}
+		});
+	});
+
+	// 7.4 TOAST NOTIFICATION GENERATOR
+	const toastContainer = document.getElementById('ame-global-toast-container');
+	const triggerToastSuccess = document.getElementById('trigger-sg-toast-success');
+	const triggerToastError = document.getElementById('trigger-sg-toast-error');
+
+	const showToast = (message, type = 'success') => {
+		if (!toastContainer) return;
+		const toast = document.createElement('div');
+		toast.className = `ame-toast ame-toast-${type}`;
+		toast.setAttribute('role', 'status');
+
+		const textSpan = document.createElement('span');
+		textSpan.textContent = message;
+		toast.appendChild(textSpan);
+
+		const closeBtn = document.createElement('button');
+		closeBtn.className = 'ame-toast-close';
+		closeBtn.innerHTML = '&times;';
+		closeBtn.setAttribute('aria-label', 'Dismiss toast');
+		closeBtn.addEventListener('click', () => {
+			toast.remove();
+		});
+		toast.appendChild(closeBtn);
+
+		toastContainer.appendChild(toast);
+
+		// Auto dismiss after 4 seconds
+		setTimeout(() => {
+			if (toast.parentNode) {
+				toast.style.opacity = '0';
+				toast.style.transform = 'translateX(100%)';
+				toast.style.transition = 'all 0.3s ease';
+				setTimeout(() => {
+					toast.remove();
+				}, 300);
+			}
+		}, 4000);
+	};
+
+	if (triggerToastSuccess) {
+		triggerToastSuccess.addEventListener('click', () => {
+			showToast('Tailoring measurement settings saved successfully!', 'success');
+		});
+	}
+
+	if (triggerToastError) {
+		triggerToastError.addEventListener('click', () => {
+			showToast('Failed to connect to WordPress database. Please try again.', 'error');
+		});
+	}
+
+	// Update Escape key listener to close Styleguide Modals/Drawers too
+	document.addEventListener('keydown', (e) => {
+		if (e.key === 'Escape') {
+			if (demoModal && demoModal.classList.contains('is-active')) {
+				closeModal();
+			}
+			if (demoDrawer && demoDrawer.classList.contains('is-active')) {
+				closeDrawer();
+			}
+		}
+	});
 })();
