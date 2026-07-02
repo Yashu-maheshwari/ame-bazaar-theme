@@ -217,3 +217,55 @@ function ame_bazaar_render_admin_store_dashboard() {
 	</div>
 	<?php
 }
+
+/**
+ * 3. Auto-generate SEO Title tags dynamically for catalog search engines.
+ */
+function ame_bazaar_auto_product_seo_title( $title ) {
+	if ( is_product() ) {
+		global $post;
+		$fabric = get_post_meta( $post->ID, '_ame_fabric', true );
+		if ( $fabric ) {
+			return get_the_title() . ' - ' . $fabric . ' Ethnic Wear | AME Bazaar Kirari Delhi';
+		}
+	}
+	return $title;
+}
+add_filter( 'pre_get_document_title', 'ame_bazaar_auto_product_seo_title', 20 );
+
+/**
+ * 4. Auto-generate Meta Description tags dynamically.
+ */
+function ame_bazaar_auto_product_seo_desc() {
+	if ( is_product() ) {
+		global $post;
+		$fabric = get_post_meta( $post->ID, '_ame_fabric', true );
+		$pattern = get_post_meta( $post->ID, '_ame_pattern', true );
+		$desc = sprintf( 'Buy premium %s ethnic clothing at AME Bazaar Kirari. Fabric: %s. Pattern: %s. On-site 30-minute custom tailoring alterations and fitting available in our Mubarakpur Road, Kirari, Delhi store.', get_the_title(), $fabric ? $fabric : 'Cotton', $pattern ? $pattern : 'Handcrafted' );
+		echo '<meta name="description" content="' . esc_attr( $desc ) . '">' . "\n";
+	}
+}
+add_action( 'wp_head', 'ame_bazaar_auto_product_seo_desc', 5 );
+
+/**
+ * 5. Improve WooCommerce product search queries to index fabric, pattern, and GSM.
+ */
+function ame_bazaar_product_search_meta_join( $join ) {
+	global $wpdb;
+	if ( is_search() && ! is_admin() && isset( $_GET['post_type'] ) && 'product' === $_GET['post_type'] ) {
+		$join .= " LEFT JOIN {$wpdb->postmeta} AS ame_pm ON ({$wpdb->posts}.ID = ame_pm.post_id) ";
+	}
+	return $join;
+}
+add_filter( 'posts_join', 'ame_bazaar_product_search_meta_join' );
+
+function ame_bazaar_product_search_meta_where( $where ) {
+	global $wpdb;
+	if ( is_search() && ! is_admin() && isset( $_GET['post_type'] ) && 'product' === $_GET['post_type'] ) {
+		$search_term = esc_sql( get_query_var( 's' ) );
+		$where .= " OR (ame_pm.meta_key IN ('_ame_fabric', '_ame_pattern', '_ame_gsm') AND ame_pm.meta_value LIKE '%{$search_term}%') ";
+	}
+	return $where;
+}
+add_filter( 'posts_where', 'ame_bazaar_product_search_meta_where' );
+
