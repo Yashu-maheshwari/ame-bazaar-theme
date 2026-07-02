@@ -136,17 +136,40 @@ $cat_acc_url   = get_theme_mod( 'ame_bazaar_cat_accessories_url', '#' );
 </div>
 
 <!-- Bottom Section: Legal & Copyright -->
-<div class="ame-footer-bottom">
-	<div class="ame-footer-copyright">
-		<p>
-			&copy; <?php echo esc_html( date( 'Y' ) ); ?> <?php echo esc_html( $brand_name ); ?>. <?php esc_html_e( 'All Rights Reserved.', 'ame-bazaar' ); ?>
-		</p>
+<div class="ame-footer-bottom" style="display:flex; flex-direction:column; gap:1.5rem;">
+	<div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:1.5rem; border-bottom:1px solid var(--ame-color-border); padding-bottom:1.5rem; width:100%;">
+		<div class="ame-footer-payment-icons" style="display:flex; gap:0.8rem; flex-wrap:wrap; align-items:center;">
+			<span style="font-size:0.7rem; font-weight:700; color:var(--ame-color-slate); text-transform:uppercase; margin-right:0.4rem;"><?php esc_html_e( 'We Accept:', 'ame-bazaar' ); ?></span>
+			<span class="ame-badge-new" style="font-size:0.65rem; background:#fff; color:#475569; border:1px solid #cbd5e1;">UPI</span>
+			<span class="ame-badge-new" style="font-size:0.65rem; background:#fff; color:#475569; border:1px solid #cbd5e1;">RuPay</span>
+			<span class="ame-badge-new" style="font-size:0.65rem; background:#fff; color:#475569; border:1px solid #cbd5e1;">Visa</span>
+			<span class="ame-badge-new" style="font-size:0.65rem; background:#fff; color:#475569; border:1px solid #cbd5e1;">Mastercard</span>
+			<span class="ame-badge-new" style="font-size:0.65rem; background:#fff; color:#475569; border:1px solid #cbd5e1;">COD</span>
+		</div>
+		<div class="ame-footer-security-badges" style="display:flex; gap:1rem; flex-wrap:wrap; font-size:0.75rem; font-weight:700; color:#64748b;">
+			<span style="display:flex; align-items:center; gap:0.4rem;">
+				<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width:12px; height:12px; color:#16a34a;"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+				Secure SSL Checkout
+			</span>
+			<span style="display:flex; align-items:center; gap:0.4rem;">
+				<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width:12px; height:12px; color:#ca8a04;"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+				100% Original coordinates
+			</span>
+		</div>
 	</div>
-	<div class="ame-footer-legal-links">
-		<ul class="ame-footer-legal-list">
-			<li><a href="<?php echo esc_url( home_url( '/privacy-policy/' ) ); ?>"><?php esc_html_e( 'Privacy Policy', 'ame-bazaar' ); ?></a></li>
-			<li><a href="<?php echo esc_url( home_url( '/terms-of-service/' ) ); ?>"><?php esc_html_e( 'Terms of Service', 'ame-bazaar' ); ?></a></li>
-			<li><a href="<?php echo esc_url( home_url( '/shipping-returns/' ) ); ?>"><?php esc_html_e( 'Shipping & Returns', 'ame-bazaar' ); ?></a></li>
-		</ul>
+	
+	<div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:1rem; width:100%;">
+		<div class="ame-footer-copyright">
+			<p style="margin:0;">
+				&copy; <?php echo esc_html( date( 'Y' ) ); ?> <?php echo esc_html( $brand_name ); ?>. <?php esc_html_e( 'All Rights Reserved.', 'ame-bazaar' ); ?>
+			</p>
+		</div>
+		<div class="ame-footer-legal-links">
+			<ul class="ame-footer-legal-list" style="list-style:none; padding:0; margin:0; display:flex; gap:1.25rem; font-size:0.8rem;">
+				<li><a href="<?php echo esc_url( home_url( '/privacy-policy/' ) ); ?>"><?php esc_html_e( 'Privacy Policy', 'ame-bazaar' ); ?></a></li>
+				<li><a href="<?php echo esc_url( home_url( '/terms-of-service/' ) ); ?>"><?php esc_html_e( 'Terms of Service', 'ame-bazaar' ); ?></a></li>
+				<li><a href="<?php echo esc_url( home_url( '/shipping-returns/' ) ); ?>"><?php esc_html_e( 'Shipping & Returns', 'ame-bazaar' ); ?></a></li>
+			</ul>
+		</div>
 	</div>
 </div>

@@ -33,6 +33,12 @@ function ame_bazaar_render_featured_collections() {
 }
 add_action( 'ame_bazaar_homepage', 'ame_bazaar_render_featured_collections', 25 );
 
+// 4.5 Custom Tailoring Service Section
+function ame_bazaar_render_tailoring_service() {
+	get_template_part( 'components/homepage/tailoring-service' );
+}
+add_action( 'ame_bazaar_homepage', 'ame_bazaar_render_tailoring_service', 28 );
+
 // 5. Why AME Bazaar
 function ame_bazaar_render_why_choose_us() {
 	get_template_part( 'components/why-choose-us/why-choose-us' );
@@ -62,6 +68,12 @@ function ame_bazaar_render_blog_preview() {
 	get_template_part( 'components/homepage/blog-preview' );
 }
 add_action( 'ame_bazaar_homepage', 'ame_bazaar_render_blog_preview', 50 );
+
+// 9.5 Instagram Showcase Gallery Section
+function ame_bazaar_render_instagram_gallery() {
+	get_template_part( 'components/homepage/instagram-gallery' );
+}
+add_action( 'ame_bazaar_homepage', 'ame_bazaar_render_instagram_gallery', 52 );
 
 // 10. WhatsApp & Newsletter CTA Section
 function ame_bazaar_render_whatsapp_cta() {
