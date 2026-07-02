@@ -367,3 +367,6 @@ function ame_bazaar_sticky_add_to_cart_mobile() {
 	<?php
 }
 add_action( 'wp_footer', 'ame_bazaar_sticky_add_to_cart_mobile' );
+
+// End of WooCommerce Integration.
+
