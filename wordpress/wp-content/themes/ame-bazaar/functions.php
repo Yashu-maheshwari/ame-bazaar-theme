@@ -40,6 +40,12 @@ if ( isset( $upload_dir['basedir'] ) ) {
 	file_put_contents( $upload_dir['basedir'] . '/debug.txt', 'Loaded: ' . date('Y-m-d H:i:s') );
 }
 
+function ame_bazaar_diagnostic_footer_comment() {
+	echo '<!-- AME_BAZAAR_CHILD_THEME_ACTIVE_AND_RUNNING -->';
+}
+add_action( 'wp_footer', 'ame_bazaar_diagnostic_footer_comment' );
+
+
 
 
 
