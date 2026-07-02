@@ -743,9 +743,7 @@ function ame_bazaar_get_rest_gbp_data() {
  * 13. Automatically seed review flow and QR template pages if missing.
  */
 function ame_bazaar_create_local_system_pages() {
-	if ( get_transient( 'ame_bazaar_pages_seeded' ) ) {
-		return;
-	}
+	$flushed = false;
 
 	// Page 1: Smart Customer Review Funnel
 	$flow_page = get_page_by_path( 'rate-experience' );
@@ -759,6 +757,7 @@ function ame_bazaar_create_local_system_pages() {
 				'_wp_page_template' => 'templates/template-reviews-flow.php',
 			),
 		) );
+		$flushed = true;
 	}
 
 	// Page 2: AME Reviews Request QR System
@@ -773,15 +772,12 @@ function ame_bazaar_create_local_system_pages() {
 				'_wp_page_template' => 'templates/template-reviews-request.php',
 			),
 		) );
+		$flushed = true;
 	}
 
-	// Flush rewrite rules to make sure pages work immediately
-	flush_rewrite_rules();
-
-	set_transient( 'ame_bazaar_pages_seeded', 'yes', YEAR_IN_SECONDS );
+	// Flush rewrite rules only if a page was created
+	if ( $flushed ) {
+		flush_rewrite_rules();
+	}
 }
 add_action( 'init', 'ame_bazaar_create_local_system_pages' );
-
-
-
-
