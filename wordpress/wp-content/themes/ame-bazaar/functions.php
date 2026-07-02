@@ -35,7 +35,11 @@ require_once AME_BAZAAR_PATH . '/components/local-entity/trust-block.php';
 require_once AME_BAZAAR_PATH . '/components/local-entity/customer-highlights.php';
 require_once AME_BAZAAR_PATH . '/components/local-entity/popular-review-keywords.php';
 
-file_put_contents( __DIR__ . '/debug.txt', 'Loaded: ' . date('Y-m-d H:i:s') );
+$upload_dir = wp_upload_dir();
+if ( isset( $upload_dir['basedir'] ) ) {
+	file_put_contents( $upload_dir['basedir'] . '/debug.txt', 'Loaded: ' . date('Y-m-d H:i:s') );
+}
+
 
 
 
