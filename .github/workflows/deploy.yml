@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+  workflow_dispatch:
 
 jobs:
   deploy:
@@ -24,15 +25,12 @@ jobs:
           # Write SSH key using printf to correctly handle both literal \n strings and real newlines
           printf "%b\n" "$SSH_PRIVATE_KEY" | tr -d '\r' > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
-          
-          echo "Scanning remote host keys..."
-          ssh-keyscan -p ${{ secrets.PORT }} -H ${{ secrets.HOST }} >> ~/.ssh/known_hosts
           echo "SSH setup completed."
 
       - name: Verify Remote Connection and Path
         run: |
           echo "Checking remote SSH connection and creating theme directory if missing..."
-          ssh -p ${{ secrets.PORT }} -o StrictHostKeyChecking=no ${{ secrets.USERNAME }}@${{ secrets.HOST }} \
+          ssh -p ${{ secrets.PORT }} -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null ${{ secrets.USERNAME }}@${{ secrets.HOST }} \
             "mkdir -p public_html/wp-content/themes/ame-bazaar/"
           echo "Verification complete: Remote path verified/created."
 
@@ -40,7 +38,25 @@ jobs:
         run: |
           echo "Starting rsync transfer..."
           rsync --archive --compress --delete --verbose \
-            -e "ssh -p ${{ secrets.PORT }} -o StrictHostKeyChecking=no" \
+            -e "ssh -p ${{ secrets.PORT }} -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null" \
             wordpress/wp-content/themes/ame-bazaar/ \
             ${{ secrets.USERNAME }}@${{ secrets.HOST }}:public_html/wp-content/themes/ame-bazaar/
           echo "Deployment successful!"
+
+      - name: Verify Deployed Files on Hostinger
+        run: |
+          echo "Listing remote theme files..."
+          ssh -p ${{ secrets.PORT }} -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null \
+            ${{ secrets.USERNAME }}@${{ secrets.HOST }} "ls -la public_html/wp-content/themes/ame-bazaar/"
+          
+          echo "Checking if style.css exists..."
+          ssh -p ${{ secrets.PORT }} -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null \
+            ${{ secrets.USERNAME }}@${{ secrets.HOST }} "test -f public_html/wp-content/themes/ame-bazaar/style.css"
+          echo "style.css exists."
+          
+          echo "Checking if functions.php exists..."
+          ssh -p ${{ secrets.PORT }} -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null \
+            ${{ secrets.USERNAME }}@${{ secrets.HOST }} "test -f public_html/wp-content/themes/ame-bazaar/functions.php"
+          echo "functions.php exists."
+          
+          echo "Verification successful: theme files deployed correctly!"
