@@ -9,16 +9,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-if ( isset( $_GET['flush_opcache'] ) && $_GET['flush_opcache'] === 'ame_bazaar_secret_key_123' ) {
-	if ( function_exists( 'opcache_reset' ) ) {
-		opcache_reset();
-		echo 'OPCache Reset Successful!';
-	} else {
-		echo 'OPCache not enabled or reset function missing.';
-	}
-	exit;
-}
-
 define( 'AME_BAZAAR_VERSION', '1.0.0' );
 define( 'AME_BAZAAR_PATH', get_stylesheet_directory() );
 define( 'AME_BAZAAR_URI', get_stylesheet_directory_uri() );
@@ -45,15 +35,7 @@ require_once AME_BAZAAR_PATH . '/components/local-entity/trust-block.php';
 require_once AME_BAZAAR_PATH . '/components/local-entity/customer-highlights.php';
 require_once AME_BAZAAR_PATH . '/components/local-entity/popular-review-keywords.php';
 
-$upload_dir = wp_upload_dir();
-if ( isset( $upload_dir['basedir'] ) ) {
-	file_put_contents( $upload_dir['basedir'] . '/debug.txt', 'Loaded: ' . date('Y-m-d H:i:s') );
-}
 
-function ame_bazaar_diagnostic_footer_comment() {
-	echo '<!-- AME_BAZAAR_CHILD_THEME_ACTIVE_AND_RUNNING -->';
-}
-add_action( 'wp_footer', 'ame_bazaar_diagnostic_footer_comment' );
 
 
 

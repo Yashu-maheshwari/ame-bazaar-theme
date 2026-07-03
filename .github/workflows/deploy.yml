@@ -43,6 +43,19 @@ jobs:
             ${{ secrets.USERNAME }}@${{ secrets.HOST }}:public_html/wp-content/themes/ame-bazaar/
           echo "Deployment successful!"
 
+      - name: Flush Remote OPCache
+        run: |
+          echo "Copying OPCache flusher to web root..."
+          ssh -p ${{ secrets.PORT }} -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null ${{ secrets.USERNAME }}@${{ secrets.HOST }} \
+            "cp public_html/wp-content/themes/ame-bazaar/clear-cache.php public_html/clear-cache.php"
+          
+          echo "Triggering OPCache flush..."
+          curl -sL https://amebazaar.in/clear-cache.php
+          
+          echo "Removing OPCache flusher from web root..."
+          ssh -p ${{ secrets.PORT }} -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null ${{ secrets.USERNAME }}@${{ secrets.HOST }} \
+            "rm public_html/clear-cache.php"
+
       - name: Verify Deployed Files on Hostinger
         run: |
           echo "Listing remote theme files..."
