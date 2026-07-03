@@ -7255,6 +7255,154 @@ form.checkout {
 	}
 }
 
+/* ==========================================================================
+   PHASE 15 - Step 9: Footer Premium Layout & Trust Badges Styling
+   ========================================================================== */
+
+.site-footer {
+	background: #001224 !important;
+	color: #94a3b8 !important;
+	padding: 5.5rem 0 2.5rem 0 !important;
+	border-top: 1.5px solid rgba(226, 232, 240, 0.1) !important;
+}
+
+/* 4 Column layout grid */
+.ame-footer-top-grid {
+	display: grid !important;
+	grid-template-columns: 1.2fr repeat(3, 0.9fr) !important;
+	gap: 3.5rem !important;
+	max-width: 1200px !important;
+	margin: 0 auto !important;
+	padding: 0 1.5rem 3.5rem 1.5rem !important;
+	border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+}
+
+.ame-footer-logo-title {
+	font-family: 'Outfit', 'Inter', sans-serif !important;
+	font-size: 1.65rem !important;
+	font-weight: 800 !important;
+	color: #ffffff !important;
+	margin-top: 0 !important;
+	margin-bottom: 1.25rem !important;
+}
+
+.ame-footer-title {
+	font-family: 'Outfit', 'Inter', sans-serif !important;
+	font-size: 1.1rem !important;
+	font-weight: 700 !important;
+	color: #ffffff !important;
+	margin-top: 0 !important;
+	margin-bottom: 1.5rem !important;
+	letter-spacing: 0.03em;
+	text-transform: uppercase;
+}
+
+.ame-footer-bio {
+	font-size: 0.9rem !important;
+	line-height: 1.6 !important;
+	margin-bottom: 1.5rem !important;
+}
+
+/* Social icons animations */
+.ame-footer-socials {
+	display: flex !important;
+	gap: 1rem !important;
+}
+
+.ame-footer-social-link {
+	width: 38px !important;
+	height: 38px !important;
+	border-radius: 50% !important;
+	background: rgba(255, 255, 255, 0.05) !important;
+	color: #ffffff !important;
+	display: flex !important;
+	align-items: center !important;
+	justify-content: center !important;
+	transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+	border: 1px solid rgba(255, 255, 255, 0.1) !important;
+}
+
+.ame-footer-social-link:hover {
+	background: var(--ame-color-accent, #f59e0b) !important;
+	color: #ffffff !important;
+	transform: translateY(-3px) !important;
+	box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3) !important;
+}
+
+.ame-social-icon {
+	width: 16px !important;
+	height: 16px !important;
+}
+
+/* Links lists hover underlines */
+.ame-footer-links {
+	list-style: none !important;
+	padding: 0 !important;
+	margin: 0 !important;
+	display: flex !important;
+	flex-direction: column !important;
+	gap: 0.85rem !important;
+}
+
+.ame-footer-links a {
+	color: #94a3b8 !important;
+	text-decoration: none !important;
+	font-size: 0.9rem !important;
+	transition: color 0.2s ease !important;
+	display: inline-block !important;
+}
+
+.ame-footer-links a:hover {
+	color: var(--ame-color-accent, #f59e0b) !important;
+	transform: translateX(4px) !important;
+}
+
+/* Payment & Trust details bar */
+.ame-footer-bottom {
+	max-width: 1200px !important;
+	margin: 0 auto !important;
+	padding: 2.5rem 1.5rem 0 1.5rem !important;
+	color: #64748b !important;
+	font-size: 0.85rem !important;
+}
+
+.ame-footer-payment-icons span {
+	background: rgba(255, 255, 255, 0.05) !important;
+	border-color: rgba(255, 255, 255, 0.1) !important;
+	color: #ffffff !important;
+	padding: 0.3rem 0.6rem !important;
+	border-radius: 4px !important;
+}
+
+.ame-footer-copyright p {
+	color: #64748b !important;
+}
+
+.ame-footer-legal-list a {
+	color: #64748b !important;
+	text-decoration: none !important;
+	transition: color 0.2s ease !important;
+}
+
+.ame-footer-legal-list a:hover {
+	color: #ffffff !important;
+}
+
+/* Responsive Footer */
+@media (max-width: 991px) {
+	.ame-footer-top-grid {
+		grid-template-columns: repeat(2, 1fr) !important;
+		gap: 3rem !important;
+	}
+}
+
+@media (max-width: 576px) {
+	.ame-footer-top-grid {
+		grid-template-columns: 1fr !important;
+		gap: 2.5rem !important;
+	}
+}
+
 
 
 
