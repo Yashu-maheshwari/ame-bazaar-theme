@@ -58,6 +58,14 @@ jobs:
 
       - name: Verify Deployed Files on Hostinger
         run: |
+          echo "Listing remote user home directory..."
+          ssh -p ${{ secrets.PORT }} -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null \
+            ${{ secrets.USERNAME }}@${{ secrets.HOST }} "ls -la"
+          
+          echo "Listing public_html contents..."
+          ssh -p ${{ secrets.PORT }} -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null \
+            ${{ secrets.USERNAME }}@${{ secrets.HOST }} "ls -la public_html"
+          
           echo "Listing remote theme files..."
           ssh -p ${{ secrets.PORT }} -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null \
             ${{ secrets.USERNAME }}@${{ secrets.HOST }} "ls -la public_html/wp-content/themes/ame-bazaar/"
