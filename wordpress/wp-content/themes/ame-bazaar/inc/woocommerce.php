@@ -503,6 +503,21 @@ function ame_bazaar_sticky_add_to_cart_mobile() {
 }
 add_action( 'wp_footer', 'ame_bazaar_sticky_add_to_cart_mobile' );
 
+/**
+ * Update Cart Item Count Badge dynamically via AJAX.
+ */
+function ame_bazaar_woocommerce_add_to_cart_fragments( $fragments ) {
+	$cart_count = WC()->cart->get_cart_contents_count();
+	$display_style = $cart_count > 0 ? 'flex' : 'none';
+	ob_start();
+	?>
+	<span class="ame-cart-count" style="display: <?php echo $display_style; ?>;"><?php echo esc_html( $cart_count ); ?></span>
+	<?php
+	$fragments['span.ame-cart-count'] = ob_get_clean();
+	return $fragments;
+}
+add_filter( 'woocommerce_add_to_cart_fragments', 'ame_bazaar_woocommerce_add_to_cart_fragments' );
+
 // End of WooCommerce Integration. Rerun trigger 4.
 
 

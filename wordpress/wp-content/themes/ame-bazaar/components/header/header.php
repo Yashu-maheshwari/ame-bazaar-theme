@@ -79,8 +79,15 @@ $maps_url = get_theme_mod( 'ame_bazaar_maps_url', 'https://maps.google.com/?q=AM
 				</svg>
 			</button>
 
-			<!-- Future Account Placeholder -->
-			<a href="#" class="ame-action-btn ame-account-link" aria-label="<?php esc_attr_e( 'My Account (Future Integration)', 'ame-bazaar' ); ?>">
+			<?php
+			$cart_url = function_exists( 'wc_get_cart_url' ) ? wc_get_cart_url() : '#';
+			$cart_count = ( function_exists( 'WC' ) && WC()->cart ) ? WC()->cart->get_cart_contents_count() : 0;
+			$my_account_id = function_exists( 'get_option' ) ? get_option('woocommerce_myaccount_page_id') : 0;
+			$account_url = $my_account_id ? get_permalink( $my_account_id ) : '#';
+			?>
+
+			<!-- My Account Button -->
+			<a href="<?php echo esc_url( $account_url ); ?>" class="ame-action-btn ame-account-link" aria-label="<?php esc_attr_e( 'My Account', 'ame-bazaar' ); ?>">
 				<svg class="ame-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
 					<path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle>
 				</svg>
@@ -93,11 +100,14 @@ $maps_url = get_theme_mod( 'ame_bazaar_maps_url', 'https://maps.google.com/?q=AM
 				</svg>
 			</a>
 
-			<!-- Future Cart Placeholder -->
-			<a href="#" class="ame-action-btn ame-cart-link" aria-label="<?php esc_attr_e( 'Shopping Cart (Future Integration)', 'ame-bazaar' ); ?>">
-				<svg class="ame-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-					<path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path>
-				</svg>
+			<!-- Shopping Cart Button with Dynamic Badge -->
+			<a href="<?php echo esc_url( $cart_url ); ?>" class="ame-action-btn ame-cart-link" aria-label="<?php esc_attr_e( 'Shopping Cart', 'ame-bazaar' ); ?>">
+				<div class="ame-cart-icon-wrapper" style="position: relative; display: inline-flex;">
+					<svg class="ame-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+						<path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path>
+					</svg>
+					<span class="ame-cart-count" style="display: <?php echo $cart_count > 0 ? 'flex' : 'none'; ?>;"><?php echo esc_html( $cart_count ); ?></span>
+				</div>
 			</a>
 
 			<!-- Call Now Button -->
