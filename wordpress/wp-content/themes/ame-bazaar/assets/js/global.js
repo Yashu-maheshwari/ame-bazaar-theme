@@ -601,4 +601,117 @@
 			showToast('Failed to load product preview.', 'error');
 		});
 	});
+
+	// Size Chart Modal Trigger
+	document.addEventListener('click', (e) => {
+		const sizeBtn = e.target.closest('#ame-trigger-size-chart-modal');
+		if (!sizeBtn) return;
+		e.preventDefault();
+
+		// Remove existing modal if any
+		const existingModal = document.getElementById('ame-size-chart-modal');
+		if (existingModal) existingModal.remove();
+
+		// Create modal
+		const modal = document.createElement('div');
+		modal.id = 'ame-size-chart-modal';
+		modal.className = 'ame-modal ame-size-chart-modal is-active';
+		modal.setAttribute('role', 'dialog');
+		modal.setAttribute('aria-modal', 'true');
+		modal.setAttribute('aria-label', 'Size and Fitting Chart');
+
+		modal.innerHTML = `
+			<div class="ame-modal-overlay" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,35,71,0.5); backdrop-filter: blur(4px); z-index: 1100;"></div>
+			<div class="ame-modal-container" style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: #fff; border-radius: 20px; box-shadow: 0 20px 50px rgba(0,35,71,0.15); z-index: 1200; max-width: 600px; width: 90%; overflow: hidden; display: flex; flex-direction: column;">
+				<button class="ame-modal-close-btn" style="position: absolute; top: 1.5rem; right: 1.5rem; font-size: 2rem; background: none; border: none; cursor: pointer; color: #64748b; line-height: 1; transition: color 0.2s;" aria-label="Close modal">&times;</button>
+				<div class="ame-modal-content" style="padding: 3rem;">
+					<h3 style="font-family: 'Outfit', 'Inter', sans-serif; font-size: 1.5rem; font-weight: 800; color: var(--ame-color-primary); margin-top: 0; margin-bottom: 1.5rem; text-align: center;">Indian Standard Ethnic Size Chart</h3>
+					<div style="overflow-x: auto;">
+						<table style="width: 100%; border-collapse: collapse; text-align: center; font-size: 0.9rem; min-width: 400px;">
+							<thead>
+								<tr style="background: #f8fafc; border-bottom: 2px solid #cbd5e1; color: var(--ame-color-primary); font-weight: 700;">
+									<th style="padding: 0.75rem; border: 1px solid #cbd5e1;">Size</th>
+									<th style="padding: 0.75rem; border: 1px solid #cbd5e1;">Bust (in)</th>
+									<th style="padding: 0.75rem; border: 1px solid #cbd5e1;">Waist (in)</th>
+									<th style="padding: 0.75rem; border: 1px solid #cbd5e1;">Shoulder (in)</th>
+									<th style="padding: 0.75rem; border: 1px solid #cbd5e1;">Length (in)</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr style="border-bottom: 1px solid #e2e8f0;">
+									<td style="padding: 0.75rem; font-weight: 700; border: 1px solid #e2e8f0;">S (36)</td>
+									<td style="padding: 0.75rem; border: 1px solid #e2e8f0;">36</td>
+									<td style="padding: 0.75rem; border: 1px solid #e2e8f0;">32</td>
+									<td style="padding: 0.75rem; border: 1px solid #e2e8f0;">14.5</td>
+									<td style="padding: 0.75rem; border: 1px solid #e2e8f0;">42</td>
+								</tr>
+								<tr style="border-bottom: 1px solid #e2e8f0; background: #fafafa;">
+									<td style="padding: 0.75rem; font-weight: 700; border: 1px solid #e2e8f0;">M (38)</td>
+									<td style="padding: 0.75rem; border: 1px solid #e2e8f0;">38</td>
+									<td style="padding: 0.75rem; border: 1px solid #e2e8f0;">34</td>
+									<td style="padding: 0.75rem; border: 1px solid #e2e8f0;">15</td>
+									<td style="padding: 0.75rem; border: 1px solid #e2e8f0;">42</td>
+								</tr>
+								<tr style="border-bottom: 1px solid #e2e8f0;">
+									<td style="padding: 0.75rem; font-weight: 700; border: 1px solid #e2e8f0;">L (40)</td>
+									<td style="padding: 0.75rem; border: 1px solid #e2e8f0;">40</td>
+									<td style="padding: 0.75rem; border: 1px solid #e2e8f0;">36</td>
+									<td style="padding: 0.75rem; border: 1px solid #e2e8f0;">15.5</td>
+									<td style="padding: 0.75rem; border: 1px solid #e2e8f0;">44</td>
+								</tr>
+								<tr style="border-bottom: 1px solid #e2e8f0; background: #fafafa;">
+									<td style="padding: 0.75rem; font-weight: 700; border: 1px solid #e2e8f0;">XL (42)</td>
+									<td style="padding: 0.75rem; border: 1px solid #e2e8f0;">42</td>
+									<td style="padding: 0.75rem; border: 1px solid #e2e8f0;">38</td>
+									<td style="padding: 0.75rem; border: 1px solid #e2e8f0;">16</td>
+									<td style="padding: 0.75rem; border: 1px solid #e2e8f0;">44</td>
+								</tr>
+								<tr style="border-bottom: 1px solid #e2e8f0;">
+									<td style="padding: 0.75rem; font-weight: 700; border: 1px solid #e2e8f0;">XXL (44)</td>
+									<td style="padding: 0.75rem; border: 1px solid #e2e8f0;">44</td>
+									<td style="padding: 0.75rem; border: 1px solid #e2e8f0;">40</td>
+									<td style="padding: 0.75rem; border: 1px solid #e2e8f0;">16.5</td>
+									<td style="padding: 0.75rem; border: 1px solid #e2e8f0;">45</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+					<p style="margin-top: 1.5rem; font-size: 0.8rem; color: #64748b; line-height: 1.5; text-align: center;">
+						* Need custom adjustments? We offer free alteration support at our Mubarakpur Road outlet. Bring your online invoice!
+					</p>
+				</div>
+			</div>
+		`;
+
+		document.body.appendChild(modal);
+		document.body.style.overflow = 'hidden';
+
+		// Trap focus inside modal
+		if (focusTrapCleanup) focusTrapCleanup();
+		focusTrapCleanup = createFocusTrap(modal);
+
+		// Bind close events
+		const closeModal = () => {
+			modal.classList.remove('is-active');
+			document.body.style.overflow = '';
+			if (focusTrapCleanup) {
+				focusTrapCleanup();
+				focusTrapCleanup = null;
+			}
+			modal.remove();
+		};
+
+		modal.querySelectorAll('.ame-modal-close-btn, .ame-modal-overlay').forEach(el => {
+			el.addEventListener('click', closeModal);
+		});
+
+		// Bind Escape key specifically for this modal
+		const escHandler = (event) => {
+			if (event.key === 'Escape') {
+				closeModal();
+				document.removeEventListener('keydown', escHandler);
+			}
+		};
+		document.addEventListener('keydown', escHandler);
+	});
 })();

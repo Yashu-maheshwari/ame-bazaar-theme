@@ -53,7 +53,12 @@ if ( post_password_required() ) {
 				$is_featured = $product->is_featured();
 				$stock_status = $product->get_stock_status();
 				
-				echo '<div class="ame-single-product-badges" style="display:flex; gap:0.5rem; margin-bottom:0.75rem;">';
+				$kirari_stock = get_post_meta( $product->get_id(), '_ame_kirari_stock', true );
+				$fabric = get_post_meta( $product->get_id(), '_ame_fabric', true );
+				$gsm = get_post_meta( $product->get_id(), '_ame_gsm', true );
+				$pattern = get_post_meta( $product->get_id(), '_ame_pattern', true );
+				
+				echo '<div class="ame-single-product-badges" style="display:flex; flex-wrap:wrap; gap:0.5rem; margin-bottom:0.75rem;">';
 				if ( $is_on_sale ) {
 					echo '<span class="ame-badge-sale">' . esc_html__( 'Sale', 'ame-bazaar' ) . '</span>';
 				}
@@ -64,6 +69,13 @@ if ( post_password_required() ) {
 					echo '<span class="ame-badge-outofstock">' . esc_html__( 'Out of Stock', 'ame-bazaar' ) . '</span>';
 				} else {
 					echo '<span class="ame-badge-new">' . esc_html__( 'In Stock', 'ame-bazaar' ) . '</span>';
+				}
+				if ( ! empty( $kirari_stock ) && intval( $kirari_stock ) > 0 ) {
+					if ( intval( $kirari_stock ) <= 5 ) {
+						echo '<span class="ame-badge-limited" style="background:#fee2e2; color:#ef4444;">' . sprintf( __( 'Only %d left at Mubarakpur Road!', 'ame-bazaar' ), intval( $kirari_stock ) ) . '</span>';
+					} else {
+						echo '<span class="ame-badge-new" style="background:#f0fdf4; color:#16a34a;">' . sprintf( __( 'Kirari Outlet Stock: %d', 'ame-bazaar' ), intval( $kirari_stock ) ) . '</span>';
+					}
 				}
 				echo '</div>';
 				
@@ -90,7 +102,15 @@ if ( post_password_required() ) {
 						</button>
 						<div class="ame-accordion-panel" id="prod-panel-fabric" aria-labelledby="prod-acc-fabric" role="region" hidden>
 							<div class="ame-accordion-content">
-								<p>This premium garment is crafted from 100% pure mulmul cotton / handloomed raw silk threads. Extremely breathable, skin-friendly, and lightweight—perfectly tailored for summers in Delhi.</p>
+								<?php if ( $fabric || $gsm || $pattern ) : ?>
+									<ul class="ame-single-product-spec-list" style="list-style: none; padding: 0; margin: 0 0 1rem 0; display: flex; flex-direction: column; gap: 0.5rem; font-size: 0.9rem;">
+										<?php if ( $fabric ) : ?><li><strong>Fabric / Material:</strong> <?php echo esc_html( $fabric ); ?></li><?php endif; ?>
+										<?php if ( $gsm ) : ?><li><strong>GSM Thickness:</strong> <?php echo esc_html( $gsm ); ?> gsm</li><?php endif; ?>
+										<?php if ( $pattern ) : ?><li><strong>Pattern Style:</strong> <?php echo esc_html( $pattern ); ?></li><?php endif; ?>
+									</ul>
+								<?php else : ?>
+									<p>This premium garment is crafted from 100% pure mulmul cotton / handloomed raw silk threads. Extremely breathable, skin-friendly, and lightweight—perfectly tailored for summers in Delhi.</p>
+								<?php endif; ?>
 							</div>
 						</div>
 					</div>
@@ -103,6 +123,7 @@ if ( post_password_required() ) {
 						<div class="ame-accordion-panel" id="prod-panel-size" aria-labelledby="prod-acc-size" role="region" hidden>
 							<div class="ame-accordion-content">
 								<p>Our sizing follows standard Indian ethnic charts. On-site tailor measurements and adjustments are available free of charge at our Mubarakpur Road store location in Kirari, Delhi.</p>
+								<button id="ame-trigger-size-chart-modal" style="margin-top: 1rem; cursor: pointer; border: 1.5px solid var(--ame-color-primary, #002347); background: none; padding: 0.6rem 1.25rem; border-radius: 40px; font-weight: 700; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--ame-color-primary, #002347); transition: all 0.2s;" type="button">View Size Chart</button>
 							</div>
 						</div>
 					</div>

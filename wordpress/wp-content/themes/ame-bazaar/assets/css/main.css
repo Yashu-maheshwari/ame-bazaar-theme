@@ -6754,6 +6754,99 @@
 	}
 }
 
+/* ==========================================================================
+   PHASE 15 - Step 6: Single Product Layout, Accordion Spec List & Sticky Bar
+   ========================================================================== */
+
+/* Layout alignment */
+.ame-single-product-layout-grid {
+	display: grid !important;
+	grid-template-columns: 1fr 1fr !important;
+	gap: 3.5rem !important;
+	margin-top: 2rem !important;
+	align-items: start !important;
+}
+
+/* Product Spec List */
+.ame-single-product-spec-list li {
+	border-bottom: 1px solid #f1f5f9;
+	padding-bottom: 0.4rem;
+	color: #334155;
+}
+
+.ame-single-product-spec-list li strong {
+	color: var(--ame-color-primary, #002347);
+}
+
+/* Premium Product Summary pricing and badges */
+.ame-single-product-badges span {
+	font-size: 0.75rem !important;
+	font-weight: 700 !important;
+	padding: 0.35rem 0.8rem !important;
+	border-radius: 4px !important;
+}
+
+/* Style Size Chart Trigger on hover */
+#ame-trigger-size-chart-modal:hover {
+	background: var(--ame-color-primary, #002347) !important;
+	color: #ffffff !important;
+	transform: translateY(-2px);
+	box-shadow: 0 4px 10px rgba(0, 35, 71, 0.1) !important;
+}
+
+/* Sticky add to cart mobile bar */
+.ame-sticky-add-to-cart {
+	position: fixed !important;
+	bottom: 0 !important;
+	left: 0 !important;
+	width: 100% !important;
+	background: #ffffff !important;
+	border-top: 1px solid #e2e8f0 !important;
+	padding: 0.75rem 1rem !important;
+	display: flex !important;
+	justify-content: space-between !important;
+	align-items: center !important;
+	z-index: 1000 !important;
+	box-shadow: 0 -4px 15px rgba(0, 35, 71, 0.06) !important;
+}
+
+.ame-sticky-add-to-cart-info {
+	display: flex !important;
+	flex-direction: column !important;
+	gap: 0.2rem !important;
+}
+
+.ame-sticky-add-to-cart-title {
+	font-weight: 700 !important;
+	font-size: 0.85rem !important;
+	color: var(--ame-color-primary, #002347) !important;
+}
+
+.ame-sticky-add-to-cart-price {
+	font-weight: 700 !important;
+	font-size: 0.9rem !important;
+	color: var(--ame-color-accent, #f59e0b) !important;
+}
+
+.ame-btn-sticky-add {
+	padding: 0.6rem 1.5rem !important;
+	font-weight: 700 !important;
+	font-size: 0.85rem !important;
+	border-radius: 30px !important;
+	background: var(--ame-color-primary, #002347) !important;
+	color: #ffffff !important;
+	text-decoration: none !important;
+	text-transform: uppercase !important;
+}
+
+/* Responsive single product page */
+@media (max-width: 768px) {
+	.ame-single-product-layout-grid {
+		grid-template-columns: 1fr !important;
+		gap: 2rem !important;
+	}
+}
+
 
 
 
