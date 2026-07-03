@@ -50,7 +50,7 @@ jobs:
             "cp public_html/wp-content/themes/ame-bazaar/clear-cache.php public_html/clear-cache.php"
           
           echo "Triggering OPCache flush..."
-          curl -sL https://amebazaar.in/clear-cache.php
+          curl -X POST -sL https://amebazaar.in/clear-cache.php
           
           echo "Removing OPCache flusher from web root..."
           ssh -p ${{ secrets.PORT }} -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null ${{ secrets.USERNAME }}@${{ secrets.HOST }} \
