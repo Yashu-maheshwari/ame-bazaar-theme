@@ -62,6 +62,10 @@ jobs:
           ssh -p ${{ secrets.PORT }} -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null \
             ${{ secrets.USERNAME }}@${{ secrets.HOST }} "ls -la public_html/wp-content/themes/ame-bazaar/"
           
+          echo "Checking functions.php content..."
+          ssh -p ${{ secrets.PORT }} -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null \
+            ${{ secrets.USERNAME }}@${{ secrets.HOST }} "cat public_html/wp-content/themes/ame-bazaar/functions.php"
+          
           echo "Checking if style.css exists..."
           ssh -p ${{ secrets.PORT }} -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null \
             ${{ secrets.USERNAME }}@${{ secrets.HOST }} "test -f public_html/wp-content/themes/ame-bazaar/style.css"
