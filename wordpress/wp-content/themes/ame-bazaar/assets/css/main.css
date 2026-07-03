@@ -7403,6 +7403,61 @@ form.checkout {
 	}
 }
 
+/* ==========================================================================
+   PHASE 15 - Step 10: Mobile Optimization & Touch Targets
+   ========================================================================== */
+
+/* Enforce Touch Target Sizing (minimum 44x44px for accessibility) */
+.ame-mobile-menu-toggle,
+.ame-mobile-drawer-close-btn,
+.ame-search-close-btn,
+.ame-toast-close,
+.product-remove a.remove {
+	min-width: 44px !important;
+	min-height: 44px !important;
+	display: inline-flex !important;
+	align-items: center !important;
+	justify-content: center !important;
+}
+
+/* Prevent layout overflows on extra small screens */
+@media (max-width: 360px) {
+	.ame-hero-headline {
+		font-size: 1.85rem !important;
+	}
+	.ame-hero-ctas {
+		flex-direction: column !important;
+		width: 100% !important;
+	}
+	.ame-hero-ctas a {
+		width: 100% !important;
+		text-align: center !important;
+		justify-content: center !important;
+	}
+	.ame-checkout-steps-bar {
+		flex-direction: column !important;
+		gap: 0.5rem !important;
+	}
+	.ame-step-line {
+		display: none !important;
+	}
+}
+
+/* Clean backdrop blur and sliding transitions for Mobile Navigation Drawer */
+.ame-mobile-drawer {
+	transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+.ame-mobile-drawer.is-active {
+	transform: translateX(0) !important;
+}
+
+.ame-mobile-drawer-overlay {
+	background: rgba(0, 35, 71, 0.4) !important;
+	backdrop-filter: blur(8px) !important;
+	-webkit-backdrop-filter: blur(8px) !important;
+}
+
 
 
 
