@@ -6309,6 +6309,77 @@
 	}
 }
 
+/* ==========================================================================
+   PHASE 15 - Step 3: Homepage Spacing & Layout Polish
+   ========================================================================== */
+
+/* Standardized Section Spacing (Shopify-style luxury breathing room) */
+.ame-bazaar-home > section,
+.ame-bazaar-home > div {
+	padding: 6.5rem 0 !important;
+	border-bottom: 1px solid rgba(241, 245, 249, 0.9) !important;
+}
+
+/* Alternating background shading for premium feel */
+.ame-bazaar-home > section:nth-of-type(even) {
+	background-color: #fafafa !important;
+}
+
+/* Standardized Section Headers (Premium Typography & Hierarchy) */
+.ame-section-title-wrap {
+	text-align: center !important;
+	margin-bottom: 4.5rem !important;
+	max-width: 680px !important;
+	margin-left: auto !important;
+	margin-right: auto !important;
+}
+
+.ame-section-title {
+	font-family: 'Outfit', 'Inter', sans-serif !important;
+	font-size: 2.5rem !important;
+	font-weight: 800 !important;
+	color: var(--ame-color-primary, #002347) !important;
+	letter-spacing: -0.01em !important;
+	margin-bottom: 1rem !important;
+	position: relative;
+	display: inline-block;
+}
+
+.ame-section-subtitle {
+	font-size: 1.05rem !important;
+	color: #64748b !important;
+	line-height: 1.6 !important;
+	font-weight: 500 !important;
+}
+
+/* Rounded Cards & Premium Soft Shadows */
+.ame-card, .ame-panel, .sg-card {
+	border-radius: 16px !important;
+	border: 1px solid rgba(226, 232, 240, 0.7) !important;
+	box-shadow: 0 4px 20px rgba(0, 35, 71, 0.03) !important;
+	transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s ease !important;
+}
+
+.ame-card:hover {
+	transform: translateY(-4px) !important;
+	box-shadow: 0 12px 30px rgba(0, 35, 71, 0.08) !important;
+}
+
+/* Responsive spacing scaling */
+@media (max-width: 768px) {
+	.ame-bazaar-home > section,
+	.ame-bazaar-home > div {
+		padding: 4.5rem 0 !important;
+	}
+	.ame-section-title-wrap {
+		margin-bottom: 3rem !important;
+		padding: 0 1rem !important;
+	}
+	.ame-section-title {
+		font-size: 1.85rem !important;
+	}
+}
+
 
 
 
