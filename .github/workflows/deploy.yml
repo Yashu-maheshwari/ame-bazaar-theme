@@ -31,7 +31,7 @@ jobs:
         run: |
           echo "Checking remote SSH connection and creating theme directory if missing..."
           ssh -p ${{ secrets.PORT }} -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null ${{ secrets.USERNAME }}@${{ secrets.HOST }} \
-            "mkdir -p public_html/wp-content/themes/ame-bazaar/"
+            "mkdir -p domains/amebazaar.in/public_html/wp-content/themes/ame-bazaar/"
           echo "Verification complete: Remote path verified/created."
 
       - name: Deploy Theme Files via Rsync
@@ -40,21 +40,21 @@ jobs:
           rsync --archive --compress --delete --verbose \
             -e "ssh -p ${{ secrets.PORT }} -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null" \
             wordpress/wp-content/themes/ame-bazaar/ \
-            ${{ secrets.USERNAME }}@${{ secrets.HOST }}:public_html/wp-content/themes/ame-bazaar/
+            ${{ secrets.USERNAME }}@${{ secrets.HOST }}:domains/amebazaar.in/public_html/wp-content/themes/ame-bazaar/
           echo "Deployment successful!"
 
       - name: Flush Remote OPCache
         run: |
           echo "Copying OPCache flusher to web root..."
           ssh -p ${{ secrets.PORT }} -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null ${{ secrets.USERNAME }}@${{ secrets.HOST }} \
-            "cp public_html/wp-content/themes/ame-bazaar/clear-cache.php public_html/clear-cache.php"
+            "cp domains/amebazaar.in/public_html/wp-content/themes/ame-bazaar/clear-cache.php domains/amebazaar.in/public_html/clear-cache.php"
           
           echo "Triggering OPCache flush..."
           curl -X POST -sL https://amebazaar.in/clear-cache.php
           
           echo "Removing OPCache flusher from web root..."
           ssh -p ${{ secrets.PORT }} -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null ${{ secrets.USERNAME }}@${{ secrets.HOST }} \
-            "rm public_html/clear-cache.php"
+            "rm domains/amebazaar.in/public_html/clear-cache.php"
 
       - name: Verify Deployed Files on Hostinger
         run: |
@@ -76,20 +76,20 @@ jobs:
           
           echo "Listing remote theme files..."
           ssh -p ${{ secrets.PORT }} -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null \
-            ${{ secrets.USERNAME }}@${{ secrets.HOST }} "ls -la public_html/wp-content/themes/ame-bazaar/"
+            ${{ secrets.USERNAME }}@${{ secrets.HOST }} "ls -la domains/amebazaar.in/public_html/wp-content/themes/ame-bazaar/"
           
           echo "Checking functions.php content..."
           ssh -p ${{ secrets.PORT }} -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null \
-            ${{ secrets.USERNAME }}@${{ secrets.HOST }} "cat public_html/wp-content/themes/ame-bazaar/functions.php"
+            ${{ secrets.USERNAME }}@${{ secrets.HOST }} "cat domains/amebazaar.in/public_html/wp-content/themes/ame-bazaar/functions.php"
           
           echo "Checking if style.css exists..."
           ssh -p ${{ secrets.PORT }} -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null \
-            ${{ secrets.USERNAME }}@${{ secrets.HOST }} "test -f public_html/wp-content/themes/ame-bazaar/style.css"
+            ${{ secrets.USERNAME }}@${{ secrets.HOST }} "test -f domains/amebazaar.in/public_html/wp-content/themes/ame-bazaar/style.css"
           echo "style.css exists."
           
           echo "Checking if functions.php exists..."
           ssh -p ${{ secrets.PORT }} -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null \
-            ${{ secrets.USERNAME }}@${{ secrets.HOST }} "test -f public_html/wp-content/themes/ame-bazaar/functions.php"
+            ${{ secrets.USERNAME }}@${{ secrets.HOST }} "test -f domains/amebazaar.in/public_html/wp-content/themes/ame-bazaar/functions.php"
           echo "functions.php exists."
           
           echo "Verification successful: theme files deployed correctly!"
