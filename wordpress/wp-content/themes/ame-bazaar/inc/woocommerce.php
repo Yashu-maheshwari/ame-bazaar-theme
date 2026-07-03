@@ -587,7 +587,7 @@ function ame_bazaar_quick_view_callback() {
 add_action( 'wp_ajax_ame_bazaar_quick_view', 'ame_bazaar_quick_view_callback' );
 add_action( 'wp_ajax_nopriv_ame_bazaar_quick_view', 'ame_bazaar_quick_view_callback' );
 
-// End of WooCommerce Integration. Rerun trigger 4.
+// End of WooCommerce Integration. Rerun trigger 5.
 
 
 
