@@ -6125,6 +6125,190 @@
 	box-shadow: 0 4px 12px rgba(0, 35, 71, 0.12) !important;
 }
 
+/* ==========================================================================
+   PHASE 15 - Step 2: Premium Hero Section Polish
+   ========================================================================== */
+
+.ame-hero {
+	padding: 5rem 0 !important;
+	background: radial-gradient(circle at 10% 20%, rgba(243, 244, 246, 0.4) 0%, rgba(255, 255, 255, 1) 90.1%) !important;
+	overflow: hidden;
+}
+
+.ame-hero-inner {
+	display: grid !important;
+	grid-template-columns: 1.1fr 0.9fr !important;
+	gap: 4rem !important;
+	align-items: center !important;
+}
+
+.ame-hero-headline {
+	font-family: 'Outfit', 'Inter', sans-serif !important;
+	font-size: 3.5rem !important;
+	font-weight: 800 !important;
+	line-height: 1.15 !important;
+	letter-spacing: -0.02em !important;
+	color: var(--ame-color-primary, #002347) !important;
+	margin-bottom: 1.5rem !important;
+}
+
+.ame-hero-subheadline {
+	font-size: 1.15rem !important;
+	font-weight: 500 !important;
+	line-height: 1.6 !important;
+	color: #475569 !important;
+	margin-bottom: 2.5rem !important;
+	letter-spacing: 0.05em;
+	text-transform: uppercase;
+}
+
+.ame-hero-ctas {
+	display: flex !important;
+	gap: 1.25rem !important;
+	margin-bottom: 3.5rem !important;
+	flex-wrap: wrap;
+}
+
+/* Premium Buttons Styling */
+.ame-bazaar-btn--primary {
+	background: var(--ame-color-primary, #002347) !important;
+	color: #ffffff !important;
+	border: 1px solid var(--ame-color-primary, #002347) !important;
+}
+
+.ame-bazaar-btn--primary:hover {
+	background: #001224 !important;
+	border-color: #001224 !important;
+}
+
+.ame-bazaar-btn--secondary {
+	background: transparent !important;
+	color: var(--ame-color-primary, #002347) !important;
+	border: 1.5px solid var(--ame-color-primary, #002347) !important;
+}
+
+.ame-bazaar-btn--secondary:hover {
+	background: rgba(0, 35, 71, 0.03) !important;
+}
+
+.ame-hero-btn-shop, .ame-hero-btn-visit {
+	display: inline-flex !important;
+	align-items: center !important;
+	gap: 0.6rem !important;
+	padding: 0.9rem 2.25rem !important;
+	font-size: 0.95rem !important;
+	font-weight: 700 !important;
+	border-radius: 50px !important;
+	letter-spacing: 0.03em !important;
+	transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+	box-shadow: 0 4px 14px rgba(0, 35, 71, 0.08) !important;
+}
+
+.ame-hero-btn-shop:hover, .ame-hero-btn-visit:hover {
+	transform: translateY(-3px) !important;
+	box-shadow: 0 8px 24px rgba(0, 35, 71, 0.15) !important;
+}
+
+.ame-hero-icon {
+	width: 18px !important;
+	height: 18px !important;
+}
+
+/* Trust items underneath CTAs */
+.ame-hero-trust-row {
+	display: flex !important;
+	flex-wrap: wrap !important;
+	gap: 1.5rem !important;
+	border-top: 1px solid rgba(226, 232, 240, 0.8) !important;
+	padding-top: 2rem !important;
+}
+
+.ame-trust-item {
+	display: flex !important;
+	align-items: center !important;
+	gap: 0.5rem !important;
+}
+
+.ame-trust-icon {
+	width: 16px !important;
+	height: 16px !important;
+	color: var(--ame-color-accent, #f59e0b) !important;
+}
+
+.ame-trust-text {
+	font-size: 0.85rem !important;
+	font-weight: 600 !important;
+	color: #475569 !important;
+}
+
+/* Right Visual element */
+.ame-hero-visual {
+	position: relative;
+	display: flex;
+	justify-content: flex-end;
+}
+
+.ame-hero-visual::before {
+	content: '';
+	position: absolute;
+	top: -10%;
+	right: -10%;
+	width: 80%;
+	height: 80%;
+	background: radial-gradient(circle, rgba(245, 158, 11, 0.08) 0%, transparent 70%);
+	z-index: 1;
+	pointer-events: none;
+}
+
+.ame-hero-img {
+	max-width: 100% !important;
+	height: 520px !important;
+	object-fit: cover !important;
+	border-radius: 24px !important;
+	box-shadow: 0 20px 40px rgba(0, 35, 71, 0.1) !important;
+	border: 1px solid rgba(255, 255, 255, 0.5);
+	z-index: 2;
+	position: relative;
+	transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.ame-hero-img:hover {
+	transform: scale(1.02) translateY(-4px);
+}
+
+/* Responsive adjustments */
+@media (max-width: 1024px) {
+	.ame-hero-inner {
+		gap: 2.5rem !important;
+	}
+	.ame-hero-headline {
+		font-size: 2.75rem !important;
+	}
+	.ame-hero-img {
+		height: 420px !important;
+	}
+}
+
+@media (max-width: 768px) {
+	.ame-hero {
+		padding: 3.5rem 0 !important;
+	}
+	.ame-hero-inner {
+		grid-template-columns: 1fr !important;
+		gap: 3rem !important;
+	}
+	.ame-hero-headline {
+		font-size: 2.25rem !important;
+	}
+	.ame-hero-img {
+		height: 350px !important;
+		width: 100% !important;
+	}
+	.ame-hero-ctas {
+		margin-bottom: 2.5rem !important;
+	}
+}
+
 
 
 
