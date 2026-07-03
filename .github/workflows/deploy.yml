@@ -58,9 +58,17 @@ jobs:
 
       - name: Verify Deployed Files on Hostinger
         run: |
-          echo "Listing remote user home directory..."
+          echo "Listing domains contents..."
           ssh -p ${{ secrets.PORT }} -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null \
-            ${{ secrets.USERNAME }}@${{ secrets.HOST }} "ls -la"
+            ${{ secrets.USERNAME }}@${{ secrets.HOST }} "ls -la domains"
+          
+          echo "Listing domains/amebazaar.in contents..."
+          ssh -p ${{ secrets.PORT }} -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null \
+            ${{ secrets.USERNAME }}@${{ secrets.HOST }} "ls -la domains/amebazaar.in"
+          
+          echo "Listing domains/amebazaar.in/public_html contents..."
+          ssh -p ${{ secrets.PORT }} -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null \
+            ${{ secrets.USERNAME }}@${{ secrets.HOST }} "ls -la domains/amebazaar.in/public_html"
           
           echo "Listing public_html contents..."
           ssh -p ${{ secrets.PORT }} -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null \
