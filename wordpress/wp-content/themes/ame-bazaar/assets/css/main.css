@@ -6380,6 +6380,173 @@
 	}
 }
 
+/* ==========================================================================
+   PHASE 15 - Step 4: Shop by Category Visual Polish
+   ========================================================================== */
+
+.ame-categories-section {
+	background: #ffffff !important;
+}
+
+/* Connect to general section header styling */
+.ame-categories-header {
+	text-align: center !important;
+	margin-bottom: 4rem !important;
+}
+
+.ame-categories-section-title {
+	font-family: 'Outfit', 'Inter', sans-serif !important;
+	font-size: 2.5rem !important;
+	font-weight: 800 !important;
+	color: var(--ame-color-primary, #002347) !important;
+	margin-bottom: 0.75rem !important;
+}
+
+.ame-categories-section-subtitle {
+	font-size: 1.05rem !important;
+	color: #64748b !important;
+	font-weight: 500 !important;
+}
+
+/* Category Grid layout */
+.ame-categories-grid {
+	display: grid !important;
+	grid-template-columns: repeat(3, 1fr) !important;
+	gap: 2rem !important;
+}
+
+/* Category Card Design */
+.ame-category-card {
+	background: #ffffff !important;
+	border-radius: 20px !important;
+	border: 1px solid rgba(226, 232, 240, 0.7) !important;
+	box-shadow: 0 4px 20px rgba(0, 35, 71, 0.02) !important;
+	overflow: hidden !important;
+	transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+	display: flex !important;
+	flex-direction: column !important;
+}
+
+.ame-category-card:hover {
+	transform: translateY(-6px) !important;
+	box-shadow: 0 12px 30px rgba(0, 35, 71, 0.08) !important;
+	border-color: rgba(0, 35, 71, 0.08) !important;
+}
+
+/* Category visual/image holder */
+.ame-category-card-visual {
+	position: relative !important;
+	height: 320px !important;
+	overflow: hidden !important;
+	background: #f8fafc !important;
+}
+
+.ame-category-img {
+	width: 100% !important;
+	height: 100% !important;
+	object-fit: cover !important;
+	transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+.ame-category-card:hover .ame-category-img {
+	transform: scale(1.06) !important;
+}
+
+/* Elegant Placeholder style */
+.ame-category-img-placeholder {
+	width: 100% !important;
+	height: 100% !important;
+	background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%) !important;
+	display: flex !important;
+	flex-direction: column !important;
+	align-items: center !important;
+	justify-content: center !important;
+	position: relative !important;
+}
+
+/* Content bottom area */
+.ame-category-card-content {
+	padding: 2rem !important;
+	text-align: center !important;
+	flex-grow: 1 !important;
+	display: flex !important;
+	flex-direction: column !important;
+	justify-content: space-between !important;
+	align-items: center !important;
+}
+
+.ame-category-card-title {
+	font-family: 'Outfit', 'Inter', sans-serif !important;
+	font-size: 1.35rem !important;
+	font-weight: 700 !important;
+	margin-bottom: 0.75rem !important;
+}
+
+.ame-category-title-link {
+	color: var(--ame-color-primary, #002347) !important;
+	text-decoration: none !important;
+	transition: color 0.2s ease !important;
+}
+
+.ame-category-title-link:hover {
+	color: var(--ame-color-accent, #f59e0b) !important;
+}
+
+.ame-category-card-desc {
+	font-size: 0.9rem !important;
+	color: #64748b !important;
+	line-height: 1.5 !important;
+	margin-bottom: 1.5rem !important;
+}
+
+/* Card Button styling */
+.ame-category-card-btn {
+	display: inline-flex !important;
+	align-items: center !important;
+	gap: 0.5rem !important;
+	padding: 0.7rem 1.75rem !important;
+	font-size: 0.85rem !important;
+	font-weight: 700 !important;
+	border-radius: 40px !important;
+	text-transform: uppercase !important;
+	letter-spacing: 0.04em !important;
+	transition: all 0.2s ease !important;
+}
+
+.ame-arrow-icon {
+	width: 14px !important;
+	height: 14px !important;
+	transition: transform 0.2s ease !important;
+}
+
+.ame-category-card-btn:hover .ame-arrow-icon {
+	transform: translateX(3px) !important;
+}
+
+/* Responsive adjustments */
+@media (max-width: 1024px) {
+	.ame-categories-grid {
+		grid-template-columns: repeat(2, 1fr) !important;
+		gap: 1.5rem !important;
+	}
+	.ame-category-card-visual {
+		height: 280px !important;
+	}
+}
+
+@media (max-width: 768px) {
+	.ame-categories-grid {
+		grid-template-columns: 1fr !important;
+		gap: 1.5rem !important;
+	}
+	.ame-category-card-visual {
+		height: 260px !important;
+	}
+	.ame-categories-header {
+		margin-bottom: 2.5rem !important;
+	}
+}
+
 
 
 
