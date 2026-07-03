@@ -114,6 +114,11 @@ function ame_bazaar_loop_product_thumbnail_with_actions() {
 				<path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path>
 			</svg>
 		</a>
+		<a href="#" class="ame-product-action-btn ame-quickview-btn" data-product-id="<?php echo esc_attr( get_the_ID() ); ?>" aria-label="<?php esc_attr_e( 'Quick View', 'ame-bazaar' ); ?>">
+			<svg class="ame-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+				<circle cx="12" cy="12" r="3"></circle><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+			</svg>
+		</a>
 		<a href="#" class="ame-product-action-btn ame-wishlist-action-btn" data-product-id="<?php echo esc_attr( get_the_ID() ); ?>" aria-label="<?php esc_attr_e( 'Add to Wishlist (Future Integration)', 'ame-bazaar' ); ?>">
 			<svg class="ame-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
 				<path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
@@ -517,6 +522,70 @@ function ame_bazaar_woocommerce_add_to_cart_fragments( $fragments ) {
 	return $fragments;
 }
 add_filter( 'woocommerce_add_to_cart_fragments', 'ame_bazaar_woocommerce_add_to_cart_fragments' );
+
+/**
+ * AJAX Handler for Product Quick View.
+ */
+function ame_bazaar_quick_view_callback() {
+	if ( ! isset( $_POST['product_id'] ) ) {
+		wp_send_json_error( array( 'message' => 'Missing Product ID' ) );
+	}
+	
+	$product_id = intval( $_POST['product_id'] );
+	$post = get_post( $product_id );
+	
+	if ( ! $post || 'product' !== $post->post_type ) {
+		wp_send_json_error( array( 'message' => 'Invalid Product' ) );
+	}
+	
+	$product = wc_get_product( $product_id );
+	
+	// Start output buffer
+	ob_start();
+	?>
+	<div class="ame-quickview-modal-content-inner" style="display: grid; grid-template-columns: 1fr 1.2fr; gap: 2rem; align-items: start;">
+		<!-- Left: Image -->
+		<div class="ame-quickview-image-col">
+			<?php echo $product->get_image( 'large', array( 'style' => 'width: 100%; height: auto; border-radius: 12px; object-fit: cover;' ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+		</div>
+		
+		<!-- Right: Details -->
+		<div class="ame-quickview-details-col">
+			<h2 class="ame-quickview-title" style="font-family: \'Outfit\', \'Inter\', sans-serif; font-size: 1.75rem; font-weight: 800; color: var(--ame-color-primary); margin-top: 0; margin-bottom: 0.5rem;"><?php echo esc_html( $product->get_name() ); ?></h2>
+			<div class="ame-quickview-price" style="font-size: 1.35rem; font-weight: 700; color: var(--ame-color-accent); margin-bottom: 1.5rem;"><?php echo $product->get_price_html(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></div>
+			
+			<div class="ame-quickview-desc" style="font-size: 0.95rem; color: #475569; line-height: 1.6; margin-bottom: 1.5rem;">
+				<?php echo wp_kses_post( $product->get_short_description() ); ?>
+			</div>
+			
+			<!-- Specs -->
+			<?php
+			$fabric = get_post_meta( $product_id, '_ame_fabric', true );
+			$pattern = get_post_meta( $product_id, '_ame_pattern', true );
+			if ( $fabric || $pattern ) :
+			?>
+				<div class="ame-quickview-specs" style="margin: 1.5rem 0; font-size: 0.85rem; border-top: 1px solid #f1f5f9; padding-top: 1rem; color: #64748b; display: flex; flex-direction: column; gap: 0.4rem;">
+					<?php if ( $fabric ) : ?><div><strong>Fabric:</strong> <?php echo esc_html( $fabric ); ?></div><?php endif; ?>
+					<?php if ( $pattern ) : ?><div><strong>Pattern:</strong> <?php echo esc_html( $pattern ); ?></div><?php endif; ?>
+				</div>
+			<?php endif; ?>
+			
+			<div class="ame-quickview-add-to-cart-wrapper" style="margin-top: 2rem; display: flex; flex-direction: column; gap: 1rem;">
+				<a href="?add-to-cart=<?php echo esc_attr( $product_id ); ?>" class="ame-bazaar-btn ame-bazaar-btn--primary ame-quickview-add-to-cart ajax_add_to_cart" data-product_id="<?php echo esc_attr( $product_id ); ?>" aria-label="<?php esc_attr_e( 'Add to Cart', 'ame-bazaar' ); ?>" style="text-align: center; justify-content: center; padding: 0.8rem 2rem; font-weight: 700; border-radius: 40px; display: inline-flex; align-items: center; letter-spacing: 0.05em; text-transform: uppercase;">
+					<?php esc_html_e( 'Add to Cart', 'ame-bazaar' ); ?>
+				</a>
+				<a href="<?php echo esc_url( $product->get_permalink() ); ?>" class="ame-quickview-view-details" style="display: block; font-size: 0.85rem; font-weight: 700; text-transform: uppercase; color: var(--ame-color-primary); letter-spacing: 0.05em; text-align: center; text-decoration: underline;">
+					<?php esc_html_e( 'View Full Details', 'ame-bazaar' ); ?>
+				</a>
+			</div>
+		</div>
+	</div>
+	<?php
+	$html = ob_get_clean();
+	wp_send_json_success( array( 'html' => $html ) );
+}
+add_action( 'wp_ajax_ame_bazaar_quick_view', 'ame_bazaar_quick_view_callback' );
+add_action( 'wp_ajax_nopriv_ame_bazaar_quick_view', 'ame_bazaar_quick_view_callback' );
 
 // End of WooCommerce Integration. Rerun trigger 4.
 

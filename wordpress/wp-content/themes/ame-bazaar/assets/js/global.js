@@ -519,4 +519,86 @@
 			showToast('Product added to Compare! (Architecture Demo, No plugin required)', 'success');
 		}
 	});
+
+	// 8.5 QUICK VIEW MODAL
+	document.addEventListener('click', (e) => {
+		const qvBtn = e.target.closest('.ame-quickview-btn');
+		if (!qvBtn) return;
+		e.preventDefault();
+		
+		const productId = qvBtn.getAttribute('data-product-id');
+		if (!productId || typeof ameBazaarAjax === 'undefined') return;
+
+		const formData = new FormData();
+		formData.append('action', 'ame_bazaar_quick_view');
+		formData.append('product_id', productId);
+
+		fetch(ameBazaarAjax.ajaxurl, {
+			method: 'POST',
+			body: formData
+		})
+		.then(res => res.json())
+		.then(response => {
+			if (response.success && response.data.html) {
+				// Remove existing quickview modal if any
+				const existingModal = document.getElementById('ame-quickview-modal');
+				if (existingModal) existingModal.remove();
+
+				// Create modal markup
+				const modal = document.createElement('div');
+				modal.id = 'ame-quickview-modal';
+				modal.className = 'ame-modal ame-quickview-modal is-active';
+				modal.setAttribute('role', 'dialog');
+				modal.setAttribute('aria-modal', 'true');
+				modal.setAttribute('aria-label', 'Product Quick View');
+
+				modal.innerHTML = `
+					<div class="ame-modal-overlay" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,35,71,0.5); backdrop-filter: blur(4px); z-index: 1100;"></div>
+					<div class="ame-modal-container" style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: #fff; border-radius: 20px; box-shadow: 0 20px 50px rgba(0,35,71,0.15); z-index: 1200; max-width: 800px; width: 90%; overflow: hidden; display: flex; flex-direction: column;">
+						<button class="ame-modal-close-btn" style="position: absolute; top: 1.5rem; right: 1.5rem; font-size: 2rem; background: none; border: none; cursor: pointer; color: #64748b; line-height: 1; transition: color 0.2s;" aria-label="Close modal">&times;</button>
+						<div class="ame-modal-content" style="padding: 3rem;">
+							${response.data.html}
+						</div>
+					</div>
+				`;
+
+				document.body.appendChild(modal);
+				document.body.style.overflow = 'hidden';
+
+				// Trap focus inside modal
+				if (focusTrapCleanup) focusTrapCleanup();
+				focusTrapCleanup = createFocusTrap(modal);
+
+				// Bind close events
+				const closeModal = () => {
+					modal.classList.remove('is-active');
+					document.body.style.overflow = '';
+					if (focusTrapCleanup) {
+						focusTrapCleanup();
+						focusTrapCleanup = null;
+					}
+					modal.remove();
+				};
+
+				modal.querySelectorAll('.ame-modal-close-btn, .ame-modal-overlay').forEach(el => {
+					el.addEventListener('click', closeModal);
+				});
+
+				// Bind Escape key specifically for this modal
+				const escHandler = (event) => {
+					if (event.key === 'Escape') {
+						closeModal();
+						document.removeEventListener('keydown', escHandler);
+					}
+				};
+				document.addEventListener('keydown', escHandler);
+			} else {
+				showToast('Failed to load product preview.', 'error');
+			}
+		})
+		.catch(err => {
+			console.error(err);
+			showToast('Failed to load product preview.', 'error');
+		});
+	});
 })();
