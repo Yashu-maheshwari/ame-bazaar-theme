@@ -782,7 +782,4 @@ function ame_bazaar_create_local_system_pages() {
 }
 add_action( 'init', 'ame_bazaar_create_local_system_pages' );
 
-function ame_bazaar_ops_footer_comment() {
-	echo '<!-- ADMIN_OPERATIONS_LOADED -->';
-}
-add_action( 'wp_footer', 'ame_bazaar_ops_footer_comment' );
+
