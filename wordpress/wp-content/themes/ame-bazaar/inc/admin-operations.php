@@ -808,6 +808,8 @@ function ame_bazaar_enqueue_media_manager_scripts( $hook ) {
 }
 add_action( 'admin_enqueue_scripts', 'ame_bazaar_enqueue_media_manager_scripts' );
 
+add_action( 'admin_init', 'ame_bazaar_auto_assign_media_mappings' );
+
 /**
  * 16. Auto-Assign existing assets to options
  */
