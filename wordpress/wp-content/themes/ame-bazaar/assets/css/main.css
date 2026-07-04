@@ -6434,9 +6434,18 @@
 }
 
 /* Category visual/image holder */
+.ame-category-card-visual-link {
+	display: block !important;
+	width: 100% !important;
+	aspect-ratio: 3 / 4 !important;
+	overflow: hidden !important;
+	position: relative !important;
+}
+
 .ame-category-card-visual {
 	position: relative !important;
-	height: 320px !important;
+	width: 100% !important;
+	height: 100% !important;
 	overflow: hidden !important;
 	background: #f8fafc !important;
 }
@@ -6471,7 +6480,7 @@
 	flex-grow: 1 !important;
 	display: flex !important;
 	flex-direction: column !important;
-	justify-content: space-between !important;
+	justify-content: flex-start !important;
 	align-items: center !important;
 }
 
@@ -6479,6 +6488,7 @@
 	font-family: 'Outfit', 'Inter', sans-serif !important;
 	font-size: 1.35rem !important;
 	font-weight: 700 !important;
+	margin-top: 0 !important;
 	margin-bottom: 0.75rem !important;
 }
 
@@ -6496,6 +6506,7 @@
 	font-size: 0.9rem !important;
 	color: #64748b !important;
 	line-height: 1.5 !important;
+	margin-top: 0 !important;
 	margin-bottom: 1.5rem !important;
 }
 
@@ -6511,6 +6522,7 @@
 	text-transform: uppercase !important;
 	letter-spacing: 0.04em !important;
 	transition: all 0.2s ease !important;
+	margin-top: auto !important;
 }
 
 .ame-arrow-icon {
@@ -6529,18 +6541,12 @@
 		grid-template-columns: repeat(2, 1fr) !important;
 		gap: 1.5rem !important;
 	}
-	.ame-category-card-visual {
-		height: 280px !important;
-	}
 }
 
 @media (max-width: 768px) {
 	.ame-categories-grid {
 		grid-template-columns: 1fr !important;
 		gap: 1.5rem !important;
-	}
-	.ame-category-card-visual {
-		height: 260px !important;
 	}
 	.ame-categories-header {
 		margin-bottom: 2.5rem !important;

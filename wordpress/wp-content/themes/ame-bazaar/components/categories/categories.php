@@ -15,27 +15,27 @@ $section_subtitle = get_theme_mod( 'ame_bazaar_cat_section_subtitle', 'Explore o
 $categories = array(
 	'men' => array(
 		'label'       => 'Men\'s Wear',
-		'default_img' => ame_bazaar_asset_uri( 'assets/images/men-wear.png' ),
+		'default_img' => ame_bazaar_asset_uri( 'assets/images/men-wear-new.jpg' ),
 	),
 	'women' => array(
 		'label'       => 'Women\'s Wear',
-		'default_img' => '', // Responsive placeholder
+		'default_img' => ame_bazaar_asset_uri( 'assets/images/women-wear-new.jpg' ),
 	),
 	'kids' => array(
 		'label'       => 'Kids Wear',
-		'default_img' => ame_bazaar_asset_uri( 'assets/images/kids-wear.png' ),
+		'default_img' => ame_bazaar_asset_uri( 'assets/images/kids-wear-new.jpg' ),
 	),
 	'sarees' => array(
 		'label'       => 'Sarees',
-		'default_img' => '', // Responsive placeholder
+		'default_img' => ame_bazaar_asset_uri( 'assets/images/sarees-new.jpg' ),
 	),
 	'accessories' => array(
 		'label'       => 'Accessories',
-		'default_img' => '', // Responsive placeholder
+		'default_img' => ame_bazaar_asset_uri( 'assets/images/accessories-new.jpg' ),
 	),
 	'tailoring' => array(
 		'label'       => 'Tailoring',
-		'default_img' => '', // Responsive placeholder
+		'default_img' => ame_bazaar_asset_uri( 'assets/images/tailoring-new.jpg' ),
 	),
 );
 ?>
@@ -56,8 +56,38 @@ $categories = array(
 			<?php
 			foreach ( $categories as $key => $cat ) :
 				$desc = get_theme_mod( 'ame_bazaar_cat_' . $key . '_desc' );
-				$url  = get_theme_mod( 'ame_bazaar_cat_' . $key . '_url', '#' );
+				$url  = get_theme_mod( 'ame_bazaar_cat_' . $key . '_url' );
 				$img  = get_theme_mod( 'ame_bazaar_cat_' . $key . '_image' );
+
+				if ( ! $url || '#' === $url ) {
+					// Dynamically resolve WooCommerce category URLs
+					$slugs_to_check = array( $key );
+					if ( 'men' === $key ) {
+						$slugs_to_check[] = 'mens-wear';
+						$slugs_to_check[] = 'men-wear';
+					} elseif ( 'women' === $key ) {
+						$slugs_to_check[] = 'womens-wear';
+						$slugs_to_check[] = 'women-wear';
+					} elseif ( 'kids' === $key ) {
+						$slugs_to_check[] = 'kids-wear';
+					}
+
+					foreach ( $slugs_to_check as $slug ) {
+						$term = get_term_by( 'slug', $slug, 'product_cat' );
+						if ( $term && ! is_wp_error( $term ) ) {
+							$resolved_url = get_term_link( $term );
+							if ( ! is_wp_error( $resolved_url ) ) {
+								$url = $resolved_url;
+								break;
+							}
+						}
+					}
+
+					// Fallback to WooCommerce standard permalink route
+					if ( ! $url || '#' === $url ) {
+						$url = home_url( '/product-category/' . $key . '/' );
+					}
+				}
 
 				if ( ! $img ) {
 					$img = $cat['default_img'];
