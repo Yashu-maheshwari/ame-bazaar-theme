@@ -57,7 +57,7 @@ $categories = array(
 			foreach ( $categories as $key => $cat ) :
 				$desc = get_theme_mod( 'ame_bazaar_cat_' . $key . '_desc' );
 				$url  = get_theme_mod( 'ame_bazaar_cat_' . $key . '_url' );
-				$img  = get_theme_mod( 'ame_bazaar_cat_' . $key . '_image' );
+				$img_id = get_theme_mod( 'ame_bazaar_cat_' . $key . '_image_id' );
 
 				if ( ! $url || '#' === $url ) {
 					// Dynamically resolve WooCommerce category URLs
@@ -89,29 +89,61 @@ $categories = array(
 					}
 				}
 
-				if ( ! $img ) {
-					$img = $cat['default_img'];
+				// Dynamically resolve Media Library attachment ID by standard category slugs
+				if ( ! $img_id ) {
+					$slugs_to_check = array(
+						$key . '-wear-image',
+						$key . '-wear',
+						$key . '-image',
+						$key . '-banner',
+						$key
+					);
+					if ( 'men' === $key ) {
+						$slugs_to_check[] = 'mens-wear';
+						$slugs_to_check[] = 'mens-wear-image';
+					} elseif ( 'women' === $key ) {
+						$slugs_to_check[] = 'womens-wear';
+						$slugs_to_check[] = 'womens-wear-image';
+					} elseif ( 'kids' === $key ) {
+						$slugs_to_check[] = 'kids-wear-image';
+					} elseif ( 'accessories' === $key ) {
+						$slugs_to_check[] = 'fashion-accessories';
+					}
+
+					foreach ( $slugs_to_check as $slug ) {
+						$resolved_id = ame_bazaar_get_attachment_id_by_slug( $slug );
+						if ( $resolved_id ) {
+							$img_id = $resolved_id;
+							break;
+						}
+					}
+				}
+
+				// Resolve Image HTML
+				$img_html = '';
+				if ( $img_id ) {
+					$img_html = wp_get_attachment_image( $img_id, 'medium_large', false, array(
+						'class'   => 'ame-category-img',
+						'loading' => 'lazy',
+						'alt'     => esc_attr( sprintf( __( '%s - AME Bazaar Premium Collection', 'ame-bazaar' ), $cat['label'] ) ),
+					) );
+				} else {
+					$customizer_img = get_theme_mod( 'ame_bazaar_cat_' . $key . '_image' );
+					if ( $customizer_img ) {
+						$img_html = '<img src="' . esc_url( $customizer_img ) . '" alt="' . esc_attr( sprintf( __( '%s - AME Bazaar Premium Collection', 'ame-bazaar' ), $cat['label'] ) ) . '" class="ame-category-img" loading="lazy">';
+					} elseif ( ! empty( $cat['default_img'] ) ) {
+						$img_html = '<img src="' . esc_url( $cat['default_img'] ) . '" alt="' . esc_attr( sprintf( __( '%s - AME Bazaar Premium Collection', 'ame-bazaar' ), $cat['label'] ) ) . '" class="ame-category-img" loading="lazy">';
+					}
 				}
 				?>
 				<article class="ame-category-card">
-					<a href="<?php echo esc_url( $url ); ?>" class="ame-category-card-visual-link" tabindex="-1" aria-hidden="true">
-						<div class="ame-category-card-visual">
-							<?php if ( $img ) : ?>
-								<img src="<?php echo esc_url( $img ); ?>" 
-									 alt="<?php echo esc_attr( sprintf( __( '%s - AME Bazaar Premium Collection', 'ame-bazaar' ), $cat['label'] ) ); ?>" 
-									 class="ame-category-img" 
-									 loading="lazy">
-							<?php else : ?>
-								<!-- Accessible responsive placeholder visual -->
-								<div class="ame-category-img-placeholder">
-									<div class="ame-placeholder-logo-overlay">
-										<span class="ame-placeholder-logo-text"><?php echo esc_html( ame_bazaar_get_brand_name() ); ?></span>
-									</div>
-									<span class="ame-placeholder-tag"><?php esc_html_e( 'Photography Coming Soon', 'ame-bazaar' ); ?></span>
-								</div>
-							<?php endif; ?>
-						</div>
-					</a>
+					<?php if ( ! empty( $img_html ) ) : ?>
+						<a href="<?php echo esc_url( $url ); ?>" class="ame-category-card-visual-link" tabindex="-1" aria-hidden="true">
+							<div class="ame-category-card-visual">
+								<?php echo $img_html; ?>
+							</div>
+						</a>
+					<?php endif; ?>
 
 					<div class="ame-category-card-content">
 						<h3 class="ame-category-card-title">

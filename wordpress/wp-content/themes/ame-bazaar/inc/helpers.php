@@ -707,5 +707,25 @@ function ame_bazaar_save_editorial_meta_box( $post_id ) {
 }
 add_action( 'save_post', 'ame_bazaar_save_editorial_meta_box' );
 
+/**
+ * Helper to fetch attachment ID by its post slug/name.
+ *
+ * @param string $slug Post slug/name.
+ * @return int Attachment ID or 0 if not found.
+ */
+function ame_bazaar_get_attachment_id_by_slug( $slug ) {
+	$args = array(
+		'post_type'      => 'attachment',
+		'name'           => $slug,
+		'posts_per_page' => 1,
+		'post_status'    => 'inherit',
+	);
+	$posts = get_posts( $args );
+	if ( $posts ) {
+		return $posts[0]->ID;
+	}
+	return 0;
+}
+
 
 
