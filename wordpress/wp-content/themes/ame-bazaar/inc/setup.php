@@ -68,3 +68,17 @@ function ame_bazaar_render_footer() {
 }
 add_action( 'ame_bazaar_footer', 'ame_bazaar_render_footer' );
 
+/**
+ * Render dynamic Favicon inside the head tag.
+ */
+function ame_bazaar_render_favicon_in_head() {
+	$favicon_id = get_option( 'ame_bazaar_media_favicon' );
+	if ( $favicon_id ) {
+		$favicon_url = wp_get_attachment_image_url( $favicon_id, 'full' );
+		if ( $favicon_url ) {
+			echo '<link rel="shortcut icon" href="' . esc_url( $favicon_url ) . '" type="image/x-icon" />';
+		}
+	}
+}
+add_action( 'wp_head', 'ame_bazaar_render_favicon_in_head' );
+

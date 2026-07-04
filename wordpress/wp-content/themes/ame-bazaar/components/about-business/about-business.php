@@ -32,6 +32,19 @@ $story_content = get_theme_mod( 'ame_bazaar_about_story_content', 'Located on Mu
 			<!-- Left Column: Story details -->
 			<div class="ame-about-story-col">
 				<h3 class="ame-about-story-headline"><?php echo esc_html( $story_headline ); ?></h3>
+				<?php 
+				$about_img_id = get_option( 'ame_bazaar_media_about' );
+				if ( $about_img_id ) {
+					echo '<div class="ame-about-banner-wrapper" style="margin-top: 1rem; margin-bottom: 1.5rem; border-radius: var(--ame-radius-md); overflow: hidden; box-shadow: var(--ame-shadow-sm);">';
+					echo wp_get_attachment_image( $about_img_id, 'medium_large', false, array(
+						'class'   => 'ame-about-banner-img',
+						'style'   => 'width: 100%; height: auto; display: block;',
+						'loading' => 'lazy',
+						'alt'     => esc_attr__( 'About AME Bazaar Store Heritage - Kirari, Delhi', 'ame-bazaar' ),
+					) );
+					echo '</div>';
+				}
+				?>
 				<div class="ame-about-story-content-wrap">
 					<p class="ame-about-story-para"><?php echo esc_html( $story_content ); ?></p>
 				</div>

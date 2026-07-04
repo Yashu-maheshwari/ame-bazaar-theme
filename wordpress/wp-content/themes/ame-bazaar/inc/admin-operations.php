@@ -782,4 +782,225 @@ function ame_bazaar_create_local_system_pages() {
 }
 add_action( 'init', 'ame_bazaar_create_local_system_pages' );
 
+/**
+ * 14. Homepage Media Manager Submenu Registration
+ */
+function ame_bazaar_register_media_manager_submenu() {
+	add_submenu_page(
+		'ame-store-dashboard',
+		__( 'Homepage Media Manager', 'ame-bazaar' ),
+		__( 'Homepage Media Manager', 'ame-bazaar' ),
+		'manage_options',
+		'ame-homepage-media',
+		'ame_bazaar_render_homepage_media_page'
+	);
+}
+add_action( 'admin_menu', 'ame_bazaar_register_media_manager_submenu' );
+
+/**
+ * 15. Enqueue Media Scripts
+ */
+function ame_bazaar_enqueue_media_manager_scripts( $hook ) {
+	if ( 'ame-store_page_ame-homepage-media' !== $hook ) {
+		return;
+	}
+	wp_enqueue_media();
+}
+add_action( 'admin_enqueue_scripts', 'ame_bazaar_enqueue_media_manager_scripts' );
+
+/**
+ * 16. Auto-Assign existing assets to options
+ */
+function ame_bazaar_auto_assign_media_mappings() {
+	$mappings = array(
+		'ame_bazaar_media_primary_logo'       => 'site-logo',
+		'ame_bazaar_media_hero_desktop'       => 'hero-banner-image',
+		'ame_bazaar_media_women'              => 'women-wear-image',
+		'ame_bazaar_media_men'                => 'mens-tshirt',
+		'ame_bazaar_media_kids'               => 'boys-wear',
+		'ame_bazaar_media_accessories'        => 'wallet',
+		'ame_bazaar_media_tailoring'          => 'winter-waist-coat',
+		'ame_bazaar_media_instagram'          => 'online-excluive-images',
+		'ame_bazaar_media_google_reviews'     => 'whatsapp-image-2025-09-14-at-12-18-18_b466d7a2',
+		'ame_bazaar_media_visit_store'        => 'whatsapp-image-2025-09-14-at-12-18-19_44c54162',
+		'ame_bazaar_media_about'              => 'gemini_generated_image_k8zk7fk8zk7fk8zk',
+		'ame_bazaar_media_footer_bg'          => 'bed-sheet-1',
+		'ame_bazaar_media_empty_state'        => 'woocommerce-placeholder',
+		'ame_bazaar_media_404_illustration'   => 'gemini_generated_image_k8zk7fk8zk7fk8zk',
+	);
+
+	foreach ( $mappings as $option_key => $slug ) {
+		$val = get_option( $option_key );
+		if ( ! $val ) {
+			$args = array(
+				'post_type'      => 'attachment',
+				'name'           => $slug,
+				'posts_per_page' => 1,
+				'post_status'    => 'inherit',
+			);
+			$posts = get_posts( $args );
+			if ( $posts ) {
+				update_option( $option_key, $posts[0]->ID );
+			}
+		}
+	}
+}
+
+/**
+ * 17. Render Homepage Media Manager Options Page
+ */
+function ame_bazaar_render_homepage_media_page() {
+	// Auto assign mappings on page view
+	ame_bazaar_auto_assign_media_mappings();
+
+	$fields = array(
+		'ame_bazaar_media_primary_logo'       => __( 'Primary Logo', 'ame-bazaar' ),
+		'ame_bazaar_media_white_logo'         => __( 'White Logo', 'ame-bazaar' ),
+		'ame_bazaar_media_sticky_logo'        => __( 'Sticky Header Logo', 'ame-bazaar' ),
+		'ame_bazaar_media_favicon'            => __( 'Favicon', 'ame-bazaar' ),
+		'ame_bazaar_media_hero_desktop'       => __( 'Hero Desktop Banner', 'ame-bazaar' ),
+		'ame_bazaar_media_hero_mobile'        => __( 'Hero Mobile Banner', 'ame-bazaar' ),
+		'ame_bazaar_media_men'                => __( "Men's Wear Banner", 'ame-bazaar' ),
+		'ame_bazaar_media_women'              => __( "Women's Wear Banner", 'ame-bazaar' ),
+		'ame_bazaar_media_kids'               => __( "Kids Wear Banner", 'ame-bazaar' ),
+		'ame_bazaar_media_accessories'        => __( 'Accessories Banner', 'ame-bazaar' ),
+		'ame_bazaar_media_tailoring'          => __( 'Tailoring Section Image', 'ame-bazaar' ),
+		'ame_bazaar_media_visit_store'        => __( 'Visit Store Banner', 'ame-bazaar' ),
+		'ame_bazaar_media_about'              => __( 'About AME Bazaar Image', 'ame-bazaar' ),
+		'ame_bazaar_media_google_reviews'     => __( 'Google Reviews Banner', 'ame-bazaar' ),
+		'ame_bazaar_media_instagram'          => __( 'Instagram Cover Image', 'ame-bazaar' ),
+		'ame_bazaar_media_footer_bg'          => __( 'Footer Background', 'ame-bazaar' ),
+		'ame_bazaar_media_empty_state'        => __( 'Empty State Image', 'ame-bazaar' ),
+		'ame_bazaar_media_404_illustration'   => __( '404 Illustration', 'ame-bazaar' ),
+	);
+
+	// Handle saving
+	if ( isset( $_POST['ame_homepage_media_submit'] ) && check_admin_referer( 'ame_homepage_media_nonce_action', 'ame_homepage_media_nonce' ) ) {
+		foreach ( $fields as $field_key => $field_label ) {
+			if ( isset( $_POST[ $field_key ] ) ) {
+				update_option( $field_key, sanitize_text_field( $_POST[ $field_key ] ) );
+			}
+		}
+		echo '<div class="notice notice-success is-dismissible"><p>' . esc_html__( 'Homepage Media Mapping successfully saved.', 'ame-bazaar' ) . '</p></div>';
+	}
+	?>
+	<div class="wrap">
+		<h1><?php esc_html_e( 'Homepage Media Manager', 'ame-bazaar' ); ?></h1>
+		<p><?php esc_html_e( 'Manage the mappings of uploaded WordPress Media Library files to homepage visual assets dynamically. Saves attachment IDs in WordPress Options.', 'ame-bazaar' ); ?></p>
+		
+		<form method="post" action="">
+			<?php wp_nonce_field( 'ame_homepage_media_nonce_action', 'ame_homepage_media_nonce' ); ?>
+			
+			<table class="form-table" role="presentation">
+				<tbody>
+					<?php foreach ( $fields as $field_key => $field_label ) : 
+						$current_val = get_option( $field_key );
+						$preview_html = '';
+						if ( $current_val ) {
+							$preview_url = wp_get_attachment_url( $current_val );
+							if ( $preview_url ) {
+								$preview_html = '<img src="' . esc_url( $preview_url ) . '" style="max-width:150px;max-height:150px;margin-top:10px;border:1px solid #ccc;padding:5px;display:block;" />';
+							}
+						}
+					?>
+						<tr>
+							<th scope="row"><label for="<?php echo esc_attr( $field_key ); ?>"><?php echo esc_html( $field_label ); ?></label></th>
+							<td>
+								<input type="text" id="<?php echo esc_attr( $field_key ); ?>" name="<?php echo esc_attr( $field_key ); ?>" value="<?php echo esc_attr( $current_val ); ?>" class="regular-text" style="width: 120px;" readonly />
+								<button class="button button-secondary ame-media-select" data-field="<?php echo esc_attr( $field_key ); ?>"><?php esc_html_e( 'Select Image', 'ame-bazaar' ); ?></button>
+								<button class="button button-link delete ame-media-remove" data-field="<?php echo esc_attr( $field_key ); ?>"><?php esc_html_e( 'Remove', 'ame-bazaar' ); ?></button>
+								
+								<div id="preview-<?php echo esc_attr( $field_key ); ?>" class="ame-media-preview-container">
+									<?php if ( $preview_html ) { 
+										echo $preview_html; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+									} else { ?>
+										<p style="color:#666;font-style:italic;margin: 5px 0 0 0;"><?php esc_html_e( 'No image selected.', 'ame-bazaar' ); ?></p>
+									<?php } ?>
+								</div>
+							</td>
+						</tr>
+					<?php endforeach; ?>
+				</tbody>
+			</table>
+			
+			<?php submit_button( __( 'Save Media Mappings', 'ame-bazaar' ), 'primary', 'ame_homepage_media_submit' ); ?>
+		</form>
+
+		<hr style="margin-top: 40px; margin-bottom: 20px;" />
+
+		<h2><?php esc_html_e( 'All Uploaded Media Library Files', 'ame-bazaar' ); ?></h2>
+		<table class="widefat fixed striped" style="margin-top: 15px;">
+			<thead>
+				<tr>
+					<th style="width: 100px;"><?php esc_html_e( 'Thumbnail', 'ame-bazaar' ); ?></th>
+					<th style="width: 120px;"><?php esc_html_e( 'Attachment ID', 'ame-bazaar' ); ?></th>
+					<th><?php esc_html_e( 'File Name / Slug', 'ame-bazaar' ); ?></th>
+					<th style="width: 180px;"><?php esc_html_e( 'Upload Date', 'ame-bazaar' ); ?></th>
+				</tr>
+			</thead>
+			<tbody>
+				<?php
+				$attachments_query = new WP_Query( array(
+					'post_type'      => 'attachment',
+					'post_status'    => 'inherit',
+					'posts_per_page' => -1,
+				) );
+
+				if ( $attachments_query->have_posts() ) :
+					foreach ( $attachments_query->posts as $post ) :
+						$file_name = basename( get_attached_file( $post->ID ) );
+						$thumbnail = wp_get_attachment_image( $post->ID, array( 60, 60 ), true, array( 'style' => 'max-width: 60px; height: auto;' ) );
+						?>
+						<tr>
+							<td><?php echo $thumbnail; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></td>
+							<td><code><?php echo esc_html( $post->ID ); ?></code></td>
+							<td>
+								<strong><?php echo esc_html( $file_name ); ?></strong><br/>
+								<span style="color:#666;font-size:0.85em;">Slug: <?php echo esc_html( $post->post_name ); ?></span>
+							</td>
+							<td><?php echo esc_html( $post->post_date ); ?></td>
+						</tr>
+					<?php 
+					endforeach;
+				else : 
+				?>
+					<tr>
+						<td colspan="4"><?php esc_html_e( 'No media items found in Media Library.', 'ame-bazaar' ); ?></td>
+					</tr>
+				<?php endif; wp_reset_postdata(); ?>
+			</tbody>
+		</table>
+	</div>
+
+	<script type="text/javascript">
+	jQuery(document).ready(function($){
+		$('.ame-media-select').click(function(e) {
+			e.preventDefault();
+			var button = $(this);
+			var fieldId = button.data('field');
+			var custom_uploader = wp.media({
+				title: 'Select Media for AME Bazaar',
+				button: {
+					text: 'Use Selected Image'
+				},
+				multiple: false
+			}).on('select', function() {
+				var attachment = custom_uploader.state().get('selection').first().toJSON();
+				$('#' + fieldId).val(attachment.id);
+				$('#preview-' + fieldId).html('<img src="' + attachment.url + '" style="max-width:150px;max-height:150px;margin-top:10px;border:1px solid #ccc;padding:5px;display:block;" />');
+			}).open();
+		});
+
+		$('.ame-media-remove').click(function(e) {
+			e.preventDefault();
+			var button = $(this);
+			var fieldId = button.data('field');
+			$('#' + fieldId).val('');
+			$('#preview-' + fieldId).html('<p style="color:#666;font-style:italic;margin: 5px 0 0 0;">No image selected.</p>');
+		});
+	});
+	</script>
+	<?php
+}
+
 

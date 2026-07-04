@@ -13,10 +13,13 @@ if ( ! defined( 'ABSPATH' ) ) {
 $hero_title = get_theme_mod( 'ame_bazaar_hero_title', 'Affordable Fashion for Every Family in Kirari, Delhi' );
 $hero_subtitle = get_theme_mod( 'ame_bazaar_hero_subtitle', "Men's Wear • Women's Wear • Kids Wear • Accessories" );
 
-// Query hero banner ID dynamically
-$hero_image_id = get_theme_mod( 'ame_bazaar_hero_image_id' );
-if ( ! $hero_image_id ) {
-	$hero_image_id = ame_bazaar_get_attachment_id_by_slug( 'hero-banner-image' );
+// Query hero banner IDs from Homepage Media Manager options
+$hero_desktop_id = get_option( 'ame_bazaar_media_hero_desktop' );
+$hero_mobile_id = get_option( 'ame_bazaar_media_hero_mobile' );
+
+// Fallback to customizer settings if options empty
+if ( ! $hero_desktop_id ) {
+	$hero_desktop_id = get_theme_mod( 'ame_bazaar_hero_image_id' ) ?: ame_bazaar_get_attachment_id_by_slug( 'hero-banner-image' );
 }
 
 $phone_number = get_theme_mod( 'ame_bazaar_phone', '+91 99999 99999' );
@@ -86,13 +89,24 @@ $maps_url = get_theme_mod( 'ame_bazaar_maps_url', 'https://maps.google.com/?q=AM
 		<!-- Hero Visual Right -->
 		<div class="ame-hero-visual">
 			<?php
-			if ( $hero_image_id ) {
-				echo wp_get_attachment_image( $hero_image_id, 'full', false, array(
-					'class'         => 'ame-hero-img',
-					'loading'       => 'eager',
-					'fetchpriority' => 'high',
-					'alt'           => esc_html__( 'Premium Fashion Store Front - AME Bazaar Kirari, Delhi', 'ame-bazaar' ),
-				) );
+			if ( $hero_desktop_id ) {
+				$mobile_srcset = $hero_mobile_id ? wp_get_attachment_image_url( $hero_mobile_id, 'full' ) : wp_get_attachment_image_url( $hero_desktop_id, 'large' );
+				$desktop_srcset = wp_get_attachment_image_url( $hero_desktop_id, 'full' );
+				?>
+				<picture>
+					<?php if ( $mobile_srcset ) : ?>
+						<source media="(max-width: 767px)" srcset="<?php echo esc_url( $mobile_srcset ); ?>">
+					<?php endif; ?>
+					<?php 
+					echo wp_get_attachment_image( $hero_desktop_id, 'full', false, array(
+						'class'         => 'ame-hero-img',
+						'loading'       => 'eager',
+						'fetchpriority' => 'high',
+						'alt'           => esc_html__( 'Premium Fashion Store Front - AME Bazaar Kirari, Delhi', 'ame-bazaar' ),
+					) ); 
+					?>
+				</picture>
+				<?php
 			} else {
 				$fallback_url = get_theme_mod( 'ame_bazaar_hero_image', ame_bazaar_asset_uri( 'assets/images/hero-lifestyle.png' ) );
 				echo '<img src="' . esc_url( $fallback_url ) . '" alt="' . esc_attr__( 'Premium Fashion Store Front - AME Bazaar Kirari, Delhi', 'ame-bazaar' ) . '" class="ame-hero-img" loading="eager" fetchpriority="high">';

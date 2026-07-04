@@ -27,6 +27,19 @@ $cat_acc_url  = get_theme_mod( 'ame_bazaar_cat_accessories_url', '#' );
 			<div class="ame-404-layout">
 				<div class="ame-404-content">
 					<span class="ame-404-badge"><?php esc_html_e( 'Error 404', 'ame-bazaar' ); ?></span>
+					<?php
+					$illustration_id = get_option( 'ame_bazaar_media_404_illustration' );
+					if ( $illustration_id ) {
+						echo '<div class="ame-404-illustration-wrap" style="margin-top: 1.5rem; margin-bottom: 2rem; border-radius: var(--ame-radius-md); overflow: hidden; max-width: 400px; box-shadow: var(--ame-shadow-sm);">';
+						echo wp_get_attachment_image( $illustration_id, 'medium_large', false, array(
+							'class'   => 'ame-404-illustration-img',
+							'style'   => 'width: 100%; height: auto; display: block;',
+							'loading' => 'lazy',
+							'alt'     => esc_attr__( 'Page Not Found Illustration - AME Bazaar', 'ame-bazaar' ),
+						) );
+						echo '</div>';
+					}
+					?>
 					<h1 class="ame-404-title"><?php esc_html_e( 'Looking for Something in Our Collections?', 'ame-bazaar' ); ?></h1>
 					<p class="ame-404-text"><?php esc_html_e( 'The page you requested is unavailable or has been relocated. Use the search bar below, or check out our popular family fashion departments.', 'ame-bazaar' ); ?></p>
 					

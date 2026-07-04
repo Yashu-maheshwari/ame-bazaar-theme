@@ -25,6 +25,20 @@ $hours = ame_bazaar_get_business_setting( 'hours', 'Mo-Su 09:00–22:00' );
 				<h2 id="ame-visit-store-title" class="ame-visit-store-heading"><?php esc_html_e( 'Visit Our Store', 'ame-bazaar' ); ?></h2>
 				<p class="ame-visit-store-intro"><?php esc_html_e( 'Come shop our premium clothing collections in person. Experience quality fabrics and get custom tailoring assistance.', 'ame-bazaar' ); ?></p>
 				
+				<?php 
+				$visit_img_id = get_option( 'ame_bazaar_media_visit_store' );
+				if ( $visit_img_id ) {
+					echo '<div class="ame-visit-store-banner-wrapper" style="margin-bottom: 2rem; border-radius: var(--ame-radius-md); overflow: hidden; box-shadow: var(--ame-shadow-sm);">';
+					echo wp_get_attachment_image( $visit_img_id, 'medium_large', false, array(
+						'class'   => 'ame-visit-store-banner-img',
+						'style'   => 'width: 100%; height: auto; display: block;',
+						'loading' => 'lazy',
+						'alt'     => esc_attr__( 'Visit AME Bazaar Mubarakpur Road Store - Kirari, Delhi', 'ame-bazaar' ),
+					) );
+					echo '</div>';
+				}
+				?>
+				
 				<div class="ame-visit-info-list">
 					<div class="ame-visit-info-item">
 						<div class="ame-visit-info-icon-wrap">

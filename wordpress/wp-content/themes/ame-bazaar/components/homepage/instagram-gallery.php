@@ -25,12 +25,29 @@ if ( ! defined( 'ABSPATH' ) ) {
 			
 			<div class="ame-insta-card">
 				<div class="ame-insta-visual-wrap">
-					<div class="ame-insta-img-placeholder" style="background: var(--ame-color-cream); aspect-ratio: 1/1; border-radius: var(--ame-radius-md); display:flex; align-items:center; justify-content:center; position:relative; overflow:hidden;">
-						<span class="ame-placeholder-tag"><?php esc_html_e( 'Mulmul Cotton Suit fitting log', 'ame-bazaar' ); ?></span>
-						<div class="ame-insta-hover-overlay">
-							<span class="ame-insta-likes">❤️ 128</span>
+					<?php 
+					$insta_img_id = get_option( 'ame_bazaar_media_instagram' );
+					if ( $insta_img_id ) : 
+					?>
+						<div class="ame-insta-img-wrapper" style="aspect-ratio: 1/1; border-radius: var(--ame-radius-md); overflow:hidden; position:relative; display:block;">
+							<?php echo wp_get_attachment_image( $insta_img_id, 'medium_large', false, array(
+								'class'   => 'ame-insta-img',
+								'style'   => 'width:100%; height:100%; object-fit:cover; display:block;',
+								'loading' => 'lazy',
+								'alt'     => esc_attr__( 'Instagram fashion showcase photo - AME Bazaar Kirari', 'ame-bazaar' ),
+							) ); ?>
+							<div class="ame-insta-hover-overlay">
+								<span class="ame-insta-likes">❤️ 128</span>
+							</div>
 						</div>
-					</div>
+					<?php else : ?>
+						<div class="ame-insta-img-placeholder" style="background: var(--ame-color-cream); aspect-ratio: 1/1; border-radius: var(--ame-radius-md); display:flex; align-items:center; justify-content:center; position:relative; overflow:hidden;">
+							<span class="ame-placeholder-tag"><?php esc_html_e( 'Mulmul Cotton Suit fitting log', 'ame-bazaar' ); ?></span>
+							<div class="ame-insta-hover-overlay">
+								<span class="ame-insta-likes">❤️ 128</span>
+							</div>
+						</div>
+					<?php endif; ?>
 				</div>
 			</div>
 

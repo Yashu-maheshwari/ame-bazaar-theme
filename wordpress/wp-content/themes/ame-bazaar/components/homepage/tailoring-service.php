@@ -45,17 +45,29 @@ if ( ! defined( 'ABSPATH' ) ) {
 				</div>
 			</div>
 
-			<!-- Right: Mock Visual representation of tailoring tools -->
-			<div class="ame-tailoring-visual-col" style="display:flex; justify-content:center;">
-				<div style="background:var(--ame-color-white); border:1px solid var(--ame-color-border); padding:3rem; border-radius:var(--ame-radius-md); box-shadow:var(--ame-shadow-md); width:100%; max-width:400px; text-align:center;">
-					<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="width:64px; height:64px; color:var(--ame-color-gold-dark); margin-bottom:1.5rem;"><path d="M6 3h12l4 6-10 12L2 9z"></path></svg>
-					<h3 style="margin:0 0 0.5rem 0; font-size:1.15rem; font-weight:800; color:var(--ame-color-navy);">Apparel Maheshwari Enterprises</h3>
-					<p style="margin:0 0 1.5rem 0; font-size:0.85rem; color:var(--ame-color-slate);">Kirari Mubarakpur Road Stitching Desk</p>
-					<div style="border-top:1px solid var(--ame-color-border); padding-top:1.5rem; display:flex; justify-content:space-around; font-size:0.8rem; font-weight:700; color:var(--ame-color-navy);">
-						<span>Alterations: Free</span>
-						<span>Full stitch: From ₹299</span>
+			<!-- Right: Custom visual or Mock Visual fallback -->
+			<div class="ame-tailoring-visual-col" style="display:flex; justify-content:center; align-items:center;">
+				<?php 
+				$tailoring_img_id = get_option( 'ame_bazaar_media_tailoring' );
+				if ( $tailoring_img_id ) : 
+					echo wp_get_attachment_image( $tailoring_img_id, 'medium_large', false, array(
+						'class'   => 'ame-tailoring-img',
+						'style'   => 'max-width:100%; height:auto; border-radius:var(--ame-radius-md); box-shadow:var(--ame-shadow-md);',
+						'loading' => 'lazy',
+						'alt'     => esc_attr__( 'Custom Tailoring & Alteration Fittings at AME Bazaar Kirari, Delhi', 'ame-bazaar' ),
+					) );
+				else :
+				?>
+					<div style="background:var(--ame-color-white); border:1px solid var(--ame-color-border); padding:3rem; border-radius:var(--ame-radius-md); box-shadow:var(--ame-shadow-md); width:100%; max-width:400px; text-align:center;">
+						<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="width:64px; height:64px; color:var(--ame-color-gold-dark); margin-bottom:1.5rem;"><path d="M6 3h12l4 6-10 12L2 9z"></path></svg>
+						<h3 style="margin:0 0 0.5rem 0; font-size:1.15rem; font-weight:800; color:var(--ame-color-navy);">Apparel Maheshwari Enterprises</h3>
+						<p style="margin:0 0 1.5rem 0; font-size:0.85rem; color:var(--ame-color-slate);">Kirari Mubarakpur Road Stitching Desk</p>
+						<div style="border-top:1px solid var(--ame-color-border); padding-top:1.5rem; display:flex; justify-content:space-around; font-size:0.8rem; font-weight:700; color:var(--ame-color-navy);">
+							<span>Alterations: Free</span>
+							<span>Full stitch: From ₹299</span>
+						</div>
 					</div>
-				</div>
+				<?php endif; ?>
 			</div>
 
 		</div>

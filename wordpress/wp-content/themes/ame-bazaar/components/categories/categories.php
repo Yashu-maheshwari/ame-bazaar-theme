@@ -89,6 +89,13 @@ $categories = array(
 					}
 				}
 
+				// Query option ID from Homepage Media Manager
+				$img_id = get_option( 'ame_bazaar_media_' . $key );
+
+				if ( ! $img_id ) {
+					$img_id = get_theme_mod( 'ame_bazaar_cat_' . $key . '_image_id' );
+				}
+
 				// Dynamically resolve Media Library attachment ID by standard category slugs
 				if ( ! $img_id ) {
 					$slugs_to_check = array(

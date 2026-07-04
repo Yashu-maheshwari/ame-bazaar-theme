@@ -13,6 +13,7 @@ $phone_number = get_theme_mod( 'ame_bazaar_phone', '+91 99999 99999' );
 // Strip spaces and special chars for tel link
 $phone_tel_link = preg_replace( '/[^0-9+]/', '', $phone_number );
 $maps_url = get_theme_mod( 'ame_bazaar_maps_url', 'https://maps.google.com/?q=AME+Bazaar+Kirari+Delhi' );
+$logo_id = get_option( 'ame_bazaar_media_primary_logo' ) ?: get_theme_mod( 'custom_logo' );
 ?>
 
 <!-- Main Sticky Navigation Header -->
@@ -29,10 +30,13 @@ $maps_url = get_theme_mod( 'ame_bazaar_maps_url', 'https://maps.google.com/?q=AM
 
 			<div class="ame-brand-logo-container">
 				<?php
-				$logo_url = ame_bazaar_get_custom_logo_url();
-				if ( $logo_url ) {
+				if ( $logo_id ) {
 					echo '<a href="' . esc_url( home_url( '/' ) ) . '" class="ame-logo-link" rel="home">';
-					echo '<img src="' . esc_url( $logo_url ) . '" alt="' . esc_attr( ame_bazaar_get_brand_name() ) . '" class="ame-logo-img">';
+					echo wp_get_attachment_image( $logo_id, 'full', false, array(
+						'class'   => 'ame-logo-img',
+						'loading' => 'lazy',
+						'alt'     => esc_attr( ame_bazaar_get_brand_name() ),
+					) );
 					echo '</a>';
 				} else {
 					echo '<a href="' . esc_url( home_url( '/' ) ) . '" class="ame-logo-text" rel="home">';
@@ -137,8 +141,12 @@ $maps_url = get_theme_mod( 'ame_bazaar_maps_url', 'https://maps.google.com/?q=AM
 		<!-- Drawer Header -->
 		<div class="ame-mobile-drawer-header">
 			<div class="ame-brand-logo-container">
-				<?php if ( $logo_url ) : ?>
-					<img src="<?php echo esc_url( $logo_url ); ?>" alt="<?php echo esc_attr( ame_bazaar_get_brand_name() ); ?>" class="ame-logo-img">
+				<?php if ( $logo_id ) : ?>
+					<?php echo wp_get_attachment_image( $logo_id, 'full', false, array(
+						'class'   => 'ame-logo-img',
+						'loading' => 'lazy',
+						'alt'     => esc_attr( ame_bazaar_get_brand_name() ),
+					) ); ?>
 				<?php else : ?>
 					<span class="ame-logo-text"><?php echo esc_html( ame_bazaar_get_brand_name() ); ?></span>
 				<?php endif; ?>

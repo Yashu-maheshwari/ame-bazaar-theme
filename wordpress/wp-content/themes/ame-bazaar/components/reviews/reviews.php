@@ -50,6 +50,19 @@ $review_count = get_theme_mod( 'ame_bazaar_reviews_count', '100+' );
 							<?php echo esc_html( sprintf( __( 'Based on %s verified customer reviews on Google Maps.', 'ame-bazaar' ), $review_count ) ); ?>
 						</p>
 					</div>
+					<?php 
+					$review_banner_id = get_option( 'ame_bazaar_media_google_reviews' );
+					if ( $review_banner_id ) {
+						echo '<div class="ame-reviews-banner-wrap" style="margin-top: 1.5rem; border-radius: var(--ame-radius-sm); overflow: hidden; box-shadow: var(--ame-shadow-sm);">';
+						echo wp_get_attachment_image( $review_banner_id, 'medium_large', false, array(
+							'class'   => 'ame-reviews-banner-img',
+							'style'   => 'width: 100%; height: auto; display: block;',
+							'loading' => 'lazy',
+							'alt'     => esc_attr__( 'AME Bazaar Google Maps Verified Rating - Kirari, Delhi', 'ame-bazaar' ),
+						) );
+						echo '</div>';
+					}
+					?>
 				</div>
 
 				<!-- Testimonial cards list -->
