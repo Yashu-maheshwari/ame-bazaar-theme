@@ -12,12 +12,31 @@ if ( ! defined( 'ABSPATH' ) ) {
 get_header();
 
 $brand_name   = ame_bazaar_get_brand_name();
-$phone        = get_theme_mod( 'ame_bazaar_phone', '+91 99999 99999' );
-$maps_url     = get_theme_mod( 'ame_bazaar_maps_url', 'https://maps.google.com/?q=AME+Bazaar+Kirari+Delhi' );
-$cat_men_url  = get_theme_mod( 'ame_bazaar_cat_men_url', '#' );
-$cat_women_url= get_theme_mod( 'ame_bazaar_cat_women_url', '#' );
-$cat_kids_url = get_theme_mod( 'ame_bazaar_cat_kids_url', '#' );
-$cat_acc_url  = get_theme_mod( 'ame_bazaar_cat_accessories_url', '#' );
+$phone        = ame_bazaar_get_business_setting( 'phone', '+91 99999 99999' );
+$maps_url     = ame_bazaar_get_business_setting( 'maps_url', 'https://maps.google.com/?q=AME+Bazaar+Kirari+Delhi' );
+
+// Resolve WooCommerce category permalinks dynamically
+$categories_keys = array( 'men', 'women', 'kids', 'sarees', 'accessories' );
+$urls = array();
+foreach ( $categories_keys as $key ) {
+	$url = '#';
+	$term = get_term_by( 'slug', $key, 'product_cat' );
+	if ( $term ) {
+		$resolved_url = get_term_link( $term );
+		if ( ! is_wp_error( $resolved_url ) ) {
+			$url = $resolved_url;
+		}
+	}
+	if ( '#' === $url ) {
+		$url = home_url( '/product-category/' . $key . '/' );
+	}
+	$urls[ $key ] = $url;
+}
+$cat_men_url    = $urls['men'];
+$cat_women_url  = $urls['women'];
+$cat_kids_url   = $urls['kids'];
+$cat_sarees_url = $urls['sarees'];
+$cat_acc_url    = $urls['accessories'];
 ?>
 
 <main id="primary" class="site-main" role="main">
@@ -81,7 +100,7 @@ $cat_acc_url  = get_theme_mod( 'ame_bazaar_cat_accessories_url', '#' );
 							</a>
 						</li>
 						<li>
-							<a href="<?php echo esc_url( $cat_women_url ); ?>" class="ame-404-dept-link">
+							<a href="<?php echo esc_url( $cat_sarees_url ); ?>" class="ame-404-dept-link">
 								<span><?php esc_html_e( 'Sarees Collection', 'ame-bazaar' ); ?></span>
 								<span class="ame-dept-arrow">&rarr;</span>
 							</a>

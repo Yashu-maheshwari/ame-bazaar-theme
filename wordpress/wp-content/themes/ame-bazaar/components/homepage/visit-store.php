@@ -14,6 +14,7 @@ $phone_tel_link = preg_replace( '/[^0-9+]/', '', $phone_number );
 $maps_url = ame_bazaar_get_business_setting( 'maps_url', 'https://maps.google.com/?q=AME+Bazaar+Kirari+Delhi' );
 $address = ame_bazaar_get_business_setting( 'address', 'Mubarakpur Road' ) . ', ' . ame_bazaar_get_business_setting( 'city', 'Kirari' ) . ', ' . ame_bazaar_get_business_setting( 'state', 'Delhi' ) . ' - ' . ame_bazaar_get_business_setting( 'postal_code', '110086' );
 $hours = ame_bazaar_get_business_setting( 'hours', 'Mo-Su 09:00–22:00' );
+$maps_embed_url = ame_bazaar_get_business_setting( 'maps_embed_url', '' );
 ?>
 
 <section class="ame-visit-store-section" aria-labelledby="ame-visit-store-title">
@@ -97,7 +98,10 @@ $hours = ame_bazaar_get_business_setting( 'hours', 'Mo-Su 09:00–22:00' );
 			<div class="ame-visit-store-map">
 				<div class="ame-map-container">
 					<!-- AME Bazaar Google Maps Location iframe -->
-					<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3498.4239855581177!2d77.06202477524956!3d28.736798075608388!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390daf29e0000001%3A0x6335a79bf6bb094e!2sAME%20Bazaar!5e0!3m2!1sen!2sin!4v1719920000000!5m2!1sen!2sin" 
+					<?php
+					$embed_src = $maps_embed_url ?: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3498.4239855581177!2d77.06202477524956!3d28.736798075608388!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390daf29e0000001%3A0x6335a79bf6bb094e!2sAME%20Bazaar!5e0!3m2!1sen!2sin!4v1719920000000!5m2!1sen!2sin';
+					?>
+					<iframe src="<?php echo esc_url( $embed_src ); ?>" 
 							width="100%" 
 							height="450" 
 							style="border:0;" 

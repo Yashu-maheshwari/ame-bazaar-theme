@@ -39,9 +39,16 @@ if ( ! defined( 'ABSPATH' ) ) {
 					</div>
 				</div>
 
+				<?php
+				$tailoring_phone    = ame_bazaar_get_business_setting( 'phone', '+91 99999 99999' );
+				$tailoring_whatsapp = ame_bazaar_get_business_setting( 'whatsapp' ) ?: $tailoring_phone;
+				$clean_tailoring_phone = preg_replace( '/[^0-9+]/', '', $tailoring_phone );
+				$clean_tailoring_wa    = preg_replace( '/[^0-9]/', '', $tailoring_whatsapp );
+				$tailoring_wa_url      = 'https://wa.me/' . $clean_tailoring_wa . '?text=' . rawurlencode( 'Hi, I want to inquire about your tailoring services' );
+				?>
 				<div style="display:flex; gap:1rem; flex-wrap:wrap;">
-					<a href="tel:+919999999999" class="ame-btn-primary"><?php esc_html_e( 'Book Fitting Now', 'ame-bazaar' ); ?></a>
-					<a href="https://wa.me/919999999999?text=Hi%20I%20want%20to%20inquire%20about%20your%20tailoring%20services" class="ame-btn-secondary" target="_blank" rel="noopener noreferrer"><?php esc_html_e( 'WhatsApp Stitching Enquiry', 'ame-bazaar' ); ?></a>
+					<a href="tel:<?php echo esc_attr( $clean_tailoring_phone ); ?>" class="ame-btn-primary"><?php esc_html_e( 'Book Fitting Now', 'ame-bazaar' ); ?></a>
+					<a href="<?php echo esc_url( $tailoring_wa_url ); ?>" class="ame-btn-secondary" target="_blank" rel="noopener noreferrer"><?php esc_html_e( 'WhatsApp Stitching Enquiry', 'ame-bazaar' ); ?></a>
 				</div>
 			</div>
 

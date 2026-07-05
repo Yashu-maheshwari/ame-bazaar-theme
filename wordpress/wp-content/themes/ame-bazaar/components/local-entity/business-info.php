@@ -10,15 +10,20 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 $brand_name   = ame_bazaar_get_brand_name();
-$phone        = get_theme_mod( 'ame_bazaar_phone', '+91 99999 99999' );
-$email        = get_theme_mod( 'ame_bazaar_email', 'contact@amebazaar.com' );
-$maps_url     = get_theme_mod( 'ame_bazaar_maps_url', 'https://maps.google.com/?q=AME+Bazaar+Kirari+Delhi' );
-$whatsapp_url = get_theme_mod( 'ame_bazaar_whatsapp_url', '' );
+$phone        = ame_bazaar_get_business_setting( 'phone', '+91 99999 99999' );
+$email        = ame_bazaar_get_business_setting( 'email', 'contact@amebazaar.com' );
+$maps_url     = ame_bazaar_get_business_setting( 'maps_url', 'https://maps.google.com/?q=AME+Bazaar+Kirari+Delhi' );
+$whatsapp     = ame_bazaar_get_business_setting( 'whatsapp', '' );
+$whatsapp_url = '';
+if ( $whatsapp ) {
+	$clean_wa     = preg_replace( '/[^0-9+]/', '', $whatsapp );
+	$whatsapp_url = 'https://wa.me/' . ltrim( $clean_wa, '+' ) . '?text=Hello%20AME%20Bazaar%2C%20I%20have%20an%20inquiry';
+}
 
-$street = get_theme_mod( 'ame_bazaar_street_address', 'Mubarakpur Road' );
-$city   = get_theme_mod( 'ame_bazaar_locality', 'Kirari' );
-$state  = get_theme_mod( 'ame_bazaar_region', 'Delhi' );
-$zip    = get_theme_mod( 'ame_bazaar_postal_code', '110086' );
+$street = ame_bazaar_get_business_setting( 'address', 'Mubarakpur Road' );
+$city   = ame_bazaar_get_business_setting( 'city', 'Kirari' );
+$state  = ame_bazaar_get_business_setting( 'state', 'Delhi' );
+$zip    = ame_bazaar_get_business_setting( 'postal_code', '110086' );
 ?>
 <div class="ame-local-card ame-local-business-info-card">
 	<h3 class="ame-local-card-title"><?php esc_html_e( 'Store Location & Info', 'ame-bazaar' ); ?></h3>

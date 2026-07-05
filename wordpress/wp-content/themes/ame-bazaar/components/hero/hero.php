@@ -22,9 +22,10 @@ if ( ! $hero_desktop_id ) {
 	$hero_desktop_id = get_theme_mod( 'ame_bazaar_hero_image_id' ) ?: ame_bazaar_get_attachment_id_by_slug( 'hero-banner-image' );
 }
 
-$phone_number = get_theme_mod( 'ame_bazaar_phone', '+91 99999 99999' );
+$phone_number = ame_bazaar_get_business_setting( 'phone', '+91 99999 99999' );
 $phone_tel_link = preg_replace( '/[^0-9+]/', '', $phone_number );
-$maps_url = get_theme_mod( 'ame_bazaar_maps_url', 'https://maps.google.com/?q=AME+Bazaar+Kirari+Delhi' );
+$maps_url = ame_bazaar_get_business_setting( 'maps_url', 'https://maps.google.com/?q=AME+Bazaar+Kirari+Delhi' );
+$rating_val = ame_bazaar_get_business_setting( 'google_reviews_rating', '4.9' );
 ?>
 
 <section class="ame-hero" aria-label="<?php esc_attr_e( 'Introduction', 'ame-bazaar' ); ?>">
@@ -80,7 +81,7 @@ $maps_url = get_theme_mod( 'ame_bazaar_maps_url', 'https://maps.google.com/?q=AM
 					<svg class="ame-trust-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
 						<polyline points="20 6 9 17 4 12"></polyline>
 					</svg>
-					<span class="ame-trust-text"><?php esc_html_e( '4.8+ Google Rating', 'ame-bazaar' ); ?></span>
+					<span class="ame-trust-text"><?php printf( esc_html__( '%s+ Google Rating', 'ame-bazaar' ), esc_html( $rating_val ) ); ?></span>
 				</div>
 			</div>
 
