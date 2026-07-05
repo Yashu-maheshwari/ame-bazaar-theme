@@ -18,17 +18,18 @@ function ame_bazaar_asset_path( $relative_path ) {
 }
 
 function ame_bazaar_get_custom_logo_url() {
-	$custom_logo_id = get_theme_mod( 'custom_logo' );
+	$logo_id = get_option( 'ame_bazaar_media_primary_logo' ) ?: get_theme_mod( 'custom_logo' );
 
-	if ( $custom_logo_id ) {
-		$logo = wp_get_attachment_image_src( $custom_logo_id, 'full' );
+	if ( $logo_id ) {
+		$logo = wp_get_attachment_image_src( $logo_id, 'full' );
 
 		if ( ! empty( $logo[0] ) ) {
 			return $logo[0];
 		}
 	}
 
-	return '';
+	// Fallback to local theme logo
+	return ame_bazaar_asset_uri( 'assets/images/logo.png' );
 }
 
 function ame_bazaar_get_brand_name() {

@@ -9,11 +9,13 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-$phone_number = get_theme_mod( 'ame_bazaar_phone', '+91 99999 99999' );
+$phone_number = ame_bazaar_get_business_setting( 'phone', '+91 99999 99999' );
 // Strip spaces and special chars for tel link
 $phone_tel_link = preg_replace( '/[^0-9+]/', '', $phone_number );
-$maps_url = get_theme_mod( 'ame_bazaar_maps_url', 'https://maps.google.com/?q=AME+Bazaar+Kirari+Delhi' );
+$maps_url = ame_bazaar_get_business_setting( 'maps_url', 'https://maps.google.com/?q=AME+Bazaar+Kirari+Delhi' );
 $logo_id = get_option( 'ame_bazaar_media_primary_logo' ) ?: get_theme_mod( 'custom_logo' );
+$sticky_logo_id = get_option( 'ame_bazaar_media_sticky_logo' );
+$white_logo_id = get_option( 'ame_bazaar_media_white_logo' );
 ?>
 
 <!-- Main Sticky Navigation Header -->
@@ -33,10 +35,18 @@ $logo_id = get_option( 'ame_bazaar_media_primary_logo' ) ?: get_theme_mod( 'cust
 				if ( $logo_id ) {
 					echo '<a href="' . esc_url( home_url( '/' ) ) . '" class="ame-logo-link" rel="home">';
 					echo wp_get_attachment_image( $logo_id, 'full', false, array(
-						'class'   => 'ame-logo-img',
+						'class'   => 'ame-logo-img ame-primary-logo',
 						'loading' => 'lazy',
 						'alt'     => esc_attr( ame_bazaar_get_brand_name() ),
 					) );
+					if ( $sticky_logo_id ) {
+						echo wp_get_attachment_image( $sticky_logo_id, 'full', false, array(
+							'class'   => 'ame-logo-img ame-sticky-logo',
+							'loading' => 'lazy',
+							'alt'     => esc_attr( ame_bazaar_get_brand_name() ),
+							'style'   => 'display: none;',
+						) );
+					}
 					echo '</a>';
 				} else {
 					echo '<a href="' . esc_url( home_url( '/' ) ) . '" class="ame-logo-text" rel="home">';

@@ -67,8 +67,22 @@ if ( ! $cat_acc_url || '#' === $cat_acc_url ) {
 	
 	<!-- Column 1: Brand & Bio -->
 	<div class="ame-footer-col ame-footer-brand-col">
-		<h3 class="ame-footer-logo-title"><?php echo esc_html( $brand_name ); ?></h3>
-		<p class="ame-footer-bio"><?php echo esc_html( $about_text ); ?></p>
+		<div class="ame-footer-logo-wrap" style="margin-bottom: 1.25rem;">
+			<?php
+			$footer_logo_id = get_option( 'ame_bazaar_media_white_logo' ) ?: ( get_option( 'ame_bazaar_media_primary_logo' ) ?: get_theme_mod( 'custom_logo' ) );
+			if ( $footer_logo_id ) {
+				echo wp_get_attachment_image( $footer_logo_id, 'medium', false, array(
+					'class'   => 'ame-footer-logo-img',
+					'style'   => 'max-height: 44px; width: auto; display: block;',
+					'loading' => 'lazy',
+					'alt'     => esc_attr( $brand_name ),
+				) );
+			} else {
+				echo '<h3 class="ame-footer-logo-title" style="margin:0;">' . esc_html( $brand_name ) . '</h3>';
+			}
+			?>
+		</div>
+		<p class="ame-footer-bio" style="margin-top:0.75rem;"><?php echo esc_html( $about_text ); ?></p>
 		
 		<div class="ame-footer-hours-wrap">
 			<span class="ame-footer-hours-label"><?php esc_html_e( 'Opening Hours', 'ame-bazaar' ); ?></span>

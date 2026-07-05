@@ -110,6 +110,19 @@
 	max-height: 38px;
 }
 
+/* Primary and sticky logo display controls */
+.ame-header-main-wrapper .ame-sticky-logo {
+	display: none !important;
+}
+
+.ame-header-main-wrapper.is-scrolled .ame-sticky-logo {
+	display: block !important;
+}
+
+.ame-header-main-wrapper.is-scrolled .ame-primary-logo {
+	display: none !important;
+}
+
 .ame-logo-text {
 	font-family: var(--ame-font-heading);
 	font-size: 1.5rem;

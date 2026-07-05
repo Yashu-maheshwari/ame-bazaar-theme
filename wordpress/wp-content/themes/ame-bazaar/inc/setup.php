@@ -82,3 +82,18 @@ function ame_bazaar_render_favicon_in_head() {
 }
 add_action( 'wp_head', 'ame_bazaar_render_favicon_in_head' );
 
+/**
+ * Override WordPress standard Site Icon (Favicon) URL with custom Media Manager favicon option.
+ */
+function ame_bazaar_override_site_icon( $url, $size, $blog_id ) {
+	$favicon_id = get_option( 'ame_bazaar_media_favicon' );
+	if ( $favicon_id ) {
+		$fav_url = wp_get_attachment_image_url( $favicon_id, $size ?: 'full' );
+		if ( $fav_url ) {
+			return $fav_url;
+		}
+	}
+	return $url;
+}
+add_filter( 'get_site_icon_url', 'ame_bazaar_override_site_icon', 10, 3 );
+
