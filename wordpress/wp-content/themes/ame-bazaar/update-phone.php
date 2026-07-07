@@ -8,13 +8,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 header( 'Content-Type: application/json' );
 
-// Save new business settings
-$settings = get_option( 'ame_bazaar_business_settings', array() );
-$settings['phone'] = '+91 98100 98100';
-$settings['whatsapp'] = '+91 98100 98100';
-update_option( 'ame_bazaar_business_settings', $settings );
+// Save new business settings individually
+update_option( 'ame_bazaar_phone', '+91 98100 98100' );
+update_option( 'ame_bazaar_whatsapp', '+91 98100 98100' );
 
 echo json_encode( array(
 	'success' => true,
-	'updated_settings' => get_option( 'ame_bazaar_business_settings' )
+	'phone'   => get_option( 'ame_bazaar_phone' ),
+	'whatsapp'=> get_option( 'ame_bazaar_whatsapp' )
 ) );
