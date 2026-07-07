@@ -1,0 +1,43 @@
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Brand",
+      "@id": "https://amebazaar.in/#brand",
+      "name": "AME Bazaar",
+      "alternateName": "Apparel Maheshwari Enterprises",
+      "logo": "https://amebazaar.in/wp-content/themes/ame-bazaar/assets/images/logo.png"
+    },
+    {
+      "@type": "ClothingStore",
+      "@id": "https://amebazaar.in/#store",
+      "name": "AME Bazaar Mubarakpur Road",
+      "description": "Premium clothing store and tailor in Kirari, Delhi, offering ethnic wear, suits, sarees, and custom stitching for the entire family.",
+      "telephone": "+91 98100 98100",
+      "email": "info@amebazaar.in",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "Mubarakpur Road",
+        "addressLocality": "Kirari",
+        "addressRegion": "Delhi",
+        "postalCode": "110086",
+        "addressCountry": "IN"
+      },
+      "geo": {
+        "@type": "GeoCoordinates",
+        "latitude": "28.7051",
+        "longitude": "77.0583"
+      },
+      "openingHoursSpecification": {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
+        "opens": "09:00",
+        "closes": "22:00"
+      },
+      "sameAs": [
+        "https://www.facebook.com/amebazaar",
+        "https://www.instagram.com/amebazaar"
+      ]
+    }
+  ]
+}
