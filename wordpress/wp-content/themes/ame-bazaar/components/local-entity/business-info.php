@@ -11,7 +11,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 $brand_name   = ame_bazaar_get_brand_name();
 $phone        = ame_bazaar_get_business_setting( 'phone', '+91 99999 99999' );
-$email        = ame_bazaar_get_business_setting( 'email', 'contact@amebazaar.com' );
+$email        = ame_bazaar_get_business_setting( 'email', 'info@amebazaar.in' );
 $maps_url     = ame_bazaar_get_business_setting( 'maps_url', 'https://maps.google.com/?q=AME+Bazaar+Kirari+Delhi' );
 $whatsapp     = ame_bazaar_get_business_setting( 'whatsapp', '' );
 $whatsapp_url = '';

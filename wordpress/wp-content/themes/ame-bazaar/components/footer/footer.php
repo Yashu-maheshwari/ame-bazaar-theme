@@ -16,7 +16,7 @@ $phone          = ame_bazaar_get_business_setting( 'phone', '+91 99999 99999' );
 $whatsapp       = ame_bazaar_get_business_setting( 'whatsapp', '+91 99999 99999' );
 $clean_wa       = preg_replace( '/[^0-9+]/', '', $whatsapp );
 $whatsapp_url   = 'https://wa.me/' . ltrim( $clean_wa, '+' ) . '?text=Hello%20AME%20Bazaar%2C%20I%20have%20an%20inquiry';
-$email          = ame_bazaar_get_business_setting( 'email', 'contact@amebazaar.com' );
+$email          = ame_bazaar_get_business_setting( 'email', 'info@amebazaar.in' );
 $maps_url       = ame_bazaar_get_business_setting( 'maps_url', 'https://maps.google.com/?q=AME+Bazaar+Kirari+Delhi' );
 $facebook       = ame_bazaar_get_business_setting( 'facebook', 'https://www.facebook.com/amebazaar' );
 $instagram      = ame_bazaar_get_business_setting( 'instagram', 'https://www.instagram.com/amebazaar' );

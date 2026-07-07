@@ -740,7 +740,7 @@ function ame_bazaar_customize_register( $wp_customize ) {
 
 	// Store Email
 	$wp_customize->add_setting( 'ame_bazaar_email', array(
-		'default'           => 'contact@amebazaar.com',
+		'default'           => 'info@amebazaar.in',
 		'sanitize_callback' => 'sanitize_email',
 		'transport'         => 'refresh',
 	) );
