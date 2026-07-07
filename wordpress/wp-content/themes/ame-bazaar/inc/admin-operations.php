@@ -633,20 +633,55 @@ add_action( 'wp_footer', 'ame_bazaar_whatsapp_floating_button', 40 );
  * 11. Render upgraded Google Business Profile dashboard.
  */
 function ame_bazaar_render_google_reviews_page() {
-	$rating       = ame_bazaar_get_business_setting( 'google_reviews_rating', '4.9' );
-	$count        = ame_bazaar_get_business_setting( 'google_reviews_count', '524' );
-	$review_url   = ame_bazaar_get_business_setting( 'google_review_url', '#' );
-	$whatsapp     = ame_bazaar_get_business_setting( 'whatsapp', '+91 99999 99999' );
+	// Handle Credentials Save
+	if ( isset( $_POST['ame_gbp_save_creds'] ) && check_admin_referer( 'ame_gbp_creds_action', 'ame_nonce' ) ) {
+		update_option( 'ame_bazaar_gbp_client_id', sanitize_text_field( wp_unslash( $_POST['gbp_client_id'] ) ) );
+		update_option( 'ame_bazaar_gbp_client_secret', sanitize_text_field( wp_unslash( $_POST['gbp_client_secret'] ) ) );
+		update_option( 'ame_bazaar_gbp_location_id', sanitize_text_field( wp_unslash( $_POST['gbp_location_id'] ) ) );
+		echo '<div class="notice notice-success is-dismissible"><p>' . esc_html__( 'API credentials saved successfully.', 'ame-bazaar' ) . '</p></div>';
+	}
+
+	// Handle OAuth Code Code Exchange
+	if ( isset( $_GET['code'] ) ) {
+		$exchanged = Ame_Bazaar_GBP_Service::exchange_code_for_token( sanitize_text_field( wp_unslash( $_GET['code'] ) ) );
+		if ( $exchanged ) {
+			echo '<div class="notice notice-success is-dismissible"><p>' . esc_html__( 'OAuth token exchanged successfully. Connected to Google Business Profile!', 'ame-bazaar' ) . '</p></div>';
+		} else {
+			echo '<div class="notice notice-error is-dismissible"><p>' . esc_html__( 'Failed to exchange OAuth code. Check settings and API credentials.', 'ame-bazaar' ) . '</p></div>';
+		}
+	}
+
+	// Handle Manual Sync
+	if ( isset( $_POST['ame_gbp_manual_sync'] ) && check_admin_referer( 'ame_gbp_sync_action', 'ame_nonce' ) ) {
+		$synced = Ame_Bazaar_GBP_Service::perform_sync();
+		if ( $synced ) {
+			echo '<div class="notice notice-success is-dismissible"><p>' . esc_html__( 'API details synchronized successfully.', 'ame-bazaar' ) . '</p></div>';
+		} else {
+			echo '<div class="notice notice-error is-dismissible"><p>' . esc_html__( 'Failed to synchronize with Google Business Profile. See logs below.', 'ame-bazaar' ) . '</p></div>';
+		}
+	}
+
+	// Retrieve settings
+	$rating        = ame_bazaar_get_business_setting( 'google_reviews_rating', '4.9' );
+	$count         = ame_bazaar_get_business_setting( 'google_reviews_count', '524' );
+	$review_url    = ame_bazaar_get_business_setting( 'google_review_url', '#' );
+	$whatsapp      = ame_bazaar_get_business_setting( 'whatsapp', '+91 99999 99999' );
 	$feedback_logs = get_option( 'ame_bazaar_private_feedback', array() );
-	
-	// WhatsApp message text
+
+	$client_id     = Ame_Bazaar_GBP_Service::get_client_id();
+	$client_secret = Ame_Bazaar_GBP_Service::get_client_secret();
+	$location_id   = get_option( 'ame_bazaar_gbp_location_id', '' );
+	$health        = Ame_Bazaar_GBP_Service::get_health_status();
+	$last_sync     = get_option( 'ame_bazaar_gbp_last_sync', 0 );
+
+	// WhatsApp request text
 	$wa_text = "Hi! Thank you for shopping with us at AME Bazaar Kirari! We hope you loved your outfit. Could you please take 30 seconds to share your review on Google? Your feedback helps our family store grow: " . $review_url;
-	$wa_send_url = "https://wa.me/?text=" . rawurlencode($wa_text);
-	
+	$wa_send_url = "https://wa.me/?text=" . rawurlencode( $wa_text );
+
 	?>
 	<div class="wrap">
-		<h1><?php esc_html_e( 'Google Business Profile Dashboard', 'ame-bazaar' ); ?></h1>
-		<p class="description"><?php esc_html_e( 'Monitor Google local authority ratings, print QR codes, and review private client feedback logs.', 'ame-bazaar' ); ?></p>
+		<h1><?php esc_html_e( 'Google Business Profile Authority Dashboard', 'ame-bazaar' ); ?></h1>
+		<p class="description"><?php esc_html_e( 'Manage official API synchronization, print rating QR codes, and read private user feedback logs.', 'ame-bazaar' ); ?></p>
 		
 		<!-- Stats Grid -->
 		<div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap:1.5rem; margin-top:2rem; margin-bottom:2rem;">
@@ -661,7 +696,7 @@ function ame_bazaar_render_google_reviews_page() {
 				<div style="font-size:2.5rem; font-weight:800; color:#0f172a; margin-block:0.5rem; line-height:1;"><?php echo esc_html( $count ); ?></div>
 				<span style="color:#10b981; font-weight:700; font-size:0.8rem;">+14% <?php esc_html_e( 'this month', 'ame-bazaar' ); ?></span>
 			</div>
-
+			
 			<div style="background:#fff; border:1px solid #ccd0d4; padding:1.5rem; border-radius:5px; text-align:center; box-shadow:0 1px 3px rgba(0,0,0,0.05);">
 				<span style="font-size:0.75rem; font-weight:700; color:#64748b; text-transform:uppercase;"><?php esc_html_e( 'Private Feedbacks', 'ame-bazaar' ); ?></span>
 				<div style="font-size:2.5rem; font-weight:800; color:#0f172a; margin-block:0.5rem; line-height:1;"><?php echo count( $feedback_logs ); ?></div>
@@ -669,9 +704,85 @@ function ame_bazaar_render_google_reviews_page() {
 			</div>
 		</div>
 
+		<!-- API Synchronization Section -->
+		<div style="background:#fff; border:1px solid #ccd0d4; padding:2rem; border-radius:5px; margin-bottom:2rem; box-shadow:0 1px 3px rgba(0,0,0,0.05);">
+			<h2><?php esc_html_e( '1. Google Business Profile API Synchronization', 'ame-bazaar' ); ?></h2>
+			<div class="notice <?php echo esc_attr( $health['class'] ); ?> inline" style="margin-block:1rem; padding:1rem; border-radius:3px;">
+				<h3 style="margin:0 0 0.5rem 0;"><?php printf( esc_html__( 'Status: %s', 'ame-bazaar' ), esc_html( $health['status'] ) ); ?></h3>
+				<p style="margin:0;"><?php echo esc_html( $health['description'] ); ?></p>
+				<?php if ( $last_sync > 0 ) : ?>
+					<p style="margin:0.5rem 0 0 0; font-size:0.85rem; color:#64748b;">
+						<?php printf( esc_html__( 'Last synchronized: %s', 'ame-bazaar' ), esc_html( date( 'Y-m-d H:i:s', $last_sync ) ) ); ?>
+					</p>
+				<?php endif; ?>
+			</div>
+
+			<!-- Credentials Form -->
+			<form method="post" action="" style="margin-top:1.5rem; border-top:1px solid #e2e8f0; padding-top:1.5rem;">
+				<?php wp_nonce_field( 'ame_gbp_creds_action', 'ame_nonce' ); ?>
+				<table class="form-table">
+					<tr>
+						<th><label for="gbp_client_id"><?php esc_html_e( 'Google Client ID', 'ame-bazaar' ); ?></label></th>
+						<td><input type="text" id="gbp_client_id" name="gbp_client_id" value="<?php echo esc_attr( $client_id ); ?>" class="large-text" /></td>
+					</tr>
+					<tr>
+						<th><label for="gbp_client_secret"><?php esc_html_e( 'Google Client Secret', 'ame-bazaar' ); ?></label></th>
+						<td><input type="password" id="gbp_client_secret" name="gbp_client_secret" value="<?php echo esc_attr( $client_secret ); ?>" class="regular-text" /></td>
+					</tr>
+					<tr>
+						<th><label for="gbp_location_id"><?php esc_html_e( 'GBP Location ID', 'ame-bazaar' ); ?></label></th>
+						<td><input type="text" id="gbp_location_id" name="gbp_location_id" value="<?php echo esc_attr( $location_id ); ?>" class="regular-text" /> <small>e.g. locations/123456789</small></td>
+					</tr>
+					<tr>
+						<th><?php esc_html_e( 'OAuth Redirect URI', 'ame-bazaar' ); ?></th>
+						<td><code><?php echo esc_html( Ame_Bazaar_GBP_Service::get_redirect_uri() ); ?></code></td>
+					</tr>
+				</table>
+				<div style="margin-top:1.5rem;">
+					<input type="submit" name="ame_gbp_save_creds" class="button button-secondary" value="<?php esc_attr_e( 'Save Credentials', 'ame-bazaar' ); ?>" />
+					<?php if ( Ame_Bazaar_GBP_Service::get_client_id() ) : ?>
+						<a href="<?php echo esc_url( Ame_Bazaar_GBP_Service::get_auth_url() ); ?>" class="button button-primary" style="margin-left:10px;"><?php esc_html_e( 'Connect Google Account', 'ame-bazaar' ); ?></a>
+					<?php endif; ?>
+				</div>
+			</form>
+
+			<!-- Action Trigger Form -->
+			<?php if ( $health['status'] === 'Connected' ) : ?>
+				<form method="post" action="" style="margin-top:1.5rem; border-top:1px solid #e2e8f0; padding-top:1.5rem;">
+					<?php wp_nonce_field( 'ame_gbp_sync_action', 'ame_nonce' ); ?>
+					<p><?php esc_html_e( 'Force an immediate pull of location metadata, review ratings, hours, and attributes.', 'ame-bazaar' ); ?></p>
+					<input type="submit" name="ame_gbp_manual_sync" class="button button-primary" value="<?php esc_attr_e( 'Sync Now', 'ame-bazaar' ); ?>" />
+				</form>
+			<?php endif; ?>
+
+			<!-- Sync Logs -->
+			<div style="margin-top:2rem; border-top:1px solid #e2e8f0; padding-top:1.5rem;">
+				<h3><?php esc_html_e( 'API Connection Logs', 'ame-bazaar' ); ?></h3>
+				<div style="background:#f8fafc; border:1px solid #e2e8f0; padding:1rem; max-height:200px; overflow-y:auto; font-family:monospace; font-size:0.85rem; border-radius:3px;">
+					<?php
+					$logs = Ame_Bazaar_GBP_Service::get_logs();
+					if ( empty( $logs ) ) {
+						echo '<p style="color:#64748b; margin:0;">' . esc_html__( 'No logs generated yet.', 'ame-bazaar' ) . '</p>';
+					} else {
+						foreach ( array_reverse( $logs ) as $log ) {
+							$color = ( $log['level'] === 'ERROR' ) ? '#ef4444' : '#0f172a';
+							printf(
+								'<div style="margin-bottom:0.4rem; color:%s;">[%s] [%s] %s</div>',
+								esc_attr( $color ),
+								esc_html( $log['timestamp'] ),
+								esc_html( $log['level'] ),
+								esc_html( $log['message'] )
+							);
+						}
+					}
+					?>
+				</div>
+			</div>
+		</div>
+
 		<!-- QR Codes Printable -->
 		<div style="background:#fff; border:1px solid #ccd0d4; padding:2rem; border-radius:5px; margin-bottom:2rem; box-shadow:0 1px 3px rgba(0,0,0,0.05);">
-			<h2><?php esc_html_e( '1. Printable Reviews QR Code Kits', 'ame-bazaar' ); ?></h2>
+			<h2><?php esc_html_e( '2. Printable Reviews QR Code Kits', 'ame-bazaar' ); ?></h2>
 			<p><?php esc_html_e( 'Download or preview local authority poster sizes optimized for printing.', 'ame-bazaar' ); ?></p>
 			<div style="display:flex; gap:1rem; flex-wrap:wrap; margin-top:1.5rem;">
 				<a href="<?php echo esc_url( home_url( '/review-request/?layout=a4' ) ); ?>" target="_blank" class="button button-primary"><?php esc_html_e( 'Printable A4 Poster', 'ame-bazaar' ); ?></a>
@@ -682,7 +793,7 @@ function ame_bazaar_render_google_reviews_page() {
 
 		<!-- Feedback Form Log Panel -->
 		<div style="background:#fff; border:1px solid #ccd0d4; padding:2rem; border-radius:5px; margin-bottom:2rem; box-shadow:0 1px 3px rgba(0,0,0,0.05);">
-			<h2><?php esc_html_e( '2. Private Customer Feedback Logs', 'ame-bazaar' ); ?></h2>
+			<h2><?php esc_html_e( '3. Private Customer Feedback Logs', 'ame-bazaar' ); ?></h2>
 			<p><?php esc_html_e( 'Review submitted low rating responses collected by the smart flow.', 'ame-bazaar' ); ?></p>
 			
 			<table class="widefat fixed striped" style="margin-top:1.5rem;">
@@ -715,6 +826,7 @@ function ame_bazaar_render_google_reviews_page() {
 	</div>
 	<?php
 }
+
 
 /**
  * 12. REST API Local Business & Reviews Enabler.
