@@ -49,8 +49,8 @@ $white_logo_id = get_option( 'ame_bazaar_media_white_logo' );
 					}
 					echo '</a>';
 				} else {
-					echo '<a href="' . esc_url( home_url( '/' ) ) . '" class="ame-logo-text" rel="home">';
-					echo esc_html( ame_bazaar_get_brand_name() );
+					echo '<a href="' . esc_url( home_url( '/' ) ) . '" class="ame-logo-link" rel="home">';
+					echo '<img src="' . esc_url( ame_bazaar_get_custom_logo_url() ) . '" class="ame-logo-img ame-primary-logo" alt="' . esc_attr( ame_bazaar_get_brand_name() ) . '" />';
 					echo '</a>';
 				}
 				?>
@@ -158,7 +158,7 @@ $white_logo_id = get_option( 'ame_bazaar_media_white_logo' );
 						'alt'     => esc_attr( ame_bazaar_get_brand_name() ),
 					) ); ?>
 				<?php else : ?>
-					<span class="ame-logo-text"><?php echo esc_html( ame_bazaar_get_brand_name() ); ?></span>
+					<img src="<?php echo esc_url( ame_bazaar_get_custom_logo_url() ); ?>" class="ame-logo-img" alt="<?php echo esc_attr( ame_bazaar_get_brand_name() ); ?>" />
 				<?php endif; ?>
 			</div>
 			
