@@ -827,7 +827,7 @@ function ame_bazaar_auto_assign_media_mappings() {
 		'ame_bazaar_media_google_reviews'     => 'whatsapp-image-2025-09-14-at-12-18-18_b466d7a2',
 		'ame_bazaar_media_visit_store'        => 'whatsapp-image-2025-09-14-at-12-18-19_44c54162',
 		'ame_bazaar_media_about'              => 'gemini_generated_image_k8zk7fk8zk7fk8zk',
-		'ame_bazaar_media_footer_bg'          => 'bed-sheet-1',
+		'ame_bazaar_media_footer_bg'          => 'bed-sheet-2',
 		'ame_bazaar_media_empty_state'        => 'woocommerce-placeholder',
 		'ame_bazaar_media_404_illustration'   => 'gemini_generated_image_k8zk7fk8zk7fk8zk',
 	);
