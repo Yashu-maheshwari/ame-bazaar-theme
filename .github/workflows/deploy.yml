@@ -5,6 +5,7 @@ on:
     branches:
       - main
       - feature/frontend-polish
+      - feature/ai-entity-authority
   workflow_dispatch:
 
 jobs:
