@@ -337,7 +337,7 @@ function ame_bazaar_render_business_settings_page() {
 	$country           = ame_bazaar_get_business_setting( 'country', 'IN' );
 	$phone             = ame_bazaar_get_business_setting( 'phone', '+91 99999 99999' );
 	$whatsapp          = ame_bazaar_get_business_setting( 'whatsapp', '+91 99999 99999' );
-	$email             = ame_bazaar_get_business_setting( 'email', 'contact@amebazaar.com' );
+	$email             = ame_bazaar_get_business_setting( 'email', 'info@amebazaar.in' );
 	$maps_url          = ame_bazaar_get_business_setting( 'maps_url', 'https://maps.google.com/?q=AME+Bazaar+Kirari+Delhi' );
 	$latitude          = ame_bazaar_get_business_setting( 'latitude', '28.7051' );
 	$longitude         = ame_bazaar_get_business_setting( 'longitude', '77.0583' );
@@ -817,7 +817,7 @@ function ame_bazaar_auto_assign_media_mappings() {
 	$mappings = array(
 		'ame_bazaar_media_primary_logo'       => 'site-logo',
 		'ame_bazaar_media_hero_desktop'       => 'hero-banner-image',
-		'ame_bazaar_media_women'              => 'women-wear-image',
+		'ame_bazaar_media_women'              => 'women-wear',
 		'ame_bazaar_media_men'                => 'mens-tshirt',
 		'ame_bazaar_media_kids'               => 'boys-wear',
 		'ame_bazaar_media_sarees'             => 'sarees-new',
