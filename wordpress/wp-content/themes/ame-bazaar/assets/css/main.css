@@ -757,7 +757,7 @@
    SHOP BY CATEGORY COMPONENT STYLES
    ========================================================================== */
 .ame-categories-section {
-	padding-block: clamp(4rem, 8vw, 6rem);
+	padding-block: clamp(2rem, 4vw, 3rem) clamp(4rem, 8vw, 6rem);
 	background: var(--ame-color-white);
 	border-top: 1px solid var(--ame-color-border);
 }
@@ -2937,10 +2937,11 @@
    TRUST BAR SECTION
    ========================================================================== */
 .ame-trust-bar-section {
-	background: var(--ame-color-navy);
-	color: var(--ame-color-white);
-	padding-block: 2.5rem;
-	border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+	background: #f8fafc;
+	color: var(--ame-color-navy);
+	padding-block: 1.75rem;
+	border-top: 1px solid var(--ame-color-border);
+	border-bottom: 1px solid var(--ame-color-border);
 }
 
 .ame-trust-bar-grid {
@@ -2965,17 +2966,24 @@
 	display: flex;
 	align-items: center;
 	gap: 1rem;
+	transition: transform 0.3s ease;
+}
+
+.ame-trust-bar-item:hover {
+	transform: translateY(-2px);
 }
 
 .ame-trust-bar-icon-wrap {
-	background: rgba(212, 175, 55, 0.15); /* Translucent gold badge */
-	color: var(--ame-color-gold);
+	background: rgba(212, 175, 55, 0.12); /* Warm gold translucent badge */
+	color: var(--ame-color-gold-dark, #b58900);
 	padding: 0.6rem;
 	border-radius: 50%;
 	display: flex;
 	align-items: center;
 	justify-content: center;
 	flex-shrink: 0;
+	width: 44px;
+	height: 44px;
 }
 
 .ame-trust-bar-icon {
@@ -2993,13 +3001,14 @@
 	font-size: 0.9rem;
 	font-weight: 700;
 	letter-spacing: 0.01em;
-	color: var(--ame-color-white);
+	color: var(--ame-color-navy);
 }
 
 .ame-trust-bar-desc {
 	font-size: 0.75rem;
-	color: rgba(255, 255, 255, 0.7);
-	margin-top: 0.1rem;
+	color: var(--ame-color-slate);
+	margin-top: 0.15rem;
+	font-weight: 500;
 }
 
 /* ==========================================================================

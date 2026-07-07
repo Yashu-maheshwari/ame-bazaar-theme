@@ -20,8 +20,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 					</svg>
 				</div>
 				<div class="ame-trust-bar-text">
-					<span class="ame-trust-bar-title"><?php esc_html_e( '500+ Google Reviews', 'ame-bazaar' ); ?></span>
-					<span class="ame-trust-bar-desc"><?php esc_html_e( 'Rated 4.8+ Stars by locals', 'ame-bazaar' ); ?></span>
+					<?php
+					$reviews_rating = ame_bazaar_get_business_setting( 'google_reviews_rating', '4.9' );
+					$reviews_count  = ame_bazaar_get_business_setting( 'google_reviews_count', '524' );
+					?>
+					<span class="ame-trust-bar-title"><?php printf( esc_html__( '%s+ Google Reviews', 'ame-bazaar' ), esc_html( $reviews_count ) ); ?></span>
+					<span class="ame-trust-bar-desc"><?php printf( esc_html__( 'Rated %s Stars by locals', 'ame-bazaar' ), esc_html( $reviews_rating ) ); ?></span>
 				</div>
 			</div>
 
