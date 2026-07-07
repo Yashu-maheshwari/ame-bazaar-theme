@@ -178,7 +178,7 @@ function ame_bazaar_get_clothing_store_schema() {
 	$primary_cat  = ame_bazaar_get_business_setting( 'primary_category', 'ClothingStore' );
 
 	$schema = array(
-		'@type'              => 'ClothingStore',
+		'@type'              => array( 'ClothingStore', 'Tailor' ),
 		'@id'                => home_url( '/#store' ),
 		'name'               => $brand_name,
 		'url'                => home_url( '/' ),
@@ -214,6 +214,15 @@ function ame_bazaar_get_clothing_store_schema() {
 		),
 		'paymentAccepted'    => 'Cash, UPI, Credit Card, Debit Card, Digital Wallets',
 		'currenciesAccepted' => 'INR',
+		'hasMerchantReturnPolicy' => array(
+			'@type'                => 'MerchantReturnPolicy',
+			'applicableCountry'    => 'IN',
+			'returnPolicyCategory' => 'https://schema.org/MerchantReturnPolicyRequirementExchange',
+			'returnFees'           => 'https://schema.org/FreeReturn',
+			'merchantReturnDays'   => 7,
+			'returnMethod'         => 'https://schema.org/ReturnInStore',
+			'url'                  => home_url( '/return-policy/' ),
+		),
 	);
 
 	if ( ame_bazaar_get_custom_logo_url() ) {
