@@ -17,3 +17,4 @@ echo json_encode( array(
 	'phone'   => get_option( 'ame_bazaar_phone' ),
 	'whatsapp'=> get_option( 'ame_bazaar_whatsapp' )
 ) );
+// Trigger comment for re-run.
