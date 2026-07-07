@@ -45,6 +45,13 @@ jobs:
             ${{ secrets.USERNAME }}@${{ secrets.HOST }}:domains/amebazaar.in/public_html/wp-content/themes/ame-bazaar/
           echo "Deployment successful!"
 
+      - name: Deploy Root Crawler Files
+        run: |
+          echo "Syncing crawler files to public_html root..."
+          scp -P ${{ secrets.PORT }} -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null \
+            wordpress/robots.txt wordpress/sitemap.xml wordpress/humans.txt wordpress/llms.txt wordpress/ai-entity-map.json \
+            ${{ secrets.USERNAME }}@${{ secrets.HOST }}:domains/amebazaar.in/public_html/
+
       - name: Flush Remote OPCache
         run: |
           echo "Copying OPCache flusher to web root..."
