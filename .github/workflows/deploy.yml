@@ -6,6 +6,7 @@ on:
       - main
       - feature/frontend-polish
       - feature/ai-entity-authority
+      - feature/gbp-live-sync
   workflow_dispatch:
 
 jobs:
