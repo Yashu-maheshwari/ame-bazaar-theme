@@ -96,7 +96,7 @@ function ame_bazaar_get_website_schema() {
 function ame_bazaar_get_organization_schema() {
 	$brand_name   = ame_bazaar_get_business_setting( 'store_name', 'AME Bazaar' );
 	$phone        = ame_bazaar_get_business_setting( 'phone', '+91 99999 99999' );
-	$email        = ame_bazaar_get_business_setting( 'email', 'contact@amebazaar.com' );
+	$email        = ame_bazaar_get_business_setting( 'email', 'info@amebazaar.in' );
 	$whatsapp     = ame_bazaar_get_business_setting( 'whatsapp', '+91 99999 99999' );
 	$clean_wa     = preg_replace( '/[^0-9+]/', '', $whatsapp );
 	$whatsapp_url = 'https://wa.me/' . ltrim( $clean_wa, '+' );
@@ -600,7 +600,7 @@ function ame_bazaar_get_author_profile_schema() {
  */
 function ame_bazaar_get_tailoring_service_schema() {
 	$phone        = ame_bazaar_get_business_setting( 'phone', '+91 99999 99999' );
-	$email        = ame_bazaar_get_business_setting( 'email', 'contact@amebazaar.com' );
+	$email        = ame_bazaar_get_business_setting( 'email', 'info@amebazaar.in' );
 	$whatsapp     = ame_bazaar_get_business_setting( 'whatsapp', '' );
 	$whatsapp_url = '';
 	if ( $whatsapp ) {
