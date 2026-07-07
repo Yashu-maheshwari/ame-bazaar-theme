@@ -8,6 +8,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 header( 'Content-Type: application/json' );
 
+// Force update options to correct mapping IDs
+update_option( 'ame_bazaar_media_women', 498 ); // Force map women wear to ID 498 (high-res women-wear.jpg)
+update_option( 'ame_bazaar_email', 'info@amebazaar.in' ); // Ensure database email matches info@amebazaar.in
+
 $purged = false;
 if ( has_action( 'litespeed_purge_all' ) ) {
 	do_action( 'litespeed_purge_all' );
@@ -21,16 +25,8 @@ if ( has_action( 'litespeed_purge_all' ) ) {
 	}
 }
 
-// Also run the auto-assign mapping to ensure the new women-wear high-res asset ID maps to option key
-if ( function_exists( 'ame_bazaar_auto_assign_media_mappings' ) ) {
-	ame_bazaar_auto_assign_media_mappings();
-	$auto_assign = 'Executed auto-assignment';
-} else {
-	$auto_assign = 'Auto-assignment helper missing';
-}
-
 echo json_encode( array(
 	'purged' => $purged,
-	'auto_assign' => $auto_assign,
-	'ame_bazaar_media_women' => get_option( 'ame_bazaar_media_women' )
+	'ame_bazaar_media_women' => get_option( 'ame_bazaar_media_women' ),
+	'ame_bazaar_email' => get_option( 'ame_bazaar_email' )
 ), JSON_PRETTY_PRINT );
