@@ -50,8 +50,13 @@ jobs:
         run: |
           echo "Syncing crawler files to public_html root..."
           scp -P ${{ secrets.PORT }} -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null \
-            wordpress/robots.txt wordpress/sitemap.xml wordpress/humans.txt wordpress/llms.txt wordpress/ai-entity-map.json \
+            wordpress/robots.txt wordpress/humans.txt wordpress/llms.txt wordpress/ai-entity-map.json \
             ${{ secrets.USERNAME }}@${{ secrets.HOST }}:domains/amebazaar.in/public_html/
+          
+          echo "Cleaning up physical sitemap.xml on host to allow WordPress dynamic rewrite..."
+          ssh -p ${{ secrets.PORT }} -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null \
+            ${{ secrets.USERNAME }}@${{ secrets.HOST }} "rm -f domains/amebazaar.in/public_html/sitemap.xml"
+
 
       - name: Flush Remote OPCache
         run: |
