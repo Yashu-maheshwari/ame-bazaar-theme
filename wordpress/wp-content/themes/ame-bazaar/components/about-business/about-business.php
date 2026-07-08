@@ -76,7 +76,23 @@ for ( $index = 1; $index <= 3; $index++ ) {
 				}
 				?>
 				<div class="ame-about-story-content-wrap">
-					<p class="ame-about-story-para"><?php echo esc_html( $story_content ); ?></p>
+					<p class="ame-about-story-para" style="margin-bottom: 1.5rem; font-size: 1.05rem; line-height: 1.6; color: #475569;"><?php echo esc_html( $story_content ); ?></p>
+					
+					<div class="ame-brand-pillars" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; margin-bottom: 1.75rem;">
+						<div class="ame-pillar-box">
+							<h4 style="margin: 0 0 0.4rem; font-size: 0.95rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--ame-color-primary, #1e293b); font-weight: bold;"><?php esc_html_e( 'Our Mission', 'ame-bazaar' ); ?></h4>
+							<p style="margin: 0; font-size: 0.9rem; line-height: 1.4; color: #475569;"><?php esc_html_e( 'To provide high-quality family fashion at honest prices while delivering exceptional customer service and long-term trust.', 'ame-bazaar' ); ?></p>
+						</div>
+						<div class="ame-pillar-box">
+							<h4 style="margin: 0 0 0.4rem; font-size: 0.95rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--ame-color-primary, #1e293b); font-weight: bold;"><?php esc_html_e( 'Our Vision', 'ame-bazaar' ); ?></h4>
+							<p style="margin: 0; font-size: 0.9rem; line-height: 1.4; color: #475569;"><?php esc_html_e( 'To become India\'s most trusted family fashion retail brand, combining offline hospitality with seamless digital commerce.', 'ame-bazaar' ); ?></p>
+						</div>
+					</div>
+
+					<div class="ame-usp-box" style="background-color: #f8fafc; border-left: 4px solid #1e293b; padding: 1rem 1.25rem; border-radius: 0 var(--ame-radius-sm) var(--ame-radius-sm) 0; margin-bottom: 1.75rem;">
+						<h4 style="margin: 0 0 0.5rem; font-size: 0.95rem; text-transform: uppercase; letter-spacing: 0.05em; color: #1e293b; font-weight: bold;"><?php esc_html_e( 'Our Brand Promise', 'ame-bazaar' ); ?></h4>
+						<p style="margin: 0; font-size: 1.05rem; font-style: italic; font-weight: 600; color: #334155; letter-spacing: 0.02em;">"<?php esc_html_e( 'Premium Quality. Fair Prices. Trusted Service. Fashion for Every Family.', 'ame-bazaar' ); ?>"</p>
+					</div>
 				</div>
 				<div class="ame-about-badges">
 					<span class="ame-about-badge"><?php esc_html_e( 'Family-Owned', 'ame-bazaar' ); ?></span>

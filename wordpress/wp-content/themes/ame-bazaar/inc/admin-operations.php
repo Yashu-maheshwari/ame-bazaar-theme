@@ -815,8 +815,14 @@ add_action( 'admin_init', 'ame_bazaar_auto_assign_media_mappings' );
  */
 function ame_bazaar_auto_assign_media_mappings() {
 	$mappings = array(
-		'ame_bazaar_media_primary_logo'       => 'site-logo',
-		'ame_bazaar_media_hero_desktop'       => 'hero-banner-image',
+		'ame_bazaar_media_primary_logo'       => 'logo',
+		'ame_bazaar_white_logo'               => 'logo',
+		'ame_bazaar_sticky_logo'              => 'logo',
+		'ame_bazaar_media_white_logo'         => 'logo',
+		'ame_bazaar_media_sticky_logo'        => 'logo',
+		'ame_bazaar_media_favicon'            => 'logo',
+		'ame_bazaar_media_hero_desktop'       => 'unnamed-6',
+		'ame_bazaar_media_hero_mobile'        => 'unnamed',
 		'ame_bazaar_media_women'              => 'women-wear-image',
 		'ame_bazaar_media_men'                => 'mens-tshirt',
 		'ame_bazaar_media_kids'               => 'boys-wear',
@@ -824,11 +830,11 @@ function ame_bazaar_auto_assign_media_mappings() {
 		'ame_bazaar_media_tailoring'          => 'winter-waist-coat',
 		'ame_bazaar_media_instagram'          => 'online-excluive-images',
 		'ame_bazaar_media_google_reviews'     => 'whatsapp-image-2025-09-14-at-12-18-18_b466d7a2',
-		'ame_bazaar_media_visit_store'        => 'whatsapp-image-2025-09-14-at-12-18-19_44c54162',
-		'ame_bazaar_media_about'              => 'gemini_generated_image_k8zk7fk8zk7fk8zk',
+		'ame_bazaar_media_visit_store'        => 'store-photo',
+		'ame_bazaar_media_about'              => 'unnamed-5',
 		'ame_bazaar_media_footer_bg'          => 'bed-sheet-1',
 		'ame_bazaar_media_empty_state'        => 'woocommerce-placeholder',
-		'ame_bazaar_media_404_illustration'   => 'gemini_generated_image_k8zk7fk8zk7fk8zk',
+		'ame_bazaar_media_404_illustration'   => 'unnamed-5',
 	);
 
 	foreach ( $mappings as $option_key => $slug ) {
