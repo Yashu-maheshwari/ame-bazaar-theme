@@ -221,7 +221,7 @@ function ame_bazaar_get_clothing_store_schema() {
 			'returnFees'           => 'https://schema.org/FreeReturn',
 			'merchantReturnDays'   => 7,
 			'returnMethod'         => 'https://schema.org/ReturnInStore',
-			'url'                  => home_url( '/return-policy/' ),
+			'url'                  => home_url( '/return-refund-policy/' ),
 		),
 	);
 
@@ -245,22 +245,22 @@ function ame_bazaar_get_clothing_store_schema() {
 			array(
 				'@type' => 'OfferCatalog',
 				'name'  => 'Men\'s Wear Collection',
-				'url'   => home_url( '/category/mens-wear/' ),
+				'url'   => home_url( '/product-category/mens-wear/' ),
 			),
 			array(
 				'@type' => 'OfferCatalog',
 				'name'  => 'Women\'s Wear Collection',
-				'url'   => home_url( '/category/womens-wear/' ),
+				'url'   => home_url( '/product-category/womens-wear/' ),
 			),
 			array(
 				'@type' => 'OfferCatalog',
 				'name'  => 'Kids\' Wear Collection',
-				'url'   => home_url( '/category/kids-wear/' ),
+				'url'   => home_url( '/product-category/boy-wear/' ),
 			),
 			array(
 				'@type' => 'OfferCatalog',
 				'name'  => 'Accessories Collection',
-				'url'   => home_url( '/category/accessories/' ),
+				'url'   => home_url( '/product-category/accessories/' ),
 			),
 			array(
 				'@type' => 'OfferCatalog',

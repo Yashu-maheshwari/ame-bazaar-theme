@@ -16,19 +16,28 @@ $phone        = ame_bazaar_get_business_setting( 'phone', '+91 99999 99999' );
 $maps_url     = ame_bazaar_get_business_setting( 'maps_url', 'https://maps.google.com/?q=AME+Bazaar+Kirari+Delhi' );
 
 // Resolve WooCommerce category permalinks dynamically
-$categories_keys = array( 'men', 'women', 'kids', 'sarees', 'accessories' );
+$categories_keys = array(
+	'men'         => array( 'mens-wear', 'men-wear', 'men' ),
+	'women'       => array( 'womens-wear', 'women-wear', 'women' ),
+	'kids'        => array( 'boy-wear', 'kids-wear', 'kids' ),
+	'sarees'      => array( 'sarees' ),
+	'accessories' => array( 'accessories' ),
+);
 $urls = array();
-foreach ( $categories_keys as $key ) {
+foreach ( $categories_keys as $key => $slugs ) {
 	$url = '#';
-	$term = get_term_by( 'slug', $key, 'product_cat' );
-	if ( $term ) {
-		$resolved_url = get_term_link( $term );
-		if ( ! is_wp_error( $resolved_url ) ) {
-			$url = $resolved_url;
+	foreach ( $slugs as $slug ) {
+		$term = get_term_by( 'slug', $slug, 'product_cat' );
+		if ( $term ) {
+			$resolved_url = get_term_link( $term );
+			if ( ! is_wp_error( $resolved_url ) ) {
+				$url = $resolved_url;
+				break;
+			}
 		}
 	}
 	if ( '#' === $url ) {
-		$url = home_url( '/product-category/' . $key . '/' );
+		$url = home_url( '/product-category/' . $slugs[0] . '/' );
 	}
 	$urls[ $key ] = $url;
 }

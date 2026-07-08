@@ -48,8 +48,8 @@ if ( ! $cat_women_url || '#' === $cat_women_url ) {
 }
 if ( ! $cat_kids_url || '#' === $cat_kids_url ) {
 	$term = get_term_by( 'slug', 'kids-wear', 'product_cat' ) ?: get_term_by( 'slug', 'kids', 'product_cat' );
-	$cat_kids_url = ( $term && ! is_wp_error( $term ) ) ? get_term_link( $term ) : home_url( '/product-category/kids/' );
-	if ( is_wp_error( $cat_kids_url ) ) { $cat_kids_url = home_url( '/product-category/kids/' ); }
+	$cat_kids_url = ( $term && ! is_wp_error( $term ) ) ? get_term_link( $term ) : home_url( '/product-category/boy-wear/' );
+	if ( is_wp_error( $cat_kids_url ) ) { $cat_kids_url = home_url( '/product-category/boy-wear/' ); }
 }
 if ( ! $cat_sarees_url || '#' === $cat_sarees_url ) {
 	$term = get_term_by( 'slug', 'sarees', 'product_cat' );
@@ -210,9 +210,9 @@ if ( ! $cat_acc_url || '#' === $cat_acc_url ) {
 		</div>
 		<div class="ame-footer-legal-links">
 			<ul class="ame-footer-legal-list" style="list-style:none; padding:0; margin:0; display:flex; gap:1.25rem; font-size:0.8rem;">
-				<li><a href="<?php echo esc_url( home_url( '/privacy-policy/' ) ); ?>"><?php esc_html_e( 'Privacy Policy', 'ame-bazaar' ); ?></a></li>
-				<li><a href="<?php echo esc_url( home_url( '/terms-of-service/' ) ); ?>"><?php esc_html_e( 'Terms of Service', 'ame-bazaar' ); ?></a></li>
-				<li><a href="<?php echo esc_url( home_url( '/shipping-returns/' ) ); ?>"><?php esc_html_e( 'Shipping & Returns', 'ame-bazaar' ); ?></a></li>
+				<li><a href="<?php echo esc_url( home_url( '/privacy-policy-2/' ) ); ?>"><?php esc_html_e( 'Privacy Policy', 'ame-bazaar' ); ?></a></li>
+				<li><a href="<?php echo esc_url( home_url( '/terms-conditions/' ) ); ?>"><?php esc_html_e( 'Terms & Conditions', 'ame-bazaar' ); ?></a></li>
+				<li><a href="<?php echo esc_url( home_url( '/return-refund-policy/' ) ); ?>"><?php esc_html_e( 'Return Policy', 'ame-bazaar' ); ?></a></li>
 			</ul>
 		</div>
 	</div>

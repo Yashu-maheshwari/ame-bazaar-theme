@@ -105,3 +105,35 @@ function ame_bazaar_image_alt_fallback( $attr, $attachment ) {
 	return $attr;
 }
 add_filter( 'wp_get_attachment_image_attributes', 'ame_bazaar_image_alt_fallback', 10, 2 );
+
+/**
+ * Handle 301 redirects for legacy URLs to prevent 404 crawl errors.
+ */
+function ame_bazaar_handle_redirects() {
+	if ( is_admin() ) {
+		return;
+	}
+
+	$request_uri = $_SERVER['REQUEST_URI'];
+	$redirects = array(
+		'/category/mens-wear/'    => '/product-category/mens-wear/',
+		'/category/womens-wear/'  => '/product-category/womens-wear/',
+		'/category/kids-wear/'    => '/product-category/boy-wear/', // pointing to the primary active kids wear category
+		'/category/accessories/'  => '/product-category/accessories/',
+		'/return-policy/'         => '/return-refund-policy/',
+		'/privacy-policy/'        => '/privacy-policy-2/',
+	);
+
+	// Match request URI (strip query parameters for matching)
+	$path = parse_url( $request_uri, PHP_URL_PATH );
+	
+	// Normalize path trailing slash
+	$path = '/' . trim( $path, '/' ) . '/';
+
+	if ( isset( $redirects[ $path ] ) ) {
+		wp_safe_redirect( home_url( $redirects[ $path ] ), 301 );
+		exit;
+	}
+}
+add_action( 'template_redirect', 'ame_bazaar_handle_redirects' );
+
