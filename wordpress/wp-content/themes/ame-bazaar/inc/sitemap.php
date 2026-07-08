@@ -126,7 +126,7 @@ function ame_bazaar_generate_sitemap() {
 	if ( taxonomy_exists( 'product_cat' ) ) {
 		$categories = get_terms( array(
 			'taxonomy'   => 'product_cat',
-			'hide_empty' => true,
+			'hide_empty' => false,
 		) );
 		if ( ! is_wp_error( $categories ) ) {
 			foreach ( $categories as $cat ) {

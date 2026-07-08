@@ -579,24 +579,6 @@ add_filter( 'robots_txt', 'ame_bazaar_robots_txt' );
 function ame_bazaar_handle_dynamic_text_files() {
 	$request = $_SERVER['REQUEST_URI'];
 	
-	if ( strpos( $request, 'sitemap.xml' ) !== false ) {
-		header( 'Content-Type: application/xml; charset=utf-8' );
-		echo '<?xml version="1.0" encoding="UTF-8"?>';
-		echo '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">';
-		echo '<url><loc>' . esc_url( home_url( '/' ) ) . '</loc><changefreq>daily</changefreq><priority>1.0</priority></url>';
-		
-		// Load products
-		$query = new WP_Query( array( 'post_type' => 'product', 'posts_per_page' => 100 ) );
-		while ( $query->have_posts() ) {
-			$query->the_post();
-			echo '<url><loc>' . esc_url( get_permalink() ) . '</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>';
-		}
-		wp_reset_postdata();
-		
-		echo '</urlset>';
-		exit;
-	}
-	
 	if ( strpos( $request, 'llms.txt' ) !== false ) {
 		header( 'Content-Type: text/plain; charset=utf-8' );
 		echo "# AME Bazaar - LLMs Discovery File\n\n";
