@@ -55,26 +55,50 @@ $story_content = get_theme_mod( 'ame_bazaar_about_story_content', 'Located on Mu
 				</div>
 			</div>
 
-			<!-- Right Column: Semantic Local FAQ list for search engine visibility -->
+			<!-- Right Column: Interactive Local Accordion FAQs -->
 			<div class="ame-about-faq-col">
-				<h3 class="ame-about-faq-headline"><?php esc_html_e( 'Frequently Asked Questions', 'ame-bazaar' ); ?></h3>
-				<dl class="ame-about-faq-list">
+				<h3 class="ame-about-faq-headline" style="color: var(--ame-color-navy); margin-bottom: 1.5rem;"><?php esc_html_e( 'Frequently Asked Questions', 'ame-bazaar' ); ?></h3>
+				<div class="ame-about-faq-accordion" style="display: flex; flex-direction: column; gap: 10px; max-height: 550px; overflow-y: auto; padding-right: 5px;">
 					<?php
-					for ( $index = 1; $index <= 3; $index++ ) :
-						$faq_q = get_theme_mod( 'ame_bazaar_about_faq' . $index . '_q' );
-						$faq_a = get_theme_mod( 'ame_bazaar_about_faq' . $index . '_a' );
-
-						if ( ! $faq_q && ! $faq_a ) {
-							continue;
-						}
+					$verified_faqs = ame_bazaar_get_verified_faqs();
+					foreach ( $verified_faqs as $index => $faq ) :
 						?>
-						<div class="ame-faq-item">
-							<dt class="ame-faq-question"><?php echo esc_html( $faq_q ); ?></dt>
-							<dd class="ame-faq-answer"><?php echo esc_html( $faq_a ); ?></dd>
+						<div class="ame-faq-accordion-item" id="<?php echo esc_attr( $faq['id'] ); ?>" style="border: 1px solid var(--ame-color-border); border-radius: var(--ame-radius-md); background: var(--ame-color-white); overflow: hidden;">
+							<button class="ame-faq-accordion-trigger" style="width: 100%; text-align: left; padding: 0.9rem 1.1rem; background: none; border: none; font-weight: 700; font-size: 0.95rem; color: var(--ame-color-navy); cursor: pointer; display: flex; justify-content: space-between; align-items: center; gap: 10px;" aria-expanded="false" onclick="
+								const content = this.nextElementSibling;
+								const isExpanded = this.getAttribute('aria-expanded') === 'true';
+								this.setAttribute('aria-expanded', !isExpanded);
+								content.style.maxHeight = !isExpanded ? content.scrollHeight + 'px' : null;
+							">
+								<span><?php echo esc_html( $faq['q'] ); ?></span>
+								<span class="accordion-arrow" style="transition: transform var(--ame-transition); font-weight: 400; font-size: 0.8rem;">▼</span>
+							</button>
+							<div class="ame-faq-accordion-content" style="max-height: 0; overflow: hidden; transition: max-height 0.25s ease-out; padding-inline: 1.1rem;">
+								<p style="padding-bottom: 1.1rem; margin: 0; color: var(--ame-color-slate); line-height: 1.6; font-size: 0.9rem;">
+									<?php echo esc_html( $faq['a'] ); ?>
+								</p>
+							</div>
 						</div>
-					<?php endfor; ?>
-				</dl>
+					<?php endforeach; ?>
+				</div>
 			</div>
+			
+			<style>
+			.ame-faq-accordion-trigger[aria-expanded="true"] .accordion-arrow {
+				transform: rotate(180deg);
+			}
+			.ame-about-faq-accordion::-webkit-scrollbar {
+				width: 5px;
+			}
+			.ame-about-faq-accordion::-webkit-scrollbar-track {
+				background: var(--ame-color-cream);
+				border-radius: 10px;
+			}
+			.ame-about-faq-accordion::-webkit-scrollbar-thumb {
+				background: var(--ame-color-border);
+				border-radius: 10px;
+			}
+			</style>
 
 		</div>
 

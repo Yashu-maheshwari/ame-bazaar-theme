@@ -398,17 +398,15 @@ function ame_bazaar_get_faq_schema() {
 	$questions = array();
 
 	if ( is_front_page() ) {
-		for ( $index = 1; $index <= 3; $index++ ) {
-			$q = get_theme_mod( 'ame_bazaar_about_faq' . $index . '_q' );
-			$a = get_theme_mod( 'ame_bazaar_about_faq' . $index . '_a' );
-
-			if ( $q && $a ) {
+		if ( function_exists( 'ame_bazaar_get_verified_faqs' ) ) {
+			$verified_faqs = ame_bazaar_get_verified_faqs();
+			foreach ( $verified_faqs as $faq ) {
 				$questions[] = array(
 					'@type'          => 'Question',
-					'name'           => $q,
+					'name'           => $faq['q'],
 					'acceptedAnswer' => array(
 						'@type' => 'Answer',
-						'text'  => $a,
+						'text'  => $faq['a'],
 					),
 				);
 			}
