@@ -41,7 +41,8 @@ add_action( 'after_switch_theme', function() {
  * Intercept request and output XML sitemap.
  */
 function ame_bazaar_generate_sitemap() {
-	if ( ! get_query_var( 'ame_bazaar_sitemap' ) ) {
+	$path = parse_url( $_SERVER['REQUEST_URI'], PHP_URL_PATH );
+	if ( '/sitemap.xml' !== $path && '/sitemap.xml/' !== $path ) {
 		return;
 	}
 
@@ -155,4 +156,4 @@ function ame_bazaar_generate_sitemap() {
 	echo '</urlset>' . "\n";
 	exit;
 }
-add_action( 'template_redirect', 'ame_bazaar_generate_sitemap' );
+add_action( 'template_redirect', 'ame_bazaar_generate_sitemap', 1 );
