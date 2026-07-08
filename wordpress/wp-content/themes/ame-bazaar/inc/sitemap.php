@@ -61,9 +61,10 @@ function ame_bazaar_generate_sitemap() {
 
 	// 2. Query Published Pages
 	$pages = get_posts( array(
-		'post_type'      => 'page',
-		'post_status'    => 'publish',
-		'posts_per_page' => -1,
+		'post_type'        => 'page',
+		'post_status'      => 'publish',
+		'posts_per_page'   => -1,
+		'suppress_filters' => true,
 	) );
 
 	// Exclude list (e.g. utility pages, drafts, redirected URLs)
@@ -91,9 +92,10 @@ function ame_bazaar_generate_sitemap() {
 
 	// 3. Query Published Posts
 	$posts = get_posts( array(
-		'post_type'      => 'post',
-		'post_status'    => 'publish',
-		'posts_per_page' => -1,
+		'post_type'        => 'post',
+		'post_status'      => 'publish',
+		'posts_per_page'   => -1,
+		'suppress_filters' => true,
 	) );
 	foreach ( $posts as $post ) {
 		$entries[] = array(
@@ -107,9 +109,10 @@ function ame_bazaar_generate_sitemap() {
 	// 4. Query Published Products (WooCommerce)
 	if ( post_type_exists( 'product' ) ) {
 		$products = get_posts( array(
-			'post_type'      => 'product',
-			'post_status'    => 'publish',
-			'posts_per_page' => -1,
+			'post_type'        => 'product',
+			'post_status'      => 'publish',
+			'posts_per_page'   => -1,
+			'suppress_filters' => true,
 		) );
 		foreach ( $products as $product ) {
 			$entries[] = array(
