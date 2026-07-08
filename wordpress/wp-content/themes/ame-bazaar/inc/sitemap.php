@@ -65,8 +65,8 @@ function ame_bazaar_generate_sitemap() {
 		'suppress_filters' => true,
 	) );
 
-	// Exclude list (e.g. utility pages, drafts, redirected URLs)
-	$exclude_slugs = array( 'privacy-policy', 'terms-of-service', 'shipping-returns', 'review-request', 'rate-experience' );
+	// Exclude list (e.g. utility pages, drafts, redirected URLs, checkout pages)
+	$exclude_slugs = array( 'privacy-policy', 'terms-of-service', 'shipping-returns', 'review-request', 'rate-experience', 'cart', 'checkout', 'my-account' );
 
 	foreach ( $pages as $page ) {
 		if ( in_array( $page->post_name, $exclude_slugs, true ) ) {
@@ -130,6 +130,9 @@ function ame_bazaar_generate_sitemap() {
 		) );
 		if ( ! is_wp_error( $categories ) ) {
 			foreach ( $categories as $cat ) {
+				if ( 'uncategorized' === $cat->slug ) {
+					continue;
+				}
 				$entries[] = array(
 					'loc'        => get_term_link( $cat ),
 					'lastmod'    => date( 'c', current_time( 'timestamp' ) ),
