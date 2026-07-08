@@ -36,6 +36,7 @@ require_once AME_BAZAAR_PATH . '/components/local-entity/google-rating-widget.ph
 require_once AME_BAZAAR_PATH . '/components/local-entity/trust-block.php';
 require_once AME_BAZAAR_PATH . '/components/local-entity/customer-highlights.php';
 require_once AME_BAZAAR_PATH . '/components/local-entity/popular-review-keywords.php';
+require_once AME_BAZAAR_PATH . '/inc/knowledge-cpt.php';
 
 
 

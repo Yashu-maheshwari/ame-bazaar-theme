@@ -430,6 +430,23 @@ function ame_bazaar_get_faq_schema() {
 				}
 			}
 		}
+	} elseif ( is_singular( 'knowledge' ) ) {
+		// Read Knowledge Hub FAQs meta
+		$local_faqs = get_post_meta( get_the_ID(), '_ame_knowledge_faqs', true );
+		if ( is_array( $local_faqs ) ) {
+			foreach ( $local_faqs as $faq ) {
+				if ( ! empty( $faq['question'] ) && ! empty( $faq['answer'] ) ) {
+					$questions[] = array(
+						'@type'          => 'Question',
+						'name'           => $faq['question'],
+						'acceptedAnswer' => array(
+							'@type' => 'Answer',
+							'text'  => $faq['answer'],
+						),
+					);
+				}
+			}
+		}
 	}
 
 	if ( empty( $questions ) ) {
@@ -660,6 +677,56 @@ function ame_bazaar_get_tailoring_service_schema() {
 }
 
 /**
+ * Get dynamic Article/TechArticle schema for single knowledge post.
+ *
+ * @return array|bool
+ */
+function ame_bazaar_get_knowledge_post_schema() {
+	if ( ! is_singular( 'knowledge' ) ) {
+		return false;
+	}
+
+	$post_id = get_the_ID();
+
+	$schema = array(
+		'@type'            => 'TechArticle',
+		'@id'              => get_permalink( $post_id ) . '#article',
+		'isPartOf'         => array(
+			'@id' => get_permalink( $post_id ) . '#webpage',
+		),
+		'headline'         => get_the_title( $post_id ),
+		'description'      => wp_strip_all_tags( get_the_excerpt( $post_id ) ),
+		'inLanguage'       => 'en-US',
+		'mainEntityOfPage' => get_permalink( $post_id ),
+		'datePublished'    => get_the_date( 'c', $post_id ),
+		'dateModified'     => get_the_modified_date( 'c', $post_id ),
+		'author'           => array(
+			'@id' => home_url( '/#organization' ),
+		),
+		'publisher'        => array(
+			'@id' => home_url( '/#organization' ),
+		),
+		'about'            => array(
+			'@id' => home_url( '/#store' ),
+		),
+	);
+
+	if ( has_post_thumbnail( $post_id ) ) {
+		$thumb_id = get_post_thumbnail_id( $post_id );
+		$thumb_url = wp_get_attachment_image_url( $thumb_id, 'full' );
+		if ( $thumb_url ) {
+			$schema['image'] = array(
+				'@type' => 'ImageObject',
+				'@id'   => get_permalink( $post_id ) . '#primaryimage',
+				'url'   => $thumb_url,
+			);
+		}
+	}
+
+	return apply_filters( 'ame_bazaar_knowledge_post_schema', $schema );
+}
+
+/**
  * Output combined connected JSON-LD Entity Graph in the head.
  */
 function ame_bazaar_output_schema() {
@@ -723,6 +790,14 @@ function ame_bazaar_output_schema() {
 		$author_profile = ame_bazaar_get_author_profile_schema();
 		if ( $author_profile ) {
 			$graph[] = $author_profile;
+		}
+	}
+
+	// 8b. Knowledge Hub Article Entity (Single Knowledge posts only)
+	if ( is_singular( 'knowledge' ) ) {
+		$knowledge_schema = ame_bazaar_get_knowledge_post_schema();
+		if ( $knowledge_schema ) {
+			$graph[] = $knowledge_schema;
 		}
 	}
 
