@@ -15,27 +15,27 @@ $section_subtitle = get_theme_mod( 'ame_bazaar_cat_section_subtitle', 'Explore o
 $categories = array(
 	'men' => array(
 		'label'       => 'Men\'s Wear',
-		'default_img' => ame_bazaar_asset_uri( 'assets/images/men-wear-new.jpg' ),
+		'default_img' => ame_bazaar_asset_uri( 'assets/images/men-wear-new.webp' ),
 	),
 	'women' => array(
 		'label'       => 'Women\'s Wear',
-		'default_img' => ame_bazaar_asset_uri( 'assets/images/women-wear-new.jpg' ),
+		'default_img' => ame_bazaar_asset_uri( 'assets/images/women-wear-new.webp' ),
 	),
 	'kids' => array(
 		'label'       => 'Kids Wear',
-		'default_img' => ame_bazaar_asset_uri( 'assets/images/kids-wear-new.jpg' ),
+		'default_img' => ame_bazaar_asset_uri( 'assets/images/kids-wear-new.webp' ),
 	),
 	'sarees' => array(
 		'label'       => 'Sarees',
-		'default_img' => ame_bazaar_asset_uri( 'assets/images/sarees-new.jpg' ),
+		'default_img' => ame_bazaar_asset_uri( 'assets/images/sarees-new.webp' ),
 	),
 	'accessories' => array(
 		'label'       => 'Accessories',
-		'default_img' => ame_bazaar_asset_uri( 'assets/images/accessories-new.jpg' ),
+		'default_img' => ame_bazaar_asset_uri( 'assets/images/accessories-new.webp' ),
 	),
 	'tailoring' => array(
 		'label'       => 'Tailoring',
-		'default_img' => ame_bazaar_asset_uri( 'assets/images/tailoring-new.jpg' ),
+		'default_img' => ame_bazaar_asset_uri( 'assets/images/tailoring-new.webp' ),
 	),
 );
 ?>

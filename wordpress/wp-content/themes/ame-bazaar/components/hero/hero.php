@@ -109,7 +109,7 @@ $rating_val = ame_bazaar_get_business_setting( 'google_reviews_rating', '4.9' );
 				</picture>
 				<?php
 			} else {
-				$fallback_url = get_theme_mod( 'ame_bazaar_hero_image', ame_bazaar_asset_uri( 'assets/images/hero-lifestyle.png' ) );
+				$fallback_url = get_theme_mod( 'ame_bazaar_hero_image', ame_bazaar_asset_uri( 'assets/images/hero-lifestyle.webp' ) );
 				echo '<img src="' . esc_url( $fallback_url ) . '" alt="' . esc_attr__( 'Premium Fashion Store Front - AME Bazaar Kirari, Delhi', 'ame-bazaar' ) . '" class="ame-hero-img" loading="eager" fetchpriority="high">';
 			}
 			?>
