@@ -8,6 +8,7 @@ on:
       - feature/ai-entity-authority
       - feature/gbp-live-sync
       - feature/ai-knowledge-hub
+      - feature/ai-commerce-engine
   workflow_dispatch:
 
 jobs:

@@ -727,6 +727,101 @@ function ame_bazaar_get_knowledge_post_schema() {
 }
 
 /**
+ * Get dynamic WooCommerce Product JSON-LD schema.
+ *
+ * @return array|bool
+ */
+function ame_bazaar_get_woocommerce_product_schema() {
+	if ( ! function_exists( 'is_product' ) || ! is_product() ) {
+		return false;
+	}
+
+	$product_id = get_the_ID();
+	$product = wc_get_product( $product_id );
+	if ( ! $product ) {
+		return false;
+	}
+
+	$brand_name = ame_bazaar_get_brand_name();
+	$permalink  = get_permalink( $product_id );
+
+	// Get image URL
+	$image_url = '';
+	if ( has_post_thumbnail( $product_id ) ) {
+		$image_url = wp_get_attachment_image_url( get_post_thumbnail_id( $product_id ), 'full' );
+	}
+
+	// Determine availability
+	$stock_status = $product->get_stock_status();
+	$availability = 'https://schema.org/InStock';
+	if ( 'outofstock' === $stock_status ) {
+		$availability = 'https://schema.org/OutOfStock';
+	}
+
+	// Get category
+	$categories = get_the_terms( $product_id, 'product_cat' );
+	$category_name = '';
+	if ( ! empty( $categories ) && ! is_wp_error( $categories ) ) {
+		$category_name = $categories[0]->name;
+	}
+
+	$schema = array(
+		'@type'            => 'Product',
+		'@id'              => $permalink . '#product',
+		'isPartOf'         => array(
+			'@id' => $permalink . '#webpage',
+		),
+		'name'             => $product->get_name(),
+		'description'      => wp_strip_all_tags( $product->get_short_description() ?: $product->get_description() ),
+		'sku'              => $product->get_sku() ?: 'AB-' . $product_id,
+		'brand'            => array(
+			'@id' => home_url( '/#brand' ),
+		),
+		'category'         => $category_name,
+		'offers'           => array(
+			'@type'                   => 'Offer',
+			'@id'                     => $permalink . '#offer',
+			'price'                   => $product->get_price() ?: '0',
+			'priceCurrency'           => 'INR',
+			'priceValidUntil'         => date( 'Y-12-31', strtotime( '+1 year' ) ),
+			'availability'            => $availability,
+			'itemCondition'           => 'https://schema.org/NewCondition',
+			'url'                     => $permalink,
+			'seller'                  => array(
+				'@id' => home_url( '/#organization' ),
+			),
+			'hasMerchantReturnPolicy' => array(
+				'@type'                => 'MerchantReturnPolicy',
+				'applicableCountry'    => 'IN',
+				'returnPolicyCategory' => 'https://schema.org/MerchantReturnPolicyRequirementExchange',
+				'returnFees'           => 'https://schema.org/FreeReturn',
+				'merchantReturnDays'   => 7,
+				'returnMethod'         => 'https://schema.org/ReturnInStore',
+				'url'                  => home_url( '/return-refund-policy/' ),
+			),
+			'shippingDetails'         => array(
+				'@type'               => 'OfferShippingDetails',
+				'shippingRate'        => array(
+					'@type'    => 'MonetaryAmount',
+					'value'    => '0',
+					'currency' => 'INR',
+				),
+				'shippingDestination' => array(
+					'@type'          => 'DefinedRegion',
+					'addressCountry' => 'IN',
+				),
+			),
+		),
+	);
+
+	if ( $image_url ) {
+		$schema['image'] = $image_url;
+	}
+
+	return apply_filters( 'ame_bazaar_product_schema', $schema );
+}
+
+/**
  * Output combined connected JSON-LD Entity Graph in the head.
  */
 function ame_bazaar_output_schema() {
@@ -798,6 +893,14 @@ function ame_bazaar_output_schema() {
 		$knowledge_schema = ame_bazaar_get_knowledge_post_schema();
 		if ( $knowledge_schema ) {
 			$graph[] = $knowledge_schema;
+		}
+	}
+
+	// 8c. WooCommerce Product Entity (Single Products Only)
+	if ( function_exists( 'is_product' ) && is_product() ) {
+		$product_schema = ame_bazaar_get_woocommerce_product_schema();
+		if ( $product_schema ) {
+			$graph[] = $product_schema;
 		}
 	}
 
