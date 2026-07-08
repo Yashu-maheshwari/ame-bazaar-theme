@@ -10,6 +10,7 @@ on:
       - feature/ai-knowledge-hub
       - feature/ai-commerce-engine
       - feature/commerce-population-audit
+      - feature/homepage-conversion-audit
   workflow_dispatch:
 
 jobs:
