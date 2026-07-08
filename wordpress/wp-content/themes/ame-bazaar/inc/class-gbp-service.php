@@ -196,51 +196,37 @@ class Ame_Bazaar_GBP_Service {
 	 * Perform live synchronization from GBP API.
 	 */
 	public static function perform_sync() {
-		$access_token = self::get_access_token();
+		// Strictly verify credentials presence
+		$missing = array();
+		$client_id     = self::get_client_id();
+		$client_secret = self::get_client_secret();
+		$location_id   = get_option( 'ame_bazaar_gbp_location_id', '' );
+		$refresh_token = self::get_refresh_token();
+		$access_token  = self::get_access_token();
+
+		if ( ! $client_id ) {
+			$missing[] = 'Google Client ID';
+		}
+		if ( ! $client_secret ) {
+			$missing[] = 'Google Client Secret';
+		}
+		if ( ! $location_id ) {
+			$missing[] = 'GBP Location ID';
+		}
+		if ( ! $refresh_token ) {
+			$missing[] = 'Google Refresh Token';
+		}
 		if ( ! $access_token ) {
-			self::log_info( 'GBP Client unconfigured. Triggering local GBP API Synchronization provider.' );
-			
-			// Authentic local GBP dataset for AME Bazaar
-			$local_data = array(
-				'title' => 'AME Bazaar',
-				'primaryCategory' => array(
-					'displayName' => 'Clothing Store',
-				),
-				'primaryPhone' => '+91 98100 98100',
-				'latlng' => array(
-					'latitude'  => '28.7051',
-					'longitude' => '77.0583',
-				),
-				'postalAddress' => array(
-					'addressLines'       => array( 'Mubarakpur Road' ),
-					'locality'           => 'Kirari',
-					'administrativeArea' => 'Delhi',
-					'postalCode'         => '110086',
-				),
-			);
-			
-			self::parse_and_update_gbp_data( $local_data );
-			update_option( 'ame_bazaar_google_reviews_rating', '4.9' );
-			update_option( 'ame_bazaar_google_reviews_count', '524' );
-			update_option( 'ame_bazaar_google_review_url', 'https://search.google.com/local/writereview?placeid=ChIJTgAADinpDDkRTr27xpunNWM' );
-			update_option( 'ame_bazaar_email', 'info@amebazaar.in' );
-			update_option( 'ame_bazaar_maps_url', 'https://maps.google.com/?q=AME+Bazaar+Kirari+Delhi' );
-			update_option( 'ame_bazaar_hours', 'Mo-Su 09:00–22:00' );
-			update_option( 'ame_bazaar_short_description', 'Apparel Maheshwari Enterprises (AME Bazaar) offers premium fashion ethnic wear for men, women, and kids, along with custom tailoring and alteration services in Kirari, Delhi.' );
-			
-			update_option( 'ame_bazaar_gbp_last_sync', time() );
-			self::log_info( 'Google Business Profile details successfully synchronized from local provider.' );
-			return true;
+			$missing[] = 'Google Access Token';
+		}
+
+		if ( ! empty( $missing ) ) {
+			$msg = 'Sync failed. Missing authentication details: ' . implode( ', ', $missing );
+			self::log_error( $msg );
+			return new WP_Error( 'missing_credentials', $msg );
 		}
 
 		// 1. Fetch location details
-		$location_id = get_option( 'ame_bazaar_gbp_location_id', '' );
-		if ( ! $location_id ) {
-			self::log_error( 'Sync failed: Google Business Profile Location ID not configured.' );
-			return false;
-		}
-
-		// Request parameters to Google Business Profile API
 		$url = 'https://mybusinessbusinessinformation.googleapis.com/v1/' . $location_id;
 		$response = wp_remote_get( $url, array(
 			'headers' => array(
@@ -250,14 +236,16 @@ class Ame_Bazaar_GBP_Service {
 		) );
 
 		if ( is_wp_error( $response ) ) {
-			self::log_error( 'Failed syncing location details: ' . $response->get_error_message() );
-			return false;
+			$msg = 'Failed syncing location details: ' . $response->get_error_message();
+			self::log_error( $msg );
+			return new WP_Error( 'api_error', $msg );
 		}
 
 		$body = json_decode( wp_remote_retrieve_body( $response ), true );
 		if ( isset( $body['error'] ) ) {
-			self::log_error( 'API error during sync: ' . $body['error']['message'] );
-			return false;
+			$msg = 'API error during sync: ' . $body['error']['message'];
+			self::log_error( $msg );
+			return new WP_Error( 'api_error', $msg );
 		}
 
 		// Process and sync metadata
