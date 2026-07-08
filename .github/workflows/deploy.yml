@@ -9,6 +9,7 @@ on:
       - feature/gbp-live-sync
       - feature/ai-knowledge-hub
       - feature/ai-commerce-engine
+      - feature/commerce-population-audit
   workflow_dispatch:
 
 jobs:
