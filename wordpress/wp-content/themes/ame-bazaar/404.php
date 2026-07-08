@@ -12,8 +12,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 get_header();
 
 $brand_name   = ame_bazaar_get_brand_name();
-$phone        = get_theme_mod( 'ame_bazaar_phone', '+91 99999 99999' );
-$maps_url     = get_theme_mod( 'ame_bazaar_maps_url', 'https://maps.google.com/?q=AME+Bazaar+Kirari+Delhi' );
+$phone        = ame_bazaar_get_business_setting( 'phone', '+91 99535 69533' );
+$maps_url     = ame_bazaar_get_business_setting( 'maps_url', 'https://maps.google.com/?q=AME+Bazaar+Kirari+Delhi' );
 $cat_men_url  = get_theme_mod( 'ame_bazaar_cat_men_url', '#' );
 $cat_women_url= get_theme_mod( 'ame_bazaar_cat_women_url', '#' );
 $cat_kids_url = get_theme_mod( 'ame_bazaar_cat_kids_url', '#' );

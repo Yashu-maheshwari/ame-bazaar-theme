@@ -13,6 +13,36 @@ $section_title = get_theme_mod( 'ame_bazaar_about_section_title', 'About AME Baz
 $section_subtitle = get_theme_mod( 'ame_bazaar_about_section_subtitle', 'Discover our heritage, collections, and values as a trusted local family store.' );
 $story_headline = get_theme_mod( 'ame_bazaar_about_story_headline', 'Apparel Maheshwari Enterprises - Rooted in Trust' );
 $story_content = get_theme_mod( 'ame_bazaar_about_story_content', 'Located on Mubarakpur Road in Kirari, Delhi, AME Bazaar is dedicated to providing high-quality garments for your entire family. We offer premium Men\'s Wear, Women\'s Wear, Kids\' Wear, Sarees, and fashion Accessories. In addition, our in-store tailoring and alterations service ensures a custom fit for every customer. We encourage you to visit our store for a premium minimal shopping experience.' );
+
+// FAQ default configurations
+$faq_defaults = array(
+	1 => array(
+		'q' => 'Where is AME Bazaar located in Delhi?',
+		'a' => 'We are located on Mubarakpur Road in Kirari, Delhi, making us easily accessible for shoppers from Baljit Vihar, Prem Nagar, and nearby Delhi areas.',
+	),
+	2 => array(
+		'q' => 'What clothing ranges do you specialize in?',
+		'a' => 'We specialize in family apparel including Men\'s Wear, Women\'s Wear, Kids\' Wear, traditional Sarees, and everyday fashion Accessories.',
+	),
+	3 => array(
+		'q' => 'Do you provide custom alterations and tailoring?',
+		'a' => 'Yes, we have an in-store tailoring and alterations service to customize fittings for your purchases, ensuring comfortable wear.',
+	),
+);
+
+// Collect active FAQs
+$active_faqs = array();
+for ( $index = 1; $index <= 3; $index++ ) {
+	$q = get_theme_mod( 'ame_bazaar_about_faq' . $index . '_q', $faq_defaults[ $index ]['q'] );
+	$a = get_theme_mod( 'ame_bazaar_about_faq' . $index . '_a', $faq_defaults[ $index ]['a'] );
+
+	if ( $q && $a ) {
+		$active_faqs[] = array(
+			'q' => $q,
+			'a' => $a,
+		);
+	}
+}
 ?>
 
 <section class="ame-about-business-section" aria-labelledby="ame-about-business-title">
@@ -56,25 +86,19 @@ $story_content = get_theme_mod( 'ame_bazaar_about_story_content', 'Located on Mu
 			</div>
 
 			<!-- Right Column: Semantic Local FAQ list for search engine visibility -->
-			<div class="ame-about-faq-col">
-				<h3 class="ame-about-faq-headline"><?php esc_html_e( 'Frequently Asked Questions', 'ame-bazaar' ); ?></h3>
-				<dl class="ame-about-faq-list">
-					<?php
-					for ( $index = 1; $index <= 3; $index++ ) :
-						$faq_q = get_theme_mod( 'ame_bazaar_about_faq' . $index . '_q' );
-						$faq_a = get_theme_mod( 'ame_bazaar_about_faq' . $index . '_a' );
-
-						if ( ! $faq_q && ! $faq_a ) {
-							continue;
-						}
-						?>
-						<div class="ame-faq-item">
-							<dt class="ame-faq-question"><?php echo esc_html( $faq_q ); ?></dt>
-							<dd class="ame-faq-answer"><?php echo esc_html( $faq_a ); ?></dd>
-						</div>
-					<?php endfor; ?>
-				</dl>
-			</div>
+			<?php if ( ! empty( $active_faqs ) ) : ?>
+				<div class="ame-about-faq-col">
+					<h3 class="ame-about-faq-headline"><?php esc_html_e( 'Frequently Asked Questions', 'ame-bazaar' ); ?></h3>
+					<dl class="ame-about-faq-list">
+						<?php foreach ( $active_faqs as $faq ) : ?>
+							<div class="ame-faq-item">
+								<dt class="ame-faq-question"><?php echo esc_html( $faq['q'] ); ?></dt>
+								<dd class="ame-faq-answer"><?php echo esc_html( $faq['a'] ); ?></dd>
+							</div>
+						<?php endforeach; ?>
+					</dl>
+				</div>
+			<?php endif; ?>
 
 		</div>
 

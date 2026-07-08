@@ -12,7 +12,23 @@ if ( ! defined( 'ABSPATH' ) ) {
 $phone_number = ame_bazaar_get_business_setting( 'phone', '+91 99999 99999' );
 $phone_tel_link = preg_replace( '/[^0-9+]/', '', $phone_number );
 $maps_url = ame_bazaar_get_business_setting( 'maps_url', 'https://maps.google.com/?q=AME+Bazaar+Kirari+Delhi' );
-$address = ame_bazaar_get_business_setting( 'address', 'Mubarakpur Road' ) . ', ' . ame_bazaar_get_business_setting( 'city', 'Kirari' ) . ', ' . ame_bazaar_get_business_setting( 'state', 'Delhi' ) . ' - ' . ame_bazaar_get_business_setting( 'postal_code', '110086' );
+$street = ame_bazaar_get_business_setting( 'address', 'Mubarakpur Road' );
+$city = ame_bazaar_get_business_setting( 'city', 'Kirari' );
+$state = ame_bazaar_get_business_setting( 'state', 'Delhi' );
+$zip = ame_bazaar_get_business_setting( 'postal_code', '110086' );
+
+// Build address cleanly without duplicates
+$address = $street;
+if ( stripos( $street, $city ) === false ) {
+	$address .= ', ' . $city;
+}
+if ( stripos( $street, $state ) === false ) {
+	$address .= ', ' . $state;
+}
+if ( stripos( $street, $zip ) === false ) {
+	$address .= ' - ' . $zip;
+}
+
 $hours = ame_bazaar_get_business_setting( 'hours', 'Mo-Su 09:00–22:00' );
 ?>
 

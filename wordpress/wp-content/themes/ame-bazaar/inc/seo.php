@@ -27,7 +27,7 @@ function ame_bazaar_output_seo_meta() {
 	// Fallback description
 	$desc = get_bloginfo( 'description' );
 	if ( is_front_page() || is_home() ) {
-		$desc = get_theme_mod( 'ame_bazaar_footer_about', $desc );
+		$desc = ame_bazaar_get_business_setting( 'short_description', 'Apparel Maheshwari Enterprises (AME Bazaar) offers premium fashion ethnic wear for men, women, and kids, along with custom tailoring and alteration services in Kirari, Delhi.' );
 		$url  = home_url( '/' );
 	} elseif ( is_singular() ) {
 		$type = 'article';
@@ -105,3 +105,15 @@ function ame_bazaar_image_alt_fallback( $attr, $attachment ) {
 	return $attr;
 }
 add_filter( 'wp_get_attachment_image_attributes', 'ame_bazaar_image_alt_fallback', 10, 2 );
+
+/**
+ * Filter the document title parts to optimize the homepage title.
+ */
+function ame_bazaar_optimize_homepage_title( $title_parts ) {
+	if ( is_front_page() || is_home() ) {
+		$title_parts['title']   = 'AME Bazaar';
+		$title_parts['tagline'] = 'Family Fashion Store & Custom Tailoring in Kirari, Delhi';
+	}
+	return $title_parts;
+}
+add_filter( 'document_title_parts', 'ame_bazaar_optimize_homepage_title', 10 );

@@ -35,34 +35,9 @@ if ( $blog_query->have_posts() ) {
 	wp_reset_postdata();
 }
 
-// Fallback to mock data if no posts exist
+// Return early and hide section if no blog posts exist
 if ( empty( $posts_list ) ) {
-	$posts_list = array(
-		array(
-			'id'        => 1,
-			'title'     => '5 Essential Styling Tips for Men’s Festive Wear',
-			'excerpt'   => 'Discover how to pair ethnic coordinates, kurtas, and waistcoats for the perfect festive look this season.',
-			'date'      => 'July 2, 2026',
-			'img_url'   => '',
-			'link'      => '#',
-		),
-		array(
-			'id'        => 2,
-			'title'     => 'The Ultimate Saree Draping Guide for Beginners',
-			'excerpt'   => 'Learn the step-by-step techniques to drape a classic Banarasi or Kanjeevaram Saree elegantly and confidently.',
-			'date'      => 'June 28, 2026',
-			'img_url'   => '',
-			'link'      => '#',
-		),
-		array(
-			'id'        => 3,
-			'title'     => 'Choosing the Best Skin-Friendly Fabrics for Kids',
-			'excerpt'   => 'Your guide to selecting breathable, soft, and durable organic cotton fabrics for active toddlers and babies.',
-			'date'      => 'June 24, 2026',
-			'img_url'   => '',
-			'link'      => '#',
-		),
-	);
+	return;
 }
 ?>
 

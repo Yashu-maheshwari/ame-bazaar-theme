@@ -599,9 +599,10 @@ function ame_bazaar_get_author_profile_schema() {
  * @return array
  */
 function ame_bazaar_get_tailoring_service_schema() {
-	$phone        = get_theme_mod( 'ame_bazaar_phone', '+91 99999 99999' );
-	$email        = get_theme_mod( 'ame_bazaar_email', 'contact@amebazaar.com' );
-	$whatsapp_url = get_theme_mod( 'ame_bazaar_whatsapp_url', '' );
+	$phone        = ame_bazaar_get_business_setting( 'phone', '+91 99535 69533' );
+	$email        = ame_bazaar_get_business_setting( 'email', 'contact@amebazaar.com' );
+	$whatsapp     = ame_bazaar_get_business_setting( 'whatsapp' );
+	$whatsapp_url = $whatsapp ? 'https://wa.me/' . preg_replace( '/[^0-9]/', '', $whatsapp ) : '';
 	$areas_served = get_theme_mod( 'ame_bazaar_areas_served', 'Kirari, Mubarakpur, Meer Vihar, Baljit Vihar, Prem Nagar, Nangloi, Budh Vihar, Rohini' );
 
 	$schema = array(

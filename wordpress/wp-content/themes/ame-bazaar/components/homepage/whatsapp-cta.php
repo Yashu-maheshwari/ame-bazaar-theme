@@ -9,7 +9,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-$phone_number = get_theme_mod( 'ame_bazaar_phone', '+91 99999 99999' );
+$phone_number = ame_bazaar_get_business_setting( 'whatsapp' );
+if ( ! $phone_number ) {
+	$phone_number = ame_bazaar_get_business_setting( 'phone', '+91 99535 69533' );
+}
 // Strip non-numbers except + for WhatsApp URL
 $whatsapp_phone = preg_replace( '/[^0-9]/', '', $phone_number );
 $whatsapp_url = 'https://wa.me/' . $whatsapp_phone . '?text=' . rawurlencode( 'Hello AME Bazaar! I would like to inquire about your custom tailoring services and fashion collections.' );

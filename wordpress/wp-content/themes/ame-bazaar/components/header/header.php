@@ -9,10 +9,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-$phone_number = get_theme_mod( 'ame_bazaar_phone', '+91 99999 99999' );
+$phone_number = ame_bazaar_get_business_setting( 'phone', '+91 99535 69533' );
 // Strip spaces and special chars for tel link
 $phone_tel_link = preg_replace( '/[^0-9+]/', '', $phone_number );
-$maps_url = get_theme_mod( 'ame_bazaar_maps_url', 'https://maps.google.com/?q=AME+Bazaar+Kirari+Delhi' );
+$maps_url = ame_bazaar_get_business_setting( 'maps_url', 'https://maps.google.com/?q=AME+Bazaar+Kirari+Delhi' );
 $logo_id = get_option( 'ame_bazaar_media_primary_logo' ) ?: get_theme_mod( 'custom_logo' );
 ?>
 

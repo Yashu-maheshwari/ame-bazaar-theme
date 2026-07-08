@@ -8,6 +8,9 @@
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
+
+$reviews_rating = ame_bazaar_get_business_setting( 'google_reviews_rating', '4.9' );
+$reviews_count  = ame_bazaar_get_business_setting( 'google_reviews_count', '524' );
 ?>
 <section class="ame-trust-bar-section" aria-label="<?php esc_attr_e( 'Trust indicators', 'ame-bazaar' ); ?>">
 	<div class="ame-bazaar-container">
@@ -20,8 +23,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 					</svg>
 				</div>
 				<div class="ame-trust-bar-text">
-					<span class="ame-trust-bar-title"><?php esc_html_e( '500+ Google Reviews', 'ame-bazaar' ); ?></span>
-					<span class="ame-trust-bar-desc"><?php esc_html_e( 'Rated 4.8+ Stars by locals', 'ame-bazaar' ); ?></span>
+					<span class="ame-trust-bar-title"><?php echo esc_html( $reviews_count ); ?>+<?php esc_html_e( ' Google Reviews', 'ame-bazaar' ); ?></span>
+					<span class="ame-trust-bar-desc"><?php echo esc_html( sprintf( __( 'Rated %s Stars by locals', 'ame-bazaar' ), $reviews_rating ) ); ?></span>
 				</div>
 			</div>
 

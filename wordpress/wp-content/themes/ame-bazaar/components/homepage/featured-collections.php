@@ -40,42 +40,9 @@ if ( class_exists( 'WooCommerce' ) ) {
 	}
 }
 
-// Fallback to elegant design placeholders if no products exist yet
+// Return early and hide section if no products exist
 if ( empty( $products ) ) {
-	$products = array(
-		array(
-			'id'         => 1,
-			'title'      => 'Premium Cotton Kurta Set',
-			'price_html' => '<span class="price"><span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">&#8377;</span>1,499</span></span>',
-			'img_url'    => '', // placeholder image
-			'link'       => '#',
-			'add_to_cart_url' => '#',
-		),
-		array(
-			'id'         => 2,
-			'title'      => 'Designer Banarasi Saree',
-			'price_html' => '<span class="price"><span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">&#8377;</span>3,299</span></span>',
-			'img_url'    => '', // placeholder image
-			'link'       => '#',
-			'add_to_cart_url' => '#',
-		),
-		array(
-			'id'         => 3,
-			'title'      => 'Slim Fit Casual Denim Shirt',
-			'price_html' => '<span class="price"><span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">&#8377;</span>899</span></span>',
-			'img_url'    => '', // placeholder image
-			'link'       => '#',
-			'add_to_cart_url' => '#',
-		),
-		array(
-			'id'         => 4,
-			'title'      => 'Kids Festive Lehenga Choli',
-			'price_html' => '<span class="price"><span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">&#8377;</span>1,899</span></span>',
-			'img_url'    => '', // placeholder image
-			'link'       => '#',
-			'add_to_cart_url' => '#',
-		),
-	);
+	return;
 }
 ?>
 
