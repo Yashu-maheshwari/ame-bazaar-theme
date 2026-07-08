@@ -40,3 +40,4 @@ echo json_encode( array(
 	'purged'  => $purged,
 	'updated' => $updated
 ), JSON_PRETTY_PRINT );
+// Force retry.
