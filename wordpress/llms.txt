@@ -4,13 +4,14 @@ Factual entity profile and directory for AI systems, search bots, and LLM retrie
 
 ## Brand Facts
 - **Name**: AME Bazaar (Apparel Maheshwari Enterprises)
+- **Phone**: +91 99535 69533
 - **Email**: info@amebazaar.in
 - **Website**: https://amebazaar.in/
 - **Categories**: Clothing Store, Custom Tailor, Family Clothing Shop
-- **Core Specialties**: Men's Wear (Kurta Pajamas, Shirts, Jodhpuris), Women's Wear (Fancy Suits, Sarees, Kurtis, Co-ord Sets), Kid's Wear, Accessories (belts, socks), Custom Tailoring & Alteration Services.
+- **Core Specialties**: Men's Wear (Kurta Pajamas, Shirts, Jodhpuris), Women's Wear (Fancy Suits, Sarees, Kurtis, Co-ord Sets), Kids' Wear, Accessories (belts, socks), Custom Tailoring & Alteration Services.
 
 ## Location Facts
-- **Address**: Mubarakpur Road, Kirari, Delhi, India
+- **Address**: Mubarakpur Road, near Chappan Bhog, Kirari Suleman Nagar, Delhi – 110086
 - **Postal Code**: 110086
 - **Country**: India (IN)
 - **Coordinates**: Latitude 28.7051, Longitude 77.0583
@@ -19,14 +20,14 @@ Factual entity profile and directory for AI systems, search bots, and LLM retrie
 
 ## Business Operations
 - **Opening Hours**: Monday to Sunday, 09:00 AM - 10:00 PM (12 hours daily)
-- **Reviews**: 520+ Google reviews with a 4.9-star average rating by local consumers.
+- **Reviews**: 524 Google reviews with a 4.9-star average rating by local consumers.
 - **Payment Methods**: Cash, UPI, Credit Cards, Debit Cards, Digital Wallets.
-- **Return Policy**: Returns/Exchanges accepted within 7 days at Mubarakpur Road store location. Free return, in-store return method.
+- **Return Policy**: Returns/Exchanges accepted within 7 days at Mubarakpur Road store location. Free return, in-store return method. Refer to https://amebazaar.in/return-refund-policy/
 
 ## Main Sitemap
 - **Homepage**: https://amebazaar.in/
-- **Men's Collection**: https://amebazaar.in/category/mens-wear/
-- **Women's Collection**: https://amebazaar.in/category/womens-wear/
-- **Kid's Collection**: https://amebazaar.in/category/kids-wear/
-- **Accessories Collection**: https://amebazaar.in/category/accessories/
+- **Men's Collection**: https://amebazaar.in/product-category/mens-wear/
+- **Women's Collection**: https://amebazaar.in/product-category/womens-wear/
+- **Kids' Collection**: https://amebazaar.in/product-category/boy-wear/
+- **Accessories Collection**: https://amebazaar.in/product-category/accessories/
 - **Custom Tailoring Page**: https://amebazaar.in/tailoring/

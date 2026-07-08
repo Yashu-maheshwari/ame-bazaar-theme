@@ -1,7 +1,7 @@
 /* TEAM */
 Enterprise Name: Apparel Maheshwari Enterprises (AME Bazaar)
-Location: Mubarakpur Road, Kirari, Delhi, India
-Contact: info@amebazaar.in
+Location: Mubarakpur Road, near Chappan Bhog, Kirari Suleman Nagar, Delhi – 110086
+Contact: info@amebazaar.in | +91 99535 69533
 
 /* SITE */
 Standards: HTML5, CSS3, WordPress, Schema.org

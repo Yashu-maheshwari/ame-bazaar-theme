@@ -13,11 +13,11 @@
       "@id": "https://amebazaar.in/#store",
       "name": "AME Bazaar Mubarakpur Road",
       "description": "Premium clothing store and tailor in Kirari, Delhi, offering ethnic wear, suits, sarees, and custom stitching for the entire family.",
-      "telephone": "+91 98100 98100",
+      "telephone": "+91 99535 69533",
       "email": "info@amebazaar.in",
       "address": {
         "@type": "PostalAddress",
-        "streetAddress": "Mubarakpur Road",
+        "streetAddress": "Mubarakpur Road, near Chappan Bhog, Kirari Suleman Nagar",
         "addressLocality": "Kirari",
         "addressRegion": "Delhi",
         "postalCode": "110086",
