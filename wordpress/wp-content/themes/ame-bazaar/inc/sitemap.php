@@ -41,10 +41,6 @@ add_action( 'after_switch_theme', function() {
  * Intercept request and output XML sitemap.
  */
 function ame_bazaar_generate_sitemap() {
-	$path = parse_url( $_SERVER['REQUEST_URI'], PHP_URL_PATH );
-	if ( '/sitemap.xml' !== $path && '/sitemap.xml/' !== $path ) {
-		return;
-	}
 
 	header( 'Content-Type: application/xml; charset=utf-8' );
 	header( 'X-Ame-Bazaar-Sitemap: YES' );
@@ -157,4 +153,10 @@ function ame_bazaar_generate_sitemap() {
 	echo '</urlset>' . "\n";
 	exit;
 }
-add_action( 'template_redirect', 'ame_bazaar_generate_sitemap', 1 );
+function ame_bazaar_intercept_sitemap( $wp ) {
+	$path = parse_url( $_SERVER['REQUEST_URI'], PHP_URL_PATH );
+	if ( '/sitemap.xml' === $path || '/sitemap.xml/' === $path ) {
+		ame_bazaar_generate_sitemap();
+	}
+}
+add_action( 'parse_request', 'ame_bazaar_intercept_sitemap', 1 );
