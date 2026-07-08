@@ -11,6 +11,7 @@ on:
       - feature/ai-commerce-engine
       - feature/commerce-population-audit
       - feature/homepage-conversion-audit
+      - feature/business-knowledge-sync
   workflow_dispatch:
 
 jobs:
