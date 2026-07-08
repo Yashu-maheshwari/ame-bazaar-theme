@@ -42,3 +42,4 @@ foreach ( $files as $file ) {
 }
 
 echo json_encode( $results, JSON_PRETTY_PRINT );
+// Trigger re-run.
