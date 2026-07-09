@@ -83,6 +83,30 @@ function ame_bazaar_render_favicon_in_head() {
 add_action( 'wp_head', 'ame_bazaar_render_favicon_in_head' );
 
 /**
+ * Render dynamic OpenGraph and Twitter Card metadata inside head tag.
+ */
+function ame_bazaar_render_opengraph_meta_in_head() {
+	$logo_id = get_option( 'ame_bazaar_media_primary_logo' );
+	if ( $logo_id ) {
+		$logo_url = wp_get_attachment_image_url( $logo_id, 'full' );
+		if ( $logo_url ) {
+			?>
+			<meta property="og:title" content="<?php echo esc_attr( wp_get_document_title() ); ?>" />
+			<meta property="og:type" content="website" />
+			<meta property="og:url" content="<?php echo esc_url( home_url( $_SERVER['REQUEST_URI'] ) ); ?>" />
+			<meta property="og:image" content="<?php echo esc_url( $logo_url ); ?>" />
+			<meta property="og:site_name" content="<?php echo esc_attr( get_bloginfo( 'name' ) ); ?>" />
+			<meta name="twitter:card" content="summary_large_image" />
+			<meta name="twitter:title" content="<?php echo esc_attr( wp_get_document_title() ); ?>" />
+			<meta name="twitter:image" content="<?php echo esc_url( $logo_url ); ?>" />
+			<?php
+		}
+	}
+}
+add_action( 'wp_head', 'ame_bazaar_render_opengraph_meta_in_head' );
+
+
+/**
  * Programmatically create the AI and authority pages on theme init.
  */
 function ame_bazaar_create_authority_and_ai_pages() {

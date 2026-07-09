@@ -624,6 +624,26 @@ function ame_bazaar_handle_dynamic_text_files() {
 		}
 		exit;
 	}
+
+	if ( strpos( $request, 'debug-media-list' ) !== false ) {
+		header( 'Content-Type: application/json' );
+		$query = new WP_Query( array(
+			'post_type'      => 'attachment',
+			'post_status'    => 'inherit',
+			'posts_per_page' => -1,
+		) );
+		$attachments = array();
+		foreach ( $query->posts as $post ) {
+			$attachments[] = array(
+				'id'    => $post->ID,
+				'title' => $post->post_title,
+				'slug'  => $post->post_name,
+				'url'   => wp_get_attachment_url( $post->ID )
+			);
+		}
+		echo json_encode( $attachments, JSON_PRETTY_PRINT );
+		exit;
+	}
 }
 add_action( 'init', 'ame_bazaar_handle_dynamic_text_files' );
 
