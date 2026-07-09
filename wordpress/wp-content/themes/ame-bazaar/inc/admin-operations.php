@@ -1149,3 +1149,49 @@ function ame_bazaar_render_premium_empty_state() {
 	</div>
 	<?php
 }
+
+/**
+ * Temporary REST Endpoint for Media Mapping Audit.
+ */
+function ame_bazaar_register_media_audit_endpoint() {
+	register_rest_route( 'ame-bazaar/v1', '/media-audit', array(
+		'methods'             => 'GET',
+		'callback'            => 'ame_bazaar_get_media_audit_data',
+		'permission_callback' => '__return_true',
+	) );
+}
+add_action( 'rest_api_init', 'ame_bazaar_register_media_audit_endpoint' );
+
+function ame_bazaar_get_media_audit_data() {
+	global $wpdb;
+	
+	// Query options starting with ame_bazaar_media_ or logo
+	$options_query = "SELECT option_name, option_value FROM {$wpdb->options} WHERE option_name LIKE 'ame_bazaar_media_%' OR option_name LIKE 'ame_bazaar_white_logo' OR option_name LIKE 'ame_bazaar_sticky_logo'";
+	$options = $wpdb->get_results( $options_query, ARRAY_A );
+	
+	// Query attachments
+	$attachments_query = new WP_Query( array(
+		'post_type'      => 'attachment',
+		'post_status'    => 'inherit',
+		'posts_per_page' => -1,
+	) );
+	
+	$attachments = array();
+	if ( $attachments_query->have_posts() ) {
+		foreach ( $attachments_query->posts as $post ) {
+			$attachments[] = array(
+				'id'    => $post->ID,
+				'title' => $post->post_title,
+				'slug'  => $post->post_name,
+				'mime'  => $post->post_mime_type,
+				'url'   => wp_get_attachment_url( $post->ID ),
+			);
+		}
+	}
+	wp_reset_postdata();
+	
+	return new WP_REST_Response( array(
+		'options'     => $options,
+		'attachments' => $attachments,
+	), 200 );
+}
