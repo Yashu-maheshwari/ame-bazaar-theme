@@ -121,3 +121,93 @@ button, input, select, textarea { font: inherit; }
 .ame-bazaar-btn--primary { background: var(--ame-color-navy); color: var(--ame-color-white); }
 .ame-bazaar-btn--secondary { background: transparent; color: var(--ame-color-navy); border-color: currentColor; }
 .ame-bazaar-btn:hover { transform: translateY(-1px); box-shadow: var(--ame-shadow-sm); }
+
+/* ==========================================================================
+   TRUST BAR ENHANCEMENT
+   ========================================================================== */
+.ame-trust-bar-section {
+	background: linear-gradient(135deg, #001b38 0%, #002347 100%) !important;
+	border-top: 2px solid var(--ame-color-gold) !important;
+	border-bottom: 2px solid var(--ame-color-gold) !important;
+	box-shadow: var(--ame-shadow-md);
+}
+
+.ame-trust-bar-item {
+	transition: transform 0.2s ease;
+}
+.ame-trust-bar-item:hover {
+	transform: translateY(-2px);
+}
+
+.ame-trust-bar-icon-wrap {
+	transition: background-color 0.25s ease;
+}
+.ame-trust-bar-item:hover .ame-trust-bar-icon-wrap {
+	background: rgba(212, 175, 55, 0.28) !important;
+}
+
+/* ==========================================================================
+   AI FASHION ADVISOR & SEARCH STYLES
+   ========================================================================== */
+.ame-ai-topic-chip.active {
+	background: var(--ame-color-navy) !important;
+	color: #ffffff !important;
+	box-shadow: var(--ame-shadow-sm);
+}
+
+.ame-ai-topic-chip:hover {
+	background: #e2e8f0 !important;
+	color: var(--ame-color-navy) !important;
+}
+
+.ame-prompt-tap {
+	transition: all 0.2s ease-in-out;
+}
+.ame-prompt-tap:hover {
+	border-color: var(--ame-color-navy) !important;
+	background: #f8fafc !important;
+	color: var(--ame-color-navy) !important;
+	transform: translateY(-1px);
+	box-shadow: var(--ame-shadow-sm);
+}
+
+.ame-faq-accordion-item {
+	transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+.ame-faq-accordion-item:hover {
+	border-color: var(--ame-color-gold) !important;
+	box-shadow: var(--ame-shadow-sm);
+}
+
+.ame-faq-accordion-item[open] {
+	border-color: var(--ame-color-gold) !important;
+}
+
+.ame-faq-accordion-item[open] .ame-faq-arrow {
+	transform: rotate(180deg);
+	color: var(--ame-color-gold-dark) !important;
+}
+
+.ame-search-result-card {
+	transition: all 0.2s ease;
+}
+.ame-search-result-card:hover {
+	border-color: var(--ame-color-gold) !important;
+	transform: translateY(-2px);
+	box-shadow: var(--ame-shadow-md);
+}
+
+.ame-guide-card {
+	transition: all 0.2s ease;
+}
+.ame-guide-card:hover {
+	transform: translateY(-3px);
+	box-shadow: var(--ame-shadow-md);
+	border-color: var(--ame-color-gold) !important;
+}
+
+/* Off-canvas menu spacing fix */
+.ame-mobile-drawer-header {
+	border-bottom: 1px solid var(--ame-color-border);
+}
+

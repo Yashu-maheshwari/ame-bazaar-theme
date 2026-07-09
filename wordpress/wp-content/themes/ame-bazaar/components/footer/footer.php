@@ -67,7 +67,18 @@ if ( ! $cat_acc_url || '#' === $cat_acc_url ) {
 	
 	<!-- Column 1: Brand & Bio -->
 	<div class="ame-footer-col ame-footer-brand-col">
-		<h3 class="ame-footer-logo-title"><?php echo esc_html( $brand_name ); ?></h3>
+		<?php 
+		$logo_id = get_option( 'ame_bazaar_media_primary_logo' );
+		if ( $logo_id ) : 
+		?>
+			<div class="ame-footer-logo-wrap" style="margin-bottom: 1.25rem; max-width: 150px;">
+				<a href="<?php echo esc_url( home_url( '/' ) ); ?>" rel="home">
+					<?php echo wp_get_attachment_image( $logo_id, 'medium', false, array( 'class' => 'ame-footer-logo', 'style' => 'width: 100%; height: auto; display: block;' ) ); ?>
+				</a>
+			</div>
+		<?php else : ?>
+			<h3 class="ame-footer-logo-title"><?php echo esc_html( $brand_name ); ?></h3>
+		<?php endif; ?>
 		<p class="ame-footer-bio"><?php echo esc_html( $about_text ); ?></p>
 		
 		<div class="ame-footer-hours-wrap">

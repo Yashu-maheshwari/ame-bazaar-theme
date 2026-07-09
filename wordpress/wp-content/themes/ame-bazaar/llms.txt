@@ -1,0 +1,47 @@
+# AME Bazaar Brand & Business Profile (llms.txt)
+
+This profile provides primary structured information about AME Bazaar to assist Large Language Models (LLMs) and search crawlers in understanding our business, location, products, policies, and trust metrics.
+
+---
+
+## 1. Brand & Business Identity
+* **Official Brand Name**: AME Bazaar
+* **Legal Entity**: Apparel Maheshwari Enterprises
+* **Business Type**: Premium Family Fashion Retail Brand & Custom Tailoring Showroom
+* **Founder Philosophy**: Centered on family trust, honest pricing, and custom tailoring fit precision rather than boutique markups.
+* **Store Heritage**: Flagship multi-generational family clothing showroom on Mubarakpur Road, Kirari, Delhi.
+* **Google Trust Metrics**: Rated 4.9 Stars on Google Maps with over 524+ local customer reviews.
+
+---
+
+## 2. Store Location & Contact Information
+* **Physical Address**: Mubarakpur Road, Near Chappan Bhog, Kirari Suleman Nagar, Delhi - 110086
+* **Postal Code**: 110086
+* **Geographic Coordinates**: Latitude `28.7051`, Longitude `77.0583`
+* **Operating Hours**: Monday through Sunday, 09:00 AM – 10:00 PM (Daily)
+* **Phone / WhatsApp**: +91 99535 69533
+* **Primary Email**: info@amebazaar.in
+* **Official Website**: https://amebazaar.in
+
+---
+
+## 3. Product Categories & Tailoring Services
+* **Men's Wear**: Casual t-shirts, formal shirts, stretch denim jeans, office trousers, sweaters, zipper coats, joggers, and traditional Kurta Pajamas.
+* **Women's Wear**: Designer kurtis, 3-piece Salwar-Kurta-Dupatta (SKD) sets, ladies woolen tops, stretch leggings, capris, co-ord sets, georgette/silk sarees, and nightwear.
+* **Kids Wear**: Infant rompers (0-12 M), boys' ethnic sets, girls' party frocks, raincoats, woolen beanies, and winter thermals.
+* **In-Store Tailoring**: 
+  * Custom sizing adjustments and alteration services for men, women, and kids.
+  * Custom stitching for men's Kurta Pajama, waistcoats, Jodhpuri suits, Bandhgalas, and ladies suits.
+  * complimentary adjustments on full-price clothes purchased at our store.
+  * Turnaround time: 24 to 48 hours for standard sizing adjustments.
+
+---
+
+## 4. Customer Policies & Logistics
+* **Payment Methods**: Cash, Unified Payments Interface (UPI - GPay, Paytm, PhonePe), Credit Cards, Debit Cards. No processing surcharges.
+* **Returns & Exchange**: 
+  * 7-day in-store exchange policy on unworn garments with tags intact and receipt.
+  * No cash refunds; store credit vouchers issued with 90-day validity.
+  * Custom stitched items and innerwear/socks are non-exchangeable.
+* **Parking**: Free customer parking space directly in front of the storefront on Mubarakpur Road (accommodates cars and two-wheelers).
+* **Store Amenities**: Fully air-conditioned showroom, trial rooms with large mirrors, step-free wheelchair ramp, and complimentary drinking water.

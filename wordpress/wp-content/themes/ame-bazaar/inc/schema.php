@@ -404,6 +404,49 @@ function ame_bazaar_get_faq_schema() {
 				);
 			}
 		}
+	} elseif ( is_page_template( 'templates/template-ai-advisor.php' ) || is_page_template( 'templates/template-ask-ame.php' ) ) {
+		$all_faqs = function_exists( 'ame_bazaar_get_knowledge_base_faqs' ) ? ame_bazaar_get_knowledge_base_faqs() : array();
+		foreach ( $all_faqs as $group ) {
+			foreach ( $group['faqs'] as $faq ) {
+				$questions[] = array(
+					'@type'          => 'Question',
+					'name'           => $faq['q'],
+					'acceptedAnswer' => array(
+						'@type' => 'Answer',
+						'text'  => $faq['a'],
+					),
+				);
+			}
+		}
+	} elseif ( is_page_template( 'templates/template-authority.php' ) ) {
+		$all_faqs = function_exists( 'ame_bazaar_get_knowledge_base_faqs' ) ? ame_bazaar_get_knowledge_base_faqs() : array();
+		$current_slug = get_post_field( 'post_name', get_the_ID() );
+		$authority_faq_map = array(
+			'best-clothing-store-in-kirari' => array( 'store_basics', 'kirari_shopping' ),
+			'best-mens-wear-shop'           => array( 'men', 'western' ),
+			'best-womens-wear-shop'         => array( 'women', 'fabric' ),
+			'best-kids-wear-shop'           => array( 'kids', 'accessories' ),
+			'affordable-fashion-store'      => array( 'budget', 'payments' ),
+			'wedding-shopping-in-kirari'    => array( 'wedding', 'ethnic' ),
+			'tailoring-near-me'             => array( 'tailoring', 'size_guide' ),
+			'family-clothing-store'         => array( 'store_visit', 'parking' ),
+			'festival-shopping-guide'       => array( 'festival', 'care_guide' )
+		);
+		$keys = isset( $authority_faq_map[ $current_slug ] ) ? $authority_faq_map[ $current_slug ] : array( 'store_basics' );
+		foreach ( $keys as $fkey ) {
+			if ( isset( $all_faqs[ $fkey ] ) ) {
+				foreach ( $all_faqs[ $fkey ]['faqs'] as $faq ) {
+					$questions[] = array(
+						'@type'          => 'Question',
+						'name'           => $faq['q'],
+						'acceptedAnswer' => array(
+							'@type' => 'Answer',
+							'text'  => $faq['a'],
+						),
+					);
+				}
+			}
+		}
 	} elseif ( is_page() || is_singular( 'post' ) ) {
 		// Read custom page/post FAQs meta (registered custom post meta array)
 		$local_faqs = get_post_meta( get_the_ID(), 'ame_local_faqs', true );

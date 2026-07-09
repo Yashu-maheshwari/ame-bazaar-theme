@@ -839,15 +839,15 @@ function ame_bazaar_auto_assign_media_mappings() {
 
 	foreach ( $mappings as $option_key => $slug ) {
 		$val = get_option( $option_key );
-		if ( ! $val ) {
-			$args = array(
-				'post_type'      => 'attachment',
-				'name'           => $slug,
-				'posts_per_page' => 1,
-				'post_status'    => 'inherit',
-			);
-			$posts = get_posts( $args );
-			if ( $posts ) {
+		$args = array(
+			'post_type'      => 'attachment',
+			'name'           => $slug,
+			'posts_per_page' => 1,
+			'post_status'    => 'inherit',
+		);
+		$posts = get_posts( $args );
+		if ( $posts ) {
+			if ( (int) $val !== (int) $posts[0]->ID ) {
 				update_option( $option_key, $posts[0]->ID );
 			}
 		}

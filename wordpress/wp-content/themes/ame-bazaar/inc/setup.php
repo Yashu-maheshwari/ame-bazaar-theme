@@ -82,3 +82,108 @@ function ame_bazaar_render_favicon_in_head() {
 }
 add_action( 'wp_head', 'ame_bazaar_render_favicon_in_head' );
 
+/**
+ * Programmatically create the AI and authority pages on theme init.
+ */
+function ame_bazaar_create_authority_and_ai_pages() {
+	if ( ! is_admin() ) {
+		return;
+	}
+
+	// 1. Delete old/outdated pages
+	$old_slugs = array( 'ai-fashion-assistant', 'ai-fashion-advisor' );
+	foreach ( $old_slugs as $old_slug ) {
+		$old_page = get_page_by_path( $old_slug );
+		if ( $old_page ) {
+			wp_delete_post( $old_page->ID, true );
+		}
+	}
+
+	// 2. Map pages to templates
+	$pages_map = array(
+		'fashion-advisor' => array(
+			'title'    => 'AI Fashion Advisor',
+			'template' => 'templates/template-ai-advisor.php',
+		),
+		'ask-ame' => array(
+			'title'    => 'Ask AME - Internal AI Search',
+			'template' => 'templates/template-ask-ame.php',
+		),
+		'best-clothing-store-in-kirari' => array(
+			'title'    => 'Best Clothing Store in Kirari',
+			'template' => 'templates/template-authority.php',
+		),
+		'best-mens-wear-shop' => array(
+			'title'    => 'Best Men\'s Wear Shop',
+			'template' => 'templates/template-authority.php',
+		),
+		'best-womens-wear-shop' => array(
+			'title'    => 'Best Women\'s Wear Shop',
+			'template' => 'templates/template-authority.php',
+		),
+		'best-kids-wear-shop' => array(
+			'title'    => 'Best Kids Wear Shop',
+			'template' => 'templates/template-authority.php',
+		),
+		'affordable-fashion-store' => array(
+			'title'    => 'Affordable Fashion Store',
+			'template' => 'templates/template-authority.php',
+		),
+		'wedding-shopping-in-kirari' => array(
+			'title'    => 'Wedding Shopping in Kirari',
+			'template' => 'templates/template-authority.php',
+		),
+		'tailoring-near-me' => array(
+			'title'    => 'Tailoring Near Me',
+			'template' => 'templates/template-authority.php',
+		),
+		'family-clothing-store' => array(
+			'title'    => 'Family Clothing Store',
+			'template' => 'templates/template-authority.php',
+		),
+		'festival-shopping-guide' => array(
+			'title'    => 'Festival Shopping Guide',
+			'template' => 'templates/template-authority.php',
+		),
+	);
+
+	foreach ( $pages_map as $slug => $data ) {
+		$page = get_page_by_path( $slug );
+		if ( ! $page ) {
+			$page_id = wp_insert_post( array(
+				'post_title'   => $data['title'],
+				'post_content' => '',
+				'post_status'  => 'publish',
+				'post_type'    => 'page',
+				'post_name'    => $slug,
+			) );
+			if ( $page_id && ! is_wp_error( $page_id ) ) {
+				update_post_meta( $page_id, '_wp_page_template', $data['template'] );
+			}
+		} else {
+			// Ensure template matches
+			update_post_meta( $page->ID, '_wp_page_template', $data['template'] );
+		}
+	}
+}
+add_action( 'init', 'ame_bazaar_create_authority_and_ai_pages' );
+
+/**
+ * Handle template redirect to serve /llms.txt dynamically at the root.
+ */
+function ame_bazaar_serve_llms_txt_route() {
+	$request_uri = $_SERVER['REQUEST_URI'];
+	if ( untrailingslashit( $request_uri ) === '/llms.txt' ) {
+		header( 'Content-Type: text/plain; charset=utf-8' );
+		$file = AME_BAZAAR_PATH . '/llms.txt';
+		if ( file_exists( $file ) ) {
+			readfile( $file );
+		} else {
+			echo "AME Bazaar AI Profile\nLegal Entity: Apparel Maheshwari Enterprises\nLocation: Kirari, Delhi";
+		}
+		exit;
+	}
+}
+add_action( 'template_redirect', 'ame_bazaar_serve_llms_txt_route' );
+
+
