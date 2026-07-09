@@ -183,6 +183,26 @@ function ame_bazaar_create_authority_and_ai_pages() {
 			'title'    => 'Festival Shopping Guide',
 			'template' => 'templates/template-authority.php',
 		),
+		'shirt-fitting-guide' => array(
+			'title'    => 'Shirt Fitting Guide',
+			'template' => 'templates/template-authority.php',
+		),
+		'jeans-fitting-guide' => array(
+			'title'    => 'Jeans Fitting Guide',
+			'template' => 'templates/template-authority.php',
+		),
+		'fabric-guide' => array(
+			'title'    => 'Fabric and Materials Guide',
+			'template' => 'templates/template-authority.php',
+		),
+		'winter-wear-guide' => array(
+			'title'    => 'Winter Wear Guide',
+			'template' => 'templates/template-authority.php',
+		),
+		'clothing-care-guide' => array(
+			'title'    => 'Clothing Wash and Care Guide',
+			'template' => 'templates/template-authority.php',
+		),
 	);
 
 	$inserted = false;

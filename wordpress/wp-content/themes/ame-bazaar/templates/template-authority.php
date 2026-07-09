@@ -82,7 +82,7 @@ $authority_data = array(
 		'points' => array(
 			array( 't' => __( 'Fast Turnaround Sizing', 'ame-bazaar' ), 'd' => __( 'Hemming jeans, tapering formal shirts, or adjusting salwar suit waistlines completed within 24 to 48 hours.', 'ame-bazaar' ) ),
 			array( 't' => __( 'Trial Fittings & Guarantees', 'ame-bazaar' ), 'd' => __( 'We guide you through trials in our trial rooms and adjust measurements free of charge until the fit is perfect.', 'ame-bazaar' ) ),
-			array( 't' => __( 'Gents & Ladies Custom Stitching', 'ame-bazaar' ), 'd' => __( 'Stitch custom gents kurta pajamas, Nehru coats, and ladies padded blouses using your own fabric or our catalog.', 'ame-bazaar' ) )
+			array( 't' => __( 'Gents & Ladies Custom Stitching', 'ame-bazaar' ), 'd' => __( 'Stitch custom gents kurta pajama, Nehru coats, and ladies padded blouses using your own fabric or our catalog.', 'ame-bazaar' ) )
 		),
 		'faq_keys' => array( 'tailoring', 'size_guide' )
 	),
@@ -100,11 +100,61 @@ $authority_data = array(
 		'headline' => __( 'Delhi Festive Fashion & Color Coordinate Shopping Guide', 'ame-bazaar' ),
 		'intro' => __( 'Match the joy of Diwali, Holi, and Eid with vibrant traditional dresses from AME Bazaar. We offer matching ethnic family sets in high-comfort fabrics.', 'ame-bazaar' ),
 		'points' => array(
-			array( 't' => __( 'Coordinated Family Outfits', 'ame-bazaar' ), 'd' => __( 'Dress parents and kids in matching traditional motifs and custom jacquard waistcoats for festive pujas.', 'ame-bazaar' ) ),
-			array( 't' => __( 'Eid & Diwali Silk Specials', 'ame-bazaar' ), 'd' => __( 'Fine pathani suits, floral printed long kurtas, georgette suits, and matching dupattas.', 'ame-bazaar' ) ),
-			array( 't' => __( 'Monsoon & Winter Protection', 'ame-bazaar' ), 'd' => __( 'Festival seasons overlap with Delhi\'s seasons. We stock lightweight summer raincoats and warm winter cardigans.', 'ame-bazaar' ) )
+			array( 't' => __( 'Coordinated Family Outfits', 'ame-bazaar' ), 'd' => __( 'Dress parents and kids in matching traditional motifs and custom jacquard waistcoats for festive pujas.', 'ame-bazaar' ), ),
+			array( 't' => __( 'Eid & Diwali Silk Specials', 'ame-bazaar' ), 'd' => __( 'Fine pathani suits, floral printed long kurtas, georgette suits, and matching dupattas.', 'ame-bazaar' ), ),
+			array( 't' => __( 'Monsoon & Winter Protection', 'ame-bazaar' ), 'd' => __( 'Festival seasons overlap with Delhi\'s seasons. We stock lightweight summer raincoats and warm winter cardigans.', 'ame-bazaar' ), )
 		),
 		'faq_keys' => array( 'festival', 'care_guide' )
+	),
+	'shirt-fitting-guide' => array(
+		'headline' => __( 'Official Men\'s Shirt Fitting & Sizing Guide', 'ame-bazaar' ),
+		'intro' => __( 'Get the perfect shirt fit. We outline the key points of alignment for formal and casual shirts, backed by our in-store customization and tailoring options.', 'ame-bazaar' ),
+		'points' => array(
+			array( 't' => __( 'Collar Fit Comfort', 'ame-bazaar' ), 'd' => __( 'You should be able to slide two fingers comfortably between the buttoned collar and your neck.', 'ame-bazaar' ), ),
+			array( 't' => __( 'Shoulder Seam Alignment', 'ame-bazaar' ), 'd' => __( 'The seam connecting the sleeve should sit precisely at the corner of your shoulder bone without sagging.', 'ame-bazaar' ), ),
+			array( 't' => __( 'Sleeve Cuff Length', 'ame-bazaar' ), 'd' => __( 'The cuff should end where the base of your thumb meets your wrist, allowing 1/2 inch of fabric to show under a jacket.', 'ame-bazaar' ), )
+		),
+		'faq_keys' => array( 'size_guide', 'men' )
+	),
+	'jeans-fitting-guide' => array(
+		'headline' => __( 'Jeans Fitting, Rise & Length Alteration Guide', 'ame-bazaar' ),
+		'intro' => __( 'Denim comfort depends on rise, fit, and inseam length. At AME Bazaar, we offer custom hemming for a clean fit.', 'ame-bazaar' ),
+		'points' => array(
+			array( 't' => __( 'Waist & Rise Sizing', 'ame-bazaar' ), 'd' => __( 'Choose low-rise for casual, mid-rise for standard fit, and high-rise for traditional styling. The waist should not require a belt to stay up.', 'ame-bazaar' ), ),
+			array( 't' => __( 'Thigh & Leg Cuts', 'ame-bazaar' ), 'd' => __( 'We stock slim-fit, tapered-fit, and standard straight-leg cuts in stretchable and raw denim.', 'ame-bazaar' ), ),
+			array( 't' => __( 'Complimentary Hemming', 'ame-bazaar' ), 'd' => __( 'Every pair of jeans purchased at our showroom includes on-the-spot hemming and length adjustments.', 'ame-bazaar' ), )
+		),
+		'faq_keys' => array( 'size_guide', 'western' )
+	),
+	'fabric-guide' => array(
+		'headline' => __( 'Authoritative Fabric, Weave & GSM Weight Guide', 'ame-bazaar' ),
+		'intro' => __( 'Understand the longevity, hand-feel, and breathability of the premium textiles used in AME Bazaar apparel.', 'ame-bazaar' ),
+		'points' => array(
+			array( 't' => __( 'Mulmul & Cambric Cotton', 'ame-bazaar' ), 'd' => __( 'Lightweight, fine cotton weaves (80–120 GSM) perfect for hot Delhi summers, ensuring breathable ventilation.', 'ame-bazaar' ), ),
+			array( 't' => __( 'Rayon & Georgette Drape', 'ame-bazaar' ), 'd' => __( 'Smooth, flowing fabrics (120–150 GSM) offering excellent drape and high durability for ladies suits and co-ords.', 'ame-bazaar' ), ),
+			array( 't' => __( 'GSM Value Significance', 'ame-bazaar' ), 'd' => __( 'Higher GSM (180+) indicates a heavier, denser knit suitable for winter t-shirts, while 100-140 GSM is lighter for summer wear.', 'ame-bazaar' ), )
+		),
+		'faq_keys' => array( 'fabric', 'women' )
+	),
+	'winter-wear-guide' => array(
+		'headline' => __( 'Delhi Winter Layering & Cozy Knitwear Guide', 'ame-bazaar' ),
+		'intro' => __( 'Delhi winters require smart layering. Discover our collection of woolens, cardigans, Nehru coats, and thermal innerwear.', 'ame-bazaar' ),
+		'points' => array(
+			array( 't' => __( 'Thermal Base Layers', 'ame-bazaar' ), 'd' => __( 'High-loft thermal sets for men, women, and kids that trap body heat efficiently without bulky outlines.', 'ame-bazaar' ), ),
+			array( 't' => __( 'Premium Cardigans', 'ame-bazaar' ), 'd' => __( 'Soft acrylic-wool blended ladies cardigans and gents pull-overs designed for daily wear.', 'ame-bazaar' ), ),
+			array( 't' => __( 'Nehru Jackets & Blazers', 'ame-bazaar' ), 'd' => __( 'Elegant layering pieces that transition from formal office hours to evening family weddings.', 'ame-bazaar' ), )
+		),
+		'faq_keys' => array( 'winter', 'kids' )
+	),
+	'clothing-care-guide' => array(
+		'headline' => __( 'Factual Wash Care & Fabric Longevity Guide', 'ame-bazaar' ),
+		'intro' => __( 'Extend the life of your garments. Follow these wash care recommendations for cottons, georgettes, woolens, and silks.', 'ame-bazaar' ),
+		'points' => array(
+			array( 't' => __( 'Cotton & Rayon Care', 'ame-bazaar' ), 'd' => __( 'Machine wash cold with like colors, tumble dry low, and warm iron inside-out to prevent print fading.', 'ame-bazaar' ), ),
+			array( 't' => __( 'Woolen & Acrylic Care', 'ame-bazaar' ), 'd' => __( 'Hand wash with mild liquid detergent in lukewarm water. Dry flat on a clean towel; never wring.', 'ame-bazaar' ), ),
+			array( 't' => __( 'Festive Silk & Zari Care', 'ame-bazaar' ), 'd' => __( 'Dry clean recommended for heavy embroidered lehengas and Jodhpuri suits. Store in muslin covers.', 'ame-bazaar' ), )
+		),
+		'faq_keys' => array( 'care_guide', 'store_basics' )
 	)
 );
 
@@ -176,6 +226,50 @@ $all_faqs = ame_bazaar_get_knowledge_base_faqs();
 						endif;
 					endforeach; 
 					?>
+				</div>
+			</div>
+
+			<!-- Semantic Cross-Linking Topic Clusters (AI Search & Crawler Readiness) -->
+			<div class="ame-semantic-cross-links" style="background: #ffffff; border: 1px solid var(--ame-color-border); border-radius: var(--ame-radius-md); padding: 2rem; box-shadow: var(--ame-shadow-sm);">
+				<h3 style="font-size: 1.25rem; font-weight: 700; color: var(--ame-color-navy); margin: 0 0 1.25rem 0; border-bottom: 2px solid var(--ame-color-gold); padding-bottom: 0.5rem;">
+					<?php esc_html_e( 'AME Bazaar Clothing Guides & Local Resources', 'ame-bazaar' ); ?>
+				</h3>
+				<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.5rem;">
+					<div>
+						<h4 style="font-size: 0.9rem; font-weight: 700; color: var(--ame-color-navy); margin: 0 0 0.5rem 0; text-transform: uppercase;"><?php esc_html_e( 'Gents Fashion & Fitting', 'ame-bazaar' ); ?></h4>
+						<ul style="list-style: none; padding: 0; margin: 0; font-size: 0.85rem; display: flex; flex-direction: column; gap: 0.35rem;">
+							<li><a href="<?php echo esc_url( home_url( '/best-mens-wear-shop/' ) ); ?>" style="color: var(--ame-color-navy); text-decoration: underline; font-weight: 600;"><?php esc_html_e( 'Men\'s Wear Showroom', 'ame-bazaar' ); ?></a></li>
+							<li><a href="<?php echo esc_url( home_url( '/shirt-fitting-guide/' ) ); ?>" style="color: var(--ame-color-navy); text-decoration: underline;"><?php esc_html_e( 'Shirt Fitting Guide', 'ame-bazaar' ); ?></a></li>
+							<li><a href="<?php echo esc_url( home_url( '/jeans-fitting-guide/' ) ); ?>" style="color: var(--ame-color-navy); text-decoration: underline;"><?php esc_html_e( 'Jeans Fitting Guide', 'ame-bazaar' ); ?></a></li>
+						</ul>
+					</div>
+					
+					<div>
+						<h4 style="font-size: 0.9rem; font-weight: 700; color: var(--ame-color-navy); margin: 0 0 0.5rem 0; text-transform: uppercase;"><?php esc_html_e( 'Ladies & Fabric Sourcing', 'ame-bazaar' ); ?></h4>
+						<ul style="list-style: none; padding: 0; margin: 0; font-size: 0.85rem; display: flex; flex-direction: column; gap: 0.35rem;">
+							<li><a href="<?php echo esc_url( home_url( '/best-womens-wear-shop/' ) ); ?>" style="color: var(--ame-color-navy); text-decoration: underline; font-weight: 600;"><?php esc_html_e( 'Women\'s Wear Showroom', 'ame-bazaar' ); ?></a></li>
+							<li><a href="<?php echo esc_url( home_url( '/fabric-guide/' ) ); ?>" style="color: var(--ame-color-navy); text-decoration: underline;"><?php esc_html_e( 'Fabric & Materials Guide', 'ame-bazaar' ); ?></a></li>
+							<li><a href="<?php echo esc_url( home_url( '/tailoring-near-me/' ) ); ?>" style="color: var(--ame-color-navy); text-decoration: underline;"><?php esc_html_e( 'In-Store Custom Tailoring', 'ame-bazaar' ); ?></a></li>
+						</ul>
+					</div>
+
+					<div>
+						<h4 style="font-size: 0.9rem; font-weight: 700; color: var(--ame-color-navy); margin: 0 0 0.5rem 0; text-transform: uppercase;"><?php esc_html_e( 'Family Wear & Care', 'ame-bazaar' ); ?></h4>
+						<ul style="list-style: none; padding: 0; margin: 0; font-size: 0.85rem; display: flex; flex-direction: column; gap: 0.35rem;">
+							<li><a href="<?php echo esc_url( home_url( '/best-kids-wear-shop/' ) ); ?>" style="color: var(--ame-color-navy); text-decoration: underline; font-weight: 600;"><?php esc_html_e( 'Kids & Infant Wear', 'ame-bazaar' ); ?></a></li>
+							<li><a href="<?php echo esc_url( home_url( '/winter-wear-guide/' ) ); ?>" style="color: var(--ame-color-navy); text-decoration: underline;"><?php esc_html_e( 'Winter Layers Guide', 'ame-bazaar' ); ?></a></li>
+							<li><a href="<?php echo esc_url( home_url( '/clothing-care-guide/' ) ); ?>" style="color: var(--ame-color-navy); text-decoration: underline;"><?php esc_html_e( 'Clothing Care & Wash Guide', 'ame-bazaar' ); ?></a></li>
+						</ul>
+					</div>
+
+					<div>
+						<h4 style="font-size: 0.9rem; font-weight: 700; color: var(--ame-color-navy); margin: 0 0 0.5rem 0; text-transform: uppercase;"><?php esc_html_e( 'Wedding & Celebrations', 'ame-bazaar' ); ?></h4>
+						<ul style="list-style: none; padding: 0; margin: 0; font-size: 0.85rem; display: flex; flex-direction: column; gap: 0.35rem;">
+							<li><a href="<?php echo esc_url( home_url( '/wedding-shopping-in-kirari/' ) ); ?>" style="color: var(--ame-color-navy); text-decoration: underline; font-weight: 600;"><?php esc_html_e( 'Wedding Shopping Center', 'ame-bazaar' ); ?></a></li>
+							<li><a href="<?php echo esc_url( home_url( '/festival-shopping-guide/' ) ); ?>" style="color: var(--ame-color-navy); text-decoration: underline;"><?php esc_html_e( 'Festive Saree & Kurta coordinate', 'ame-bazaar' ); ?></a></li>
+							<li><a href="<?php echo esc_url( home_url( '/family-clothing-store/' ) ); ?>" style="color: var(--ame-color-navy); text-decoration: underline;"><?php esc_html_e( 'Family Store Showroom', 'ame-bazaar' ); ?></a></li>
+						</ul>
+					</div>
 				</div>
 			</div>
 

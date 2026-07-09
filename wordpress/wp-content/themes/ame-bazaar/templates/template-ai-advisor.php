@@ -32,8 +32,76 @@ $grouped_faqs = ame_bazaar_get_knowledge_base_faqs();
 		</div>
 
 		<!-- Chat Layout Grid -->
-		<div class="ame-advisor-layout-grid" style="display: grid; grid-template-columns: 1fr; gap: 2.5rem; max-width: 1000px; margin: 0 auto 5rem;">
+		<div class="ame-advisor-layout-grid" style="display: grid; grid-template-columns: 1fr; gap: 2.5rem; max-width: 1100px; margin: 0 auto 5rem;">
 			
+			<!-- Left Column: Preference Selector Panel -->
+			<div class="ame-advisor-preferences-panel" style="background: #ffffff; border: 1px solid var(--ame-color-border); border-radius: var(--ame-radius-md); padding: 1.75rem; box-shadow: var(--ame-shadow-sm); display: flex; flex-direction: column; gap: 1.25rem; height: fit-content;">
+				<h3 style="font-size: 1.15rem; font-weight: 800; color: var(--ame-color-navy); margin: 0 0 0.5rem; display: flex; align-items: center; gap: 0.5rem; border-bottom: 2px solid var(--ame-color-gold); padding-bottom: 0.5rem;">
+					<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: var(--ame-color-gold);"><circle cx="4" cy="4" r="2"></circle><circle cx="12" cy="4" r="2"></circle><circle cx="20" cy="4" r="2"></circle><circle cx="4" cy="12" r="2"></circle><circle cx="12" cy="12" r="2"></circle><circle cx="20" cy="12" r="2"></circle><circle cx="4" cy="20" r="2"></circle><circle cx="12" cy="20" r="2"></circle><circle cx="20" cy="20" r="2"></circle></svg>
+					<span><?php esc_html_e( 'Assistant Config', 'ame-bazaar' ); ?></span>
+				</h3>
+				
+				<!-- Gender Selector -->
+				<div>
+					<label style="font-size: 0.75rem; font-weight: 700; color: #64748b; display: block; margin-bottom: 0.35rem; text-transform: uppercase;"><?php esc_html_e( 'Target Gender', 'ame-bazaar' ); ?></label>
+					<select id="ame-pref-gender" class="ame-pref-select" style="width: 100%; padding: 0.6rem; border-radius: var(--ame-radius-sm); border: 1px solid var(--ame-color-border); background: #f8fafc; font-size: 0.85rem; font-weight: 600; color: #334155;">
+						<option value="unisex"><?php esc_html_e( 'Unisex / All', 'ame-bazaar' ); ?></option>
+						<option value="men"><?php esc_html_e( 'Men\'s Wear', 'ame-bazaar' ); ?></option>
+						<option value="women"><?php esc_html_e( 'Women\'s Wear', 'ame-bazaar' ); ?></option>
+						<option value="kids"><?php esc_html_e( 'Kids & Infant', 'ame-bazaar' ); ?></option>
+					</select>
+				</div>
+
+				<!-- Age Selector -->
+				<div>
+					<label style="font-size: 0.75rem; font-weight: 700; color: #64748b; display: block; margin-bottom: 0.35rem; text-transform: uppercase;"><?php esc_html_e( 'Age Segment', 'ame-bazaar' ); ?></label>
+					<select id="ame-pref-age" class="ame-pref-select" style="width: 100%; padding: 0.6rem; border-radius: var(--ame-radius-sm); border: 1px solid var(--ame-color-border); background: #f8fafc; font-size: 0.85rem; font-weight: 600; color: #334155;">
+						<option value="adult"><?php esc_html_e( 'Adult (15-60y)', 'ame-bazaar' ); ?></option>
+						<option value="infant"><?php esc_html_e( 'Infant (0-2y)', 'ame-bazaar' ); ?></option>
+						<option value="kids"><?php esc_html_e( 'Child (3-14y)', 'ame-bazaar' ); ?></option>
+						<option value="senior"><?php esc_html_e( 'Senior (60y+)', 'ame-bazaar' ); ?></option>
+					</select>
+				</div>
+
+				<!-- Occasion Selector -->
+				<div>
+					<label style="font-size: 0.75rem; font-weight: 700; color: #64748b; display: block; margin-bottom: 0.35rem; text-transform: uppercase;"><?php esc_html_e( 'Occasion Type', 'ame-bazaar' ); ?></label>
+					<select id="ame-pref-occasion" class="ame-pref-select" style="width: 100%; padding: 0.6rem; border-radius: var(--ame-radius-sm); border: 1px solid var(--ame-color-border); background: #f8fafc; font-size: 0.85rem; font-weight: 600; color: #334155;">
+						<option value="wedding"><?php esc_html_e( 'Wedding / Ceremony', 'ame-bazaar' ); ?></option>
+						<option value="festival"><?php esc_html_e( 'Festival Shopping', 'ame-bazaar' ); ?></option>
+						<option value="casual"><?php esc_html_e( 'Casual Daily', 'ame-bazaar' ); ?></option>
+						<option value="formal"><?php esc_html_e( 'Office Formal', 'ame-bazaar' ); ?></option>
+					</select>
+				</div>
+
+				<!-- Season Selector -->
+				<div>
+					<label style="font-size: 0.75rem; font-weight: 700; color: #64748b; display: block; margin-bottom: 0.35rem; text-transform: uppercase;"><?php esc_html_e( 'Season / Fabric', 'ame-bazaar' ); ?></label>
+					<select id="ame-pref-season" class="ame-pref-select" style="width: 100%; padding: 0.6rem; border-radius: var(--ame-radius-sm); border: 1px solid var(--ame-color-border); background: #f8fafc; font-size: 0.85rem; font-weight: 600; color: #334155;">
+						<option value="summer"><?php esc_html_e( 'Summer (Mulmul Cotton)', 'ame-bazaar' ); ?></option>
+						<option value="winter"><?php esc_html_e( 'Winter Layers', 'ame-bazaar' ); ?></option>
+						<option value="monsoon"><?php esc_html_e( 'Monsoon Wear', 'ame-bazaar' ); ?></option>
+					</select>
+				</div>
+
+				<!-- Budget Selector -->
+				<div>
+					<label style="font-size: 0.75rem; font-weight: 700; color: #64748b; display: block; margin-bottom: 0.35rem; text-transform: uppercase;"><?php esc_html_e( 'Budget Limit', 'ame-bazaar' ); ?></label>
+					<select id="ame-pref-budget" class="ame-pref-select" style="width: 100%; padding: 0.6rem; border-radius: var(--ame-radius-sm); border: 1px solid var(--ame-color-border); background: #f8fafc; font-size: 0.85rem; font-weight: 600; color: #334155;">
+						<option value="all"><?php esc_html_e( 'Any Budget Range', 'ame-bazaar' ); ?></option>
+						<option value="999"><?php esc_html_e( 'Under ₹999', 'ame-bazaar' ); ?></option>
+						<option value="2499"><?php esc_html_e( '₹1000 - ₹2499', 'ame-bazaar' ); ?></option>
+						<option value="4999"><?php esc_html_e( '₹2500 - ₹4999', 'ame-bazaar' ); ?></option>
+						<option value="premium"><?php esc_html_e( 'Premium ₹5000+', 'ame-bazaar' ); ?></option>
+					</select>
+				</div>
+
+				<!-- Quick Reset -->
+				<button onclick="window.ameResetPreferences()" style="width: 100%; padding: 0.5rem; background: none; border: 1px dashed #94a3b8; border-radius: var(--ame-radius-sm); color: #64748b; font-size: 0.8rem; font-weight: 700; cursor: pointer; transition: all 0.2s;">
+					<?php esc_html_e( 'Reset Filters', 'ame-bazaar' ); ?>
+				</button>
+			</div>
+
 			<!-- Interactive Chat Console -->
 			<div class="ame-advisor-console-box" style="background: #ffffff; border: 1px solid var(--ame-color-border); border-radius: var(--ame-radius-md); box-shadow: var(--ame-shadow-md); display: flex; flex-direction: column; overflow: hidden; min-height: 500px;">
 				
@@ -146,6 +214,14 @@ $grouped_faqs = ame_bazaar_get_knowledge_base_faqs();
 // Local FAQs database for search matching
 window.ameAdvisorDb = <?php echo json_encode( $grouped_faqs ); ?>;
 
+window.ameResetPreferences = function() {
+	document.getElementById('ame-pref-gender').value = 'unisex';
+	document.getElementById('ame-pref-age').value = 'adult';
+	document.getElementById('ame-pref-occasion').value = 'wedding';
+	document.getElementById('ame-pref-season').value = 'summer';
+	document.getElementById('ame-pref-budget').value = 'all';
+};
+
 window.ameTapPrompt = function(promptText) {
 	document.getElementById('ame-advisor-user-input').value = promptText;
 	window.ameSendAdvisorMessage();
@@ -157,6 +233,13 @@ window.ameSendAdvisorMessage = function() {
 	const inputElem = document.getElementById('ame-advisor-user-input');
 	const query = inputElem.value.trim();
 	if (!query) return;
+
+	// Fetch current configuration dropdown preferences
+	const prefGender = document.getElementById('ame-pref-gender').value;
+	const prefAge = document.getElementById('ame-pref-age').value;
+	const prefOccasion = document.getElementById('ame-pref-occasion').value;
+	const prefSeason = document.getElementById('ame-pref-season').value;
+	const prefBudget = document.getElementById('ame-pref-budget').value;
 
 	const chatScreen = document.getElementById('ame-advisor-chat-screen');
 
@@ -185,7 +268,7 @@ window.ameSendAdvisorMessage = function() {
 	chatScreen.appendChild(typingInd);
 	chatScreen.scrollTop = chatScreen.scrollHeight;
 
-	// 3. Search database for best QA match
+	// 3. Search database for best QA match with preference weights
 	let bestMatch = null;
 	let highestScore = 0;
 	let matchedCategory = 'general';
@@ -199,12 +282,20 @@ window.ameSendAdvisorMessage = function() {
 			const aText = faq.a.toLowerCase();
 			let score = 0;
 
+			// Base match
 			if (qText.includes(queryLower)) score += 10;
 
+			// Keyword match
 			for (const word of queryWords) {
 				if (qText.includes(word)) score += 3;
 				if (aText.includes(word)) score += 1;
 			}
+
+			// Apply preference weight offsets to boost matching categories
+			if (prefGender !== 'unisex' && groupKey === prefGender) score += 5;
+			if (prefOccasion !== 'casual' && groupKey === prefOccasion) score += 5;
+			if (prefSeason !== 'summer' && groupKey === prefSeason) score += 5;
+			if (prefBudget !== 'all' && groupKey === 'budget') score += 4;
 
 			if (score > highestScore) {
 				highestScore = score;
@@ -322,6 +413,18 @@ function escapeHtml(text) {
 #ame-advisor-user-input:focus {
 	border-color: var(--ame-color-navy) !important;
 	box-shadow: 0 0 0 3px rgba(0, 35, 71, 0.1);
+}
+
+.ame-pref-select:focus {
+	border-color: var(--ame-color-gold) !important;
+	outline: none;
+	box-shadow: 0 0 0 3px rgba(202, 138, 4, 0.15);
+}
+
+@media (min-width: 768px) {
+	.ame-advisor-layout-grid {
+		grid-template-columns: 280px 1fr !important;
+	}
 }
 </style>
 

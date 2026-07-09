@@ -1027,3 +1027,54 @@ function ame_bazaar_render_homepage_media_page() {
 	</script>
 	<?php
 }
+
+/**
+ * 18. Optimize WooCommerce Empty Catalog states with high-conversion storefront CTAs.
+ */
+function ame_bazaar_customize_woocommerce_empty_state_action() {
+	// Remove the default "No products found" message
+	remove_action( 'woocommerce_no_products_found', 'wc_no_products_found', 10 );
+	
+	// Add our custom high-converting retail placeholder
+	add_action( 'woocommerce_no_products_found', 'ame_bazaar_render_premium_empty_state', 10 );
+}
+add_action( 'init', 'ame_bazaar_customize_woocommerce_empty_state_action' );
+
+function ame_bazaar_render_premium_empty_state() {
+	$whatsapp = ame_bazaar_get_business_setting( 'whatsapp', '+91 99535 69533' );
+	$clean_wa = preg_replace( '/[^0-9]/', '', $whatsapp );
+	$wa_url = 'https://wa.me/' . $clean_wa . '?text=' . rawurlencode( 'Hi AME Bazaar! I am browsing your online shop and wanted to enquire about the latest collections.' );
+	?>
+	<div class="ame-woocommerce-empty-state" style="text-align: center; padding: 4rem 2rem; background: #ffffff; border: 1px solid var(--ame-color-border); border-radius: var(--ame-radius-md); box-shadow: var(--ame-shadow-sm); max-width: 700px; margin: 2rem auto 4rem;">
+		<div style="font-size: 3rem; margin-bottom: 1.5rem; color: var(--ame-color-gold);">🛍️</div>
+		<h2 style="font-size: 1.75rem; font-weight: 800; color: var(--ame-color-navy); margin: 0 0 1rem;"><?php esc_html_e( 'Our Catalog is Updating!', 'ame-bazaar' ); ?></h2>
+		<p style="font-size: 1rem; color: #475569; line-height: 1.6; max-width: 550px; margin: 0 auto 2rem;">
+			<?php esc_html_e( 'We are currently uploading our latest season coordinates to the online catalog. In the meantime, we invite you to visit our physical showroom or order directly via WhatsApp.', 'ame-bazaar' ); ?>
+		</p>
+		
+		<div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+			<a href="<?php echo esc_url( $wa_url ); ?>" target="_blank" rel="noopener noreferrer" class="ame-bazaar-btn" style="background-color: #25D366; color: white; border: 1px solid #25D366; text-decoration: none; font-weight: 700; padding: 0.8rem 1.8rem; border-radius: var(--ame-radius-sm); font-size: 0.95rem; display: inline-flex; align-items: center; gap: 0.5rem;">
+				Chat on WhatsApp
+			</a>
+			<a href="https://maps.google.com/?q=AME+Bazaar+Kirari+Delhi" target="_blank" rel="noopener noreferrer" class="ame-bazaar-btn" style="background-color: var(--ame-color-navy); color: white; border: 1px solid var(--ame-color-navy); text-decoration: none; font-weight: 700; padding: 0.8rem 1.8rem; border-radius: var(--ame-radius-sm); font-size: 0.95rem; display: inline-flex; align-items: center; gap: 0.5rem;">
+				Directions to Store
+			</a>
+		</div>
+
+		<div style="margin-top: 3rem; padding-top: 2rem; border-top: 1px solid #f1f5f9; display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1.5rem; text-align: left;">
+			<div>
+				<h4 style="font-size: 0.85rem; font-weight: 800; color: var(--ame-color-navy); margin: 0 0 0.25rem 0; text-transform: uppercase;">Showroom Address</h4>
+				<p style="font-size: 0.8rem; color: #64748b; margin: 0;">Mubarakpur Road, Kirari, Delhi</p>
+			</div>
+			<div>
+				<h4 style="font-size: 0.85rem; font-weight: 800; color: var(--ame-color-navy); margin: 0 0 0.25rem 0; text-transform: uppercase;">Store Timings</h4>
+				<p style="font-size: 0.8rem; color: #64748b; margin: 0;">Daily: 09:00 AM – 10:00 PM</p>
+			</div>
+			<div>
+				<h4 style="font-size: 0.85rem; font-weight: 800; color: var(--ame-color-navy); margin: 0 0 0.25rem 0; text-transform: uppercase;">Alterations</h4>
+				<p style="font-size: 0.8rem; color: #64748b; margin: 0;">On-site 30-min custom fit</p>
+			</div>
+		</div>
+	</div>
+	<?php
+}
