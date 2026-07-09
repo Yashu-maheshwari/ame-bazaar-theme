@@ -86,16 +86,14 @@ add_action( 'wp_head', 'ame_bazaar_render_favicon_in_head' );
  * Programmatically create the AI and authority pages on theme init.
  */
 function ame_bazaar_create_authority_and_ai_pages() {
-	if ( ! is_admin() ) {
-		return;
-	}
-
 	// 1. Delete old/outdated pages
-	$old_slugs = array( 'ai-fashion-assistant', 'ai-fashion-advisor' );
+	$old_slugs = array( 'ai-fashion-assistant' );
+	$deleted = false;
 	foreach ( $old_slugs as $old_slug ) {
 		$old_page = get_page_by_path( $old_slug );
 		if ( $old_page ) {
 			wp_delete_post( $old_page->ID, true );
+			$deleted = true;
 		}
 	}
 
@@ -147,6 +145,7 @@ function ame_bazaar_create_authority_and_ai_pages() {
 		),
 	);
 
+	$inserted = false;
 	foreach ( $pages_map as $slug => $data ) {
 		$page = get_page_by_path( $slug );
 		if ( ! $page ) {
@@ -159,11 +158,20 @@ function ame_bazaar_create_authority_and_ai_pages() {
 			) );
 			if ( $page_id && ! is_wp_error( $page_id ) ) {
 				update_post_meta( $page_id, '_wp_page_template', $data['template'] );
+				$inserted = true;
 			}
 		} else {
 			// Ensure template matches
-			update_post_meta( $page->ID, '_wp_page_template', $data['template'] );
+			$curr_template = get_post_meta( $page->ID, '_wp_page_template', true );
+			if ( $curr_template !== $data['template'] ) {
+				update_post_meta( $page->ID, '_wp_page_template', $data['template'] );
+				$inserted = true;
+			}
 		}
+	}
+
+	if ( $inserted || $deleted ) {
+		flush_rewrite_rules( false );
 	}
 }
 add_action( 'init', 'ame_bazaar_create_authority_and_ai_pages' );
