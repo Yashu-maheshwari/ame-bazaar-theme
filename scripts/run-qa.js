@@ -242,28 +242,28 @@ async function run() {
     <header style="border-bottom: 1px solid #e2e8f0; padding-bottom: 1.5rem; margin-bottom: 2rem; display: flex; justify-content: space-between; align-items: center;">
       <div>
         <h1>AME Bazaar QA Verification</h1>
-        <p style="color: #64748b; margin: 0;">Audit URL: <a href="\${TARGET_URL}">\${TARGET_URL}</a> | Date: \${report.timestamp}</p>
+        <p style="color: #64748b; margin: 0;">Audit URL: <a href="${TARGET_URL}">${TARGET_URL}</a> | Date: ${report.timestamp}</p>
       </div>
-      <span class="badge \${report.status === 'PASSED' ? 'badge-success' : 'badge-danger'}">\${report.status}</span>
+      <span class="badge ${report.status === 'PASSED' ? 'badge-success' : 'badge-danger'}">${report.status}</span>
     </header>
 
     <h2>Lighthouse Metrics</h2>
     <div class="metrics-grid">
       <div class="metric-card">
         <div>Performance</div>
-        <div class="metric-val" style="color: \${report.lighthouse.performance >= 90 ? '#16a34a' : '#ea580c'}">\${report.lighthouse.performance || 'N/A'}</div>
+        <div class="metric-val" style="color: ${report.lighthouse.performance >= 90 ? '#16a34a' : '#ea580c'}">${report.lighthouse.performance || 'N/A'}</div>
       </div>
       <div class="metric-card">
         <div>Accessibility</div>
-        <div class="metric-val" style="color: \${report.lighthouse.accessibility >= 90 ? '#16a34a' : '#ea580c'}">\${report.lighthouse.accessibility || 'N/A'}</div>
+        <div class="metric-val" style="color: ${report.lighthouse.accessibility >= 90 ? '#16a34a' : '#ea580c'}">${report.lighthouse.accessibility || 'N/A'}</div>
       </div>
       <div class="metric-card">
         <div>Best Practices</div>
-        <div class="metric-val" style="color: \${report.lighthouse.bestPractices >= 90 ? '#16a34a' : '#ea580c'}">\${report.lighthouse.bestPractices || 'N/A'}</div>
+        <div class="metric-val" style="color: ${report.lighthouse.bestPractices >= 90 ? '#16a34a' : '#ea580c'}">${report.lighthouse.bestPractices || 'N/A'}</div>
       </div>
       <div class="metric-card">
         <div>SEO</div>
-        <div class="metric-val" style="color: \${report.lighthouse.seo >= 90 ? '#16a34a' : '#ea580c'}">\${report.lighthouse.seo || 'N/A'}</div>
+        <div class="metric-val" style="color: ${report.lighthouse.seo >= 90 ? '#16a34a' : '#ea580c'}">${report.lighthouse.seo || 'N/A'}</div>
       </div>
     </div>
 
@@ -276,26 +276,26 @@ async function run() {
         </tr>
       </thead>
       <tbody>
-        \${Object.entries(report.openGraph).map(([prop, val]) => `
+        ${Object.entries(report.openGraph).map(([prop, val]) => `
           <tr style="border-bottom: 1px solid #f1f5f9;">
-            <td style="padding: 1rem; font-weight: 600;">\${prop}</td>
-            <td style="padding: 1rem; color: #475569;">\${val}</td>
+            <td style="padding: 1rem; font-weight: 600;">${prop}</td>
+            <td style="padding: 1rem; color: #475569;">${val}</td>
           </tr>
         `).join('')}
       </tbody>
     </table>
 
-    \${report.consoleErrors.length > 0 ? `
-      <h2>Console Errors (\${report.consoleErrors.length})</h2>
+    ${report.consoleErrors.length > 0 ? `
+      <h2>Console Errors (${report.consoleErrors.length})</h2>
       <ul class="error-list">
-        \${report.consoleErrors.map(e => `<li>\${e}</li>`).join('')}
+        ${report.consoleErrors.map(e => `<li>${e}</li>`).join('')}
       </ul>
     ` : '<h2>Console Errors</h2><p style="color: #16a34a; font-weight: bold;">✔ No console errors recorded.</p>'}
 
-    \${report.brokenLinks.length > 0 ? `
-      <h2>Broken Links (\${report.brokenLinks.length})</h2>
+    ${report.brokenLinks.length > 0 ? `
+      <h2>Broken Links (${report.brokenLinks.length})</h2>
       <ul class="error-list">
-        \${report.brokenLinks.map(l => `<li>Broken Link: <strong>\${l.url}</strong> (Status: \${l.status})</li>`).join('')}
+        ${report.brokenLinks.map(l => `<li>Broken Link: <strong>${l.url}</strong> (Status: ${l.status})</li>`).join('')}
       </ul>
     ` : '<h2>Broken Links</h2><p style="color: #16a34a; font-weight: bold;">✔ No broken links detected.</p>'}
 
@@ -319,7 +319,7 @@ async function run() {
   `;
 
   fs.writeFileSync(path.join(OUTPUT_DIR, 'report.html'), reportHtml);
-  console.log(`QA HTML Report saved to \${path.join(OUTPUT_DIR, 'report.html')}`);
+  console.log(`QA HTML Report saved to ${path.join(OUTPUT_DIR, 'report.html')}`);
 
   // Exit with error code if status failed
   if (report.status === 'FAILED') {
