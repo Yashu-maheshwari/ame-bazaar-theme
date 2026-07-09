@@ -841,7 +841,7 @@ function ame_bazaar_create_local_system_pages() {
 add_action( 'init', 'ame_bazaar_create_local_system_pages' );
 
 /**
- * 14. Homepage Media Manager Submenu Registration
+ * 15. Homepage Media Manager Submenu Registration
  */
 function ame_bazaar_register_media_manager_submenu() {
 	add_submenu_page(
@@ -910,6 +910,7 @@ function ame_bazaar_auto_assign_media_mappings() {
  * 16.5. Optimize attachment metadata for AI search visibility (Alt Text, Caption, Description)
  */
 function ame_bazaar_optimize_attachment_metadata() {
+	global $wpdb;
 	$metadata = array(
 		'logo' => array(
 			'alt'     => 'AME Bazaar Official Brand Logo - Clothing Store in Kirari, Delhi',
@@ -962,25 +963,15 @@ function ame_bazaar_optimize_attachment_metadata() {
 				update_post_meta( $id, '_wp_attachment_image_alt', sanitize_text_field( $data['alt'] ) );
 			}
 			
-			// Update Post Fields (Caption and Description)
-			$post = get_post( $id );
-			if ( $post ) {
-				$update = false;
-				$post_data = array( 'ID' => $id );
-				
-				if ( empty( $post->post_excerpt ) || strpos( $post->post_excerpt, 'unnamed' ) !== false ) {
-					$post_data['post_excerpt'] = sanitize_text_field( $data['caption'] );
-					$update = true;
-				}
-				if ( empty( $post->post_content ) || strpos( $post->post_content, 'unnamed' ) !== false ) {
-					$post_data['post_content'] = sanitize_textarea_field( $data['desc'] );
-					$update = true;
-				}
-				
-				if ( $update ) {
-					wp_update_post( $post_data );
-				}
-			}
+			// Update Post Fields directly via SQL to prevent recursion/hooks overhead
+			$wpdb->query(
+				$wpdb->prepare(
+					"UPDATE {$wpdb->posts} SET post_excerpt = %s, post_content = %s WHERE ID = %d AND (post_excerpt = '' OR post_excerpt LIKE '%unnamed%')",
+					$data['caption'],
+					$data['desc'],
+					$id
+				)
+			);
 		}
 	}
 }
@@ -1055,7 +1046,7 @@ function ame_bazaar_render_homepage_media_page() {
 										echo $preview_html; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 									} else { ?>
 										<p style="color:#666;font-style:italic;margin: 5px 0 0 0;"><?php esc_html_e( 'No image selected.', 'ame-bazaar' ); ?></p>
-									} ?>
+									<?php } ?>
 								</div>
 							</td>
 						</tr>
