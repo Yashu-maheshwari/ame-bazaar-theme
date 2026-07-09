@@ -964,14 +964,14 @@ function ame_bazaar_optimize_attachment_metadata() {
 			}
 			
 			// Update Post Fields directly via SQL to prevent recursion/hooks overhead
-			$wpdb->query(
-				$wpdb->prepare(
-					"UPDATE {$wpdb->posts} SET post_excerpt = %s, post_content = %s WHERE ID = %d AND (post_excerpt = '' OR post_excerpt LIKE '%unnamed%')",
-					$data['caption'],
-					$data['desc'],
-					$id
-				)
-			);
+			$post_info = $wpdb->get_row( $wpdb->prepare( "SELECT post_excerpt, post_content FROM {$wpdb->posts} WHERE ID = %d", $id ) );
+			if ( $post_info && ( empty( $post_info->post_excerpt ) || strpos( $post_info->post_excerpt, 'unnamed' ) !== false ) ) {
+				$wpdb->update(
+					$wpdb->posts,
+					array( 'post_excerpt' => $data['caption'], 'post_content' => $data['desc'] ),
+					array( 'ID' => $id )
+				);
+			}
 		}
 	}
 }
