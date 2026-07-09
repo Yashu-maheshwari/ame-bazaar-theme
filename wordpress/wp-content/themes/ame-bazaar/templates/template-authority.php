@@ -82,7 +82,7 @@ $authority_data = array(
 		'points' => array(
 			array( 't' => __( 'Fast Turnaround Sizing', 'ame-bazaar' ), 'd' => __( 'Hemming jeans, tapering formal shirts, or adjusting salwar suit waistlines completed within 24 to 48 hours.', 'ame-bazaar' ) ),
 			array( 't' => __( 'Trial Fittings & Guarantees', 'ame-bazaar' ), 'd' => __( 'We guide you through trials in our trial rooms and adjust measurements free of charge until the fit is perfect.', 'ame-bazaar' ) ),
-			array( 't' => __( 'Gents & Ladies Custom Stitching', 'ame-bazaar' ), 'd' => __( 'Stitch custom gents kurta pajama, Nehru coats, and ladies padded blouses using your own fabric or our catalog.', 'ame-bazaar' ) )
+			array( 't' => __( 'Gents & Ladies Custom Stitching', 'ame-bazaar' ), 'd' => __( 'Stitch custom gents kurta pajamas, Nehru coats, and ladies padded blouses using your own fabric or our catalog.', 'ame-bazaar' ) )
 		),
 		'faq_keys' => array( 'tailoring', 'size_guide' )
 	),

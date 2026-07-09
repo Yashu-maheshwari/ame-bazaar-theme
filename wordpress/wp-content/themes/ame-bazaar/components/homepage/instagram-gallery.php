@@ -1,6 +1,6 @@
 <?php
 /**
- * Instagram Gallery Section Component.
+ * Showroom Gallery Section Component.
  *
  * @package Ame_Bazaar
  */
@@ -10,71 +10,80 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 ?>
 
-<section class="ame-instagram-section" aria-labelledby="ame-instagram-title">
+<section class="ame-instagram-section" aria-labelledby="ame-instagram-title" style="padding-block: 5rem; background: #ffffff;">
 	<div class="ame-bazaar-container">
 		<div class="ame-section-header" style="text-align: center; margin-bottom: 3rem;">
-			<h2 id="ame-instagram-title" class="ame-h2" style="margin-bottom: 0.5rem;"><?php esc_html_e( '#AMEBazaar Style Showcase', 'ame-bazaar' ); ?></h2>
+			<h2 id="ame-instagram-title" class="ame-h2" style="margin-bottom: 0.5rem; font-weight: 800; color: var(--ame-color-navy);"><?php esc_html_e( 'Experience AME Bazaar Showroom', 'ame-bazaar' ); ?></h2>
 			<p class="ame-body" style="color: var(--ame-color-slate); max-width: 600px; margin: 0 auto;">
-				<?php esc_html_e( 'Follow us on Instagram for daily fabric showcases, custom suit tutorials, on-site tailoring logs, and fashion updates.', 'ame-bazaar' ); ?>
+				<?php esc_html_e( 'Take a virtual walk through our Mubarakpur Road showroom in Kirari. See our premium fabric racks, customer trials lounge, and custom alterations desk.', 'ame-bazaar' ); ?>
 			</p>
-			<a href="https://instagram.com/amebazaar" class="ame-link" target="_blank" rel="noopener noreferrer" style="font-weight: 700; margin-top: 0.5rem; display: inline-block;">@amebazaar on Instagram &rarr;</a>
+			<a href="https://maps.google.com/?q=AME+Bazaar+Kirari+Delhi" class="ame-link" target="_blank" rel="noopener noreferrer" style="font-weight: 700; margin-top: 0.5rem; display: inline-block; color: var(--ame-color-gold-dark); text-decoration: underline;">Get Directions on Google Maps &rarr;</a>
 		</div>
 
 		<!-- Grid of Posts (6 items) -->
-		<div class="ame-grid ame-grid-3">
-			
-			<div class="ame-insta-card">
-				<div class="ame-insta-visual-wrap">
-					<?php 
-					$insta_img_id = get_option( 'ame_bazaar_media_instagram' );
-					if ( $insta_img_id ) : 
-					?>
-						<div class="ame-insta-img-wrapper" style="aspect-ratio: 1/1; border-radius: var(--ame-radius-md); overflow:hidden; position:relative; display:block;">
-							<?php echo wp_get_attachment_image( $insta_img_id, 'medium_large', false, array(
-								'class'   => 'ame-insta-img',
-								'style'   => 'width:100%; height:100%; object-fit:cover; display:block;',
-								'loading' => 'lazy',
-								'alt'     => esc_attr__( 'Instagram fashion showcase photo - AME Bazaar Kirari', 'ame-bazaar' ),
-							) ); ?>
-							<div class="ame-insta-hover-overlay">
-								<span class="ame-insta-likes">❤️ 128</span>
+		<div class="ame-grid ame-grid-3" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem;">
+			<?php
+			$showroom_photos = array(
+				array(
+					'id'    => 547,
+					'label' => 'Store Front Facade & Parking Area'
+				),
+				array(
+					'id'    => 540,
+					'label' => 'Main Showroom Interior Collections'
+				),
+				array(
+					'id'    => 546,
+					'label' => 'Men & Kids Clothing Racks'
+				),
+				array(
+					'id'    => 541,
+					'label' => 'Trials Room & Customer Lounge'
+				),
+				array(
+					'id'    => 545,
+					'label' => 'In-Store Alterations Desk'
+				),
+				array(
+					'id'    => 544,
+					'label' => 'Women\'s Ethnic wear showcase'
+				),
+			);
+
+			foreach ( $showroom_photos as $photo ) :
+				$img_html = wp_get_attachment_image( $photo['id'], 'medium_large', false, array(
+					'class'   => 'ame-gallery-img',
+					'style'   => 'width:100%; height:100%; object-fit:cover; display:block; transition: transform 0.4s ease;',
+					'loading' => 'lazy',
+					'alt'     => esc_attr( $photo['label'] . ' - AME Bazaar Kirari Delhi' ),
+				) );
+
+				if ( $img_html ) :
+				?>
+					<div class="ame-insta-card" style="position: relative; overflow: hidden; border-radius: var(--ame-radius-md); box-shadow: var(--ame-shadow-sm); aspect-ratio: 1/1;">
+						<div class="ame-insta-visual-wrap" style="width: 100%; height: 100%;">
+							<div class="ame-insta-img-wrapper" style="width: 100%; height: 100%; position: relative;">
+								<?php echo $img_html; ?>
+								<div class="ame-insta-hover-overlay" style="position: absolute; inset: 0; background: linear-gradient(to top, rgba(0, 35, 71, 0.9) 10%, rgba(0, 35, 71, 0.4) 100%); display: flex; flex-direction: column; justify-content: flex-end; padding: 1.5rem; opacity: 0; transition: opacity 0.3s ease; pointer-events: none;">
+									<h4 style="color: #ffffff; font-size: 1rem; font-weight: 700; margin: 0 0 0.25rem 0;"><?php echo esc_html( $photo['label'] ); ?></h4>
+									<p style="color: rgba(255,255,255,0.8); font-size: 0.8rem; margin: 0;">AME Bazaar Delhi 110086</p>
+								</div>
 							</div>
 						</div>
-					<?php else : ?>
-						<div class="ame-insta-img-placeholder" style="background: var(--ame-color-cream); aspect-ratio: 1/1; border-radius: var(--ame-radius-md); display:flex; align-items:center; justify-content:center; position:relative; overflow:hidden;">
-							<span class="ame-placeholder-tag"><?php esc_html_e( 'Mulmul Cotton Suit fitting log', 'ame-bazaar' ); ?></span>
-							<div class="ame-insta-hover-overlay">
-								<span class="ame-insta-likes">❤️ 128</span>
-							</div>
-						</div>
-					<?php endif; ?>
-				</div>
-			</div>
-
-			<div class="ame-insta-card">
-				<div class="ame-insta-visual-wrap">
-					<div class="ame-insta-img-placeholder" style="background: var(--ame-color-cream); aspect-ratio: 1/1; border-radius: var(--ame-radius-md); display:flex; align-items:center; justify-content:center; position:relative; overflow:hidden;">
-						<span class="ame-placeholder-tag"><?php esc_html_e( 'Banarasi silk saree drape guide', 'ame-bazaar' ); ?></span>
-						<div class="ame-insta-hover-overlay">
-							<span class="ame-insta-likes">❤️ 244</span>
-						</div>
 					</div>
-				</div>
-			</div>
-
-			<div class="ame-insta-card">
-				<div class="ame-insta-visual-wrap">
-					<div class="ame-insta-img-placeholder" style="background: var(--ame-color-cream); aspect-ratio: 1/1; border-radius: var(--ame-radius-md); display:flex; align-items:center; justify-content:center; position:relative; overflow:hidden;">
-						<!-- Video Placeholder -->
-						<div class="ame-video-play-indicator" style="position:absolute; top:1rem; right:1rem; background:rgba(0,0,0,0.6); color:#fff; padding:0.2rem 0.5rem; border-radius:4px; font-size:0.7rem; font-weight:700;">Reel</div>
-						<span class="ame-placeholder-tag"><?php esc_html_e( 'Tailor alteration tutorial (Video)', 'ame-bazaar' ); ?></span>
-						<div class="ame-insta-hover-overlay">
-							<span class="ame-insta-likes">❤️ 312</span>
-						</div>
-					</div>
-				</div>
-			</div>
-
+				<?php
+				endif;
+			endforeach;
+			?>
 		</div>
 	</div>
 </section>
+
+<style>
+.ame-insta-card:hover .ame-gallery-img {
+	transform: scale(1.05);
+}
+.ame-insta-card:hover .ame-insta-hover-overlay {
+	opacity: 1 !important;
+}
+</style>

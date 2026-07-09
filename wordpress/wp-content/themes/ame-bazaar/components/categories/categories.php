@@ -145,7 +145,7 @@ $categories = array(
 				?>
 				<article class="ame-category-card">
 					<?php if ( ! empty( $img_html ) ) : ?>
-						<a href="<?php echo esc_url( $url ); ?>" class="ame-category-card-visual-link" tabindex="-1" aria-hidden="true">
+						<a href="<?php echo esc_url( $url ); ?>" class="ame-category-card-visual-link" tabindex="-1" aria-hidden="true" data-category-slug="<?php echo esc_attr( $key ); ?>">
 							<div class="ame-category-card-visual">
 								<?php echo $img_html; ?>
 							</div>
@@ -154,7 +154,7 @@ $categories = array(
 
 					<div class="ame-category-card-content">
 						<h3 class="ame-category-card-title">
-							<a href="<?php echo esc_url( $url ); ?>" class="ame-category-title-link">
+							<a href="<?php echo esc_url( $url ); ?>" class="ame-category-title-link" data-category-slug="<?php echo esc_attr( $key ); ?>">
 								<?php echo esc_html( $cat['label'] ); ?>
 							</a>
 						</h3>
@@ -162,7 +162,7 @@ $categories = array(
 							<p class="ame-category-card-desc"><?php echo esc_html( $desc ); ?></p>
 						<?php endif; ?>
 						
-						<a href="<?php echo esc_url( $url ); ?>" class="ame-bazaar-btn ame-bazaar-btn--secondary ame-category-card-btn" aria-label="<?php echo esc_attr( sprintf( __( 'Explore %s Collection', 'ame-bazaar' ), $cat['label'] ) ); ?>">
+						<a href="<?php echo esc_url( $url ); ?>" class="ame-bazaar-btn ame-bazaar-btn--secondary ame-category-card-btn" aria-label="<?php echo esc_attr( sprintf( __( 'Explore %s Collection', 'ame-bazaar' ), $cat['label'] ) ); ?>" data-category-slug="<?php echo esc_attr( $key ); ?>">
 							<span><?php esc_html_e( 'Explore Collection', 'ame-bazaar' ); ?></span>
 							<svg class="ame-arrow-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
 								<line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline>

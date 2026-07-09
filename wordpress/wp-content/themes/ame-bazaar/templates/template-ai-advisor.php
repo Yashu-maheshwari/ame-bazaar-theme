@@ -220,10 +220,19 @@ window.ameResetPreferences = function() {
 	document.getElementById('ame-pref-occasion').value = 'wedding';
 	document.getElementById('ame-pref-season').value = 'summer';
 	document.getElementById('ame-pref-budget').value = 'all';
+	
+	if (typeof window.trackAmeEvent === 'function') {
+		window.trackAmeEvent('ai_advisor_interaction', { action_type: 'filters_reset' });
+	}
 };
 
 window.ameTapPrompt = function(promptText) {
 	document.getElementById('ame-advisor-user-input').value = promptText;
+	
+	if (typeof window.trackAmeEvent === 'function') {
+		window.trackAmeEvent('ai_advisor_interaction', { action_type: 'prompt_tapped', query: promptText });
+	}
+	
 	window.ameSendAdvisorMessage();
 	// Scroll smoothly to console input
 	document.getElementById('ame-advisor-input-form').scrollIntoView({ behavior: 'smooth', block: 'center' });
@@ -240,6 +249,18 @@ window.ameSendAdvisorMessage = function() {
 	const prefOccasion = document.getElementById('ame-pref-occasion').value;
 	const prefSeason = document.getElementById('ame-pref-season').value;
 	const prefBudget = document.getElementById('ame-pref-budget').value;
+
+	if (typeof window.trackAmeEvent === 'function') {
+		window.trackAmeEvent('ai_advisor_interaction', {
+			action_type: 'message_sent',
+			query: query,
+			pref_gender: prefGender,
+			pref_age: prefAge,
+			pref_occasion: prefOccasion,
+			pref_season: prefSeason,
+			pref_budget: prefBudget
+		});
+	}
 
 	const chatScreen = document.getElementById('ame-advisor-chat-screen');
 
@@ -385,6 +406,21 @@ function escapeHtml(text) {
 		.replace(/"/g, "&quot;")
 		.replace(/'/g, "&#039;");
 }
+
+// Track Assistant configuration selections
+document.addEventListener('DOMContentLoaded', function() {
+	document.querySelectorAll('.ame-pref-select').forEach(select => {
+		select.addEventListener('change', () => {
+			if (typeof window.trackAmeEvent === 'function') {
+				window.trackAmeEvent('ai_advisor_interaction', {
+					action_type: 'preference_changed',
+					preference_name: select.id.replace('ame-pref-', ''),
+					preference_value: select.value
+				});
+			}
+		});
+	});
+});
 </script>
 
 <style>

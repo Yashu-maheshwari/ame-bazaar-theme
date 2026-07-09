@@ -345,7 +345,7 @@ function ame_bazaar_enhance_product_schema( $markup, $product ) {
 			'postalCode' => '110086',
 			'addressCountry' => 'IN',
 		),
-		'telephone' => '+91 99999 99999',
+		'telephone' => ame_bazaar_get_business_setting( 'phone', '+91 99535 69533' ),
 	);
 	
 	// Advanced AI attributes
@@ -405,6 +405,10 @@ add_filter( 'woocommerce_structured_data_product', 'ame_bazaar_enhance_product_s
  */
 function ame_bazaar_render_local_retail_features() {
 	global $product;
+	$phone_number = ame_bazaar_get_business_setting( 'phone', '+91 99535 69533' );
+	$phone_tel_link = preg_replace( '/[^0-9+]/', '', $phone_number );
+	$whatsapp = ame_bazaar_get_business_setting( 'whatsapp', '+91 99535 69533' );
+	$whatsapp_tel = preg_replace( '/[^0-9]/', '', $whatsapp );
 	?>
 	<div class="ame-local-retail-card" style="margin-top: 1.5rem; padding: 1.5rem; background: var(--ame-color-cream); border: 1px solid var(--ame-color-border); border-radius: var(--ame-radius-md);">
 		<h4 class="ame-local-retail-title" style="display:flex; align-items:center; gap:0.5rem; margin:0 0 1rem 0; font-size:1rem; font-weight:800; color:var(--ame-color-navy);">
@@ -417,11 +421,11 @@ function ame_bazaar_render_local_retail_features() {
 			<li style="display:flex; gap:0.4rem;"><strong>Trial room:</strong> Try before purchase at Mubarakpur Road outlet.</li>
 		</ul>
 		<div class="ame-local-retail-actions" style="display:flex; gap:0.8rem; flex-wrap:wrap;">
-			<a href="tel:+919999999999" class="ame-btn-outline" style="padding:0.6rem 1rem; font-size:0.75rem; text-decoration:none;">
+			<a href="tel:<?php echo esc_attr( $phone_tel_link ); ?>" class="ame-btn-outline" style="padding:0.6rem 1rem; font-size:0.75rem; text-decoration:none;">
 				<svg class="ame-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px; height:14px;"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2v3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
 				<span>Call Store</span>
 			</a>
-			<a href="https://wa.me/919999999999?text=Hi%20I%20am%20interested%20in%20<?php echo rawurlencode( get_the_title() ); ?>" class="ame-btn-secondary" style="padding:0.6rem 1rem; font-size:0.75rem; text-decoration:none;" target="_blank" rel="noopener">
+			<a href="https://wa.me/<?php echo esc_attr( $whatsapp_tel ); ?>?text=Hi%20I%20am%20interested%20in%20<?php echo rawurlencode( get_the_title() ); ?>" class="ame-btn-secondary" style="padding:0.6rem 1rem; font-size:0.75rem; text-decoration:none;" target="_blank" rel="noopener">
 				<svg class="ame-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px; height:14px;"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>
 				<span>WhatsApp Enquiry</span>
 			</a>

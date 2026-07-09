@@ -8,6 +8,11 @@
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
+
+$phone_number = ame_bazaar_get_business_setting( 'phone', '+91 99535 69533' );
+$phone_tel_link = preg_replace( '/[^0-9+]/', '', $phone_number );
+$whatsapp = ame_bazaar_get_business_setting( 'whatsapp', '+91 99535 69533' );
+$whatsapp_tel = preg_replace( '/[^0-9]/', '', $whatsapp );
 ?>
 
 <section class="ame-tailoring-service-section" aria-labelledby="ame-tailoring-title" style="padding-block: 5rem; background: var(--ame-color-cream);">
@@ -40,8 +45,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 				</div>
 
 				<div style="display:flex; gap:1rem; flex-wrap:wrap;">
-					<a href="tel:+919999999999" class="ame-btn-primary"><?php esc_html_e( 'Book Fitting Now', 'ame-bazaar' ); ?></a>
-					<a href="https://wa.me/919999999999?text=Hi%20I%20want%20to%20inquire%20about%20your%20tailoring%20services" class="ame-btn-secondary" target="_blank" rel="noopener noreferrer"><?php esc_html_e( 'WhatsApp Stitching Enquiry', 'ame-bazaar' ); ?></a>
+					<a href="tel:<?php echo esc_attr( $phone_tel_link ); ?>" class="ame-btn-primary"><?php esc_html_e( 'Book Fitting Now', 'ame-bazaar' ); ?></a>
+					<a href="https://wa.me/<?php echo esc_attr( $whatsapp_tel ); ?>?text=Hi%20I%20want%20to%20inquire%20about%20your%20tailoring%20services" class="ame-btn-secondary" target="_blank" rel="noopener noreferrer"><?php esc_html_e( 'WhatsApp Stitching Enquiry', 'ame-bazaar' ); ?></a>
 				</div>
 			</div>
 

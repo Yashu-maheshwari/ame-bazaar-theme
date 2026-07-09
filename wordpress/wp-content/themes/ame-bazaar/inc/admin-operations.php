@@ -296,7 +296,51 @@ function ame_bazaar_get_business_setting( $key, $default = '' ) {
 		// Fallback to customizer theme mods if available
 		$val = get_theme_mod( 'ame_bazaar_' . $key );
 	}
-	return $val ? $val : $default;
+	
+	// Self-heal and provide genuine fallbacks if settings are empty
+	if ( empty( $val ) ) {
+		if ( 'phone' === $key || 'whatsapp' === $key ) {
+			return '+91 99535 69533';
+		}
+		if ( 'email' === $key ) {
+			return 'apparelmaheshwari@gmail.com';
+		}
+		if ( 'store_name' === $key ) {
+			return 'AME Bazaar';
+		}
+		if ( 'address' === $key ) {
+			return 'Mubarakpur Road';
+		}
+		if ( 'city' === $key ) {
+			return 'Kirari';
+		}
+		if ( 'state' === $key ) {
+			return 'Delhi';
+		}
+		if ( 'postal_code' === $key ) {
+			return '110086';
+		}
+		if ( 'hours' === $key ) {
+			return 'Mo-Su 09:00–22:00';
+		}
+		if ( 'maps_url' === $key ) {
+			return 'https://maps.google.com/?q=AME+Bazaar+Kirari+Delhi';
+		}
+		return $default;
+	}
+
+	// Clean up any remaining mock placeholder phone values from the database
+	if ( ( 'phone' === $key || 'whatsapp' === $key ) && ( false !== strpos( $val, '99999' ) ) ) {
+		return '+91 99535 69533';
+	}
+	if ( 'email' === $key && ( false !== strpos( $val, 'example.com' ) || false !== strpos( $val, 'contact@amebazaar.com' ) ) ) {
+		return 'apparelmaheshwari@gmail.com';
+	}
+	if ( 'maps_url' === $key && false !== strpos( $val, 'example.com' ) ) {
+		return 'https://maps.google.com/?q=AME+Bazaar+Kirari+Delhi';
+	}
+
+	return $val;
 }
 
 /**
@@ -841,7 +885,7 @@ function ame_bazaar_create_local_system_pages() {
 add_action( 'init', 'ame_bazaar_create_local_system_pages' );
 
 /**
- * 15. Homepage Media Manager Submenu Registration
+ * 14. Homepage Media Manager Submenu Registration
  */
 function ame_bazaar_register_media_manager_submenu() {
 	add_submenu_page(
@@ -1231,3 +1275,7 @@ function ame_bazaar_get_media_audit_data() {
 		'attachments' => $attachments,
 	), 200 );
 }
+
+
+
+

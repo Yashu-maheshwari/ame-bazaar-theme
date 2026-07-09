@@ -714,4 +714,111 @@
 		};
 		document.addEventListener('keydown', escHandler);
 	});
+
+	/* ==========================================================================
+	   8. LIGHTWEIGHT ANALYTICS EVENT ARCHITECTURE (RULE 4 & 5)
+	   ========================================================================== */
+	window.ameDataLayer = window.ameDataLayer || [];
+
+	const trackAmeEvent = (eventName, eventParams = {}) => {
+		const payload = {
+			event: eventName,
+			timestamp: new Date().toISOString(),
+			page_path: window.location.pathname,
+			page_title: document.title,
+			...eventParams
+		};
+		window.ameDataLayer.push(payload);
+
+		// Dispatch custom Javascript Event on window for extensibility
+		const customEvent = new CustomEvent('ame_analytics_event', { detail: payload });
+		window.dispatchEvent(customEvent);
+
+		console.log('[AME Analytics]', payload);
+	};
+
+	// Expose globally
+	window.trackAmeEvent = trackAmeEvent;
+
+	// Global Event Delegation click listener
+	document.body.addEventListener('click', (e) => {
+		const link = e.target.closest('a');
+		const element = e.target.closest('button, a, [role="button"], .ame-bazaar-btn, .ame-btn-primary, .ame-btn-secondary');
+
+		if (!element) return;
+
+		// 1. WhatsApp Clicks
+		if (link && (link.href.includes('wa.me') || link.href.includes('whatsapp.com'))) {
+			trackAmeEvent('whatsapp_click', {
+				href: link.href,
+				text: link.innerText.trim() || 'WhatsApp Link',
+				location: link.closest('header') ? 'header' : (link.closest('footer') ? 'footer' : 'body')
+			});
+			return;
+		}
+
+		// 2. Call Clicks
+		if (link && link.href.startsWith('tel:')) {
+			trackAmeEvent('call_click', {
+				href: link.href,
+				text: link.innerText.trim() || 'Call Link'
+			});
+			return;
+		}
+
+		// 3. Directions Clicks
+		if (link && (link.href.includes('google.com/maps') || link.href.includes('maps.google.com') || link.href.includes('maps.app.goo.gl'))) {
+			trackAmeEvent('directions_click', {
+				href: link.href,
+				text: link.innerText.trim() || 'Get Directions'
+			});
+			return;
+		}
+
+		// 4. Category Clicks
+		const categorySlug = element.getAttribute('data-category-slug') || (link && link.href.includes('/product-category/') ? link.href.split('/product-category/')[1].replace('/', '') : null);
+		if (categorySlug) {
+			trackAmeEvent('category_click', {
+				category: categorySlug,
+				text: element.innerText.trim()
+			});
+			return;
+		}
+
+		// 5. Product Clicks
+		const isProductLink = link && (link.href.includes('/product/') || link.closest('.ame-product-card') || link.closest('.product'));
+		if (isProductLink && !link.href.includes('wa.me') && !link.href.startsWith('tel:')) {
+			trackAmeEvent('product_click', {
+				href: link.href,
+				text: link.innerText.trim() || link.closest('.ame-product-card')?.querySelector('.ame-product-title')?.innerText?.trim() || 'Product Card'
+			});
+			return;
+		}
+
+		// 6. AI Advisor Interactions (data-ai-action matches)
+		const aiAction = element.getAttribute('data-ai-action');
+		if (aiAction) {
+			trackAmeEvent('ai_advisor_interaction', {
+				action_type: aiAction,
+				text: element.innerText.trim()
+			});
+			return;
+		}
+
+		// 7. Generic CTA Clicks
+		const isCta = element.hasAttribute('data-ame-cta') || 
+		              element.classList.contains('ame-bazaar-btn') || 
+		              element.classList.contains('ame-btn-primary') || 
+		              element.classList.contains('ame-btn-secondary') || 
+		              element.classList.contains('button') || 
+		              element.getAttribute('role') === 'button';
+
+		if (isCta) {
+			trackAmeEvent('cta_click', {
+				cta_label: element.innerText.trim() || element.value || element.ariaLabel || 'Unnamed CTA',
+				element_id: element.id || null,
+				element_class: element.className || null
+			});
+		}
+	});
 })();

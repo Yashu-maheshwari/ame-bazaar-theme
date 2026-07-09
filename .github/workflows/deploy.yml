@@ -93,3 +93,48 @@ jobs:
           echo "functions.php exists."
           
           echo "Verification successful: theme files deployed correctly!"
+
+  qa-audit:
+    name: Run Automated QA Checks
+    needs: deploy
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+
+      - name: Install Dependencies
+        run: |
+          npm init -y
+          npm install playwright axios
+          npx playwright install --with-deps chromium
+
+      - name: Run Playwright & Lighthouse QA checks
+        run: node scripts/run-qa.js
+
+      - name: Upload QA Screenshots Artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: qa-screenshots
+          path: qa/screenshots/
+
+      - name: Upload Lighthouse Reports Artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: qa-lighthouse
+          path: qa/lighthouse/
+
+      - name: Upload QA Final HTML Report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: qa-report
+          path: qa/report.html
+
