@@ -88,31 +88,31 @@ $categories = array(
 						if ( 'tailoring' === $key ) {
 							$url = home_url( '/tailoring-near-me/' );
 						} elseif ( 'sarees' === $key ) {
-							$url = home_url( '/category/womens-wear/' );
+							$url = home_url( '/product-category/womens-wear/' );
 						} elseif ( 'men' === $key ) {
-							$url = home_url( '/category/mens-wear/' );
+							$url = home_url( '/product-category/mens-wear/' );
 						} elseif ( 'women' === $key ) {
-							$url = home_url( '/category/womens-wear/' );
+							$url = home_url( '/product-category/womens-wear/' );
 						} elseif ( 'kids' === $key ) {
-							$url = home_url( '/category/kids-wear/' );
+							$url = home_url( '/product-category/boy-wear/' );
 						} else {
-							$url = home_url( '/category/' . $key . '/' );
+							$url = home_url( '/product-category/' . $key . '/' );
 						}
 					}
 				}
 
 				// Self-healing: if the URL contains '/product-category/' or points to an invalid slug, correct it.
 				if ( $url ) {
-					if ( strpos( $url, 'product-category' ) !== false ) {
-						$url = str_replace( '/product-category/', '/category/', $url );
+					if ( strpos( $url, '/category/' ) !== false ) {
+						$url = str_replace( '/category/', '/product-category/', $url );
 					}
-					if ( strpos( $url, '/category/kids/' ) !== false ) {
-						$url = str_replace( '/category/kids/', '/category/kids-wear/', $url );
+					if ( strpos( $url, '/product-category/kids/' ) !== false || strpos( $url, '/product-category/kids-wear/' ) !== false ) {
+						$url = home_url( '/product-category/boy-wear/' );
 					}
-					if ( strpos( $url, '/category/sarees/' ) !== false ) {
-						$url = str_replace( '/category/sarees/', '/category/womens-wear/', $url );
+					if ( strpos( $url, '/product-category/sarees/' ) !== false ) {
+						$url = home_url( '/product-category/womens-wear/' );
 					}
-					if ( strpos( $url, '/category/tailoring/' ) !== false ) {
+					if ( strpos( $url, '/product-category/tailoring/' ) !== false ) {
 						$url = home_url( '/tailoring-near-me/' );
 					}
 				}
