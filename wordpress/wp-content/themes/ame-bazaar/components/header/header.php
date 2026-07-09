@@ -63,11 +63,11 @@ $logo_id = get_option( 'ame_bazaar_media_primary_logo' ) ?: get_theme_mod( 'cust
 				?>
 				<ul class="ame-desktop-menu-list">
 					<li><a href="<?php echo esc_url( home_url( '/' ) ); ?>"><?php esc_html_e( 'Home', 'ame-bazaar' ); ?></a></li>
-					<li><a href="<?php echo esc_url( home_url( '/about' ) ); ?>"><?php esc_html_e( 'About', 'ame-bazaar' ); ?></a></li>
-					<li><a href="<?php echo esc_url( home_url( '/shop' ) ); ?>"><?php esc_html_e( 'Shop', 'ame-bazaar' ); ?></a></li>
-					<li><a href="<?php echo esc_url( home_url( '/categories' ) ); ?>"><?php esc_html_e( 'Categories', 'ame-bazaar' ); ?></a></li>
-					<li><a href="<?php echo esc_url( home_url( '/blog' ) ); ?>"><?php esc_html_e( 'Blog', 'ame-bazaar' ); ?></a></li>
-					<li><a href="<?php echo esc_url( home_url( '/contact' ) ); ?>"><?php esc_html_e( 'Contact', 'ame-bazaar' ); ?></a></li>
+					<li><a href="<?php echo esc_url( home_url( '/about-ame-bazaar/' ) ); ?>"><?php esc_html_e( 'About Us', 'ame-bazaar' ); ?></a></li>
+					<li><a href="<?php echo esc_url( home_url( '/shop/' ) ); ?>"><?php esc_html_e( 'Shop', 'ame-bazaar' ); ?></a></li>
+					<li><a href="<?php echo esc_url( home_url( '/faq/' ) ); ?>"><?php esc_html_e( 'FAQ', 'ame-bazaar' ); ?></a></li>
+					<li><a href="<?php echo esc_url( home_url( '/fashion-advisor/' ) ); ?>"><?php esc_html_e( 'Fashion Advisor', 'ame-bazaar' ); ?></a></li>
+					<li><a href="<?php echo esc_url( home_url( '/contact/' ) ); ?>"><?php esc_html_e( 'Contact', 'ame-bazaar' ); ?></a></li>
 				</ul>
 				<?php
 			}
@@ -187,11 +187,11 @@ $logo_id = get_option( 'ame_bazaar_media_primary_logo' ) ?: get_theme_mod( 'cust
 				?>
 				<ul class="ame-mobile-menu-list">
 					<li><a href="<?php echo esc_url( home_url( '/' ) ); ?>"><?php esc_html_e( 'Home', 'ame-bazaar' ); ?></a></li>
-					<li><a href="<?php echo esc_url( home_url( '/about' ) ); ?>"><?php esc_html_e( 'About', 'ame-bazaar' ); ?></a></li>
-					<li><a href="<?php echo esc_url( home_url( '/shop' ) ); ?>"><?php esc_html_e( 'Shop', 'ame-bazaar' ); ?></a></li>
-					<li><a href="<?php echo esc_url( home_url( '/categories' ) ); ?>"><?php esc_html_e( 'Categories', 'ame-bazaar' ); ?></a></li>
-					<li><a href="<?php echo esc_url( home_url( '/blog' ) ); ?>"><?php esc_html_e( 'Blog', 'ame-bazaar' ); ?></a></li>
-					<li><a href="<?php echo esc_url( home_url( '/contact' ) ); ?>"><?php esc_html_e( 'Contact', 'ame-bazaar' ); ?></a></li>
+					<li><a href="<?php echo esc_url( home_url( '/about-ame-bazaar/' ) ); ?>"><?php esc_html_e( 'About Us', 'ame-bazaar' ); ?></a></li>
+					<li><a href="<?php echo esc_url( home_url( '/shop/' ) ); ?>"><?php esc_html_e( 'Shop', 'ame-bazaar' ); ?></a></li>
+					<li><a href="<?php echo esc_url( home_url( '/faq/' ) ); ?>"><?php esc_html_e( 'FAQ', 'ame-bazaar' ); ?></a></li>
+					<li><a href="<?php echo esc_url( home_url( '/fashion-advisor/' ) ); ?>"><?php esc_html_e( 'Fashion Advisor', 'ame-bazaar' ); ?></a></li>
+					<li><a href="<?php echo esc_url( home_url( '/contact/' ) ); ?>"><?php esc_html_e( 'Contact', 'ame-bazaar' ); ?></a></li>
 				</ul>
 				<?php
 			}

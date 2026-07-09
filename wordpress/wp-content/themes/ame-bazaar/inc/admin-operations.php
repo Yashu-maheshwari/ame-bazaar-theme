@@ -585,6 +585,18 @@ function ame_bazaar_handle_dynamic_text_files() {
 		echo '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">';
 		echo '<url><loc>' . esc_url( home_url( '/' ) ) . '</loc><changefreq>daily</changefreq><priority>1.0</priority></url>';
 		
+		// Load pages (About, Contact, FAQ, AI templates, and Semantic authority pages)
+		$pages_query = new WP_Query( array(
+			'post_type'      => 'page',
+			'post_status'    => 'publish',
+			'posts_per_page' => 100,
+		) );
+		while ( $pages_query->have_posts() ) {
+			$pages_query->the_post();
+			echo '<url><loc>' . esc_url( get_permalink() ) . '</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>';
+		}
+		wp_reset_postdata();
+
 		// Load products
 		$query = new WP_Query( array( 'post_type' => 'product', 'posts_per_page' => 100 ) );
 		while ( $query->have_posts() ) {
@@ -599,12 +611,17 @@ function ame_bazaar_handle_dynamic_text_files() {
 	
 	if ( strpos( $request, 'llms.txt' ) !== false ) {
 		header( 'Content-Type: text/plain; charset=utf-8' );
-		echo "# AME Bazaar - LLMs Discovery File\n\n";
-		echo "This file provides index paths for AI crawlers.\n\n";
-		echo "## Main URLs\n";
-		echo "- Home: " . esc_url( home_url( '/' ) ) . "\n";
-		echo "- Shop: " . esc_url( wc_get_page_permalink( 'shop' ) ) . "\n";
-		echo "- Location: Mubarakpur Road, Kirari, Delhi\n";
+		$file = get_stylesheet_directory() . '/llms.txt';
+		if ( file_exists( $file ) ) {
+			readfile( $file );
+		} else {
+			echo "# AME Bazaar - LLMs Discovery File\n\n";
+			echo "This file provides index paths for AI crawlers.\n\n";
+			echo "## Main URLs\n";
+			echo "- Home: " . esc_url( home_url( '/' ) ) . "\n";
+			echo "- Shop: " . esc_url( wc_get_page_permalink( 'shop' ) ) . "\n";
+			echo "- Location: Mubarakpur Road, Kirari, Delhi\n";
+		}
 		exit;
 	}
 }
@@ -1010,5 +1027,3 @@ function ame_bazaar_render_homepage_media_page() {
 	</script>
 	<?php
 }
-
-

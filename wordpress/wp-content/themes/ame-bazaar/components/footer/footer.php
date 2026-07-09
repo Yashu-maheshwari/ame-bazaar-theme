@@ -124,9 +124,9 @@ if ( ! $cat_acc_url || '#' === $cat_acc_url ) {
 		<h4 class="ame-footer-title"><?php esc_html_e( 'Quick Links', 'ame-bazaar' ); ?></h4>
 		<ul class="ame-footer-links">
 			<li><a href="<?php echo esc_url( home_url( '/' ) ); ?>"><?php esc_html_e( 'Home', 'ame-bazaar' ); ?></a></li>
-			<li><a href="#ame-about-business-title"><?php esc_html_e( 'About Store', 'ame-bazaar' ); ?></a></li>
-			<li><a href="#ame-why-choose-title"><?php esc_html_e( 'Why Choose Us', 'ame-bazaar' ); ?></a></li>
-			<li><a href="#ame-reviews-section-title"><?php esc_html_e( 'Customer Reviews', 'ame-bazaar' ); ?></a></li>
+			<li><a href="<?php echo esc_url( home_url( '/#ame-about-business-title' ) ); ?>"><?php esc_html_e( 'About Store', 'ame-bazaar' ); ?></a></li>
+			<li><a href="<?php echo esc_url( home_url( '/#ame-why-choose-title' ) ); ?>"><?php esc_html_e( 'Why Choose Us', 'ame-bazaar' ); ?></a></li>
+			<li><a href="<?php echo esc_url( home_url( '/#ame-reviews-section-title' ) ); ?>"><?php esc_html_e( 'Customer Reviews', 'ame-bazaar' ); ?></a></li>
 			<li><a href="<?php echo esc_url( $maps_url ); ?>" target="_blank" rel="noopener noreferrer"><?php esc_html_e( 'Store Location Map', 'ame-bazaar' ); ?></a></li>
 		</ul>
 	</div>

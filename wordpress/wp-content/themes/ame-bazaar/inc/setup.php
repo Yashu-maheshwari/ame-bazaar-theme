@@ -97,8 +97,26 @@ function ame_bazaar_create_authority_and_ai_pages() {
 		}
 	}
 
+	// 1.5 Disable WooCommerce coming-soon mode options to ensure shop pages are visible to crawlers and users
+	if ( function_exists( 'update_option' ) ) {
+		update_option( 'woocommerce_coming_soon', 'no' );
+		update_option( 'woocommerce_store_editing', 'no' );
+	}
+
 	// 2. Map pages to templates
 	$pages_map = array(
+		'about-ame-bazaar' => array(
+			'title'    => 'About AME Bazaar',
+			'template' => 'templates/template-about.php',
+		),
+		'contact' => array(
+			'title'    => 'Contact Us',
+			'template' => 'templates/template-contact.php',
+		),
+		'faq' => array(
+			'title'    => 'FAQ',
+			'template' => 'templates/template-faq.php',
+		),
 		'fashion-advisor' => array(
 			'title'    => 'AI Fashion Advisor',
 			'template' => 'templates/template-ai-advisor.php',
@@ -193,5 +211,3 @@ function ame_bazaar_serve_llms_txt_route() {
 	}
 }
 add_action( 'template_redirect', 'ame_bazaar_serve_llms_txt_route' );
-
-
