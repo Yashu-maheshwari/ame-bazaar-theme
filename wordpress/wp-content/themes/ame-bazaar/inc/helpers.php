@@ -714,18 +714,7 @@ add_action( 'save_post', 'ame_bazaar_save_editorial_meta_box' );
  * @return int Attachment ID or 0 if not found.
  */
 function ame_bazaar_get_attachment_id_by_slug( $slug ) {
-	$args = array(
-		'post_type'      => 'attachment',
-		'name'           => $slug,
-		'posts_per_page' => 1,
-		'post_status'    => 'inherit',
-	);
-	$posts = get_posts( $args );
-	if ( $posts ) {
-		return $posts[0]->ID;
-	}
-	return 0;
+	global $wpdb;
+	$id = $wpdb->get_var( $wpdb->prepare( "SELECT ID FROM {$wpdb->posts} WHERE post_name = %s AND post_type = 'attachment' LIMIT 1", $slug ) );
+	return $id ? (int) $id : 0;
 }
-
-
-

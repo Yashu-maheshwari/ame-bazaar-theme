@@ -844,34 +844,6 @@ add_action( 'init', 'ame_bazaar_create_local_system_pages' );
  * 14. Homepage Media Manager Submenu Registration
  */
 function ame_bazaar_register_media_manager_submenu() {
-	add_menu_page(
-		__( 'AME Store Dashboard', 'ame-bazaar' ),
-		__( 'AME Store', 'ame-bazaar' ),
-		'manage_options',
-		'ame-store-dashboard',
-		'ame_bazaar_render_admin_store_dashboard',
-		'dashicons-chart-area',
-		56
-	);
-
-	add_submenu_page(
-		'ame-store-dashboard',
-		__( 'AME Business Settings', 'ame-bazaar' ),
-		__( 'Business Settings', 'ame-bazaar' ),
-		'manage_options',
-		'ame-business-settings',
-		'ame_bazaar_render_business_settings_page'
-	);
-
-	add_submenu_page(
-		'ame-store-dashboard',
-		__( 'Google Business Profile', 'ame-bazaar' ),
-		__( 'Google Business Profile', 'ame-bazaar' ),
-		'manage_options',
-		'ame-google-reviews',
-		'ame_bazaar_render_google_reviews_page'
-	);
-
 	add_submenu_page(
 		'ame-store-dashboard',
 		__( 'Homepage Media Manager', 'ame-bazaar' ),
@@ -881,22 +853,20 @@ function ame_bazaar_register_media_manager_submenu() {
 		'ame_bazaar_render_homepage_media_page'
 	);
 }
-// Remove duplicate actions and keep submenus correctly
-remove_action( 'admin_menu', 'ame_bazaar_register_store_dashboard' );
 add_action( 'admin_menu', 'ame_bazaar_register_media_manager_submenu' );
 
 /**
  * 15. Enqueue Media Scripts
  */
 function ame_bazaar_enqueue_media_manager_scripts( $hook ) {
-	if ( 'ame-store-dashboard_page_ame-homepage-media' !== $hook && 'ame-store_page_ame-homepage-media' !== $hook ) {
+	if ( 'ame-store_page_ame-homepage-media' !== $hook ) {
 		return;
 	}
 	wp_enqueue_media();
 }
 add_action( 'admin_enqueue_scripts', 'ame_bazaar_enqueue_media_manager_scripts' );
 
-add_action( 'admin_init', 'ame_bazaar_auto_assign_media_mappings' );
+add_action( 'init', 'ame_bazaar_auto_assign_media_mappings' );
 
 /**
  * 16. Auto-Assign existing assets to options
@@ -927,16 +897,10 @@ function ame_bazaar_auto_assign_media_mappings() {
 
 	foreach ( $mappings as $option_key => $slug ) {
 		$val = get_option( $option_key );
-		$args = array(
-			'post_type'      => 'attachment',
-			'name'           => $slug,
-			'posts_per_page' => 1,
-			'post_status'    => 'inherit',
-		);
-		$posts = get_posts( $args );
-		if ( $posts ) {
-			if ( (int) $val !== (int) $posts[0]->ID ) {
-				update_option( $option_key, $posts[0]->ID );
+		$resolved_id = ame_bazaar_get_attachment_id_by_slug( $slug );
+		if ( $resolved_id ) {
+			if ( (int) $val !== (int) $resolved_id ) {
+				update_option( $option_key, $resolved_id );
 			}
 		}
 	}
