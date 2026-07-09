@@ -203,6 +203,14 @@ function ame_bazaar_create_authority_and_ai_pages() {
 			'title'    => 'Clothing Wash and Care Guide',
 			'template' => 'templates/template-authority.php',
 		),
+		'terms-of-service' => array(
+			'title'    => 'Terms of Service',
+			'template' => 'templates/template-authority.php',
+		),
+		'shipping-returns' => array(
+			'title'    => 'Shipping & Returns Policy',
+			'template' => 'templates/template-authority.php',
+		),
 	);
 
 	$inserted = false;

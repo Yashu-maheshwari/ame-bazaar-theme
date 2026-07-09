@@ -38,28 +38,28 @@ $cat_acc_url   = get_theme_mod( 'ame_bazaar_cat_accessories_url' );
 // Resolve defaults if # or empty
 if ( ! $cat_men_url || '#' === $cat_men_url ) {
 	$term = get_term_by( 'slug', 'mens-wear', 'product_cat' ) ?: get_term_by( 'slug', 'men', 'product_cat' );
-	$cat_men_url = ( $term && ! is_wp_error( $term ) ) ? get_term_link( $term ) : home_url( '/product-category/mens-wear/' );
-	if ( is_wp_error( $cat_men_url ) ) { $cat_men_url = home_url( '/product-category/mens-wear/' ); }
+	$cat_men_url = ( $term && ! is_wp_error( $term ) ) ? get_term_link( $term ) : home_url( '/category/mens-wear/' );
+	if ( is_wp_error( $cat_men_url ) ) { $cat_men_url = home_url( '/category/mens-wear/' ); }
 }
 if ( ! $cat_women_url || '#' === $cat_women_url ) {
 	$term = get_term_by( 'slug', 'womens-wear', 'product_cat' ) ?: get_term_by( 'slug', 'women', 'product_cat' );
-	$cat_women_url = ( $term && ! is_wp_error( $term ) ) ? get_term_link( $term ) : home_url( '/product-category/womens-wear/' );
-	if ( is_wp_error( $cat_women_url ) ) { $cat_women_url = home_url( '/product-category/womens-wear/' ); }
+	$cat_women_url = ( $term && ! is_wp_error( $term ) ) ? get_term_link( $term ) : home_url( '/category/womens-wear/' );
+	if ( is_wp_error( $cat_women_url ) ) { $cat_women_url = home_url( '/category/womens-wear/' ); }
 }
 if ( ! $cat_kids_url || '#' === $cat_kids_url ) {
 	$term = get_term_by( 'slug', 'kids-wear', 'product_cat' ) ?: get_term_by( 'slug', 'kids', 'product_cat' );
-	$cat_kids_url = ( $term && ! is_wp_error( $term ) ) ? get_term_link( $term ) : home_url( '/product-category/kids/' );
-	if ( is_wp_error( $cat_kids_url ) ) { $cat_kids_url = home_url( '/product-category/kids/' ); }
+	$cat_kids_url = ( $term && ! is_wp_error( $term ) ) ? get_term_link( $term ) : home_url( '/category/kids-wear/' );
+	if ( is_wp_error( $cat_kids_url ) ) { $cat_kids_url = home_url( '/category/kids-wear/' ); }
 }
 if ( ! $cat_sarees_url || '#' === $cat_sarees_url ) {
 	$term = get_term_by( 'slug', 'sarees', 'product_cat' );
-	$cat_sarees_url = ( $term && ! is_wp_error( $term ) ) ? get_term_link( $term ) : home_url( '/product-category/sarees/' );
-	if ( is_wp_error( $cat_sarees_url ) ) { $cat_sarees_url = home_url( '/product-category/sarees/' ); }
+	$cat_sarees_url = ( $term && ! is_wp_error( $term ) ) ? get_term_link( $term ) : home_url( '/category/womens-wear/' );
+	if ( is_wp_error( $cat_sarees_url ) ) { $cat_sarees_url = home_url( '/category/womens-wear/' ); }
 }
 if ( ! $cat_acc_url || '#' === $cat_acc_url ) {
 	$term = get_term_by( 'slug', 'accessories', 'product_cat' );
-	$cat_acc_url = ( $term && ! is_wp_error( $term ) ) ? get_term_link( $term ) : home_url( '/product-category/accessories/' );
-	if ( is_wp_error( $cat_acc_url ) ) { $cat_acc_url = home_url( '/product-category/accessories/' ); }
+	$cat_acc_url = ( $term && ! is_wp_error( $term ) ) ? get_term_link( $term ) : home_url( '/category/accessories/' );
+	if ( is_wp_error( $cat_acc_url ) ) { $cat_acc_url = home_url( '/category/accessories/' ); }
 }
 ?>
 

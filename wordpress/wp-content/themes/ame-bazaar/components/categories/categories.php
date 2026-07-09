@@ -85,7 +85,19 @@ $categories = array(
 
 					// Fallback to WooCommerce standard permalink route
 					if ( ! $url || '#' === $url ) {
-						$url = home_url( '/product-category/' . $key . '/' );
+						if ( 'tailoring' === $key ) {
+							$url = home_url( '/tailoring-near-me/' );
+						} elseif ( 'sarees' === $key ) {
+							$url = home_url( '/category/womens-wear/' );
+						} elseif ( 'men' === $key ) {
+							$url = home_url( '/category/mens-wear/' );
+						} elseif ( 'women' === $key ) {
+							$url = home_url( '/category/womens-wear/' );
+						} elseif ( 'kids' === $key ) {
+							$url = home_url( '/category/kids-wear/' );
+						} else {
+							$url = home_url( '/category/' . $key . '/' );
+						}
 					}
 				}
 
