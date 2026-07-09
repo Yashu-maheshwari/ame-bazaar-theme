@@ -24,6 +24,7 @@ require_once AME_BAZAAR_PATH . '/inc/seo.php';
 require_once AME_BAZAAR_PATH . '/inc/content-framework.php';
 require_once AME_BAZAAR_PATH . '/inc/woocommerce.php';
 require_once AME_BAZAAR_PATH . '/inc/admin-operations.php';
+require_once AME_BAZAAR_PATH . '/inc/class-ai-advisor.php';
 require_once AME_BAZAAR_PATH . '/inc/faq-data.php';
 require_once AME_BAZAAR_PATH . '/components/local-entity/trust-cards.php';
 require_once AME_BAZAAR_PATH . '/components/local-entity/review-card.php';
@@ -35,13 +36,3 @@ require_once AME_BAZAAR_PATH . '/components/local-entity/google-rating-widget.ph
 require_once AME_BAZAAR_PATH . '/components/local-entity/trust-block.php';
 require_once AME_BAZAAR_PATH . '/components/local-entity/customer-highlights.php';
 require_once AME_BAZAAR_PATH . '/components/local-entity/popular-review-keywords.php';
-
-
-
-
-
-
-
-
-
-

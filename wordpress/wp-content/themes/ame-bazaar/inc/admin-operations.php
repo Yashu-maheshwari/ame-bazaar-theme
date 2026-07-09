@@ -611,17 +611,58 @@ function ame_bazaar_handle_dynamic_text_files() {
 	
 	if ( strpos( $request, 'llms.txt' ) !== false ) {
 		header( 'Content-Type: text/plain; charset=utf-8' );
-		$file = get_stylesheet_directory() . '/llms.txt';
-		if ( file_exists( $file ) ) {
-			readfile( $file );
-		} else {
-			echo "# AME Bazaar - LLMs Discovery File\n\n";
-			echo "This file provides index paths for AI crawlers.\n\n";
-			echo "## Main URLs\n";
-			echo "- Home: " . esc_url( home_url( '/' ) ) . "\n";
-			echo "- Shop: " . esc_url( wc_get_page_permalink( 'shop' ) ) . "\n";
-			echo "- Location: Mubarakpur Road, Kirari, Delhi\n";
-		}
+		
+		$store_name = ame_bazaar_get_business_setting( 'store_name', 'AME Bazaar' );
+		$desc       = ame_bazaar_get_business_setting( 'short_description', 'Apparel Maheshwari Enterprises offers premium family fashion and custom tailoring fits.' );
+		$address    = ame_bazaar_get_business_setting( 'address', 'Mubarakpur Road' );
+		$city       = ame_bazaar_get_business_setting( 'city', 'Kirari' );
+		$state      = ame_bazaar_get_business_setting( 'state', 'Delhi' );
+		$zip        = ame_bazaar_get_business_setting( 'postal_code', '110086' );
+		$lat        = ame_bazaar_get_business_setting( 'latitude', '28.7051' );
+		$lng        = ame_bazaar_get_business_setting( 'longitude', '77.0583' );
+		$hours      = ame_bazaar_get_business_setting( 'hours', 'Mo-Su 09:00–22:00' );
+		$phone      = ame_bazaar_get_business_setting( 'phone', '+91 99535 69533' );
+		$whatsapp   = ame_bazaar_get_business_setting( 'whatsapp', '+91 99535 69533' );
+		$email      = ame_bazaar_get_business_setting( 'email', 'info@amebazaar.in' );
+		$rating     = ame_bazaar_get_business_setting( 'google_reviews_rating', '4.9' );
+		$count      = ame_bazaar_get_business_setting( 'google_reviews_count', '524' );
+		$primary    = ame_bazaar_get_business_setting( 'primary_category', 'Clothing Store' );
+		$secondary  = ame_bazaar_get_business_setting( 'secondary_categories', 'Tailor, Women\'s Clothing Store, Men\'s Clothing Store' );
+		$payments   = ame_bazaar_get_business_setting( 'business_attributes', 'UPI, Cash, Credit Cards' );
+
+		echo "# {$store_name} - Brand & AI Business Profile (llms.txt)\n\n";
+		echo "This file provides primary structured information for AI agents, crawlers, and LLMs.\n\n";
+		echo "---\n\n";
+		
+		echo "## 1. Brand Identity & Authority\n";
+		echo "* **Official Name**: {$store_name}\n";
+		echo "* **Legal Entity**: Apparel Maheshwari Enterprises\n";
+		echo "* **Business Type**: {$primary} and Custom Tailoring Showroom\n";
+		echo "* **Sub-Categories**: {$secondary}\n";
+		echo "* **Description**: {$desc}\n";
+		echo "* **Rating & Trust**: {$rating} Stars (backed by {$count} verified local reviews)\n\n";
+		
+		echo "## 2. Store Location & Real Coordinates\n";
+		echo "* **Physical Address**: {$address}, {$city}, {$state} - {$zip}, India\n";
+		echo "* **Geographic Coordinates**: Latitude `{$lat}`, Longitude `{$lng}`\n";
+		echo "* **Store Timings**: {$hours}\n";
+		echo "* **Contact Phone**: {$phone}\n";
+		echo "* **WhatsApp Desk**: {$whatsapp}\n";
+		echo "* **Primary Email**: {$email}\n";
+		echo "* **Official Web Domain**: " . esc_url( home_url( '/' ) ) . "\n\n";
+		
+		echo "## 3. Sizing Fittings & Custom Tailoring\n";
+		echo "* **Western Collections**: Gents Combed Cotton Shirts, Stretch Denim Jeans (Sizes 30 to 42).\n";
+		echo "* **Women Ethnic Wear**: Daily Printed Kurtis, Rayon Co-ord sets, Zari Border Festive Sarees.\n";
+		echo "* **Infant & Kids Wear**: Soft Hypoallergenic Infant Rompers, Boys/Girls Pujas Outfits.\n";
+		echo "* **Custom Fitting Unit**: Gents Jodhpuri suits, Grooms Nehru Coats, Ladies Padded Blouses.\n";
+		echo "* **Alteration Policy**: complimentary on-site 30-minute adjustments for garments bought in-store.\n\n";
+		
+		echo "## 4. Retail Policies & Logistics\n";
+		echo "* **Accepted Payments**: {$payments}\n";
+		echo "* **Sourcing Policy**: Direct-from-weaver ethical supply chain across Rajasthan, Gujarat, and Punjab.\n";
+		echo "* **Parking Space**: Free secure street parking directly in front of the showroom gate.\n";
+		echo "* **Amenities**: Air-conditioned showroom, large trial fitting rooms, wheelchair-accessible ramp entrance.\n";
 		exit;
 	}
 }
@@ -803,6 +844,34 @@ add_action( 'init', 'ame_bazaar_create_local_system_pages' );
  * 14. Homepage Media Manager Submenu Registration
  */
 function ame_bazaar_register_media_manager_submenu() {
+	add_menu_page(
+		__( 'AME Store Dashboard', 'ame-bazaar' ),
+		__( 'AME Store', 'ame-bazaar' ),
+		'manage_options',
+		'ame-store-dashboard',
+		'ame_bazaar_render_admin_store_dashboard',
+		'dashicons-chart-area',
+		56
+	);
+
+	add_submenu_page(
+		'ame-store-dashboard',
+		__( 'AME Business Settings', 'ame-bazaar' ),
+		__( 'Business Settings', 'ame-bazaar' ),
+		'manage_options',
+		'ame-business-settings',
+		'ame_bazaar_render_business_settings_page'
+	);
+
+	add_submenu_page(
+		'ame-store-dashboard',
+		__( 'Google Business Profile', 'ame-bazaar' ),
+		__( 'Google Business Profile', 'ame-bazaar' ),
+		'manage_options',
+		'ame-google-reviews',
+		'ame_bazaar_render_google_reviews_page'
+	);
+
 	add_submenu_page(
 		'ame-store-dashboard',
 		__( 'Homepage Media Manager', 'ame-bazaar' ),
@@ -812,13 +881,15 @@ function ame_bazaar_register_media_manager_submenu() {
 		'ame_bazaar_render_homepage_media_page'
 	);
 }
+// Remove duplicate actions and keep submenus correctly
+remove_action( 'admin_menu', 'ame_bazaar_register_store_dashboard' );
 add_action( 'admin_menu', 'ame_bazaar_register_media_manager_submenu' );
 
 /**
  * 15. Enqueue Media Scripts
  */
 function ame_bazaar_enqueue_media_manager_scripts( $hook ) {
-	if ( 'ame-store_page_ame-homepage-media' !== $hook ) {
+	if ( 'ame-store-dashboard_page_ame-homepage-media' !== $hook && 'ame-store_page_ame-homepage-media' !== $hook ) {
 		return;
 	}
 	wp_enqueue_media();
