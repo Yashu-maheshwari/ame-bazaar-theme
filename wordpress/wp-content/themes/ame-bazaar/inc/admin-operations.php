@@ -881,11 +881,11 @@ function ame_bazaar_auto_assign_media_mappings() {
 		'ame_bazaar_media_favicon'            => 'logo',
 		'ame_bazaar_media_hero_desktop'       => 'unnamed-6',
 		'ame_bazaar_media_hero_mobile'        => 'unnamed',
-		'ame_bazaar_media_women'              => 'women-wear-image',
-		'ame_bazaar_media_men'                => 'mens-tshirt',
+		'ame_bazaar_media_women'              => 'unnamed-4',
+		'ame_bazaar_media_men'                => 'unnamed-3',
 		'ame_bazaar_media_kids'               => 'boys-wear',
 		'ame_bazaar_media_accessories'        => 'wallet',
-		'ame_bazaar_media_tailoring'          => 'winter-waist-coat',
+		'ame_bazaar_media_tailoring'          => 'unnamed-1',
 		'ame_bazaar_media_instagram'          => 'online-excluive-images',
 		'ame_bazaar_media_google_reviews'     => 'whatsapp-image-2025-09-14-at-12-18-18_b466d7a2',
 		'ame_bazaar_media_visit_store'        => 'store-photo',
@@ -905,6 +905,86 @@ function ame_bazaar_auto_assign_media_mappings() {
 		}
 	}
 }
+
+/**
+ * 16.5. Optimize attachment metadata for AI search visibility (Alt Text, Caption, Description)
+ */
+function ame_bazaar_optimize_attachment_metadata() {
+	$metadata = array(
+		'logo' => array(
+			'alt'     => 'AME Bazaar Official Brand Logo - Clothing Store in Kirari, Delhi',
+			'caption' => 'Official brand logo of AME Bazaar, Delhi.',
+			'desc'    => 'Apparel Maheshwari Enterprises brand mark representing premium retail fashion.',
+		),
+		'unnamed-6' => array(
+			'alt'     => 'AME Bazaar Main Showroom Interior - Mubarakpur Road, Kirari, Delhi',
+			'caption' => 'Wide array of men\'s, women\'s, and kids\' fashion collections in our main clothing showroom.',
+			'desc'    => 'Interior shopping display and catalog inventory inside Apparel Maheshwari Enterprises showroom.',
+		),
+		'unnamed' => array(
+			'alt'     => 'Mobile View of AME Bazaar Clothing Showroom Racks - Kirari, Delhi',
+			'caption' => 'Complimentary 30-minute tailored alterations and fitting desk visible in the collections section.',
+			'desc'    => 'Vertical photograph showcasing structured garment sorting and systematic hanger arrangement.',
+		),
+		'unnamed-5' => array(
+			'alt'     => 'Comfortable Customer Waiting Area & Fitting Trial Rooms at AME Bazaar Delhi',
+			'caption' => 'Spacious trial fitting rooms and air-conditioned guest waiting lounge.',
+			'desc'    => 'Customer lounge and trials zone designed to facilitate premium retail shopping experiences.',
+		),
+		'store-photo' => array(
+			'alt'     => 'AME Bazaar Showroom Exterior Shop Front - Mubarakpur Road, Kirari, Delhi',
+			'caption' => 'The physical entrance of Apparel Maheshwari Enterprises store on Mubarakpur Road.',
+			'desc'    => 'Exterior view of the local family-owned retail clothing store with clear street signage.',
+		),
+		'unnamed-1' => array(
+			'alt'     => 'AME Bazaar Custom Fitting & Alterations Department - Kirari, Delhi',
+			'caption' => 'Our in-house tailors provide quick adjustments and bespoke Jodhpuri/sherwani fits.',
+			'desc'    => 'On-site tailoring workshop displaying sewing machines and premium fabric roll stock.',
+		),
+		'unnamed-3' => array(
+			'alt'     => 'Men\'s Fashion Apparel Clothing Racks at AME Bazaar Delhi',
+			'caption' => 'Premium gents shirts, jeans, and formal wear.',
+			'desc'    => 'Row of hung men\'s shirts systematically sized from M to XXL.',
+		),
+		'unnamed-4' => array(
+			'alt'     => 'Women\'s Ethnic Wear Sarees & Suits Display at AME Bazaar Kirari',
+			'caption' => 'Ethical cotton kurtis and designer festive sarees.',
+			'desc'    => 'Ladies wedding wear and daily wear rayon suit sets on showroom display.',
+		),
+	);
+
+	foreach ( $metadata as $slug => $data ) {
+		$id = ame_bazaar_get_attachment_id_by_slug( $slug );
+		if ( $id ) {
+			// Update Alt Text metadata
+			$current_alt = get_post_meta( $id, '_wp_attachment_image_alt', true );
+			if ( empty( $current_alt ) || strpos( $current_alt, 'unnamed' ) !== false ) {
+				update_post_meta( $id, '_wp_attachment_image_alt', sanitize_text_field( $data['alt'] ) );
+			}
+			
+			// Update Post Fields (Caption and Description)
+			$post = get_post( $id );
+			if ( $post ) {
+				$update = false;
+				$post_data = array( 'ID' => $id );
+				
+				if ( empty( $post->post_excerpt ) || strpos( $post->post_excerpt, 'unnamed' ) !== false ) {
+					$post_data['post_excerpt'] = sanitize_text_field( $data['caption'] );
+					$update = true;
+				}
+				if ( empty( $post->post_content ) || strpos( $post->post_content, 'unnamed' ) !== false ) {
+					$post_data['post_content'] = sanitize_textarea_field( $data['desc'] );
+					$update = true;
+				}
+				
+				if ( $update ) {
+					wp_update_post( $post_data );
+				}
+			}
+		}
+	}
+}
+add_action( 'init', 'ame_bazaar_optimize_attachment_metadata', 20 );
 
 /**
  * 17. Render Homepage Media Manager Options Page
@@ -975,7 +1055,7 @@ function ame_bazaar_render_homepage_media_page() {
 										echo $preview_html; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 									} else { ?>
 										<p style="color:#666;font-style:italic;margin: 5px 0 0 0;"><?php esc_html_e( 'No image selected.', 'ame-bazaar' ); ?></p>
-									<?php } ?>
+									} ?>
 								</div>
 							</td>
 						</tr>
@@ -1149,6 +1229,7 @@ function ame_bazaar_get_media_audit_data() {
 				'slug'  => $post->post_name,
 				'mime'  => $post->post_mime_type,
 				'url'   => wp_get_attachment_url( $post->ID ),
+				'meta'  => wp_get_attachment_metadata( $post->ID ),
 			);
 		}
 	}
