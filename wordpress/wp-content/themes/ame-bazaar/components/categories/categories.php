@@ -101,6 +101,22 @@ $categories = array(
 					}
 				}
 
+				// Self-healing: if the URL contains '/product-category/' or points to an invalid slug, correct it.
+				if ( $url ) {
+					if ( strpos( $url, 'product-category' ) !== false ) {
+						$url = str_replace( '/product-category/', '/category/', $url );
+					}
+					if ( strpos( $url, '/category/kids/' ) !== false ) {
+						$url = str_replace( '/category/kids/', '/category/kids-wear/', $url );
+					}
+					if ( strpos( $url, '/category/sarees/' ) !== false ) {
+						$url = str_replace( '/category/sarees/', '/category/womens-wear/', $url );
+					}
+					if ( strpos( $url, '/category/tailoring/' ) !== false ) {
+						$url = home_url( '/tailoring-near-me/' );
+					}
+				}
+
 				// Query option ID from Homepage Media Manager
 				$img_id = get_option( 'ame_bazaar_media_' . $key );
 

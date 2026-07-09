@@ -61,6 +61,24 @@ if ( ! $cat_acc_url || '#' === $cat_acc_url ) {
 	$cat_acc_url = ( $term && ! is_wp_error( $term ) ) ? get_term_link( $term ) : home_url( '/category/accessories/' );
 	if ( is_wp_error( $cat_acc_url ) ) { $cat_acc_url = home_url( '/category/accessories/' ); }
 }
+
+// Self-healing for footer links: rewrite any '/product-category/' and fix wrong slugs
+foreach ( array( 'cat_men_url', 'cat_women_url', 'cat_kids_url', 'cat_sarees_url', 'cat_acc_url' ) as $var ) {
+	if ( isset( $$var ) && $$var ) {
+		if ( strpos( $$var, 'product-category' ) !== false ) {
+			$$var = str_replace( '/product-category/', '/category/', $$var );
+		}
+		if ( strpos( $$var, '/category/kids/' ) !== false ) {
+			$$var = str_replace( '/category/kids/', '/category/kids-wear/', $$var );
+		}
+		if ( strpos( $$var, '/category/sarees/' ) !== false ) {
+			$$var = str_replace( '/category/sarees/', '/category/womens-wear/', $$var );
+		}
+		if ( strpos( $$var, '/category/tailoring/' ) !== false ) {
+			$$var = home_url( '/tailoring-near-me/' );
+		}
+	}
+}
 ?>
 
 <div class="ame-footer-top-grid">

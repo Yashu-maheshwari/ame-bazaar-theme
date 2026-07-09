@@ -333,13 +333,13 @@ window.ameSendAdvisorMessage = function() {
 	
 	if (matchedCategory === 'men') {
 		relatedCatName = "Men's Wear Collection";
-		relatedCatUrl = "<?php echo esc_url( home_url( '/product-category/mens-wear/' ) ); ?>";
+		relatedCatUrl = "<?php echo esc_url( home_url( '/category/mens-wear/' ) ); ?>";
 	} else if (matchedCategory === 'women') {
 		relatedCatName = "Women's Wear Collection";
-		relatedCatUrl = "<?php echo esc_url( home_url( '/product-category/womens-wear/' ) ); ?>";
+		relatedCatUrl = "<?php echo esc_url( home_url( '/category/womens-wear/' ) ); ?>";
 	} else if (matchedCategory === 'kids') {
 		relatedCatName = "Kids Wear Collection";
-		relatedCatUrl = "<?php echo esc_url( home_url( '/product-category/kids/' ) ); ?>";
+		relatedCatUrl = "<?php echo esc_url( home_url( '/category/kids-wear/' ) ); ?>";
 	} else if (matchedCategory === 'tailoring') {
 		relatedCatName = "In-Store Tailoring & Alteration";
 		relatedCatUrl = "<?php echo esc_url( home_url( '/tailoring-near-me/' ) ); ?>";
