@@ -776,5 +776,43 @@ function ame_bazaar_customize_register( $wp_customize ) {
 		'settings' => 'ame_bazaar_hours',
 		'type'     => 'text',
 	) );
+
+	// Add Section for Showroom Media Mapping
+	$wp_customize->add_section( 'ame_bazaar_media_mapping_section', array(
+		'title'       => __( 'AME Bazaar Showroom Images', 'ame-bazaar' ),
+		'priority'    => 45,
+		'description' => __( 'Manually choose real showroom photography for each section of the site.', 'ame-bazaar' ),
+	) );
+
+	$media_settings = array(
+		'img_hero'      => __( 'Homepage Hero Image', 'ame-bazaar' ),
+		'img_about'     => __( 'About Section Image', 'ame-bazaar' ),
+		'img_visit'     => __( 'Visit Store Section Image', 'ame-bazaar' ),
+		'img_men'       => __( 'Men\'s Wear Category Image', 'ame-bazaar' ),
+		'img_women'     => __( 'Women\'s Wear Category Image', 'ame-bazaar' ),
+		'img_boys'      => __( 'Boys Wear Category Image', 'ame-bazaar' ),
+		'img_girls'     => __( 'Girls Wear Category Image', 'ame-bazaar' ),
+		'img_tailoring' => __( 'Tailoring Section Image', 'ame-bazaar' ),
+		'img_footer'    => __( 'Footer Branding Image', 'ame-bazaar' ),
+		'img_gallery_1' => __( 'Showroom Gallery Image 1', 'ame-bazaar' ),
+		'img_gallery_2' => __( 'Showroom Gallery Image 2', 'ame-bazaar' ),
+		'img_gallery_3' => __( 'Showroom Gallery Image 3', 'ame-bazaar' ),
+		'img_gallery_4' => __( 'Showroom Gallery Image 4', 'ame-bazaar' ),
+		'img_gallery_5' => __( 'Showroom Gallery Image 5', 'ame-bazaar' ),
+		'img_gallery_6' => __( 'Showroom Gallery Image 6', 'ame-bazaar' ),
+	);
+
+	foreach ( $media_settings as $setting_id => $label ) {
+		$wp_customize->add_setting( 'ame_bazaar_' . $setting_id, array(
+			'default'           => '',
+			'sanitize_callback' => 'sanitize_text_field',
+			'transport'         => 'refresh',
+		) );
+		$wp_customize->add_control( new WP_Customize_Image_Control( $wp_customize, 'ame_bazaar_' . $setting_id . '_control', array(
+			'label'    => $label,
+			'section'  => 'ame_bazaar_media_mapping_section',
+			'settings' => 'ame_bazaar_' . $setting_id,
+		) ) );
+	}
 }
 add_action( 'customize_register', 'ame_bazaar_customize_register' );

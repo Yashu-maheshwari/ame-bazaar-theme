@@ -718,3 +718,56 @@ function ame_bazaar_get_attachment_id_by_slug( $slug ) {
 	$id = $wpdb->get_var( $wpdb->prepare( "SELECT ID FROM {$wpdb->posts} WHERE post_name = %s AND post_type = 'attachment' LIMIT 1", $slug ) );
 	return $id ? (int) $id : 0;
 }
+
+/**
+ * Helper to fetch a showroom image URL from customizer settings with fallback.
+ *
+ * @param string $setting_id Setting key without prefix.
+ * @param int|string $default_attachment_or_path Default attachment ID or fallback asset path.
+ * @return string Image URL.
+ */
+function ame_bazaar_get_showroom_image_url( $setting_id, $default_attachment_or_path ) {
+	$customizer_url = get_theme_mod( 'ame_bazaar_' . $setting_id );
+	if ( ! empty( $customizer_url ) ) {
+		return $customizer_url;
+	}
+
+	// Fallback to attachment ID or relative asset path
+	if ( is_numeric( $default_attachment_or_path ) ) {
+		$url = wp_get_attachment_image_url( (int) $default_attachment_or_path, 'full' );
+		if ( $url ) {
+			return $url;
+		}
+	} else {
+		return ame_bazaar_asset_uri( $default_attachment_or_path );
+	}
+
+	return '';
+}
+
+/**
+ * Helper to get a showroom image tag/HTML with alt description.
+ *
+ * @param string $setting_id Setting key.
+ * @param int $default_attachment_id Default attachment ID.
+ * @param string $size Image size.
+ * @param array $attr Attributes array.
+ * @return string HTML img tag or empty.
+ */
+function ame_bazaar_get_showroom_image_html( $setting_id, $default_attachment_id, $size = 'full', $attr = array() ) {
+	$customizer_url = get_theme_mod( 'ame_bazaar_' . $setting_id );
+	if ( ! empty( $customizer_url ) ) {
+		$attachment_id = attachment_url_to_postid( $customizer_url );
+		if ( $attachment_id ) {
+			return wp_get_attachment_image( $attachment_id, $size, false, $attr );
+		}
+		// Fallback to plain img tag if attachment id is not resolvable
+		$html_attr = '';
+		foreach ( $attr as $key => $val ) {
+			$html_attr .= ' ' . esc_attr( $key ) . '="' . esc_attr( $val ) . '"';
+		}
+		return '<img src="' . esc_url( $customizer_url ) . '"' . $html_attr . ' />';
+	}
+
+	return wp_get_attachment_image( $default_attachment_id, $size, false, $attr );
+}

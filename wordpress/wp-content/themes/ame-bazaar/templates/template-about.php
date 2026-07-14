@@ -17,7 +17,13 @@ $section_subtitle = get_theme_mod( 'ame_bazaar_about_section_subtitle', 'Discove
 $story_headline = get_theme_mod( 'ame_bazaar_about_story_headline', 'Apparel Maheshwari Enterprises - Rooted in Trust' );
 $story_content = get_theme_mod( 'ame_bazaar_about_story_content', 'Located on Mubarakpur Road in Kirari, Delhi, AME Bazaar is dedicated to providing high-quality garments for your entire family. We offer premium Men\'s Wear, Women\'s Wear, Kids\' Wear, Sarees, and fashion Accessories. In addition, our in-store tailoring and alterations service ensures a custom fit for every customer. We encourage you to visit our store for a premium minimal shopping experience.' );
 
-$about_img_id = get_option( 'ame_bazaar_media_about' );
+$custom_about_url = get_theme_mod( 'ame_bazaar_img_about' );
+if ( ! empty( $custom_about_url ) ) {
+	$custom_about_id = attachment_url_to_postid( $custom_about_url );
+	$about_img_id = $custom_about_id ?: 0;
+} else {
+	$about_img_id = get_option( 'ame_bazaar_media_about' ) ?: 540;
+}
 ?>
 
 <main id="primary" class="site-main ame-about-page-main" role="main" style="background: #fafaf9; padding-bottom: 5rem;">
@@ -56,9 +62,16 @@ $about_img_id = get_option( 'ame_bazaar_media_about' );
 				</div>
 				
 				<div class="ame-about-image-column" style="text-align: center;">
-					<?php if ( $about_img_id ) : ?>
+					<?php 
+					$img_html = '';
+					if ( $about_img_id ) {
+						$img_html = wp_get_attachment_image( $about_img_id, 'large', false, array( 'style' => 'width: 100%; height: auto; display: block;' ) );
+					} elseif ( ! empty( $custom_about_url ) ) {
+						$img_html = '<img src="' . esc_url( $custom_about_url ) . '" style="width: 100%; height: auto; display: block;" />';
+					}
+					if ( $img_html ) : ?>
 						<div style="border-radius: var(--ame-radius-md); overflow: hidden; box-shadow: var(--ame-shadow-md); border: 1px solid var(--ame-color-border);">
-							<?php echo wp_get_attachment_image( $about_img_id, 'large', false, array( 'style' => 'width: 100%; height: auto; display: block;' ) ); ?>
+							<?php echo $img_html; ?>
 						</div>
 					<?php else : ?>
 						<div style="background: #e2e8f0; border-radius: var(--ame-radius-md); padding: 5rem 2rem; border: 1px solid var(--ame-color-border); color: #64748b; font-style: italic;">

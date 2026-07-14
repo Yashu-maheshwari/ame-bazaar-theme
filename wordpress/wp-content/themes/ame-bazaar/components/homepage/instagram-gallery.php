@@ -25,33 +25,39 @@ if ( ! defined( 'ABSPATH' ) ) {
 			<?php
 			$showroom_photos = array(
 				array(
-					'id'    => 547,
-					'label' => 'Store Front Facade & Parking Area'
+					'setting_key' => 'img_gallery_1',
+					'id'          => 547,
+					'label'       => 'Store Front Facade & Parking Area'
 				),
 				array(
-					'id'    => 540,
-					'label' => 'Main Showroom Interior Collections'
+					'setting_key' => 'img_gallery_2',
+					'id'          => 540,
+					'label'       => 'Main Showroom Interior Collections'
 				),
 				array(
-					'id'    => 546,
-					'label' => 'Men & Kids Clothing Racks'
+					'setting_key' => 'img_gallery_3',
+					'id'          => 546,
+					'label'       => 'Men & Kids Clothing Racks'
 				),
 				array(
-					'id'    => 541,
-					'label' => 'Trials Room & Customer Lounge'
+					'setting_key' => 'img_gallery_4',
+					'id'          => 541,
+					'label'       => 'Trials Room & Customer Lounge'
 				),
 				array(
-					'id'    => 545,
-					'label' => 'In-Store Alterations Desk'
+					'setting_key' => 'img_gallery_5',
+					'id'          => 545,
+					'label'       => 'In-Store Alterations Desk'
 				),
 				array(
-					'id'    => 544,
-					'label' => 'Women\'s Ethnic wear showcase'
+					'setting_key' => 'img_gallery_6',
+					'id'          => 544,
+					'label'       => 'Women\'s Ethnic wear showcase'
 				),
 			);
 
 			foreach ( $showroom_photos as $photo ) :
-				$img_html = wp_get_attachment_image( $photo['id'], 'medium_large', false, array(
+				$img_html = ame_bazaar_get_showroom_image_html( $photo['setting_key'], $photo['id'], 'medium_large', array(
 					'class'   => 'ame-gallery-img',
 					'style'   => 'width:100%; height:100%; object-fit:cover; display:block; transition: transform 0.4s ease;',
 					'loading' => 'lazy',
