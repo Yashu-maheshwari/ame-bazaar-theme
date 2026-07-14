@@ -11,4 +11,4 @@
 
 ## Immediate Next Task
 
-Commit the initialized AI Operating System documentation, memory stores, and workspace directory structure to the main git repository.
+Begin Phase 2: Design and implement the global header and responsive mobile drawer navigation menu inside `theme/astra-child/`.

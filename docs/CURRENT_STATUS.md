@@ -22,15 +22,17 @@ The project has successfully completed **Phase 1 (Theme Foundation)**. We are cu
 - [x] Initialized Astra Child Theme directory structure.
 - [x] Defined primary design tokens and CSS variables.
 - [x] Created `docs/MASTER_PLAN.md` with Vision, Business Goals, 2-Month Roadmap, and Structure.
-
-### Pending Tasks
 - [x] Establish repository skeleton (`/workflows`, `/prompts`, `/memory`, `/scripts`, `/backups` directories).
 - [x] Write all core project management docs (`NEXT_TASK.md`, `DECISIONS.md`, `CHANGELOG.md`, `RECOVERY.md`, `PROMPT_RULES.md`, `PROJECT_CONTEXT.md`, `BUSINESS_RULES.md`, `AI_OS_ARCHITECTURE.md`, `AI_AGENT_REGISTRY.md`, `INFRASTRUCTURE.md`, `ROADMAP.md`).
 - [x] Initialize memory JSON stores in `/memory/`.
-- [ ] Perform initial git commit of the AI OS structure.
+- [x] Create root-level operational playbooks (`START_HERE.md`, `SETUP.md`, `RECOVERY.md`).
+- [x] Perform initial git commit of the AI OS structure.
+
+### Pending Tasks
+- [ ] Implement Phase 2: Global Header & Navigation.
 
 ### Blockers
 - **None**
 
 ## 4. Next Action
-Commit the initialized AI Operating System structure and files to the Git repository.
+Push updates to GitHub and hand over command flow.
