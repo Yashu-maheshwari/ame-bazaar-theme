@@ -1,7 +1,7 @@
 # CURRENT_STATUS.md - Project State
 
 - **Last Updated:** 2026-07-14
-- **Version:** 1.1.0
+- **Version:** 1.2.0
 - **Owner:** AME Bazaar AI OS Core
 - **Purpose:** Tracks the live state, active milestone, task lists, and blocker status for the AME Bazaar Digital Platform.
 - **Dependencies:** docs/MASTER_PLAN.md
@@ -31,6 +31,7 @@ The project has completed the **Phase 1 (Theme Foundation)** and **Version 1 AI 
 - [x] Configure git-ignored local environment (`local.env.example`) and runtime environment state tracker (`runtime.env`).
 - [x] Create placeholder checks directory (`scripts/checks/`) for future health checking.
 - [x] Implement Version 1.1 Desktop Shortcut installer (`scripts/startup/Create Desktop Shortcut.bat`).
+- [x] Refactor startup architecture to use independent startup scripts (`Start n8n.bat`, `Start Cloudflared.bat`) and a lightweight master script.
 
 ### Pending Tasks
 - [ ] Implement Phase 2: Global Header & Navigation inside `theme/astra-child/`.

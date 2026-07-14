@@ -1,7 +1,7 @@
 # START_HERE.md - AI & Developer Onboarding
 
 - **Last Updated:** 2026-07-14
-- **Version:** 1.0.0
+- **Version:** 1.2.0
 - **Owner:** AME Bazaar AI OS Core
 - **Purpose:** Onboarding guide for humans and AI agents to understand the project structure, vision, rules, and status in under five minutes.
 - **Dependencies:** None
@@ -9,7 +9,16 @@
 
 ---
 
-## 1. What This Project Is
+## 1. Quick Launch
+To start the entire AME Bazaar AI Operating System environment locally:
+1. Run `scripts/startup/Start AME Bazaar AI.bat` (or use the created Desktop launcher shortcut).
+2. The script orchestrates:
+   - Ensuring Docker Desktop is running.
+   - Launching native `n8n` in a separate window.
+   - Launching native `cloudflared` tunnel in a separate window.
+   - Auto-opening the n8n console at `http://localhost:5678`.
+
+## 2. What This Project Is
 This repository contains the digital infrastructure, custom WordPress templates (Astra Child Theme), automated workflows, and execution memory for the **AME Bazaar AI Operating System**. It serves as the single source of truth for all business logic, technical details, and code.
 
 ## 2. Business Vision

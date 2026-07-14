@@ -1,7 +1,7 @@
 # SETUP.md - Workspace Installation & Setup Guide
 
 - **Last Updated:** 2026-07-14
-- **Version:** 1.0.0
+- **Version:** 1.2.0
 - **Owner:** AME Bazaar AI OS Core
 - **Purpose:** Comprehensive local development workspace environment configuration for a brand-new laptop.
 - **Dependencies:** None
@@ -38,11 +38,9 @@ To fully restore the AME Bazaar AI OS on a new machine, download and install the
 ## 2. AI OS Orchestration Tools
 
 ### 2.1 n8n Automation Engine
-- **Local Deployment:** Run n8n locally using Docker:
-  ```bash
-  docker run -it --rm --name n8n -p 5678:5678 -v n8n_data:/home/node/.n8n docker.n8n.io/n8nio/n8n
-  ```
-- **Web Console:** Open `http://localhost:5678` to verify the installation.
+- **Local Deployment:** Runs natively on Windows. Set the location and configuration inside `config/local.env` (copied from `config/local.env.example`).
+- **Orchestration:** Use `scripts/startup/Start AME Bazaar AI.bat` to automate local start of n8n, Docker, and Cloudflared.
+- **Web Console:** Accessible at `http://localhost:5678`.
 
 ### 2.2 Model Context Protocol (MCP) Servers
 The AI Operating System utilizes MCP servers to interface with external APIs (GitHub, n8n):

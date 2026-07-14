@@ -1,7 +1,7 @@
 # CHANGELOG.md - Project Revision History
 
 - **Last Updated:** 2026-07-14
-- **Version:** 1.0.0
+- **Version:** 1.2.0
 - **Owner:** AME Bazaar AI OS Core
 - **Purpose:** Automatically and manually tracks all important architectural, code, and documentation changes in the repository.
 - **Dependencies:** None
@@ -10,6 +10,13 @@
 ---
 
 ## Change Log
+
+### [1.2.0] - 2026-07-14
+#### Added
+- Created modular startup scripts `scripts/startup/Start n8n.bat` and `scripts/startup/Start Cloudflared.bat`.
+#### Changed
+- Refactored master script `scripts/startup/Start AME Bazaar AI.bat` to act as a lightweight orchestrator that verifies Docker, spawns individual startup scripts in separate windows, and opens the browser.
+- Removed complex health checks, loops, polling, and PowerShell socket checks to improve startup simplicity and reliability.
 
 ### [1.1.0] - 2026-07-14
 #### Added
