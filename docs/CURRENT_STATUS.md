@@ -30,6 +30,7 @@ The project has completed the **Phase 1 (Theme Foundation)** and **Version 1 AI 
 - [x] Implement Version 1 startup system (`scripts/startup/Start AME Bazaar AI.bat`).
 - [x] Configure git-ignored local environment (`local.env.example`) and runtime environment state tracker (`runtime.env`).
 - [x] Create placeholder checks directory (`scripts/checks/`) for future health checking.
+- [x] Implement Version 1.1 Desktop Shortcut installer (`scripts/startup/Create Desktop Shortcut.bat`).
 
 ### Pending Tasks
 - [ ] Implement Phase 2: Global Header & Navigation inside `theme/astra-child/`.
@@ -39,5 +40,5 @@ The project has completed the **Phase 1 (Theme Foundation)** and **Version 1 AI 
 - **None**
 
 ## 4. Next Action
-Commit bootstrap startup system modifications to Git and push to remote.
+Commit and push desktop shortcut installer modifications to Git.
 

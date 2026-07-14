@@ -13,14 +13,17 @@
 
 ### [1.1.0] - 2026-07-14
 #### Added
+- Created desktop launcher script: `scripts/startup/Create Desktop Shortcut.bat`.
+- Detects the current Windows user's Desktop folder dynamically and creates/updates a portable shortcut named "🚀 Start AME Bazaar AI" pointing to the startup script.
+- Configured to run cleanly without requiring admin privileges.
+
+### [1.0.0] - 2026-07-14
+#### Added
 - Created production-ready startup system script: `scripts/startup/Start AME Bazaar AI.bat`.
 - Added configuration templates: `config/local.env.example` and dynamic runtime environment `config/runtime.env`.
 - Configured git-ignore rules for `local.env` and `runtime.env` files.
 - Formulated custom health checking system structure with folder `scripts/checks/`.
 - Configured complete start-to-finish platform status output summary.
-
-### [1.0.0] - 2026-07-14
-#### Added
 - Created project management foundation docs inside `docs/`.
 - Established new directory structures `/workflows`, `/prompts`, `/memory`, `/scripts`, `/backups` with `.gitkeep` placeholders.
 - Initialized local state databases (`/memory/`) for business config, products, customers, campaigns, settings, and agent configurations.
