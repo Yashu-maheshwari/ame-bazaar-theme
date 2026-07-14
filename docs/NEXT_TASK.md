@@ -11,4 +11,4 @@
 
 ## Immediate Next Task
 
-Begin Phase 2: Design and implement the global header and responsive mobile drawer navigation menu inside `theme/astra-child/`.
+Begin Phase 2: Design and implement the global header and responsive mobile drawer navigation menu inside `theme/astra-child/`, and develop system checks under `scripts/checks/`.

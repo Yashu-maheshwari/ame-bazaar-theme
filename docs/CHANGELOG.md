@@ -11,6 +11,14 @@
 
 ## Change Log
 
+### [1.1.0] - 2026-07-14
+#### Added
+- Created production-ready startup system script: `scripts/startup/Start AME Bazaar AI.bat`.
+- Added configuration templates: `config/local.env.example` and dynamic runtime environment `config/runtime.env`.
+- Configured git-ignore rules for `local.env` and `runtime.env` files.
+- Formulated custom health checking system structure with folder `scripts/checks/`.
+- Configured complete start-to-finish platform status output summary.
+
 ### [1.0.0] - 2026-07-14
 #### Added
 - Created project management foundation docs inside `docs/`.
