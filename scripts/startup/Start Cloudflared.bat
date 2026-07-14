@@ -16,6 +16,13 @@ if exist "config\local.env" (
 
 if "%N8N_PORT%"=="" set "N8N_PORT=5678"
 
-echo Starting Cloudflared natively...
-start "cloudflared" "%CLOUDFLARED_PATH%" tunnel --url http://localhost:%N8N_PORT%
+:: Detect if cloudflared is already running
+tasklist /fi "imagename eq cloudflared.exe" 2>nul | findstr /i "cloudflared.exe" >nul
+if %errorlevel% equ 0 (
+    echo ✅ Cloudflared already running. Reusing existing tunnel.
+) else (
+    echo Starting Cloudflared natively...
+    start "cloudflared" "%CLOUDFLARED_PATH%" tunnel --url http://localhost:%N8N_PORT%
+)
+
 exit /b 0

@@ -1,7 +1,7 @@
 # NEXT_TASK.md - Immediate Next Action
 
 - **Last Updated:** 2026-07-14
-- **Version:** 1.2.0
+- **Version:** 1.2.1
 - **Owner:** AME Bazaar AI OS Core
 - **Purpose:** Identifies the single, immediate next task to execute in the codebase.
 - **Dependencies:** docs/CURRENT_STATUS.md

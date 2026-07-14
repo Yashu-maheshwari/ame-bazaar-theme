@@ -14,8 +14,8 @@ To start the entire AME Bazaar AI Operating System environment locally:
 1. Run `scripts/startup/Start AME Bazaar AI.bat` (or use the created Desktop launcher shortcut).
 2. The script orchestrates:
    - Ensuring Docker Desktop is running.
-   - Launching native `n8n` in a separate window.
-   - Launching native `cloudflared` tunnel in a separate window.
+   - Launching native `n8n` in a separate window (detects and reuses if port 5678 is already active).
+   - Launching native `cloudflared` tunnel in a separate window (detects and reuses if already running).
    - Auto-opening the n8n console at `http://localhost:5678`.
 
 ## 2. What This Project Is

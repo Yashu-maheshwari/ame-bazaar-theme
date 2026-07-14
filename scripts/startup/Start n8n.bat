@@ -14,6 +14,15 @@ if exist "config\local.env" (
     )
 )
 
-echo Starting n8n natively...
-start "n8n" cmd /k "%N8N_EXECUTABLE%"
+if "%N8N_PORT%"=="" set "N8N_PORT=5678"
+
+:: Detect if localhost:N8N_PORT is already responding
+powershell -Command "$c = New-Object System.Net.Sockets.TcpClient; try { $c.Connect('127.0.0.1', %N8N_PORT%); if ($c.Connected) { $c.Close(); exit 0 } } catch { exit 1 }" >nul 2>&1
+if %errorlevel% equ 0 (
+    echo ✅ n8n already running.
+) else (
+    echo Starting n8n natively...
+    start "n8n" cmd /k "%N8N_EXECUTABLE%"
+)
+
 exit /b 0

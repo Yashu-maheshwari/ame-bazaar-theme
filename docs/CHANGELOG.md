@@ -1,7 +1,7 @@
 # CHANGELOG.md - Project Revision History
 
 - **Last Updated:** 2026-07-14
-- **Version:** 1.2.0
+- **Version:** 1.2.1
 - **Owner:** AME Bazaar AI OS Core
 - **Purpose:** Automatically and manually tracks all important architectural, code, and documentation changes in the repository.
 - **Dependencies:** None
@@ -10,6 +10,12 @@
 ---
 
 ## Change Log
+
+### [1.2.1] - 2026-07-14
+#### Changed
+- Added port 5678 socket check to `Start n8n.bat` to detect and reuse existing running instances of n8n.
+- Added tasklist check to `Start Cloudflared.bat` to detect and reuse running instances of cloudflared.exe.
+- Prevented creation of duplicate processes and port collision errors.
 
 ### [1.2.0] - 2026-07-14
 #### Added
