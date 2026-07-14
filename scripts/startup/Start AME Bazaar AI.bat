@@ -121,7 +121,7 @@ if %errorlevel% equ 0 (
     call :log "[INFO] n8n is already running."
 ) else (
     call :log "[INFO] Starting n8n natively..."
-    start "n8n_process" /min cmd /c "%N8N_EXECUTABLE%"
+    start "n8n" cmd /k "%N8N_EXECUTABLE%"
     
     call :log "[INFO] Waiting for n8n to respond on port %N8N_PORT%..."
     set "N8N_TIMEOUT=30"

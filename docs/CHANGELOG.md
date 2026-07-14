@@ -16,6 +16,8 @@
 - Created desktop launcher script: `scripts/startup/Create Desktop Shortcut.bat`.
 - Detects the current Windows user's Desktop folder dynamically and creates/updates a portable shortcut named "🚀 Start AME Bazaar AI" pointing to the startup script.
 - Configured to run cleanly without requiring admin privileges.
+#### Changed
+- Refined native n8n startup command to use `start "n8n" cmd /k` for enhanced startup execution reliability and direct error feedback.
 
 ### [1.0.0] - 2026-07-14
 #### Added
