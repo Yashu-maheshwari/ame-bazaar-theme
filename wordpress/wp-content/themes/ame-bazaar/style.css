@@ -5,7 +5,7 @@ Author: Yashu Maheshwari & Gemini
 Author URI: https://github.com/Yashu-maheshwari
 Description: Premium Astra child theme foundation for the AME Bazaar digital platform.
 Template: astra
-Version: 1.0.3
+Version: 1.0.4
 Text Domain: ame-bazaar
 */
 
@@ -427,5 +427,14 @@ button, input, select, textarea { font: inherit; }
 .ame-card-add-btn:hover {
 	background: var(--ame-color-gold) !important;
 	color: var(--ame-color-navy) !important;
+}
+
+/* Subcategory cards hover scale */
+.ame-category-card:hover .ame-category-image img {
+	transform: scale(1.05);
+}
+
+.ame-category-card:hover .ame-icon {
+	transform: translateX(3px);
 }
 
