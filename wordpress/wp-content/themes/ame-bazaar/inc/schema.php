@@ -779,6 +779,14 @@ function ame_bazaar_output_schema() {
 		$graph[] = $faq;
 	}
 
+	// 12. WooCommerce Product Schema Integration (Active only on single product views)
+	if ( is_product() ) {
+		$product_schema = ame_bazaar_get_single_product_schema();
+		if ( $product_schema ) {
+			$graph[] = $product_schema;
+		}
+	}
+
 	if ( empty( $graph ) ) {
 		return;
 	}
@@ -791,3 +799,127 @@ function ame_bazaar_output_schema() {
 	echo '<script type="application/ld+json">' . wp_json_encode( $output, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE ) . '</script>' . "\n";
 }
 add_action( 'wp_head', 'ame_bazaar_output_schema', 20 );
+
+/**
+ * Get WooCommerce Product entity schema with advanced specifications.
+ *
+ * @return array|bool
+ */
+function ame_bazaar_get_single_product_schema() {
+	if ( ! is_product() || ! class_exists( 'WooCommerce' ) ) {
+		return false;
+	}
+
+	$post_id = get_the_ID();
+	$product = wc_get_product( $post_id );
+	if ( ! $product || ! is_a( $product, 'WC_Product' ) ) {
+		return false;
+	}
+
+	$brand_name = get_post_meta( $post_id, '_ame_brand', true );
+	if ( ! $brand_name ) {
+		$brand_name = ame_bazaar_get_business_setting( 'store_name', 'AME Bazaar' );
+	}
+
+	$image_id  = $product->get_image_id();
+	$image_url = $image_id ? wp_get_attachment_image_url( $image_id, 'full' ) : ame_bazaar_get_custom_logo_url();
+
+	$short_desc = $product->get_short_description();
+	$long_desc  = $product->get_description();
+	$desc       = $short_desc ? $short_desc : $long_desc;
+	$desc       = wp_strip_all_tags( $desc );
+
+	// Build basic Product schema
+	$schema = array(
+		'@type'       => 'Product',
+		'@id'         => get_permalink( $post_id ) . '#product',
+		'name'        => $product->get_name(),
+		'image'       => $image_url,
+		'description' => $desc,
+		'sku'         => $product->get_sku() ? $product->get_sku() : 'AME-' . $post_id,
+		'brand'       => array(
+			'@type' => 'Brand',
+			'name'  => $brand_name,
+		),
+		'offers'      => array(
+			'@type'         => 'Offer',
+			'priceCurrency' => 'INR',
+			'price'         => $product->get_price() ? $product->get_price() : '0',
+			'availability'  => $product->is_in_stock() ? 'https://schema.org/InStock' : 'https://schema.org/OutOfStock',
+			'url'           => get_permalink( $post_id ),
+		),
+	);
+
+	// Custom properties map
+	$property_mappings = array(
+		'Fabric'               => '_ame_fabric',
+		'Material'             => '_ame_material',
+		'GSM'                  => '_ame_gsm',
+		'Fabric Weight'        => '_ame_fabric_weight',
+		'Pattern'              => '_ame_pattern',
+		'Age Group'            => '_ame_age_group',
+		'Occasion'             => '_ame_occasion',
+		'Season'               => '_ame_season',
+		'Fit'                  => '_ame_fit',
+		'Sleeve Type'          => '_ame_sleeve_type',
+		'Neck Type'            => '_ame_neck_type',
+		'Closure'              => '_ame_closure',
+		'Collection'           => '_ame_collection',
+		'Style'                => '_ame_style',
+		'MRP'                  => '_ame_mrp',
+		'Price Segment'        => '_ame_price_segment',
+		'Color'                => '_ame_color_flat',
+		'Size'                 => '_ame_size_flat',
+		'Size Chart'           => '_ame_size_chart',
+		'Wash Instructions'    => '_ame_wash_instructions',
+		'Care Instructions'    => '_ame_care_instructions',
+		'Country of Origin'    => '_ame_country_of_origin',
+		'Manufacturer'         => '_ame_manufacturer',
+		'Kirari Stock'         => '_ame_kirari_stock',
+		'Alteration Service'   => '_ame_alteration_available',
+		'AI Keywords'          => '_ame_ai_keywords',
+		'GEO Targets'          => '_ame_geo_target',
+		'Target Demographic'   => '_ame_target_customer',
+		'Trending Status'      => '_ame_trending',
+		'Featured Reason'      => '_ame_featured_reason',
+		'WhatsApp Commerce'    => '_ame_whatsapp_ready',
+		'Local Availability'   => '_ame_local_availability',
+	);
+
+	$additional_properties = array();
+
+	foreach ( $property_mappings as $label => $meta_key ) {
+		$val = get_post_meta( $post_id, $meta_key, true );
+		if ( $val ) {
+			if ( '_ame_alteration_available' === $meta_key ) {
+				$val = 'yes' === $val || '1' === $val ? 'Available (30-Min In-Store)' : 'Not Available';
+			}
+			$additional_properties[] = array(
+				'@type' => 'PropertyValue',
+				'name'  => $label,
+				'value' => $val,
+			);
+		}
+	}
+
+	// Sizing parameters mapping to standard fields
+	$flat_size = get_post_meta( $post_id, '_ame_size_flat', true );
+	if ( $flat_size ) {
+		$schema['size'] = $flat_size;
+	}
+
+	// Gender mapping to audienceType
+	$gender = get_post_meta( $post_id, '_ame_gender', true );
+	if ( $gender ) {
+		$schema['audience'] = array(
+			'@type'        => 'Audience',
+			'audienceType' => $gender,
+		);
+	}
+
+	if ( ! empty( $additional_properties ) ) {
+		$schema['additionalProperty'] = $additional_properties;
+	}
+
+	return apply_filters( 'ame_bazaar_single_product_schema', $schema );
+}

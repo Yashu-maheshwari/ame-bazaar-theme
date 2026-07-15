@@ -14,49 +14,17 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 function ame_bazaar_add_custom_product_fields() {
 	echo '<div class="options_group">';
-	
-	// Custom specifications
-	woocommerce_wp_text_input( array(
-		'id'          => '_ame_fabric',
-		'label'       => __( 'Fabric / Material', 'ame-bazaar' ),
-		'placeholder' => 'e.g. Pure Mulmul Cotton, Silk',
-		'desc_tip'    => 'true',
-		'description' => __( 'Specify the fabric composition.', 'ame-bazaar' ),
-	) );
+
+	// --- 1. BASIC PRODUCT ---
+	echo '<h4 style="margin: 15px 0 5px 15px; color: #002347; border-bottom: 2px solid var(--ame-color-gold, #ca8a04); padding-bottom: 3px; font-weight: 800;">' . esc_html__( '1. Basic Product Settings', 'ame-bazaar' ) . '</h4>';
 
 	woocommerce_wp_text_input( array(
-		'id'          => '_ame_gsm',
-		'label'       => __( 'GSM Value', 'ame-bazaar' ),
-		'placeholder' => 'e.g. 120, 180',
+		'id'          => '_ame_kirari_stock',
+		'label'       => __( 'Kirari Store Stock', 'ame-bazaar' ),
 		'type'        => 'number',
-		'desc_tip'    => 'true',
-		'description' => __( 'GSM weight of the fabric.', 'ame-bazaar' ),
+		'description' => __( 'Stock count physically present at Mubarakpur Road outlet.', 'ame-bazaar' ),
 	) );
 
-	woocommerce_wp_text_input( array(
-		'id'          => '_ame_pattern',
-		'label'       => __( 'Pattern style', 'ame-bazaar' ),
-		'placeholder' => 'e.g. Embroidered, Solid, Printed',
-	) );
-
-	woocommerce_wp_select( array(
-		'id'      => '_ame_gender',
-		'label'   => __( 'Target Gender', 'ame-bazaar' ),
-		'options' => array(
-			'unisex' => __( 'Unisex', 'ame-bazaar' ),
-			'men'    => __( 'Men', 'ame-bazaar' ),
-			'women'  => __( 'Women', 'ame-bazaar' ),
-			'kids'   => __( 'Kids', 'ame-bazaar' ),
-		),
-	) );
-
-	woocommerce_wp_textarea_input( array(
-		'id'          => '_ame_care_instructions',
-		'label'       => __( 'Care Instructions', 'ame-bazaar' ),
-		'placeholder' => 'e.g. Hand wash separately, Dry clean recommended',
-	) );
-
-	// Local retail statuses
 	woocommerce_wp_checkbox( array(
 		'id'            => '_ame_alteration_available',
 		'wrapper_class' => 'show_if_simple show_if_variable',
@@ -64,11 +32,325 @@ function ame_bazaar_add_custom_product_fields() {
 		'description'   => __( 'Check if 30-minute Kirari fitting alteration is supported.', 'ame-bazaar' ),
 	) );
 
+	woocommerce_wp_select( array(
+		'id'      => '_ame_local_availability',
+		'label'   => __( 'Local Availability', 'ame-bazaar' ),
+		'options' => array(
+			'online-and-instore' => __( 'Online & In-Store', 'ame-bazaar' ),
+			'in-store-only'      => __( 'In-Store Only', 'ame-bazaar' ),
+		),
+	) );
+
+	// --- 2. GARMENT SPECIFICATIONS ---
+	echo '<h4 style="margin: 25px 0 5px 15px; color: #002347; border-bottom: 2px solid var(--ame-color-gold, #ca8a04); padding-bottom: 3px; font-weight: 800;">' . esc_html__( '2. Garment Specifications', 'ame-bazaar' ) . '</h4>';
+
 	woocommerce_wp_text_input( array(
-		'id'          => '_ame_kirari_stock',
-		'label'       => __( 'Kirari Store Stock', 'ame-bazaar' ),
+		'id'          => '_ame_brand',
+		'label'       => __( 'Brand Name', 'ame-bazaar' ),
+		'placeholder' => 'e.g. AME Bazaar, Maheshwari',
+	) );
+
+	woocommerce_wp_select( array(
+		'id'      => '_ame_fabric',
+		'label'   => __( 'Fabric Type', 'ame-bazaar' ),
+		'options' => array(
+			'pure-cotton'   => __( 'Pure Cotton', 'ame-bazaar' ),
+			'mulmul-cotton' => __( 'Pure Mulmul Cotton', 'ame-bazaar' ),
+			'silk'          => __( 'Silk (Banarasi/Raw)', 'ame-bazaar' ),
+			'rayon'         => __( 'Soft Rayon', 'ame-bazaar' ),
+			'georgette'     => __( 'Georgette', 'ame-bazaar' ),
+			'cotton-blend'  => __( 'Cotton Blend', 'ame-bazaar' ),
+			'wool'          => __( 'Pure Wool / Cashmere', 'ame-bazaar' ),
+			'synthetic'     => __( 'Polyester / Synthetic', 'ame-bazaar' ),
+			'denim'         => __( 'Denim', 'ame-bazaar' ),
+		),
+	) );
+
+	woocommerce_wp_text_input( array(
+		'id'          => '_ame_material',
+		'label'       => __( 'Material Details', 'ame-bazaar' ),
+		'placeholder' => 'e.g. 100% Organic Cotton thread, Zari thread embroidery',
+	) );
+
+	woocommerce_wp_text_input( array(
+		'id'          => '_ame_gsm',
+		'label'       => __( 'GSM Value', 'ame-bazaar' ),
+		'placeholder' => 'e.g. 120, 180',
 		'type'        => 'number',
-		'description' => __( 'Stock count physically present at Mubarakpur Road outlet.', 'ame-bazaar' ),
+		'description' => __( 'GSM weight of the fabric.', 'ame-bazaar' ),
+	) );
+
+	woocommerce_wp_text_input( array(
+		'id'          => '_ame_fabric_weight',
+		'label'       => __( 'Fabric Weight', 'ame-bazaar' ),
+		'placeholder' => 'e.g. Lightweight 100 GSM, Medium 180 GSM',
+	) );
+
+	woocommerce_wp_select( array(
+		'id'      => '_ame_pattern',
+		'label'   => __( 'Pattern Style', 'ame-bazaar' ),
+		'options' => array(
+			'solid'       => __( 'Solid / Plain', 'ame-bazaar' ),
+			'printed'     => __( 'Printed', 'ame-bazaar' ),
+			'embroidered' => __( 'Embroidered', 'ame-bazaar' ),
+			'checked'     => __( 'Checked', 'ame-bazaar' ),
+			'striped'     => __( 'Striped', 'ame-bazaar' ),
+			'woven'       => __( 'Self-Woven / Zari Border', 'ame-bazaar' ),
+			'designer'    => __( 'Designer Embellished', 'ame-bazaar' ),
+		),
+	) );
+
+	woocommerce_wp_select( array(
+		'id'      => '_ame_fit',
+		'label'   => __( 'Fit Style', 'ame-bazaar' ),
+		'options' => array(
+			'regular'  => __( 'Regular Fit', 'ame-bazaar' ),
+			'slim'     => __( 'Slim Fit', 'ame-bazaar' ),
+			'loose'    => __( 'Loose / Comfort Fit', 'ame-bazaar' ),
+			'semi-slim'=> __( 'Semi-Slim Fit', 'ame-bazaar' ),
+			'tailored' => __( 'Custom Tailored Fit', 'ame-bazaar' ),
+		),
+	) );
+
+	woocommerce_wp_select( array(
+		'id'      => '_ame_sleeve_type',
+		'label'   => __( 'Sleeve Type', 'ame-bazaar' ),
+		'options' => array(
+			'full'           => __( 'Full Sleeve', 'ame-bazaar' ),
+			'half'           => __( 'Half Sleeve', 'ame-bazaar' ),
+			'sleeveless'     => __( 'Sleeveless', 'ame-bazaar' ),
+			'three-quarter'  => __( '3/4 Sleeve', 'ame-bazaar' ),
+			'short'          => __( 'Short Sleeve', 'ame-bazaar' ),
+			'not-applicable' => __( 'Not Applicable', 'ame-bazaar' ),
+		),
+	) );
+
+	woocommerce_wp_select( array(
+		'id'      => '_ame_neck_type',
+		'label'   => __( 'Neck Type', 'ame-bazaar' ),
+		'options' => array(
+			'collar'         => __( 'Shirt Collar', 'ame-bazaar' ),
+			'mandarin'       => __( 'Mandarin / Nehru Collar', 'ame-bazaar' ),
+			'round'          => __( 'Round Neck', 'ame-bazaar' ),
+			'v-neck'         => __( 'V-Neck', 'ame-bazaar' ),
+			'boat'           => __( 'Boat Neck', 'ame-bazaar' ),
+			'cowl'           => __( 'Cowl Neck', 'ame-bazaar' ),
+			'not-applicable' => __( 'Not Applicable', 'ame-bazaar' ),
+		),
+	) );
+
+	woocommerce_wp_select( array(
+		'id'      => '_ame_closure',
+		'label'   => __( 'Closure Type', 'ame-bazaar' ),
+		'options' => array(
+			'button'    => __( 'Button', 'ame-bazaar' ),
+			'zipper'    => __( 'Zipper', 'ame-bazaar' ),
+			'slip-on'   => __( 'Slip-On', 'ame-bazaar' ),
+			'drawstring'=> __( 'Drawstring', 'ame-bazaar' ),
+			'elastic'   => __( 'Elastic Waistband', 'ame-bazaar' ),
+		),
+	) );
+
+	woocommerce_wp_text_input( array(
+		'id'          => '_ame_collection',
+		'label'       => __( 'Collection Group', 'ame-bazaar' ),
+		'placeholder' => 'e.g. Mubarakpur Festive 2026',
+	) );
+
+	woocommerce_wp_text_input( array(
+		'id'          => '_ame_style',
+		'label'       => __( 'Style Identifier', 'ame-bazaar' ),
+		'placeholder' => 'e.g. Ethnic Traditional, Modern Indo-Western',
+	) );
+
+	// --- 3. SIZING & PRICING ---
+	echo '<h4 style="margin: 25px 0 5px 15px; color: #002347; border-bottom: 2px solid var(--ame-color-gold, #ca8a04); padding-bottom: 3px; font-weight: 800;">' . esc_html__( '3. Sizing & Pricing', 'ame-bazaar' ) . '</h4>';
+
+	woocommerce_wp_text_input( array(
+		'id'          => '_ame_mrp',
+		'label'       => __( 'MRP Value (₹)', 'ame-bazaar' ),
+		'type'        => 'number',
+		'placeholder' => 'Maximum Retail Price for tag display',
+	) );
+
+	woocommerce_wp_select( array(
+		'id'      => '_ame_price_segment',
+		'label'   => __( 'Price Segment', 'ame-bazaar' ),
+		'options' => array(
+			'budget'    => __( 'Budget Friendly (Under ₹999)', 'ame-bazaar' ),
+			'mid-range' => __( 'Value Range (₹1000 - ₹2499)', 'ame-bazaar' ),
+			'premium'   => __( 'Mid-Premium (₹2500 - ₹4999)', 'ame-bazaar' ),
+			'luxury'    => __( 'Luxury / Wedding (₹5000+)', 'ame-bazaar' ),
+		),
+	) );
+
+	woocommerce_wp_select( array(
+		'id'      => '_ame_gender',
+		'label'   => __( 'Target Gender', 'ame-bazaar' ),
+		'options' => array(
+			'unisex' => __( 'Unisex', 'ame-bazaar' ),
+			'men'    => __( 'Men\'s Wear', 'ame-bazaar' ),
+			'women'  => __( 'Women\'s Wear', 'ame-bazaar' ),
+			'boys'   => __( 'Boys Wear', 'ame-bazaar' ),
+			'girls'  => __( 'Girls Wear', 'ame-bazaar' ),
+			'kids'   => __( 'Kids Essentials', 'ame-bazaar' ),
+			'infant' => __( 'Infant Wear', 'ame-bazaar' ),
+		),
+	) );
+
+	woocommerce_wp_select( array(
+		'id'      => '_ame_age_group',
+		'label'   => __( 'Age Segment', 'ame-bazaar' ),
+		'options' => array(
+			'all'    => __( 'All Ages', 'ame-bazaar' ),
+			'adult'  => __( 'Adult (15-60y)', 'ame-bazaar' ),
+			'kids'   => __( 'Child (3-14y)', 'ame-bazaar' ),
+			'infant' => __( 'Infant (0-2y)', 'ame-bazaar' ),
+			'senior' => __( 'Senior (60y+)', 'ame-bazaar' ),
+		),
+	) );
+
+	woocommerce_wp_select( array(
+		'id'      => '_ame_occasion',
+		'label'   => __( 'Occasion Type', 'ame-bazaar' ),
+		'options' => array(
+			'casual'   => __( 'Casual Daily', 'ame-bazaar' ),
+			'formal'   => __( 'Office Formal', 'ame-bazaar' ),
+			'wedding'  => __( 'Wedding / Ceremony', 'ame-bazaar' ),
+			'festival' => __( 'Festive Shopping', 'ame-bazaar' ),
+			'party'    => __( 'Party Wear', 'ame-bazaar' ),
+			'school'   => __( 'School Wear', 'ame-bazaar' ),
+		),
+	) );
+
+	woocommerce_wp_select( array(
+		'id'      => '_ame_season',
+		'label'   => __( 'Seasonality', 'ame-bazaar' ),
+		'options' => array(
+			'all-season' => __( 'All Seasons', 'ame-bazaar' ),
+			'summer'     => __( 'Summer Wear (Mulmul Cotton)', 'ame-bazaar' ),
+			'winter'     => __( 'Winter Layers', 'ame-bazaar' ),
+			'monsoon'    => __( 'Monsoon Wear', 'ame-bazaar' ),
+		),
+	) );
+
+	woocommerce_wp_text_input( array(
+		'id'          => '_ame_color_flat',
+		'label'       => __( 'Color (Flat Spec)', 'ame-bazaar' ),
+		'placeholder' => 'e.g. Navy Blue, Crimson Red',
+	) );
+
+	woocommerce_wp_text_input( array(
+		'id'          => '_ame_size_flat',
+		'label'       => __( 'Size (Flat Spec)', 'ame-bazaar' ),
+		'placeholder' => 'e.g. XL, 42, 38',
+	) );
+
+	woocommerce_wp_textarea_input( array(
+		'id'          => '_ame_size_chart',
+		'label'       => __( 'Size Chart / Guide', 'ame-bazaar' ),
+		'placeholder' => 'Provide a text measurements table or specific size details.',
+	) );
+
+	// --- 4. MANUFACTURING & CARE ---
+	echo '<h4 style="margin: 25px 0 5px 15px; color: #002347; border-bottom: 2px solid var(--ame-color-gold, #ca8a04); padding-bottom: 3px; font-weight: 800;">' . esc_html__( '4. Manufacturing & Care', 'ame-bazaar' ) . '</h4>';
+
+	woocommerce_wp_textarea_input( array(
+		'id'          => '_ame_care_instructions',
+		'label'       => __( 'Care Instructions', 'ame-bazaar' ),
+		'placeholder' => 'e.g. Hand wash separately, Dry clean recommended',
+	) );
+
+	woocommerce_wp_text_input( array(
+		'id'          => '_ame_wash_instructions',
+		'label'       => __( 'Wash Instructions', 'ame-bazaar' ),
+		'placeholder' => 'e.g. Machine wash cold, tumble dry low',
+	) );
+
+	woocommerce_wp_text_input( array(
+		'id'          => '_ame_country_of_origin',
+		'label'       => __( 'Country of Origin', 'ame-bazaar' ),
+		'value'       => get_post_meta( get_the_ID(), '_ame_country_of_origin', true ) ? get_post_meta( get_the_ID(), '_ame_country_of_origin', true ) : 'India',
+		'placeholder' => 'e.g. India',
+	) );
+
+	woocommerce_wp_text_input( array(
+		'id'          => '_ame_manufacturer',
+		'label'       => __( 'Manufacturer Details', 'ame-bazaar' ),
+		'value'       => get_post_meta( get_the_ID(), '_ame_manufacturer', true ) ? get_post_meta( get_the_ID(), '_ame_manufacturer', true ) : 'Apparel Maheshwari Enterprises',
+		'placeholder' => 'Manufacturer Name',
+	) );
+
+	// --- 5. SEO ---
+	echo '<h4 style="margin: 25px 0 5px 15px; color: #002347; border-bottom: 2px solid var(--ame-color-gold, #ca8a04); padding-bottom: 3px; font-weight: 800;">' . esc_html__( '5. SEO & Social overrides', 'ame-bazaar' ) . '</h4>';
+
+	woocommerce_wp_text_input( array(
+		'id'          => '_ame_seo_title',
+		'label'       => __( 'SEO Title Override', 'ame-bazaar' ),
+		'placeholder' => 'Custom Google search results title',
+	) );
+
+	woocommerce_wp_textarea_input( array(
+		'id'          => '_ame_seo_desc',
+		'label'       => __( 'Meta Description Override', 'ame-bazaar' ),
+		'placeholder' => 'Custom Google search results snippet',
+	) );
+
+	woocommerce_wp_text_input( array(
+		'id'          => '_ame_canonical_url',
+		'label'       => __( 'Canonical URL', 'ame-bazaar' ),
+		'placeholder' => 'e.g. https://amebazaar.in/shop/mens-kurta/',
+	) );
+
+	woocommerce_wp_text_input( array(
+		'id'          => '_ame_og_image',
+		'label'       => __( 'Open Graph Image attachment ID', 'ame-bazaar' ),
+		'placeholder' => 'Attachment ID for social sharing image',
+	) );
+
+	// --- 6. AI & GEO ---
+	echo '<h4 style="margin: 25px 0 5px 15px; color: #002347; border-bottom: 2px solid var(--ame-color-gold, #ca8a04); padding-bottom: 3px; font-weight: 800;">' . esc_html__( '6. AI & GEO Metadata Settings', 'ame-bazaar' ) . '</h4>';
+
+	woocommerce_wp_textarea_input( array(
+		'id'          => '_ame_ai_keywords',
+		'label'       => __( 'AI Search Keywords', 'ame-bazaar' ),
+		'placeholder' => 'Comma separated terms for advisor and LLM indexing, e.g. soft, cotton, breathable, wedding, cream',
+	) );
+
+	woocommerce_wp_text_input( array(
+		'id'          => '_ame_geo_target',
+		'label'       => __( 'GEO Target Locations', 'ame-bazaar' ),
+		'placeholder' => 'e.g. Kirari, Mubarakpur, Rohini, Sultanpuri, Delhi',
+	) );
+
+	woocommerce_wp_text_input( array(
+		'id'          => '_ame_target_customer',
+		'label'       => __( 'Target Demographic Description', 'ame-bazaar' ),
+		'placeholder' => 'e.g. Families looking for affordable quality wedding kurtas',
+	) );
+
+	woocommerce_wp_select( array(
+		'id'      => '_ame_trending',
+		'label'   => __( 'Is Trending Garment?', 'ame-bazaar' ),
+		'options' => array(
+			'no'  => __( 'No', 'ame-bazaar' ),
+			'yes' => __( 'Yes - Show in Trending', 'ame-bazaar' ),
+		),
+	) );
+
+	woocommerce_wp_text_input( array(
+		'id'          => '_ame_featured_reason',
+		'label'       => __( 'Featured Reason', 'ame-bazaar' ),
+		'placeholder' => 'e.g. Best selling cotton suit in Kirari for summer 2026',
+	) );
+
+	woocommerce_wp_select( array(
+		'id'      => '_ame_whatsapp_ready',
+		'label'   => __( 'WhatsApp Catalog Ready?', 'ame-bazaar' ),
+		'options' => array(
+			'yes' => __( 'Yes - Fully Formatted', 'ame-bazaar' ),
+			'no'  => __( 'No - Catalog Only', 'ame-bazaar' ),
+		),
 	) );
 
 	echo '</div>';
@@ -87,11 +369,47 @@ function ame_bazaar_save_custom_product_fields( $post_id ) {
 		'_ame_care_instructions',
 		'_ame_alteration_available',
 		'_ame_kirari_stock',
+		'_ame_brand',
+		'_ame_material',
+		'_ame_fabric_weight',
+		'_ame_fit',
+		'_ame_sleeve_type',
+		'_ame_neck_type',
+		'_ame_closure',
+		'_ame_collection',
+		'_ame_style',
+		'_ame_mrp',
+		'_ame_price_segment',
+		'_ame_age_group',
+		'_ame_occasion',
+		'_ame_season',
+		'_ame_color_flat',
+		'_ame_size_flat',
+		'_ame_size_chart',
+		'_ame_wash_instructions',
+		'_ame_country_of_origin',
+		'_ame_manufacturer',
+		'_ame_seo_title',
+		'_ame_seo_desc',
+		'_ame_canonical_url',
+		'_ame_og_image',
+		'_ame_ai_keywords',
+		'_ame_geo_target',
+		'_ame_target_customer',
+		'_ame_trending',
+		'_ame_featured_reason',
+		'_ame_whatsapp_ready',
+		'_ame_local_availability',
 	);
 
 	foreach ( $fields as $field ) {
 		if ( isset( $_POST[ $field ] ) ) {
-			update_post_meta( $post_id, $field, sanitize_text_field( wp_unslash( $_POST[ $field ] ) ) );
+			$val = wp_unslash( $_POST[ $field ] );
+			if ( in_array( $field, array( '_ame_size_chart', '_ame_care_instructions', '_ame_seo_desc', '_ame_ai_keywords' ), true ) ) {
+				update_post_meta( $post_id, $field, sanitize_textarea_field( $val ) );
+			} else {
+				update_post_meta( $post_id, $field, sanitize_text_field( $val ) );
+			}
 		} else {
 			delete_post_meta( $post_id, $field );
 		}

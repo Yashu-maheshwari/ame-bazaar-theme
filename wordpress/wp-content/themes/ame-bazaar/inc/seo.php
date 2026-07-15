@@ -24,6 +24,32 @@ function ame_bazaar_output_seo_meta() {
 	$type       = 'website';
 	$image      = ame_bazaar_get_custom_logo_url();
 
+	// Check for single product meta overrides
+	$custom_desc = '';
+	if ( is_product() ) {
+		$post_id = get_the_ID();
+		$custom_title = get_post_meta( $post_id, '_ame_seo_title', true );
+		$custom_meta_desc = get_post_meta( $post_id, '_ame_seo_desc', true );
+		$custom_url   = get_post_meta( $post_id, '_ame_canonical_url', true );
+		$custom_image_id = get_post_meta( $post_id, '_ame_og_image', true );
+
+		if ( $custom_title ) {
+			$title = $custom_title;
+		}
+		if ( $custom_meta_desc ) {
+			$custom_desc = $custom_meta_desc;
+		}
+		if ( $custom_url ) {
+			$url = $custom_url;
+		}
+		if ( $custom_image_id ) {
+			$image_url_override = wp_get_attachment_image_url( $custom_image_id, 'large' );
+			if ( $image_url_override ) {
+				$image = $image_url_override;
+			}
+		}
+	}
+
 	// Fallback description
 	$desc = get_bloginfo( 'description' );
 	if ( is_front_page() || is_home() ) {
@@ -47,8 +73,12 @@ function ame_bazaar_output_seo_meta() {
 		$desc = wp_strip_all_tags( $desc );
 	}
 
-	// Trim description length for search engines (max 160 chars)
-	$desc = wp_html_excerpt( $desc, 155, '...' );
+	if ( ! empty( $custom_desc ) ) {
+		$desc = $custom_desc;
+	} else {
+		// Trim description length for search engines (max 160 chars)
+		$desc = wp_html_excerpt( $desc, 155, '...' );
+	}
 
 	// Output Meta description
 	echo '<meta name="description" content="' . esc_attr( $desc ) . '">' . "\n";
