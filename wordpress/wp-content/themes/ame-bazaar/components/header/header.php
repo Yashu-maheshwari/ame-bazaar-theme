@@ -62,7 +62,19 @@ $logo_id = get_option( 'ame_bazaar_media_primary_logo' ) ?: get_theme_mod( 'cust
 				// Elegant fallback
 				?>
 				<ul class="ame-desktop-menu-list">
-					<li><a href="<?php echo esc_url( home_url( '/' ) ); ?>"><?php esc_html_e( 'Home', 'ame-bazaar' ); ?></a></li>
+					<li>
+						<a href="<?php echo esc_url( home_url( '/' ) ); ?>" style="display: inline-flex; align-items: center; gap: 8px;">
+							<?php 
+							if ( $logo_id ) {
+								echo wp_get_attachment_image( $logo_id, array( 20, 20 ), false, array(
+									'class' => 'ame-nav-logo-icon',
+									'style' => 'width: 20px; height: 20px; object-fit: contain; border-radius: 4px; display: inline-block; vertical-align: middle;'
+								) );
+							}
+							?>
+							<span><?php esc_html_e( 'Home', 'ame-bazaar' ); ?></span>
+						</a>
+					</li>
 					<li><a href="<?php echo esc_url( home_url( '/about-ame-bazaar/' ) ); ?>"><?php esc_html_e( 'About Us', 'ame-bazaar' ); ?></a></li>
 					<li><a href="<?php echo esc_url( home_url( '/shop/' ) ); ?>"><?php esc_html_e( 'Shop', 'ame-bazaar' ); ?></a></li>
 					<li><a href="<?php echo esc_url( home_url( '/faq/' ) ); ?>"><?php esc_html_e( 'FAQ', 'ame-bazaar' ); ?></a></li>
@@ -186,7 +198,19 @@ $logo_id = get_option( 'ame_bazaar_media_primary_logo' ) ?: get_theme_mod( 'cust
 			} else {
 				?>
 				<ul class="ame-mobile-menu-list">
-					<li><a href="<?php echo esc_url( home_url( '/' ) ); ?>"><?php esc_html_e( 'Home', 'ame-bazaar' ); ?></a></li>
+					<li>
+						<a href="<?php echo esc_url( home_url( '/' ) ); ?>" style="display: inline-flex; align-items: center; gap: 8px;">
+							<?php 
+							if ( $logo_id ) {
+								echo wp_get_attachment_image( $logo_id, array( 20, 20 ), false, array(
+									'class' => 'ame-nav-logo-icon',
+									'style' => 'width: 20px; height: 20px; object-fit: contain; border-radius: 4px; display: inline-block; vertical-align: middle;'
+								) );
+							}
+							?>
+							<span><?php esc_html_e( 'Home', 'ame-bazaar' ); ?></span>
+						</a>
+					</li>
 					<li><a href="<?php echo esc_url( home_url( '/about-ame-bazaar/' ) ); ?>"><?php esc_html_e( 'About Us', 'ame-bazaar' ); ?></a></li>
 					<li><a href="<?php echo esc_url( home_url( '/shop/' ) ); ?>"><?php esc_html_e( 'Shop', 'ame-bazaar' ); ?></a></li>
 					<li><a href="<?php echo esc_url( home_url( '/faq/' ) ); ?>"><?php esc_html_e( 'FAQ', 'ame-bazaar' ); ?></a></li>

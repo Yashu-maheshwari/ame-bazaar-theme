@@ -21,8 +21,12 @@ $categories = array(
 		'label'       => 'Women\'s Wear',
 		'default_img' => ame_bazaar_asset_uri( 'assets/images/women-wear-new.jpg' ),
 	),
-	'kids' => array(
-		'label'       => 'Kids Wear',
+	'boys' => array(
+		'label'       => 'Boys Wear',
+		'default_img' => ame_bazaar_asset_uri( 'assets/images/kids-wear-new.jpg' ),
+	),
+	'girls' => array(
+		'label'       => 'Girls Wear',
 		'default_img' => ame_bazaar_asset_uri( 'assets/images/kids-wear-new.jpg' ),
 	),
 	'sarees' => array(
@@ -57,7 +61,6 @@ $categories = array(
 			foreach ( $categories as $key => $cat ) :
 				$desc = get_theme_mod( 'ame_bazaar_cat_' . $key . '_desc' );
 				$url  = get_theme_mod( 'ame_bazaar_cat_' . $key . '_url' );
-				$img_id = get_theme_mod( 'ame_bazaar_cat_' . $key . '_image_id' );
 
 				if ( ! $url || '#' === $url ) {
 					// Dynamically resolve WooCommerce category URLs
@@ -68,8 +71,12 @@ $categories = array(
 					} elseif ( 'women' === $key ) {
 						$slugs_to_check[] = 'womens-wear';
 						$slugs_to_check[] = 'women-wear';
-					} elseif ( 'kids' === $key ) {
-						$slugs_to_check[] = 'kids-wear';
+					} elseif ( 'boys' === $key ) {
+						$slugs_to_check[] = 'boy-wear';
+						$slugs_to_check[] = 'boys-wear';
+					} elseif ( 'girls' === $key ) {
+						$slugs_to_check[] = 'girl-wear';
+						$slugs_to_check[] = 'girls-wear';
 					}
 
 					foreach ( $slugs_to_check as $slug ) {
@@ -93,8 +100,10 @@ $categories = array(
 							$url = home_url( '/product-category/mens-wear/' );
 						} elseif ( 'women' === $key ) {
 							$url = home_url( '/product-category/womens-wear/' );
-						} elseif ( 'kids' === $key ) {
+						} elseif ( 'boys' === $key ) {
 							$url = home_url( '/product-category/boy-wear/' );
+						} elseif ( 'girls' === $key ) {
+							$url = home_url( '/product-category/girl-wear/' );
 						} else {
 							$url = home_url( '/product-category/' . $key . '/' );
 						}
@@ -117,55 +126,79 @@ $categories = array(
 					}
 				}
 
-				// Query option ID from Homepage Media Manager
-				$img_id = get_option( 'ame_bazaar_media_' . $key );
+				// 1. Resolve Image from customizer showroom settings if defined: ame_bazaar_img_{key}
+				$customizer_url = get_theme_mod( 'ame_bazaar_img_' . $key );
 
-				if ( ! $img_id ) {
-					$img_id = get_theme_mod( 'ame_bazaar_cat_' . $key . '_image_id' );
+				// 2. Fallback to categories settings: ame_bazaar_cat_{key}_image
+				if ( empty( $customizer_url ) ) {
+					$customizer_url = get_theme_mod( 'ame_bazaar_cat_' . $key . '_image' );
 				}
 
-				// Dynamically resolve Media Library attachment ID by standard category slugs
-				if ( ! $img_id ) {
-					$slugs_to_check = array(
-						$key . '-wear-image',
-						$key . '-wear',
-						$key . '-image',
-						$key . '-banner',
-						$key
-					);
-					if ( 'men' === $key ) {
-						$slugs_to_check[] = 'mens-wear';
-						$slugs_to_check[] = 'mens-wear-image';
-					} elseif ( 'women' === $key ) {
-						$slugs_to_check[] = 'womens-wear';
-						$slugs_to_check[] = 'womens-wear-image';
-					} elseif ( 'kids' === $key ) {
-						$slugs_to_check[] = 'kids-wear-image';
-					} elseif ( 'accessories' === $key ) {
-						$slugs_to_check[] = 'fashion-accessories';
+				// 3. Special fallback for kids category to ensure backward compatibility
+				if ( empty( $customizer_url ) && ( 'boys' === $key || 'girls' === $key ) ) {
+					$customizer_url = get_theme_mod( 'ame_bazaar_cat_kids_image' );
+				}
+
+				$img_html = '';
+				if ( ! empty( $customizer_url ) ) {
+					$attachment_id = attachment_url_to_postid( $customizer_url );
+					if ( $attachment_id ) {
+						$img_html = wp_get_attachment_image( $attachment_id, 'medium_large', false, array(
+							'class'   => 'ame-category-img',
+							'loading' => 'lazy',
+							'alt'     => esc_attr( sprintf( __( '%s - AME Bazaar Premium Collection', 'ame-bazaar' ), $cat['label'] ) ),
+						) );
+					} else {
+						$img_html = '<img src="' . esc_url( $customizer_url ) . '" alt="' . esc_attr( sprintf( __( '%s - AME Bazaar Premium Collection', 'ame-bazaar' ), $cat['label'] ) ) . '" class="ame-category-img" loading="lazy">';
+					}
+				} else {
+					// Fallback to Media Library attachment options mapping
+					$img_id = get_option( 'ame_bazaar_media_' . $key );
+					if ( ! $img_id && ( 'boys' === $key || 'girls' === $key ) ) {
+						$img_id = get_option( 'ame_bazaar_media_kids' );
 					}
 
-					foreach ( $slugs_to_check as $slug ) {
-						$resolved_id = ame_bazaar_get_attachment_id_by_slug( $slug );
-						if ( $resolved_id ) {
-							$img_id = $resolved_id;
-							break;
+					if ( ! $img_id ) {
+						$img_id = get_theme_mod( 'ame_bazaar_cat_' . $key . '_image_id' );
+						if ( ! $img_id && ( 'boys' === $key || 'girls' === $key ) ) {
+							$img_id = get_theme_mod( 'ame_bazaar_cat_kids_image_id' );
 						}
 					}
-				}
 
-				// Resolve Image HTML
-				$img_html = '';
-				if ( $img_id ) {
-					$img_html = wp_get_attachment_image( $img_id, 'medium_large', false, array(
-						'class'   => 'ame-category-img',
-						'loading' => 'lazy',
-						'alt'     => esc_attr( sprintf( __( '%s - AME Bazaar Premium Collection', 'ame-bazaar' ), $cat['label'] ) ),
-					) );
-				} else {
-					$customizer_img = get_theme_mod( 'ame_bazaar_cat_' . $key . '_image' );
-					if ( $customizer_img ) {
-						$img_html = '<img src="' . esc_url( $customizer_img ) . '" alt="' . esc_attr( sprintf( __( '%s - AME Bazaar Premium Collection', 'ame-bazaar' ), $cat['label'] ) ) . '" class="ame-category-img" loading="lazy">';
+					// Dynamic slug mapping for attachment verification
+					if ( ! $img_id ) {
+						$slugs_to_check = array(
+							$key . '-wear-image',
+							$key . '-wear',
+							$key . '-image',
+							$key . '-banner',
+							$key
+						);
+						if ( 'boys' === $key ) {
+							$slugs_to_check[] = 'boy-wear';
+							$slugs_to_check[] = 'boys-wear';
+							$slugs_to_check[] = 'boys_wear';
+						} elseif ( 'girls' === $key ) {
+							$slugs_to_check[] = 'girl-wear';
+							$slugs_to_check[] = 'girls-wear';
+							$slugs_to_check[] = 'girls_dress';
+						}
+
+						foreach ( $slugs_to_check as $slug ) {
+							$resolved_id = ame_bazaar_get_attachment_id_by_slug( $slug );
+							if ( $resolved_id ) {
+								$img_id = $resolved_id;
+								break;
+							}
+						}
+					}
+
+					if ( $img_id ) {
+						$img_html = wp_get_attachment_image( $img_id, 'medium_large', false, array(
+							'class'   => 'ame-category-img',
+							'loading' => 'lazy',
+							'alt'     => esc_attr( sprintf( __( '%s - AME Bazaar Premium Collection', 'ame-bazaar' ), $cat['label'] ) ),
+						) );
 					} elseif ( ! empty( $cat['default_img'] ) ) {
 						$img_html = '<img src="' . esc_url( $cat['default_img'] ) . '" alt="' . esc_attr( sprintf( __( '%s - AME Bazaar Premium Collection', 'ame-bazaar' ), $cat['label'] ) ) . '" class="ame-category-img" loading="lazy">';
 					}

@@ -68,15 +68,34 @@ $hours = ame_bazaar_get_business_setting( 'hours', 'Mo-Su 09:00–22:00' );
 				<p class="ame-visit-store-intro"><?php esc_html_e( 'Come shop our premium clothing collections in person. Experience quality fabrics and get custom tailoring assistance.', 'ame-bazaar' ); ?></p>
 				
 				<?php 
-				$visit_img_id = get_option( 'ame_bazaar_media_visit_store' );
-				if ( $visit_img_id ) {
+				$customizer_url = get_theme_mod( 'ame_bazaar_img_visit' );
+				$img_html = '';
+
+				if ( ! empty( $customizer_url ) ) {
+					$custom_visit_id = attachment_url_to_postid( $customizer_url );
+					if ( $custom_visit_id ) {
+						$img_html = wp_get_attachment_image( $custom_visit_id, 'medium_large', false, array(
+							'class' => 'ame-visit-store-banner-img',
+							'style' => 'width: 100%; height: auto; display: block;',
+						) );
+					} else {
+						$img_html = '<img src="' . esc_url( $customizer_url ) . '" class="ame-visit-store-banner-img" style="width: 100%; height: auto; display: block;" loading="lazy" alt="' . esc_attr__( 'Visit AME Bazaar Mubarakpur Road Store - Kirari, Delhi', 'ame-bazaar' ) . '" />';
+					}
+				} else {
+					$visit_img_id = get_option( 'ame_bazaar_media_visit_store' ) ?: 547;
+					if ( $visit_img_id ) {
+						$img_html = wp_get_attachment_image( $visit_img_id, 'medium_large', false, array(
+							'class'   => 'ame-visit-store-banner-img',
+							'style'   => 'width: 100%; height: auto; display: block;',
+							'loading' => 'lazy',
+							'alt'     => esc_attr__( 'Visit AME Bazaar Mubarakpur Road Store - Kirari, Delhi', 'ame-bazaar' ),
+						) );
+					}
+				}
+
+				if ( $img_html ) {
 					echo '<div class="ame-visit-store-banner-wrapper" style="margin-bottom: 2rem; border-radius: var(--ame-radius-md); overflow: hidden; box-shadow: var(--ame-shadow-sm);">';
-					echo wp_get_attachment_image( $visit_img_id, 'medium_large', false, array(
-						'class'   => 'ame-visit-store-banner-img',
-						'style'   => 'width: 100%; height: auto; display: block;',
-						'loading' => 'lazy',
-						'alt'     => esc_attr__( 'Visit AME Bazaar Mubarakpur Road Store - Kirari, Delhi', 'ame-bazaar' ),
-					) );
+					echo $img_html;
 					echo '</div>';
 				}
 				?>

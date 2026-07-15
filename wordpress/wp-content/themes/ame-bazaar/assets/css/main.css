@@ -6420,7 +6420,7 @@
 /* Category Grid layout */
 .ame-categories-grid {
 	display: grid !important;
-	grid-template-columns: repeat(3, 1fr) !important;
+	grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)) !important;
 	gap: 2rem !important;
 }
 
@@ -7471,6 +7471,211 @@ form.checkout {
 	background: rgba(0, 35, 71, 0.4) !important;
 	backdrop-filter: blur(8px) !important;
 	-webkit-backdrop-filter: blur(8px) !important;
+}
+
+
+/* ==========================================================================
+   ENGINEERING TICKET #003 — READABILITY, TYPOGRAPHY & BUTTON POLISH
+   ========================================================================== */
+
+/* Navigation Logo Icon */
+.ame-nav-logo-icon {
+	width: 20px !important;
+	height: 20px !important;
+	object-fit: contain !important;
+	border-radius: 4px !important;
+	display: inline-block !important;
+	vertical-align: middle !important;
+	transition: transform 0.2s ease !important;
+}
+
+.ame-desktop-menu-list a:hover .ame-nav-logo-icon,
+.ame-mobile-menu-list a:hover .ame-nav-logo-icon {
+	transform: scale(1.1) rotate(-5deg) !important;
+}
+
+/* Base Custom Page Main Container Polish (About, FAQ, Contact) */
+.ame-about-page-main,
+.ame-faq-page-main,
+.ame-contact-page-main {
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif !important;
+}
+
+/* Paragraph Readability & Contrast */
+.ame-about-page-main p,
+.ame-faq-page-main p,
+.ame-contact-page-main p,
+.ame-visit-store-section p,
+.ame-faq-answer {
+	font-size: 1.05rem !important;
+	line-height: 1.75 !important;
+	color: #334155 !important; /* Slate-700 for optimal contrast */
+	margin-bottom: 1.5rem !important;
+}
+
+/* Headings Contrast & Alignment */
+.ame-about-page-main h1,
+.ame-faq-page-main h1,
+.ame-contact-page-main h1 {
+	font-size: clamp(2.25rem, 5vw, 3.25rem) !important;
+	font-weight: 800 !important;
+	letter-spacing: -0.02em !important;
+	line-height: 1.2 !important;
+}
+
+.ame-about-page-main h2,
+.ame-faq-page-main h2,
+.ame-contact-page-main h2,
+.ame-visit-store-section h2 {
+	font-size: 1.65rem !important;
+	font-weight: 800 !important;
+	color: #0f172a !important; /* Slate-900 */
+	letter-spacing: -0.01em !important;
+	margin-top: 0 !important;
+	border-bottom: 2px solid var(--ame-color-gold) !important;
+	padding-bottom: 0.5rem !important;
+}
+
+.ame-about-page-main h3,
+.ame-faq-page-main h3,
+.ame-contact-page-main h3 {
+	font-size: 1.25rem !important;
+	font-weight: 700 !important;
+	color: var(--ame-color-navy) !important;
+	margin-bottom: 0.75rem !important;
+}
+
+/* Button & Touch Target Standardization */
+.ame-bazaar-btn,
+.ame-about-page-main .ame-bazaar-btn,
+.ame-contact-page-main .ame-bazaar-btn,
+.ame-visit-store-section .ame-bazaar-btn {
+	padding: 0.85rem 1.75rem !important;
+	font-size: 0.95rem !important;
+	font-weight: 700 !important;
+	border-radius: var(--ame-radius-sm, 6px) !important;
+	display: inline-flex !important;
+	align-items: center !important;
+	justify-content: center !important;
+	gap: 0.5rem !important;
+	text-decoration: none !important;
+	cursor: pointer !important;
+	transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1) !important;
+	outline: 2px solid transparent !important;
+	outline-offset: 2px !important;
+	border: 1px solid transparent !important;
+}
+
+/* Primary Button Hierarchy */
+.ame-bazaar-btn--primary,
+.ame-about-page-main .ame-bazaar-btn--primary,
+.ame-contact-page-main .ame-bazaar-btn--primary,
+.ame-visit-store-section .ame-bazaar-btn--primary {
+	background-color: var(--ame-color-navy) !important;
+	color: #ffffff !important;
+	border-color: var(--ame-color-navy) !important;
+	box-shadow: 0 4px 12px rgba(0, 35, 71, 0.1) !important;
+}
+
+.ame-bazaar-btn--primary:hover {
+	background-color: #0b1f38 !important;
+	border-color: #0b1f38 !important;
+	transform: translateY(-2px) !important;
+	box-shadow: 0 6px 20px rgba(0, 35, 71, 0.15) !important;
+}
+
+.ame-bazaar-btn--primary:focus-visible {
+	outline-color: var(--ame-color-gold) !important;
+}
+
+/* Secondary Button Hierarchy */
+.ame-bazaar-btn--secondary,
+.ame-about-page-main .ame-bazaar-btn--secondary,
+.ame-contact-page-main .ame-bazaar-btn--secondary,
+.ame-visit-store-section .ame-bazaar-btn--secondary {
+	background-color: #ffffff !important;
+	color: var(--ame-color-navy) !important;
+	border-color: var(--ame-color-border) !important;
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02) !important;
+}
+
+.ame-bazaar-btn--secondary:hover {
+	background-color: var(--ame-color-cream) !important;
+	border-color: var(--ame-color-gold) !important;
+	color: var(--ame-color-navy) !important;
+	transform: translateY(-2px) !important;
+}
+
+.ame-bazaar-btn--secondary:focus-visible {
+	outline-color: var(--ame-color-navy) !important;
+}
+
+/* Accordion details/summary styles */
+.ame-faq-item {
+	border: 1px solid var(--ame-color-border) !important;
+	border-radius: var(--ame-radius-sm, 6px) !important;
+	margin-bottom: 0.75rem !important;
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.01) !important;
+	transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+.ame-faq-item[open] {
+	border-color: var(--ame-color-gold) !important;
+	box-shadow: 0 4px 12px rgba(212, 175, 55, 0.08) !important;
+}
+
+.ame-faq-item summary {
+	padding: 1.25rem 1.5rem !important;
+	font-size: 1.05rem !important;
+	font-weight: 700 !important;
+	color: var(--ame-color-navy) !important;
+	display: flex !important;
+	justify-content: space-between !important;
+	align-items: center !important;
+	cursor: pointer !important;
+	outline: none !important;
+}
+
+.ame-faq-item summary:focus-visible {
+	box-shadow: inset 0 0 0 2px var(--ame-color-navy) !important;
+}
+
+/* FAQ Chips style */
+.ame-faq-chip {
+	padding: 0.6rem 1.35rem !important;
+	font-size: 0.9rem !important;
+	font-weight: 600 !important;
+	border-radius: 999px !important;
+	border: 1px solid var(--ame-color-border) !important;
+	background: #ffffff !important;
+	color: var(--ame-color-navy) !important;
+	cursor: pointer !important;
+	transition: all 0.2s ease !important;
+}
+
+.ame-faq-chip.active {
+	background: var(--ame-color-navy) !important;
+	color: #ffffff !important;
+	border-color: var(--ame-color-navy) !important;
+	font-weight: 700 !important;
+	box-shadow: 0 4px 10px rgba(0, 35, 71, 0.1) !important;
+}
+
+.ame-faq-chip:hover:not(.active) {
+	background: var(--ame-color-cream) !important;
+	border-color: var(--ame-color-gold) !important;
+}
+
+/* Responsive grid layouts */
+@media (max-width: 1024px) {
+	.ame-about-row-split {
+		grid-template-columns: 1fr !important;
+		gap: 2.5rem !important;
+	}
+	.ame-contact-grid {
+		grid-template-columns: 1fr !important;
+		gap: 2.5rem !important;
+	}
 }
 
 
