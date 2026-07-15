@@ -681,5 +681,61 @@ function ame_bazaar_custom_related_products( $related_posts, $product_id, $args 
 }
 add_filter( 'woocommerce_related_products', 'ame_bazaar_custom_related_products', 20, 3 );
 
+/**
+ * 13. Filter WooCommerce product catalog loops by custom specifications metadata.
+ */
+function ame_bazaar_filter_products_by_meta( $q ) {
+	if ( is_admin() || ! $q->is_main_query() ) {
+		return;
+	}
+
+	if ( ! is_shop() && ! is_product_taxonomy() ) {
+		return;
+	}
+
+	$meta_query = $q->get( 'meta_query' );
+	if ( ! is_array( $meta_query ) ) {
+		$meta_query = array();
+	}
+
+	// Dynamic metadata fields filtering
+	$filters = array(
+		'filter_gender'   => '_ame_gender',
+		'filter_brand'    => '_ame_brand',
+		'filter_fabric'   => '_ame_fabric',
+		'filter_pattern'  => '_ame_pattern',
+		'filter_fit'      => '_ame_fit',
+		'filter_sleeve'   => '_ame_sleeve_type',
+		'filter_neck'     => '_ame_neck_type',
+		'filter_occasion' => '_ame_occasion',
+		'filter_season'   => '_ame_season',
+		'filter_trending' => '_ame_trending',
+	);
+
+	foreach ( $filters as $param => $meta_key ) {
+		if ( ! empty( $_GET[ $param ] ) ) {
+			$meta_query[] = array(
+				'key'   => $meta_key,
+				'value' => sanitize_text_field( $_GET[ $param ] ),
+			);
+		}
+	}
+
+	// Price range filtering
+	if ( ! empty( $_GET['max_price'] ) ) {
+		$meta_query[] = array(
+			'key'     => '_price',
+			'value'   => floatval( $_GET['max_price'] ),
+			'compare' => '<=',
+			'type'    => 'NUMERIC',
+		);
+	}
+
+	if ( ! empty( $meta_query ) ) {
+		$q->set( 'meta_query', $meta_query );
+	}
+}
+add_action( 'woocommerce_product_query', 'ame_bazaar_filter_products_by_meta' );
+
 
 
