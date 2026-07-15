@@ -4,7 +4,7 @@
  */
 
 // Token protection
-$token = isset( $_GET['token'] ) ? sanitize_key( $_GET['token'] ) : '';
+$token = isset( $_GET['token'] ) ? preg_replace( '/[^a-f0-9]/', '', $_GET['token'] ) : '';
 if ( $token !== '7fa2e10db708b8b9487c69ea230768b6' ) {
 	header( 'HTTP/1.1 403 Forbidden' );
 	exit( 'Forbidden: Invalid Token' );
