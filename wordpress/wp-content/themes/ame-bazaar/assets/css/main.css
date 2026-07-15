@@ -2932,70 +2932,173 @@
 /* ==========================================================================
    TRUST BAR SECTION
    ========================================================================== */
-.ame-trust-bar-section {
-	background: var(--ame-color-navy);
-	color: var(--ame-color-white);
-	padding-block: 2.5rem;
-	border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+/* ==========================================================================
+   ENGINEERING TICKET #004 — PREMIUM LOCAL TRUST GRID & AI AUTHORITY ROW
+   ========================================================================== */
+
+.ame-trust-section {
+	background: #ffffff !important;
+	border-bottom: 1px solid rgba(226, 232, 240, 0.7) !important;
+	padding: 3.5rem 0 !important;
+	position: relative !important;
+	z-index: 10 !important;
 }
 
-.ame-trust-bar-grid {
-	display: grid;
-	grid-template-columns: 1fr;
-	gap: 1.5rem 1rem;
+.ame-trust-grid {
+	display: grid !important;
+	grid-template-columns: repeat(4, 1fr) !important;
+	gap: 2rem !important;
+	margin-bottom: 2.5rem !important;
 }
 
-@media (min-width: 640px) {
-	.ame-trust-bar-grid {
-		grid-template-columns: repeat(2, 1fr);
+.ame-trust-card {
+	display: flex !important;
+	align-items: flex-start !important;
+	gap: 1rem !important;
+	background: #ffffff !important;
+	padding: 1.25rem !important;
+	border-radius: var(--ame-radius-md, 12px) !important;
+	border: 1px solid rgba(226, 232, 240, 0.6) !important;
+	box-shadow: 0 2px 12px rgba(0, 35, 71, 0.01) !important;
+	transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1) !important;
+	text-decoration: none !important;
+	color: inherit !important;
+}
+
+.ame-trust-card:hover {
+	transform: translateY(-4px) !important;
+	box-shadow: 0 8px 24px rgba(0, 35, 71, 0.05) !important;
+	border-color: var(--ame-color-gold, #d4af37) !important;
+}
+
+.ame-trust-card-icon-wrapper {
+	background: var(--ame-color-cream, #fdfbf7) !important;
+	color: var(--ame-color-navy, #002347) !important;
+	width: 44px !important;
+	height: 44px !important;
+	border-radius: 50% !important;
+	display: flex !important;
+	align-items: center !important;
+	justify-content: center !important;
+	flex-shrink: 0 !important;
+	border: 1px solid var(--ame-color-gold, #d4af37) !important;
+	transition: transform 0.2s ease !important;
+}
+
+.ame-trust-card:hover .ame-trust-card-icon-wrapper {
+	transform: scale(1.05) !important;
+}
+
+.ame-trust-card-icon {
+	width: 20px !important;
+	height: 20px !important;
+	stroke-width: 2px !important;
+}
+
+.ame-trust-card-icon.star-icon {
+	color: var(--ame-color-gold, #d4af37) !important;
+}
+
+.ame-trust-card-text {
+	display: flex !important;
+	flex-direction: column !important;
+	gap: 0.25rem !important;
+}
+
+.ame-trust-card-title {
+	font-size: 0.95rem !important;
+	font-weight: 700 !important;
+	color: var(--ame-color-navy, #002347) !important;
+	line-height: 1.35 !important;
+}
+
+.ame-trust-card:hover .ame-trust-card-title {
+	color: var(--ame-color-navy, #002347) !important;
+}
+
+.ame-inline-arrow {
+	transform: scale(0.9) !important;
+	width: 14px !important;
+	height: 14px !important;
+	transition: transform 0.2s ease !important;
+}
+
+.ame-trust-card:hover .ame-inline-arrow {
+	transform: scale(0.9) translateX(3px) !important;
+}
+
+.ame-trust-card-desc {
+	font-size: 0.825rem !important;
+	color: #64748b !important;
+	line-height: 1.45 !important;
+}
+
+/* Compact AI Authority Badge Row */
+.ame-trust-authority-row {
+	display: flex !important;
+	justify-content: center !important;
+	align-items: center !important;
+	flex-wrap: wrap !important;
+	gap: 1.75rem !important;
+	padding-top: 1.75rem !important;
+	border-top: 1px dashed rgba(226, 232, 240, 0.9) !important;
+}
+
+.ame-authority-badge {
+	display: inline-flex !important;
+	align-items: center !important;
+	gap: 0.5rem !important;
+	font-size: 0.825rem !important;
+	font-weight: 700 !important;
+	color: #475569 !important;
+	background: #f8fafc !important;
+	padding: 0.4rem 1rem !important;
+	border-radius: 999px !important;
+	border: 1px solid rgba(226, 232, 240, 0.5) !important;
+}
+
+.ame-badge-check {
+	width: 14px !important;
+	height: 14px !important;
+	color: #16a34a !important;
+	stroke-width: 3px !important;
+}
+
+/* Responsive Overrides */
+@media (max-width: 1200px) {
+	.ame-trust-grid {
+		grid-template-columns: repeat(3, 1fr) !important;
 	}
 }
 
-@media (min-width: 1024px) {
-	.ame-trust-bar-grid {
-		grid-template-columns: repeat(5, 1fr);
+@media (max-width: 991px) {
+	.ame-trust-grid {
+		grid-template-columns: repeat(2, 1fr) !important;
+		gap: 1.5rem !important;
+		margin-bottom: 2rem !important;
+	}
+	.ame-trust-authority-row {
+		gap: 1.25rem !important;
+		padding-top: 1.5rem !important;
 	}
 }
 
-.ame-trust-bar-item {
-	display: flex;
-	align-items: center;
-	gap: 1rem;
-}
-
-.ame-trust-bar-icon-wrap {
-	background: rgba(212, 175, 55, 0.15); /* Translucent gold badge */
-	color: var(--ame-color-gold);
-	padding: 0.6rem;
-	border-radius: 50%;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	flex-shrink: 0;
-}
-
-.ame-trust-bar-icon {
-	width: 20px;
-	height: 20px;
-	stroke-width: 2px;
-}
-
-.ame-trust-bar-text {
-	display: flex;
-	flex-direction: column;
-}
-
-.ame-trust-bar-title {
-	font-size: 0.9rem;
-	font-weight: 700;
-	letter-spacing: 0.01em;
-	color: var(--ame-color-white);
-}
-
-.ame-trust-bar-desc {
-	font-size: 0.75rem;
-	color: rgba(255, 255, 255, 0.7);
-	margin-top: 0.1rem;
+@media (max-width: 600px) {
+	.ame-trust-grid {
+		grid-template-columns: 1fr !important;
+		gap: 1.25rem !important;
+	}
+	.ame-trust-section {
+		padding: 2.5rem 0 !important;
+	}
+	.ame-trust-authority-row {
+		flex-direction: column !important;
+		align-items: flex-start !important;
+		gap: 0.75rem !important;
+	}
+	.ame-authority-badge {
+		width: 100% !important;
+	}
 }
 
 /* ==========================================================================
