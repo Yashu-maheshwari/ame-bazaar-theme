@@ -17,9 +17,20 @@ if ( function_exists( 'opcache_reset' ) ) {
 	echo "OPCache not enabled.\n";
 }
 
-// Load WordPress to flush object/page cache
-if ( file_exists( __DIR__ . '/wp-load.php' ) ) {
-	require_once( __DIR__ . '/wp-load.php' );
+// Find wp-load.php by traversing upwards dynamically
+$wp_load_path = '';
+$current_dir = __DIR__;
+for ( $i = 0; $i < 5; $i++ ) {
+	if ( file_exists( $current_dir . '/wp-load.php' ) ) {
+		$wp_load_path = $current_dir . '/wp-load.php';
+		break;
+	}
+	$current_dir = dirname( $current_dir );
+}
+
+if ( $wp_load_path ) {
+	require_once( $wp_load_path );
+	echo "WordPress Loaded successfully from: " . esc_html( $wp_load_path ) . "\n";
 	
 	// Purge LiteSpeed page cache
 	if ( class_exists( 'LiteSpeed\Purge' ) ) {
@@ -29,12 +40,19 @@ if ( file_exists( __DIR__ . '/wp-load.php' ) ) {
 		litespeed_purge_all();
 		echo "LiteSpeed Cache Purged via function!\n";
 	} else {
-		echo "LiteSpeed Cache plugin not active or function missing.\n";
+		echo "LiteSpeed Cache Purge class/function not found. Trying hook...\n";
 	}
+	
+	// Always trigger the action hook for safety
+	do_action( 'litespeed_purge_all' );
+	echo "LiteSpeed action hook litespeed_purge_all triggered!\n";
 	
 	// Clean object cache
 	if ( function_exists( 'wp_cache_flush' ) ) {
 		wp_cache_flush();
 		echo "WordPress Object Cache Flushed!\n";
 	}
+} else {
+	echo "wp-load.php not found. Skipping WordPress cache clear.\n";
 }
+
