@@ -498,15 +498,26 @@ function ame_bazaar_sticky_add_to_cart_mobile() {
 	}
 	
 	global $product;
+	$post_id = get_the_ID();
+	$whatsapp = ame_bazaar_get_business_setting( 'whatsapp', '+91 99535 69533' );
+	$whatsapp_tel = preg_replace( '/[^0-9]/', '', $whatsapp );
+	$wa_text = sprintf( 'Hi, I am interested in buying "%s" priced at %s. Is it available in stock?', get_the_title(), strip_tags( $product->get_price_html() ) );
+	$wa_url = 'https://wa.me/' . $whatsapp_tel . '?text=' . rawurlencode( $wa_text );
 	?>
 	<div class="ame-sticky-add-to-cart" id="ame-mobile-sticky-cart" aria-hidden="true" style="display: none;">
 		<div class="ame-sticky-add-to-cart-info">
 			<span class="ame-sticky-add-to-cart-title"><?php the_title(); ?></span>
 			<span class="ame-sticky-add-to-cart-price"><?php echo $product->get_price_html(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></span>
 		</div>
-		<a href="?add-to-cart=<?php echo esc_attr( get_the_ID() ); ?>" class="ame-btn-primary ame-btn-sticky-add ajax_add_to_cart" data-product_id="<?php echo esc_attr( get_the_ID() ); ?>" aria-label="<?php esc_attr_e( 'Add to Cart', 'ame-bazaar' ); ?>">
-			<?php esc_html_e( 'Add', 'ame-bazaar' ); ?>
-		</a>
+		<div class="ame-sticky-add-to-cart-actions">
+			<a href="<?php echo esc_url( $wa_url ); ?>" class="ame-btn-sticky-wa" target="_blank" rel="noopener" aria-label="Order on WhatsApp">
+				<svg class="ame-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width: 14px; height: 14px;"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>
+				<span>WhatsApp</span>
+			</a>
+			<a href="?add-to-cart=<?php echo esc_attr( $post_id ); ?>" class="ame-btn-primary ame-btn-sticky-add ajax_add_to_cart" data-product_id="<?php echo esc_attr( $post_id ); ?>" aria-label="<?php esc_attr_e( 'Add to Cart', 'ame-bazaar' ); ?>">
+				<?php esc_html_e( 'Add to Cart', 'ame-bazaar' ); ?>
+			</a>
+		</div>
 	</div>
 	<?php
 }
@@ -591,7 +602,84 @@ function ame_bazaar_quick_view_callback() {
 add_action( 'wp_ajax_ame_bazaar_quick_view', 'ame_bazaar_quick_view_callback' );
 add_action( 'wp_ajax_nopriv_ame_bazaar_quick_view', 'ame_bazaar_quick_view_callback' );
 
-// End of WooCommerce Integration. Rerun trigger 6.
+/**
+ * 11. Remove Additional Information tab to prevent specifications duplication.
+ */
+function ame_bazaar_remove_additional_information_tab( $tabs ) {
+	unset( $tabs['additional_information'] );
+	return $tabs;
+}
+add_filter( 'woocommerce_product_tabs', 'ame_bazaar_remove_additional_information_tab', 98 );
+
+/**
+ * 12. Custom Related Products Query filter.
+ * Matches products based on Target Gender, Occasion, and Seasonality.
+ */
+function ame_bazaar_custom_related_products( $related_posts, $product_id, $args ) {
+	$gender   = get_post_meta( $product_id, '_ame_gender', true );
+	$occasion = get_post_meta( $product_id, '_ame_occasion', true );
+	$season   = get_post_meta( $product_id, '_ame_season', true );
+
+	$meta_query = array( 'relation' => 'OR' );
+
+	if ( $gender ) {
+		$meta_query[] = array(
+			'key'   => '_ame_gender',
+			'value' => $gender,
+		);
+	}
+	if ( $occasion ) {
+		$meta_query[] = array(
+			'key'   => '_ame_occasion',
+			'value' => $occasion,
+		);
+	}
+	if ( $season ) {
+		$meta_query[] = array(
+			'key'   => '_ame_season',
+			'value' => $season,
+		);
+	}
+
+	// Get taxonomy terms
+	$terms = get_the_terms( $product_id, 'product_cat' );
+	$term_ids = array();
+	if ( $terms && ! is_wp_error( $terms ) ) {
+		foreach ( $terms as $term ) {
+			$term_ids[] = $term->term_id;
+		}
+	}
+
+	$query_args = array(
+		'post_type'      => 'product',
+		'posts_per_page' => 4,
+		'post__not_in'   => array( $product_id ),
+		'fields'         => 'ids',
+	);
+
+	if ( ! empty( $term_ids ) ) {
+		$query_args['tax_query'] = array(
+			array(
+				'taxonomy' => 'product_cat',
+				'field'    => 'term_id',
+				'terms'    => $term_ids,
+			),
+		);
+	}
+
+	if ( count( $meta_query ) > 1 ) {
+		$query_args['meta_query'] = $meta_query;
+	}
+
+	$custom_related = get_posts( $query_args );
+
+	if ( ! empty( $custom_related ) ) {
+		$related_posts = array_unique( array_merge( $custom_related, $related_posts ) );
+	}
+
+	return array_slice( $related_posts, 0, 4 );
+}
+add_filter( 'woocommerce_related_products', 'ame_bazaar_custom_related_products', 20, 3 );
 
 
 

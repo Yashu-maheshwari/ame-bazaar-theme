@@ -447,6 +447,129 @@ function ame_bazaar_get_faq_schema() {
 				}
 			}
 		}
+	} elseif ( is_product() ) {
+		// Generate product metadata-driven FAQ items
+		$post_id = get_the_ID();
+		$fabric  = get_post_meta( $post_id, '_ame_fabric', true );
+		$material = get_post_meta( $post_id, '_ame_material', true );
+		$gsm     = get_post_meta( $post_id, '_ame_gsm', true );
+		$alteration = get_post_meta( $post_id, '_ame_alteration_available', true );
+		$care    = get_post_meta( $post_id, '_ame_care_instructions', true );
+		$wash    = get_post_meta( $post_id, '_ame_wash_instructions', true );
+		$mfr     = get_post_meta( $post_id, '_ame_manufacturer', true );
+		$origin  = get_post_meta( $post_id, '_ame_country_of_origin', true );
+		$occasion= get_post_meta( $post_id, '_ame_occasion', true );
+		$season  = get_post_meta( $post_id, '_ame_season', true );
+
+		$label_mappings = array(
+			'_ame_fabric' => array(
+				'pure-cotton'   => 'Pure Cotton',
+				'mulmul-cotton' => 'Pure Mulmul Cotton',
+				'silk'          => 'Silk (Banarasi/Raw)',
+				'rayon'         => 'Soft Rayon',
+				'georgette'     => 'Georgette',
+				'cotton-blend'  => 'Cotton Blend',
+				'wool'          => 'Pure Wool / Cashmere',
+				'synthetic'     => 'Polyester / Synthetic',
+				'denim'         => 'Denim',
+			),
+			'_ame_occasion' => array(
+				'casual'   => 'Casual Daily',
+				'formal'   => 'Office Formal',
+				'wedding'  => 'Wedding / Ceremony',
+				'festival' => 'Festive Shopping',
+				'party'    => 'Party Wear',
+				'school'   => 'School Wear',
+			),
+			'_ame_season' => array(
+				'all-season' => 'All Seasons',
+				'summer'     => 'Summer Wear (Mulmul Cotton)',
+				'winter'     => 'Winter Layers',
+				'monsoon'    => 'Monsoon Wear',
+			),
+		);
+
+		$get_lbl = function( $key, $value ) use ( $label_mappings ) {
+			if ( isset( $label_mappings[ $key ][ $value ] ) ) {
+				return $label_mappings[ $key ][ $value ];
+			}
+			return $value;
+		};
+
+		// 1. Fabric
+		if ( $fabric || $material ) {
+			$fab_desc = $fabric ? $get_lbl( '_ame_fabric', $fabric ) : '';
+			if ( $material ) {
+				$fab_desc .= $fab_desc ? ' (' . $material . ')' : $material;
+			}
+			$wt_desc = $gsm ? ' (GSM: ' . $gsm . ')' : '';
+			$questions[] = array(
+				'@type'          => 'Question',
+				'name'           => sprintf( __( 'What fabric or material is this %s made of?', 'ame-bazaar' ), strtolower( get_the_title() ) ),
+				'acceptedAnswer' => array(
+					'@type' => 'Answer',
+					'text'  => sprintf( __( 'This garment is crafted from premium %s%s. It is designed to be highly breathable and comfortable for local Delhi weather.', 'ame-bazaar' ), $fab_desc, $wt_desc ),
+				),
+			);
+		}
+
+		// 2. Alteration
+		if ( $alteration ) {
+			$questions[] = array(
+				'@type'          => 'Question',
+				'name'           => __( 'Is custom tailoring or alteration available for this garment?', 'ame-bazaar' ),
+				'acceptedAnswer' => array(
+					'@type' => 'Answer',
+					'text'  => 'yes' === $alteration || '1' === $alteration 
+						? __( 'Yes! We provide on-site custom fitting and hem alterations within 30 minutes at our Mubarakpur Road outlet in Kirari, Delhi.', 'ame-bazaar' )
+						: __( 'Standard sizes are available. You can visit our Kirari outlet for fitting consultations with our master tailors.', 'ame-bazaar' ),
+				),
+			);
+		}
+
+		// 3. Care
+		if ( $care || $wash ) {
+			$care_text = $care ? $care : '';
+			$wash_text = $wash ? $wash : '';
+			$sep = ($care_text && $wash_text) ? ' | ' : '';
+			$questions[] = array(
+				'@type'          => 'Question',
+				'name'           => __( 'How should I wash and care for this product?', 'ame-bazaar' ),
+				'acceptedAnswer' => array(
+					'@type' => 'Answer',
+					'text'  => sprintf( __( 'Recommended care: %s%s%s. Proper care ensures the fabric maintains its color and texture for years.', 'ame-bazaar' ), $care_text, $sep, $wash_text ),
+				),
+			);
+		}
+
+		// 4. Origin & Manufacturer
+		if ( $mfr || $origin ) {
+			$questions[] = array(
+				'@type'          => 'Question',
+				'name'           => __( 'Where is this garment manufactured?', 'ame-bazaar' ),
+				'acceptedAnswer' => array(
+					'@type' => 'Answer',
+					'text'  => sprintf( __( 'This premium apparel is manufactured by %s. Country of origin: %s.', 'ame-bazaar' ), $mfr ? $mfr : 'Apparel Maheshwari Enterprises', $origin ? $origin : 'India' ),
+				),
+			);
+		}
+
+		// 5. Occasion & Season
+		if ( $occasion || $season ) {
+			$occ_lbl = $occasion ? $get_lbl( '_ame_occasion', $occasion ) : '';
+			$sea_lbl = $season ? $get_lbl( '_ame_season', $season ) : '';
+			$parts = array();
+			if ( $occ_lbl ) $parts[] = sprintf( __( 'designed for %s', 'ame-bazaar' ), strtolower( $occ_lbl ) );
+			if ( $sea_lbl ) $parts[] = sprintf( __( 'perfect for %s', 'ame-bazaar' ), strtolower( $sea_lbl ) );
+			$questions[] = array(
+				'@type'          => 'Question',
+				'name'           => __( 'What season and occasion is this garment suitable for?', 'ame-bazaar' ),
+				'acceptedAnswer' => array(
+					'@type' => 'Answer',
+					'text'  => sprintf( __( 'This item is %s. It makes an excellent addition to your seasonal ethnic wardrobe.', 'ame-bazaar' ), implode( ' and ', $parts ) ),
+				),
+			);
+		}
 	} elseif ( is_page() || is_singular( 'post' ) ) {
 		// Read custom page/post FAQs meta (registered custom post meta array)
 		$local_faqs = get_post_meta( get_the_ID(), 'ame_local_faqs', true );

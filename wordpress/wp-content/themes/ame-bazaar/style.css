@@ -5,7 +5,7 @@ Author: Yashu Maheshwari & Gemini
 Author URI: https://github.com/Yashu-maheshwari
 Description: Premium Astra child theme foundation for the AME Bazaar digital platform.
 Template: astra
-Version: 1.0.1
+Version: 1.0.2
 Text Domain: ame-bazaar
 */
 
@@ -209,5 +209,151 @@ button, input, select, textarea { font: inherit; }
 /* Off-canvas menu spacing fix */
 .ame-mobile-drawer-header {
 	border-bottom: 1px solid var(--ame-color-border);
+}
+
+/* ==========================================================================
+   WOCCOMMERCE SINGLE PRODUCT EXPERIENCE ENHANCEMENTS
+   ========================================================================== */
+
+/* Single Product Grid and Layout Settings */
+@media (max-width: 768px) {
+	.ame-specs-guarantees-grid {
+		grid-template-columns: 1fr !important;
+		gap: 2.5rem !important;
+	}
+}
+
+/* Specifications Table */
+.ame-specs-table td {
+	border-bottom: 1px solid var(--ame-color-border, #dbe2ea);
+}
+
+/* FAQs summary styles */
+.ame-faq-accordion-item[open] .ame-faq-arrow {
+	transform: rotate(180deg);
+}
+
+/* Mobile Sticky Purchase Bar */
+.ame-sticky-add-to-cart {
+	position: fixed;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	background: var(--ame-color-white, #ffffff);
+	box-shadow: 0 -4px 20px rgba(0, 35, 71, 0.08);
+	padding: 0.75rem 1rem;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	z-index: 999;
+	border-top: 1px solid var(--ame-color-border, #dbe2ea);
+}
+
+.ame-sticky-add-to-cart-info {
+	display: flex;
+	flex-direction: column;
+	max-width: 50%;
+}
+
+.ame-sticky-add-to-cart-title {
+	font-size: 0.85rem;
+	font-weight: 700;
+	color: var(--ame-color-navy);
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.ame-sticky-add-to-cart-price {
+	font-size: 0.95rem;
+	font-weight: 800;
+	color: var(--ame-color-gold-dark, #916c02);
+}
+
+.ame-sticky-add-to-cart-actions {
+	display: flex;
+	gap: 0.5rem;
+	align-items: center;
+}
+
+.ame-btn-sticky-wa {
+	background: #25d366;
+	color: #fff;
+	padding: 0.6rem 0.85rem;
+	border-radius: 40px;
+	font-weight: 700;
+	font-size: 0.75rem;
+	display: inline-flex;
+	align-items: center;
+	gap: 0.35rem;
+	text-decoration: none;
+	transition: background-color var(--ame-transition);
+}
+
+.ame-btn-sticky-wa:hover {
+	background: #128c7e;
+	color: #fff;
+}
+
+.ame-btn-sticky-add {
+	background: var(--ame-color-navy);
+	color: #fff;
+	padding: 0.6rem 1rem;
+	border-radius: 40px;
+	font-weight: 700;
+	font-size: 0.75rem;
+	text-decoration: none;
+	text-transform: uppercase;
+	letter-spacing: 0.02em;
+}
+
+/* Hide on desktop viewports */
+@media (min-width: 992px) {
+	.ame-sticky-add-to-cart {
+		display: none !important;
+	}
+}
+
+/* ==========================================================================
+   PREMIUM CSS UTILITY CLASSES
+   ========================================================================== */
+
+/* Premium Card Container */
+.ame-card {
+	background: var(--ame-color-white, #ffffff);
+	border: 1px solid var(--ame-color-border, #dbe2ea);
+	border-radius: var(--ame-radius-sm, 8px);
+	padding: 1.25rem;
+	transition: all var(--ame-transition);
+}
+
+/* Shadow elevation levels */
+.ame-elevated {
+	box-shadow: var(--ame-shadow-md, 0 10px 30px rgba(15,23,42,0.06));
+}
+
+/* Glassmorphism Surface effect */
+.ame-glass {
+	background: rgba(255, 255, 255, 0.7);
+	backdrop-filter: blur(12px) saturate(180%);
+	-webkit-backdrop-filter: blur(12px) saturate(180%);
+	border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+/* Premium Gold border accents */
+.ame-premium {
+	border: 1px solid var(--ame-color-gold, #d4af37) !important;
+	background: linear-gradient(180deg, #ffffff 0%, #fdfdfa 100%);
+}
+
+/* Modern hover animation lift */
+.ame-hover-lift {
+	transition: transform var(--ame-transition), box-shadow var(--ame-transition), border-color var(--ame-transition);
+}
+
+.ame-hover-lift:hover {
+	transform: translateY(-2px);
+	box-shadow: var(--ame-shadow-md, 0 10px 30px rgba(15,23,42,0.08));
+	border-color: var(--ame-color-gold, #d4af37);
 }
 
