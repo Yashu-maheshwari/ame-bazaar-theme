@@ -50,11 +50,20 @@ jobs:
             "cp domains/amebazaar.in/public_html/wp-content/themes/ame-bazaar/clear-cache.php domains/amebazaar.in/public_html/clear-cache.php"
           
           echo "Triggering OPCache flush..."
-          curl -X POST -sL https://amebazaar.in/clear-cache.php
+          curl -X POST -sL "https://amebazaar.in/clear-cache.php?token=7fa2e10db708b8b9487c69ea230768b6"
           
           echo "Removing OPCache flusher from web root..."
           ssh -p ${{ secrets.PORT }} -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null ${{ secrets.USERNAME }}@${{ secrets.HOST }} \
             "rm domains/amebazaar.in/public_html/clear-cache.php"
+
+      - name: Warm Cache for Key Pages
+        run: |
+          echo "Warming cache for critical pages..."
+          curl -s -o /dev/null -w "Homepage: %{http_code}\n" https://amebazaar.in/
+          curl -s -o /dev/null -w "Contact Page: %{http_code}\n" https://amebazaar.in/contact/
+          curl -s -o /dev/null -w "Tailoring Page: %{http_code}\n" https://amebazaar.in/tailoring-near-me/
+          curl -s -o /dev/null -w "Mens Category: %{http_code}\n" https://amebazaar.in/product-category/mens-wear/
+          curl -s -o /dev/null -w "Womens Category: %{http_code}\n" https://amebazaar.in/product-category/womens-wear/
 
       - name: Verify Deployed Files on Hostinger
         run: |

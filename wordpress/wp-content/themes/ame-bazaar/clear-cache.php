@@ -2,6 +2,14 @@
 /**
  * OPCache and Page Cache Reset helper script for AME Bazaar.
  */
+
+// Token protection
+$token = isset( $_GET['token'] ) ? sanitize_key( $_GET['token'] ) : '';
+if ( $token !== '7fa2e10db708b8b9487c69ea230768b6' ) {
+	header( 'HTTP/1.1 403 Forbidden' );
+	exit( 'Forbidden: Invalid Token' );
+}
+
 if ( function_exists( 'opcache_reset' ) ) {
 	opcache_reset();
 	echo "OPCache Reset Successful!\n";
