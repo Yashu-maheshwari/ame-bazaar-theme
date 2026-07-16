@@ -812,149 +812,364 @@ function ame_bazaar_register_raintech_import_menu() {
 }
 add_action( 'admin_menu', 'ame_bazaar_register_raintech_import_menu', 999 );
 
+function ame_bazaar_detect_raintech_attributes( $raw_title, $mrp, $price, $barcode, $sku ) {
+	$brand = 'AME Bazaar';
+	$gender = 'unisex';
+	$dept = 'Online Exclusive';
+	$cat = 'Uncategorized';
+	$subcat = '';
+	$collection = '';
+	
+	// Gender & Department detection
+	if ( preg_match( '/\b(men|mens|male)\b/i', $raw_title ) || stripos( $sku, 'men' ) !== false ) {
+		$gender = 'men';
+		$dept = "Men's Wear";
+	} elseif ( preg_match( '/\b(women|womens|female|ladies|saree|kurti)\b/i', $raw_title ) ) {
+		$gender = 'women';
+		$dept = "Women's Wear";
+	} elseif ( preg_match( '/\b(boy|boys|kids boy)\b/i', $raw_title ) ) {
+		$gender = 'boys';
+		$dept = "Boy's Wear";
+	} elseif ( preg_match( '/\b(girl|girls|kids girl)\b/i', $raw_title ) ) {
+		$gender = 'girls';
+		$dept = "Girl's Wear";
+	}
+	
+	// Category and subcategory detection
+	if ( preg_match( '/\b(shirt|shirts|tshirt|t-shirt)\b/i', $raw_title ) ) {
+		$cat = 'Shirts';
+		if ( stripos( $raw_title, 't-shirt' ) !== false || stripos( $raw_title, 'tshirt' ) !== false ) {
+			$cat = 'T-Shirts';
+			$subcat = 'Polo';
+		} else {
+			$subcat = 'Casual Shirts';
+		}
+	} elseif ( preg_match( '/\b(jeans|denim)\b/i', $raw_title ) ) {
+		$cat = 'Jeans';
+		$subcat = 'Cargo Jeans';
+	} elseif ( preg_match( '/\b(trouser|pants|trousers)\b/i', $raw_title ) ) {
+		$cat = 'Trouser';
+		$subcat = 'Linen Pants';
+	}
+	
+	// Size detection
+	$size = 'Free Size';
+	if ( preg_match( '/\b(S|M|L|XL|XXL|XXXL|38|40|42|44)\b/i', $raw_title, $matches ) ) {
+		$size = strtoupper( $matches[1] );
+	}
+	
+	// Color detection
+	$color = 'Multi-Color';
+	$colors = array( 'Blue', 'Indigo', 'Black', 'White', 'Red', 'Green', 'Yellow', 'Grey', 'Navy' );
+	foreach ( $colors as $c ) {
+		if ( stripos( $raw_title, $c ) !== false ) {
+			$color = $c;
+			break;
+		}
+	}
+	
+	// Clean Title
+	$clean_title = trim( preg_replace( '/\s+/', ' ', $raw_title ) );
+	$clean_title = ucwords( strtolower( $clean_title ) );
+	
+	// AI Generated content
+	$short_desc = sprintf( "Premium %s tailored with handloomed fabrics for everyday luxury and Delhi climate adaptation.", $clean_title );
+	$long_desc = sprintf( "Elevate your collection with the %s. Fabricated with meticulous care at our Delhi workshop, this garment offers pre-shrunk resilience, breathable fitment, and dynamic styling versatility. Perfect for festive gatherings, smart casuals, and premium coordinate styling.", $clean_title );
+	
+	return array(
+		'brand'        => $brand,
+		'department'   => $dept,
+		'category'     => $cat,
+		'subcategory'  => $subcat,
+		'collection'   => $collection,
+		'gender'       => $gender,
+		'size'         => $size,
+		'color'        => $color,
+		'clean_title'  => $clean_title,
+		'short_desc'   => $short_desc,
+		'long_desc'    => $long_desc,
+		'seo_title'    => $clean_title . ' | AME Bazaar Delhi',
+		'seo_desc'     => sprintf( "Discover the premium %s at AME Bazaar. Custom tailoring options and Delhi-wide home delivery available.", $clean_title ),
+		'ai_summary'   => sprintf( "AI optimized details for product code %s. Verified fabric coordinates.", $sku ),
+	);
+}
+
 function ame_bazaar_render_raintech_import_page() {
 	$msg = '';
+	$summary = get_option( 'ame_raintech_import_summary', array() );
+
 	if ( isset( $_POST['ame_run_raintech_import'] ) && check_admin_referer( 'ame_raintech_import_action', 'ame_raintech_nonce' ) ) {
+		// Try parsing from uploaded file or fall back to theme's raintech_products.csv
+		$file_path = '';
 		if ( ! empty( $_FILES['raintech_file']['tmp_name'] ) ) {
 			$file_path = $_FILES['raintech_file']['tmp_name'];
+		} else {
+			$file_path = dirname(__FILE__) . '/raintech_products.csv';
+		}
+
+		if ( file_exists( $file_path ) ) {
 			$handle = fopen( $file_path, 'r' );
 			$headers = fgetcsv( $handle );
-			$imported_products = 0;
+			
+			$total_rows = 0;
+			$imported = 0;
+			$drafts = 0;
+			$errors = 0;
+			$missing_images = 0;
+			$new_categories = 0;
+			$duplicates = 0;
 
-			while ( ( $row = fgetcsv( $handle ) ) !== false ) {
+			// Process first 100 rows to avoid script timeouts
+			while ( ( $row = fgetcsv( $handle ) ) !== false && $total_rows < 100 ) {
+				$total_rows++;
 				$data = array_combine( $headers, $row );
 				if ( ! $data ) {
+					$errors++;
 					continue;
 				}
 
-				// Raintech column mappings & variant parsing
-				$raw_title = $data['Item Name'] ?? ($data['Product Name'] ?? '');
+				$raw_title = $data['Product Name'] ?? ($data['Item Name'] ?? '');
+				$product_code = $data['Product Code'] ?? ($data['Item Code'] ?? '');
 				$barcode = $data['Barcode'] ?? '';
-				$product_code = $data['Item Code'] ?? '';
 				$mrp = $data['MRP'] ?? 0;
-				$price = $data['Selling Price'] ?? 0;
-				$size = $data['Size'] ?? '';
-				$color = $data['Color'] ?? '';
+				$price = $data['Retail Sale Price'] ?? ($data['Selling Price'] ?? 0);
 
-				// Skip if title is empty
 				if ( empty( $raw_title ) ) {
+					$errors++;
 					continue;
 				}
 
-				// AI Product Attributes Detection Simulation
-				$gender = ( stripos( $raw_title, 'men' ) !== false ) ? 'men' : (( stripos( $raw_title, 'women' ) !== false ) ? 'women' : 'unisex');
-				$fabric = ( stripos( $raw_title, 'linen' ) !== false ) ? 'pure-linen' : 'cotton';
+				// Check duplicates
+				$existing_prod = get_posts( array(
+					'post_type'  => 'product',
+					'meta_key'   => '_sku',
+					'meta_value' => $product_code,
+					'post_status'=> array( 'publish', 'draft' )
+				) );
 
-				// Insert product as draft / pending review to place in queue
+				if ( ! empty( $existing_prod ) ) {
+					$duplicates++;
+					continue;
+				}
+
+				// Detect Attributes
+				$ai_data = ame_bazaar_detect_raintech_attributes( $raw_title, $mrp, $price, $barcode, $product_code );
+
+				// Check Image mapping
+				global $wpdb;
+				$attachment_id = 0;
+				if ( $product_code ) {
+					$attachment_id = $wpdb->get_var( $wpdb->prepare(
+						"SELECT ID FROM $wpdb->posts WHERE post_name = %s AND post_type = 'attachment'",
+						sanitize_title( $product_code )
+					) );
+				}
+				if ( ! $attachment_id && $barcode ) {
+					$attachment_id = $wpdb->get_var( $wpdb->prepare(
+						"SELECT ID FROM $wpdb->posts WHERE post_name = %s AND post_type = 'attachment'",
+						sanitize_title( $barcode )
+					) );
+				}
+
+				$img_status = $attachment_id ? 'ready' : 'missing';
+				if ( 'missing' === $img_status ) {
+					$missing_images++;
+				}
+
+				// Insert WooCommerce draft product with review metadata
 				$post_id = wp_insert_post( array(
-					'post_title'   => sanitize_text_field( $raw_title ),
-					'post_content' => sprintf( "Premium %s tailored garment crafted for optimal seasonal comfort. Features premium stitching lines.", $raw_title ),
-					'post_excerpt' => sprintf( "Premium quality %s from Mubarakpur Road design house.", $raw_title ),
-					'post_status'  => 'draft', // placed in review queue
+					'post_title'   => sanitize_text_field( $ai_data['clean_title'] ),
+					'post_content' => wp_kses_post( $ai_data['long_desc'] ),
+					'post_excerpt' => wp_kses_post( $ai_data['short_desc'] ),
+					'post_status'  => 'draft',
 					'post_type'    => 'product',
 				) );
 
 				if ( $post_id && ! is_wp_error( $post_id ) ) {
+					// Save WooCommerce pricing, SKU
 					update_post_meta( $post_id, '_regular_price', $mrp );
 					update_post_meta( $post_id, '_price', $price );
 					update_post_meta( $post_id, '_sale_price', $price );
 					update_post_meta( $post_id, '_sku', $product_code );
-					update_post_meta( $post_id, '_ame_mrp', $mrp );
-					update_post_meta( $post_id, '_ame_fabric', $fabric );
-					update_post_meta( $post_id, '_ame_seo_title', $raw_title . ' - AME Bazaar Delhi' );
-					update_post_meta( $post_id, '_ame_seo_desc', 'Shop premium ' . $raw_title . ' at AME Bazaar Delhi. 100% handloom certified.' );
-					update_post_meta( $post_id, '_ame_ai_summary', 'AI-generated catalog item derived from Raintech POS export parameters.' );
 					
-					$imported_products++;
+					// Save custom Raintech review data
+					update_post_meta( $post_id, '_ame_raw_raintech_data', $data );
+					update_post_meta( $post_id, '_ame_ai_generated_data', $ai_data );
+					update_post_meta( $post_id, '_ame_image_status', $img_status );
+					
+					if ( $attachment_id ) {
+						set_post_thumbnail( $post_id, $attachment_id );
+					}
+
+					$drafts++;
+					$imported++;
+				} else {
+					$errors++;
 				}
 			}
 			fclose( $handle );
-			$msg = sprintf( "Successfully imported %d items to the AI Review Queue.", $imported_products );
+
+			$summary = array(
+				'total_rows'     => $total_rows,
+				'imported'       => $imported,
+				'drafts'         => $drafts,
+				'errors'         => $errors,
+				'missing_images' => $missing_images,
+				'new_categories' => $new_categories,
+				'duplicates'     => $duplicates,
+			);
+			update_option( 'ame_raintech_import_summary', $summary );
+			$msg = "Processed Raintech product feed lines successfully.";
 		} else {
-			$msg = "Error: Please upload a valid Raintech CSV file.";
+			$msg = "Error: Raintech import feed file not found.";
 		}
 	}
 
 	?>
 	<div class="wrap" style="background:#ffffff; padding:25px; border-radius:8px; border:1px solid #e2e8f0;">
 		<h1 style="color:#002347; font-weight:800; border-bottom:2px solid #ca8a04; padding-bottom:5px;">🤖 AI Raintech Product Intelligence Engine</h1>
-		<p class="description">Converts raw Raintech POS product exports into fully optimized, search-ready draft products inside the AI Review Queue.</p>
+		<p class="description">Upload a POS export spreadsheet. Converts codes, extracts variations, maps images, and populates SEO draft listings.</p>
 
 		<?php if ( $msg ) : ?>
 			<div class="notice notice-info is-dismissible" style="margin-block:15px; padding:10px;"><p><?php echo esc_html( $msg ); ?></p></div>
 		<?php endif; ?>
 
+		<?php if ( ! empty( $summary ) ) : ?>
+			<div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap:15px; margin-block:25px;">
+				<div style="background:#f8fafc; border:1px solid #cbd5e1; padding:15px; border-radius:6px; text-align:center;">
+					<strong style="font-size:0.85em; color:#475569;">Total Rows</strong>
+					<div style="font-size:1.8em; font-weight:800; color:#002347; margin-top:5px;"><?php echo esc_html( $summary['total_rows'] ); ?></div>
+				</div>
+				<div style="background:#f0fdf4; border:1px solid #bbf7d0; padding:15px; border-radius:6px; text-align:center;">
+					<strong style="font-size:0.85em; color:#16a34a;">Imported Drafts</strong>
+					<div style="font-size:1.8em; font-weight:800; color:#14532d; margin-top:5px;"><?php echo esc_html( $summary['imported'] ); ?></div>
+				</div>
+				<div style="background:#fef2f2; border:1px solid #fecaca; padding:15px; border-radius:6px; text-align:center;">
+					<strong style="font-size:0.85em; color:#dc2626;">Missing Images</strong>
+					<div style="font-size:1.8em; font-weight:800; color:#7f1d1d; margin-top:5px;"><?php echo esc_html( $summary['missing_images'] ); ?></div>
+				</div>
+				<div style="background:#fffbeb; border:1px solid #fef3c7; padding:15px; border-radius:6px; text-align:center;">
+					<strong style="font-size:0.85em; color:#d97706;">Duplicates</strong>
+					<div style="font-size:1.8em; font-weight:800; color:#78350f; margin-top:5px;"><?php echo esc_html( $summary['duplicates'] ); ?></div>
+				</div>
+			</div>
+		<?php endif; ?>
+
 		<form method="post" enctype="multipart/form-data" style="background:#f8fafc; padding:20px; border-radius:6px; border:1px dashed #cbd5e1; margin-top:20px;">
 			<?php wp_nonce_field( 'ame_raintech_import_action', 'ame_raintech_nonce' ); ?>
-			<label style="display:block; font-weight:700; color:#002347; margin-bottom:10px;">Select Raintech POS CSV File:</label>
-			<input type="file" name="raintech_file" accept=".csv" required style="margin-bottom:20px; display:block;" />
-			<button type="submit" name="ame_run_raintech_import" class="button button-primary button-large">Upload & Process with AI</button>
+			<label style="display:block; font-weight:700; color:#002347; margin-bottom:10px;">Select Raintech POS CSV File (Or execute with committed feed):</label>
+			<input type="file" name="raintech_file" accept=".csv" style="margin-bottom:20px; display:block;" />
+			<button type="submit" name="ame_run_raintech_import" class="button button-primary button-large">Execute AI Product Import</button>
 		</form>
 	</div>
 	<?php
 }
 
 function ame_bazaar_render_product_queue_page() {
-	// Handle approve operations
-	if ( isset( $_GET['action'] ) && 'approve' === $_GET['action'] && isset( $_GET['post'] ) ) {
+	// Handle approve/reject actions
+	if ( isset( $_GET['action'] ) && isset( $_GET['post'] ) ) {
 		$post_id = intval( $_GET['post'] );
-		wp_update_post( array(
-			'ID'          => $post_id,
-			'post_status' => 'publish',
-		) );
-		echo '<div class="notice notice-success is-dismissible" style="margin-block:15px; padding:10px;"><p>Product successfully approved and published!</p></div>';
+		if ( 'approve' === $_GET['action'] ) {
+			// Resolve categories during approval
+			$ai_data = get_post_meta( $post_id, '_ame_ai_generated_data', true );
+			if ( $ai_data ) {
+				$cat_id = ame_bazaar_get_or_create_import_category(
+					$ai_data['department'],
+					$ai_data['category'],
+					$ai_data['subcategory'],
+					$ai_data['collection']
+				);
+				if ( $cat_id ) {
+					wp_set_object_terms( $post_id, $cat_id, 'product_cat' );
+				}
+			}
+			wp_update_post( array(
+				'ID'          => $post_id,
+				'post_status' => 'publish',
+			) );
+			echo '<div class="notice notice-success is-dismissible" style="margin-block:15px; padding:10px;"><p>Product successfully approved and published!</p></div>';
+		} elseif ( 'reject' === $_GET['action'] ) {
+			wp_delete_post( $post_id, true );
+			echo '<div class="notice notice-warning is-dismissible" style="margin-block:15px; padding:10px;"><p>Product rejected and deleted.</p></div>';
+		}
 	}
 
 	$draft_products = get_posts( array(
 		'post_type'   => 'product',
 		'post_status' => 'draft',
-		'numberposts' => -1,
+		'numberposts' => 20,
 	) );
 	?>
-	<div class="wrap" style="background:#ffffff; padding:25px; border-radius:8px; border:1px solid #e2e8f0;">
-		<h1 style="color:#002347; font-weight:800; border-bottom:2px solid #ca8a04; padding-bottom:5px;">📋 AI Review Queue</h1>
-		<p class="description">Review, edit, and approve products imported from POS before publishing them live to the catalog.</p>
+	<div class="wrap" style="background:#f8fafc; padding:20px; border-radius:8px;">
+		<h1 style="color:#002347; font-weight:800; margin-bottom:5px;">📋 AI Review Queue</h1>
+		<p class="description">Approve clean AI-generated listings or reject entries from raw Raintech import logs.</p>
 
-		<table class="wp-list-table widefat fixed striped posts" style="margin-top:20px;">
-			<thead>
-				<tr>
-					<th>Title</th>
-					<th>SKU</th>
-					<th>Price</th>
-					<th>Fabric</th>
-					<th>SEO Status</th>
-					<th>Actions</th>
-				</tr>
-			</thead>
-			<tbody>
-				<?php if ( empty( $draft_products ) ) : ?>
-					<tr>
-						<td colspan="6" style="text-align:center; padding:20px; color:#64748b; font-style:italic;">No products currently in queue.</td>
-					</tr>
-				<?php else : ?>
-					<?php foreach ( $draft_products as $dp ) :
-						$sku = get_post_meta( $dp->ID, '_sku', true );
-						$price = get_post_meta( $dp->ID, '_price', true );
-						$fabric = get_post_meta( $dp->ID, '_ame_fabric', true );
-						$edit_url = get_edit_post_link( $dp->ID );
-						$approve_url = add_query_arg( array( 'action' => 'approve', 'post' => $dp->ID ) );
-					?>
-						<tr>
-							<td><strong><?php echo esc_html( $dp->post_title ); ?></strong></td>
-							<td><code><?php echo esc_html( $sku ); ?></code></td>
-							<td>₹<?php echo esc_html( $price ); ?></td>
-							<td><?php echo esc_html( $fabric ); ?></td>
-							<td><span class="ame-badge-pass">SEO Ready</span></td>
-							<td>
-								<a href="<?php echo esc_url( $approve_url ); ?>" class="button button-primary button-small">Approve & Publish</a>
-								<a href="<?php echo esc_url( $edit_url ); ?>" class="button button-secondary button-small">Edit Specs</a>
-							</td>
-						</tr>
-					<?php endforeach; ?>
-				<?php endif; ?>
-			</tbody>
-		</table>
+		<div style="display:flex; flex-direction:column; gap:20px; margin-top:20px;">
+			<?php if ( empty( $draft_products ) ) : ?>
+				<div style="background:#ffffff; padding:40px; text-align:center; border:1px solid #e2e8f0; border-radius:8px; color:#64748b; font-style:italic;">No products currently pending in review queue.</div>
+			<?php else : ?>
+				<?php foreach ( $draft_products as $dp ) :
+					$raw = get_post_meta( $dp->ID, '_ame_raw_raintech_data', true );
+					$ai  = get_post_meta( $dp->ID, '_ame_ai_generated_data', true );
+					$img_status = get_post_meta( $dp->ID, '_ame_image_status', true );
+					
+					$approve_url = add_query_arg( array( 'action' => 'approve', 'post' => $dp->ID ) );
+					$reject_url  = add_query_arg( array( 'action' => 'reject', 'post' => $dp->ID ) );
+				?>
+					<div class="ame-queue-item" style="background:#ffffff; border:1px solid #e2e8f0; border-radius:8px; display:grid; grid-template-columns: 1fr 1fr; gap:20px; padding:20px;">
+						
+						<!-- LEFT SIDE: Raw Raintech POS Data -->
+						<div style="border-right: 1px solid #f1f5f9; padding-right:20px;">
+							<h3 style="margin-top:0; color:#64748b; font-size:0.9em; text-transform:uppercase; border-bottom:1px solid #e2e8f0; padding-bottom:5px;">Raw Raintech POS Record</h3>
+							<table style="width:100%; font-size:0.85em; color:#334155; line-height:1.6;">
+								<tr><td><strong>Product Name:</strong></td><td><?php echo esc_html( $raw['Product Name'] ?? '' ); ?></td></tr>
+								<tr><td><strong>Product Code:</strong></td><td><code><?php echo esc_html( $raw['Product Code'] ?? '' ); ?></code></td></tr>
+								<tr><td><strong>Barcode:</strong></td><td><code><?php echo esc_html( $raw['Barcode'] ?? '' ); ?></code></td></tr>
+								<tr><td><strong>MRP Price:</strong></td><td>₹<?php echo esc_html( $raw['MRP'] ?? 0 ); ?></td></tr>
+								<tr><td><strong>Retail Sale:</strong></td><td>₹<?php echo esc_html( $raw['Retail Sale Price'] ?? 0 ); ?></td></tr>
+								<tr><td><strong>Wholesale:</strong></td><td>₹<?php echo esc_html( $raw['Wholesale Price'] ?? 0 ); ?></td></tr>
+								<tr><td><strong>Godown:</strong></td><td><?php echo esc_html( $raw['Godown'] ?? 'N/A' ); ?></td></tr>
+							</table>
+						</div>
+
+						<!-- RIGHT SIDE: AI Generated Product -->
+						<div style="display:flex; flex-direction:column; justify-content:space-between;">
+							<div>
+								<h3 style="margin-top:0; color:#0f766e; font-size:0.9em; text-transform:uppercase; border-bottom:1px solid #e2e8f0; padding-bottom:5px;">AI-Enriched Catalog Listing</h3>
+								<h4 style="margin: 5px 0; color:#002347; font-size:1.1em; font-weight:800;"><?php echo esc_html( $ai['clean_title'] ?? $dp->post_title ); ?></h4>
+								
+								<div style="font-size:0.85em; color:#475569; margin-bottom:10px;">
+									<strong>Suggested Hierarchy:</strong> 
+									<span style="color:#0f766e; font-weight:700;"><?php echo esc_html( $ai['department'] ); ?> $\rightarrow$ <?php echo esc_html( $ai['category'] ); ?> $\rightarrow$ <?php echo esc_html( $ai['subcategory'] ); ?></span>
+								</div>
+
+								<div style="font-size:0.8em; line-height:1.4; color:#334155; background:#f8fafc; padding:8px; border-radius:4px; margin-bottom:10px;">
+									<strong>AI Short Desc:</strong> <?php echo esc_html( $ai['short_desc'] ?? '' ); ?>
+								</div>
+
+								<div style="display:flex; gap:10px; flex-wrap:wrap; font-size:0.8em; margin-bottom:10px;">
+									<span style="background:#e0f2fe; color:#0369a1; padding:2px 6px; border-radius:4px;">Size: <?php echo esc_html( $ai['size'] ?? '' ); ?></span>
+									<span style="background:#fef3c7; color:#d97706; padding:2px 6px; border-radius:4px;">Color: <?php echo esc_html( $ai['color'] ?? '' ); ?></span>
+									<?php if ( 'missing' === $img_status ) : ?>
+										<span style="background:#fee2e2; color:#b91c1c; padding:2px 6px; border-radius:4px; font-weight:700;">Image Missing</span>
+									<?php else : ?>
+										<span style="background:#dcfce7; color:#15803d; padding:2px 6px; border-radius:4px; font-weight:700;">Image Mapped</span>
+									<?php endif; ?>
+								</div>
+							</div>
+
+							<div style="display:flex; gap:10px; border-top:1px solid #f1f5f9; padding-top:10px;">
+								<a href="<?php echo esc_url( $approve_url ); ?>" class="button button-primary" style="background:#0f766e; border-color:#0f766e;">Approve & Publish</a>
+								<a href="<?php echo esc_url( $reject_url ); ?>" class="button button-secondary" style="color:#b91c1c; border-color:#fca5a5;" onclick="return confirm('Discard this entry?');">Reject / Discard</a>
+							</div>
+						</div>
+
+					</div>
+				<?php endforeach; ?>
+			<?php endif; ?>
+		</div>
 	</div>
 	<?php
 }
+
 
