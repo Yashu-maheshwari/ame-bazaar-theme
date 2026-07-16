@@ -1340,8 +1340,7 @@ function ame_bazaar_api_run_import_verification( $request ) {
 			$meta_data[ $dept->slug ] = array(
 				'term_id' => $dept->term_id,
 				'name'    => $dept->name,
-				'_ame_homepage_card' => get_term_meta( $dept->term_id, '_ame_homepage_card', true ),
-				'_ame_category_banner' => get_term_meta( $dept->term_id, '_ame_category_banner', true ),
+				'all_meta' => get_term_meta( $dept->term_id ),
 			);
 		}
 		return new WP_REST_Response( $meta_data, 200 );
