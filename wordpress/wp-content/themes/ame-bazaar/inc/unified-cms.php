@@ -812,6 +812,30 @@ function ame_bazaar_register_raintech_import_menu() {
 }
 add_action( 'admin_menu', 'ame_bazaar_register_raintech_import_menu', 999 );
 
+function ame_bazaar_get_or_create_import_category( $dept, $cat, $subcat = '', $collection = '' ) {
+	$parent_id = 0;
+	$levels = array_filter( array( $dept, $cat, $subcat, $collection ) );
+	foreach ( $levels as $lvl ) {
+		$term = get_term_by( 'name', $lvl, 'product_cat' );
+		if ( $term ) {
+			$parent_id = $term->term_id;
+		} else {
+			$new_term = wp_insert_term( $lvl, 'product_cat', array(
+				'parent' => $parent_id,
+			) );
+			if ( ! is_wp_error( $new_term ) ) {
+				$parent_id = $new_term['term_id'];
+			} else {
+				$existing = get_term_by( 'slug', sanitize_title( $lvl ), 'product_cat' );
+				if ( $existing ) {
+					$parent_id = $existing->term_id;
+				}
+			}
+		}
+	}
+	return $parent_id;
+}
+
 function ame_bazaar_detect_raintech_attributes( $raw_title, $mrp, $price, $barcode, $sku ) {
 	$brand = 'AME Bazaar';
 	$gender = 'unisex';
