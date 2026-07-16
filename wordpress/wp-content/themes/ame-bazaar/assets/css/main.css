@@ -6238,116 +6238,173 @@
 }
 
 /* ==========================================================================
-   PHASE 15 - Step 2: Minimalist Zara-Style Premium Hero
+   PHASE 15 - Step 2: Art-Directed Luxury Campaign Hero
    ========================================================================== */
 
-.ame-zara-hero {
+.ame-luxury-hero {
 	position: relative;
 	width: 100%;
 	height: 100vh;
-	min-height: 600px;
+	min-height: 700px;
 	overflow: hidden;
 	display: flex;
-	flex-direction: column;
-	background-color: #f7f7f7;
+	align-items: center; /* Center vertically */
+	background-color: #111;
 }
 
-/* Full Bleed Image Canvas */
-.ame-zara-hero__bg {
+/* 1. Cinematic Campaign Canvas */
+.ame-luxury-hero__canvas {
 	position: absolute;
 	top: 0;
 	left: 0;
 	width: 100%;
 	height: 100%;
 	z-index: 1;
+	margin: 0;
 }
 
-.ame-zara-hero__img {
+.ame-luxury-hero__image {
 	width: 100%;
 	height: 100%;
 	object-fit: cover;
 	object-position: center;
 	display: block;
+	animation: luxuryBreathe 25s ease-out forwards;
 }
 
-.ame-zara-hero__fallback {
+@keyframes luxuryBreathe {
+	from { transform: scale(1.08); }
+	to { transform: scale(1); }
+}
+
+.ame-luxury-hero__void {
 	width: 100%;
-	height: 100vh;
-	background-color: #E5E7EB;
+	height: 100%;
+	background-color: #f7f7f7;
 }
 
-/* Minimalist Content Overlay */
-.ame-zara-hero__content {
+/* Optional vignette, kept ultra-light */
+.ame-luxury-hero__canvas::after {
+	content: '';
 	position: absolute;
-	bottom: 0;
+	top: 0;
 	left: 0;
 	width: 100%;
-	padding: 4rem 2rem;
-	z-index: 2;
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	text-align: center;
-	background: linear-gradient(to top, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0) 100%);
+	height: 100%;
+	background: linear-gradient(to right, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0) 40%);
+	pointer-events: none;
 }
 
-.ame-zara-hero__title {
+/* 2. Editorial Typography Matrix */
+.ame-luxury-hero__editorial {
+	position: relative;
+	z-index: 2;
+	width: 100%;
+	padding: 0 10vw; /* Massive inset margin */
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start; /* Left anchor */
+	animation: luxuryFadeInUp 1.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes luxuryFadeInUp {
+	from { opacity: 0; transform: translateY(40px); }
+	to { opacity: 1; transform: translateY(0); }
+}
+
+.ame-luxury-hero__season {
 	font-family: 'Inter', sans-serif;
-	font-size: 1.8rem;
-	font-weight: 300;
-	letter-spacing: 0.15em;
-	color: #ffffff;
+	font-size: 0.75rem;
+	font-weight: 500;
+	letter-spacing: 0.3em;
+	color: rgba(255, 255, 255, 0.8);
 	text-transform: uppercase;
 	margin-bottom: 2rem;
 }
 
-/* Luxury Minimal Buttons */
-.ame-zara-hero__actions {
-	display: flex;
-	gap: 2rem;
-	justify-content: center;
+.ame-luxury-hero__title {
+	font-family: 'Outfit', 'Playfair Display', serif; /* Simulating high-fashion grotesque/serif */
+	font-size: 6rem;
+	font-weight: 200;
+	line-height: 1;
+	letter-spacing: -0.04em;
+	color: #ffffff;
+	margin-bottom: 3rem;
+	text-shadow: 0 4px 20px rgba(0,0,0,0.1);
 }
 
-.ame-zara-btn {
+/* 3. Luxury Actions */
+.ame-luxury-hero__actions {
+	display: flex;
+	gap: 3rem;
+}
+
+.ame-luxury-link {
 	font-family: 'Inter', sans-serif;
-	font-size: 0.8rem;
+	font-size: 0.75rem;
 	font-weight: 500;
-	letter-spacing: 0.1em;
+	letter-spacing: 0.15em;
 	color: #ffffff;
 	text-transform: uppercase;
 	text-decoration: none;
-	padding-bottom: 4px;
-	border-bottom: 1px solid rgba(255,255,255,0.4);
-	transition: border-color 0.3s ease;
+	padding-bottom: 0.5rem;
+	position: relative;
 }
 
-.ame-zara-btn:hover {
-	border-bottom: 1px solid rgba(255,255,255,1);
+.ame-luxury-link::after {
+	content: '';
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	width: 100%;
+	height: 1px;
+	background-color: rgba(255, 255, 255, 0.3);
+	transition: background-color 0.4s ease;
+}
+
+.ame-luxury-link:hover::after {
+	background-color: rgba(255, 255, 255, 1);
 }
 
 /* RESPONSIVE */
 @media (max-width: 1024px) {
-	.ame-zara-hero__title {
-		font-size: 1.5rem;
+	.ame-luxury-hero__title {
+		font-size: 4.5rem;
+	}
+	.ame-luxury-hero__editorial {
+		padding: 0 5vw;
 	}
 }
 
 @media (max-width: 768px) {
-	.ame-zara-hero__content {
-		padding: 3rem 1.5rem;
+	.ame-luxury-hero {
+		align-items: flex-end; /* Push to bottom on mobile */
+		padding-bottom: 5rem;
+	}
+	
+	.ame-luxury-hero__canvas::after {
+		background: linear-gradient(to top, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0) 60%);
 	}
 
-	.ame-zara-hero__title {
-		font-size: 1.25rem;
-		margin-bottom: 1.5rem;
+	.ame-luxury-hero__editorial {
+		padding: 0 2rem;
+		align-items: center; /* Center on mobile for impact */
+		text-align: center;
 	}
 
-	.ame-zara-hero__actions {
+	.ame-luxury-hero__season {
+		margin-bottom: 1rem;
+	}
+
+	.ame-luxury-hero__title {
+		font-size: 3.5rem;
+		margin-bottom: 2rem;
+	}
+
+	.ame-luxury-hero__actions {
+		flex-direction: column;
 		gap: 1.5rem;
-	}
-
-	.ame-zara-btn {
-		font-size: 0.75rem;
+		align-items: center;
 	}
 }
 
