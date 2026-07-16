@@ -1295,7 +1295,10 @@ function ame_bazaar_api_run_import_verification() {
 		$before_products_count = count( get_posts( array( 'post_type' => 'product', 'post_status' => array( 'publish', 'draft' ), 'numberposts' => -1 ) ) );
 	}
 
-	// 2. Perform the import of first 20 rows
+	$offset = isset( $_GET['offset'] ) ? intval( $_GET['offset'] ) : 0;
+	$limit  = isset( $_GET['limit'] ) ? intval( $_GET['limit'] ) : 200;
+
+	// 2. Perform the import
 	$file_path = dirname(__FILE__) . '/raintech_products.csv';
 	$imported_products_list = array();
 	$summary = array();
@@ -1311,12 +1314,22 @@ function ame_bazaar_api_run_import_verification() {
 		$missing_images = 0;
 		$new_categories = 0;
 		$duplicates = 0;
+		$skipped_reasons = array();
 
-		while ( ( $row = fgetcsv( $handle ) ) !== false && $total_rows < 20 ) {
+		// Skip rows up to offset
+		for ( $i = 0; $i < $offset; $i++ ) {
+			if ( fgetcsv( $handle ) === false ) {
+				break;
+			}
+			$total_rows++;
+		}
+
+		while ( ( $row = fgetcsv( $handle ) ) !== false && $imported < $limit ) {
 			$total_rows++;
 			$data = array_combine( $headers, $row );
 			if ( ! $data ) {
 				$errors++;
+				$skipped_reasons[] = array( 'row' => $total_rows, 'reason' => 'Invalid columns format' );
 				continue;
 			}
 
@@ -1330,6 +1343,7 @@ function ame_bazaar_api_run_import_verification() {
 
 			if ( empty( $raw_title ) ) {
 				$errors++;
+				$skipped_reasons[] = array( 'row' => $total_rows, 'reason' => 'Missing product name' );
 				continue;
 			}
 
@@ -1343,6 +1357,7 @@ function ame_bazaar_api_run_import_verification() {
 
 			if ( ! empty( $existing_prod ) ) {
 				$duplicates++;
+				$skipped_reasons[] = array( 'row' => $total_rows, 'sku' => $product_code, 'reason' => 'Duplicate Product SKU' );
 				continue;
 			}
 
@@ -1448,6 +1463,7 @@ function ame_bazaar_api_run_import_verification() {
 			'new_categories_created' => ($after_categories_count - $before_categories_count),
 		),
 		'summary'  => $summary,
+		'skipped_reasons' => $skipped_reasons,
 		'products' => $imported_products_list,
 	), 200 );
 }
