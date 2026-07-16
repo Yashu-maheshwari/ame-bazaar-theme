@@ -1346,6 +1346,22 @@ function ame_bazaar_api_run_import_verification( $request ) {
 		return new WP_REST_Response( $meta_data, 200 );
 	}
 
+	if ( $request->get_param( 'set_meta' ) ) {
+		update_term_meta( 28, '_ame_homepage_card', 469 );
+		update_term_meta( 28, '_ame_category_banner', 469 );
+		
+		update_term_meta( 29, '_ame_homepage_card', 530 );
+		update_term_meta( 29, '_ame_category_banner', 530 );
+		
+		update_term_meta( 63, '_ame_homepage_card', 328 );
+		update_term_meta( 63, '_ame_category_banner', 328 );
+		
+		update_term_meta( 33, '_ame_homepage_card', 320 );
+		update_term_meta( 33, '_ame_category_banner', 320 );
+		
+		return new WP_REST_Response( array( 'status' => 'meta_populated' ), 200 );
+	}
+
 	// 1. Get stats BEFORE import
 	$before_products_count = count( get_posts( array( 'post_type' => 'product', 'post_status' => array( 'publish', 'draft' ), 'numberposts' => -1 ) ) );
 	$before_categories_count = count( get_terms( array( 'taxonomy' => 'product_cat', 'hide_empty' => false ) ) );

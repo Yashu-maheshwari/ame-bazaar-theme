@@ -94,23 +94,9 @@ $categories = array(
 						) );
 					}
 
-					// Fallback to default thumbnail or customizer option
+					// Fallback to default thumbnail if empty
 					if ( empty( $img_html ) ) {
-						$customizer_url = get_theme_mod( 'ame_bazaar_img_' . $key );
-						if ( $customizer_url ) {
-							$attachment_id = attachment_url_to_postid( $customizer_url );
-							if ( $attachment_id ) {
-								$img_html = wp_get_attachment_image( $attachment_id, 'medium_large', false, array(
-									'class'   => 'ame-category-img',
-									'loading' => 'lazy',
-									'alt'     => esc_attr( sprintf( __( '%s - AME Bazaar Premium Collection', 'ame-bazaar' ), $label ) ),
-								) );
-							} else {
-								$img_html = '<img src="' . esc_url( $customizer_url ) . '" alt="' . esc_attr( sprintf( __( '%s - AME Bazaar Premium Collection', 'ame-bazaar' ), $label ) ) . '" class="ame-category-img" loading="lazy">';
-							}
-						} else {
-							$img_html = '<img src="' . esc_url( wc_placeholder_img_src() ) . '" alt="' . esc_attr( sprintf( __( '%s - AME Bazaar Premium Collection', 'ame-bazaar' ), $label ) ) . '" class="ame-category-img" loading="lazy">';
-						}
+						$img_html = '<img src="' . esc_url( wc_placeholder_img_src() ) . '" alt="' . esc_attr( sprintf( __( '%s - AME Bazaar Premium Collection', 'ame-bazaar' ), $label ) ) . '" class="ame-category-img" loading="lazy">';
 					}
 					?>
 					<article class="ame-category-card">
