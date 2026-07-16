@@ -1352,8 +1352,19 @@ function ame_bazaar_api_run_import_verification( $request ) {
 
 	if ( $request->get_param( 'set_meta' ) ) {
 		delete_option( 'ame_taxonomy_migration_completed' );
+		delete_option( 'ame_taxonomy_backup' );
 		if ( function_exists( 'ame_bazaar_bootstrap_categories' ) ) {
 			ame_bazaar_bootstrap_categories();
+		}
+		
+		// Clean term cache for all product_cat terms to rebuild parent-child maps
+		$term_ids = get_terms( array(
+			'taxonomy'   => 'product_cat',
+			'hide_empty' => false,
+			'fields'     => 'ids',
+		) );
+		if ( ! is_wp_error( $term_ids ) && ! empty( $term_ids ) ) {
+			clean_term_cache( $term_ids, 'product_cat' );
 		}
 		
 		$kids_term = get_term_by( 'slug', 'kids-wear', 'product_cat' );
@@ -1376,7 +1387,9 @@ function ame_bazaar_api_run_import_verification( $request ) {
 			update_term_meta( $kids_id, '_ame_category_banner', 198 );
 		}
 		
-		return new WP_REST_Response( array( 'status' => 'meta_populated', 'kids_id' => $kids_id ), 200 );
+		delete_transient( 'ame_bazaar_store_stats' );
+		
+		return new WP_REST_Response( array( 'status' => 'meta_populated', 'kids_id' => $kids_id, 'all_ids' => $term_ids ), 200 );
 	}
 
 	if ( $request->get_param( 'dump_file' ) ) {
