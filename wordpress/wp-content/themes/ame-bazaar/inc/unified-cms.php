@@ -1,6 +1,6 @@
 <?php
 /**
- * Unified AI-First Business CMS & Operations Layer.
+ * Unified AI-First Business CMS & Operations Layer (Polished).
  *
  * @package Ame_Bazaar
  */
@@ -10,14 +10,74 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
+ * Enqueue Admin UI polishing styles & scripts
+ */
+function ame_bazaar_cms_admin_assets() {
+	?>
+	<style type="text/style">
+		/* General Admin CSS Tweaks for Premium CMS Layout */
+		.ame-media-card-uploader {
+			border: 1px solid #e2e8f0 !important;
+			padding: 18px !important;
+			border-radius: 8px !important;
+			background: #ffffff !important;
+			box-shadow: 0 1px 3px rgba(0,0,0,0.02) !important;
+			margin-bottom: 20px !important;
+			transition: all 0.2s ease-in-out;
+		}
+		.ame-media-card-uploader:hover {
+			border-color: #cbd5e1 !important;
+			box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05) !important;
+		}
+		.ame-machine-key-badge {
+			display: inline-block;
+			background: #e0f2fe;
+			color: #0369a1;
+			font-family: monospace;
+			font-size: 0.8em;
+			padding: 2px 6px;
+			border-radius: 4px;
+			margin-left: 8px;
+		}
+		.ame-preview-sim-box {
+			background: #f8fafc;
+			border: 1px dashed #ca8a04;
+			padding: 15px;
+			border-radius: 8px;
+			margin-bottom: 25px;
+		}
+		.ame-badge-pass {
+			background: #dcfce7;
+			color: #15803d;
+			font-weight: bold;
+			padding: 2px 6px;
+			border-radius: 4px;
+			font-size: 0.85em;
+		}
+		.ame-badge-warning {
+			background: #fef3c7;
+			color: #b45309;
+			font-weight: bold;
+			padding: 2px 6px;
+			border-radius: 4px;
+			font-size: 0.85em;
+		}
+	</style>
+	<?php
+}
+add_action( 'admin_head', 'ame_bazaar_cms_admin_assets' );
+
+/**
  * 1. UNIFIED CATEGORY MANAGEMENT & PREVIEW SIMULATOR
  * Add custom uploader cards, machine-readable keys, previews and repeatable FAQs.
  */
 function ame_bazaar_unified_category_fields() {
 	?>
 	<div class="form-field term-group">
-		<h2><?php esc_html_e( 'AME Bazaar Retail Showroom & AI Settings', 'ame-bazaar' ); ?></h2>
-		<p class="description"><?php esc_html_e( 'Manage all category assets and metadata. Settings configured here synchronize automatically across all visual channels.', 'ame-bazaar' ); ?></p>
+		<h2 style="color: #002347; font-weight: 700; border-bottom: 2px solid #ca8a04; padding-bottom: 5px;">
+			🎨 AME Bazaar Showroom & Banners Manager
+		</h2>
+		<p class="description"><?php esc_html_e( 'Non-technical dashboard to manage all category assets and metadata. Settings configured here synchronize automatically across all visual channels.', 'ame-bazaar' ); ?></p>
 	</div>
 
 	<!-- uploader card template helper -->
@@ -52,7 +112,10 @@ function ame_bazaar_unified_category_fields() {
 	foreach ( $media_cards as $key => $data ) :
 	?>
 		<div class="form-field ame-media-card-uploader" style="border: 1px solid #e2e8f0; padding: 15px; border-radius: 6px; background: #f8fafc; margin-bottom: 15px;">
-			<label style="font-weight: 700; color: #002347; margin-bottom: 5px;"><?php echo esc_html( $data['label'] ); ?></label>
+			<label style="font-weight: 700; color: #002347; margin-bottom: 5px;">
+				<?php echo esc_html( $data['label'] ); ?>
+				<span class="ame-machine-key-badge" title="AI Agent Field Key"><?php echo esc_html( $key ); ?></span>
+			</label>
 			<input type="hidden" name="<?php echo esc_attr( $key ); ?>" id="<?php echo esc_attr( $key ); ?>" class="ame-machine-key" data-key="<?php echo esc_attr( $key ); ?>" value="" />
 			
 			<div id="preview-<?php echo esc_attr( $key ); ?>" style="margin-block: 10px;">
@@ -192,8 +255,10 @@ function ame_bazaar_unified_category_edit_fields( $term ) {
 	?>
 	<tr class="form-field">
 		<th scope="row" colspan="2" style="padding-left:0;">
-			<h2><?php esc_html_e( 'AME Bazaar Retail Showroom & AI Settings', 'ame-bazaar' ); ?></h2>
-			<p class="description"><?php esc_html_e( 'Manage all category assets and metadata. Settings configured here synchronize automatically across all visual channels.', 'ame-bazaar' ); ?></p>
+			<h2 style="color: #002347; font-weight: 700; border-bottom: 2px solid #ca8a04; padding-bottom: 5px;">
+				🎨 AME Bazaar Showroom & Banners Manager
+			</h2>
+			<p class="description"><?php esc_html_e( 'Non-technical dashboard to manage all category assets and metadata. Settings configured here synchronize automatically across all visual channels.', 'ame-bazaar' ); ?></p>
 		</th>
 	</tr>
 
@@ -203,7 +268,10 @@ function ame_bazaar_unified_category_edit_fields( $term ) {
 		$img_url = $val ? wp_get_attachment_image_url( $val, 'medium' ) : '';
 	?>
 		<tr class="form-field">
-			<th scope="row"><label><?php echo esc_html( $label ); ?></label></th>
+			<th scope="row">
+				<label><?php echo esc_html( $label ); ?></label>
+				<span class="ame-machine-key-badge"><?php echo esc_html( $key ); ?></span>
+			</th>
 			<td>
 				<input type="hidden" name="<?php echo esc_attr( $key ); ?>" id="<?php echo esc_attr( $key ); ?>" value="<?php echo esc_attr( $val ); ?>" />
 				<div id="preview-<?php echo esc_attr( $key ); ?>" style="margin-bottom:10px;">
