@@ -73,7 +73,7 @@ $categories = array(
 			$departments = get_terms( array(
 				'taxonomy'   => 'product_cat',
 				'parent'     => 0,
-				'hide_empty' => true,
+				'hide_empty' => false,
 			) );
 
 			if ( ! is_wp_error( $departments ) && ! empty( $departments ) ) :
@@ -83,9 +83,27 @@ $categories = array(
 						continue;
 					}
 					
+					// Hide categories without image
 					$homepage_card_id = get_term_meta( $dept->term_id, '_ame_homepage_card', true );
 					if ( empty( $homepage_card_id ) ) {
-						continue; // Hide categories without image
+						continue;
+					}
+					
+					// Calculate total products recursively including children
+					$total_products = $dept->count;
+					$child_ids = get_term_children( $dept->term_id, 'product_cat' );
+					if ( ! is_wp_error( $child_ids ) && ! empty( $child_ids ) ) {
+						foreach ( $child_ids as $c_id ) {
+							$c_term = get_term( $c_id, 'product_cat' );
+							if ( $c_term && ! is_wp_error( $c_term ) ) {
+								$total_products += $c_term->count;
+							}
+						}
+					}
+					
+					// Hide categories without products
+					if ( $total_products === 0 ) {
+						continue;
 					}
 					
 					$label = $dept->name;
