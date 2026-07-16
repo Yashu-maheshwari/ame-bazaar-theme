@@ -979,6 +979,7 @@ function ame_bazaar_render_raintech_import_page() {
 	$summary = get_option( 'ame_raintech_import_summary', array() );
 
 	if ( isset( $_POST['ame_run_raintech_import'] ) && check_admin_referer( 'ame_raintech_import_action', 'ame_raintech_nonce' ) ) {
+		@set_time_limit( 600 );
 		// Try parsing from uploaded file or fall back to theme's raintech_products.csv
 		$file_path = '';
 		if ( ! empty( $_FILES['raintech_file']['tmp_name'] ) ) {
@@ -999,8 +1000,8 @@ function ame_bazaar_render_raintech_import_page() {
 			$new_categories = 0;
 			$duplicates = 0;
 
-			// Process first 100 rows to avoid script timeouts
-			while ( ( $row = fgetcsv( $handle ) ) !== false && $total_rows < 100 ) {
+			// Process first 500 rows for production scale
+			while ( ( $row = fgetcsv( $handle ) ) !== false && $total_rows < 500 ) {
 				$total_rows++;
 				$data = array_combine( $headers, $row );
 				if ( ! $data ) {
@@ -1060,7 +1061,7 @@ function ame_bazaar_render_raintech_import_page() {
 
 				// Insert WooCommerce draft product with review metadata
 				$post_id = wp_insert_post( array(
-					'post_title'   => sanitize_text_field( $ai_data['clean_title'] ),
+					'post_title'   => sanitize_text_field( $raw_title ),
 					'post_content' => wp_kses_post( $ai_data['long_desc'] ),
 					'post_excerpt' => wp_kses_post( $ai_data['short_desc'] ),
 					'post_status'  => 'draft',
@@ -1370,7 +1371,7 @@ function ame_bazaar_api_run_import_verification() {
 
 			// Insert WooCommerce draft
 			$post_id = wp_insert_post( array(
-				'post_title'   => sanitize_text_field( $ai_data['clean_title'] ),
+				'post_title'   => sanitize_text_field( $raw_title ),
 				'post_content' => wp_kses_post( $ai_data['long_desc'] ),
 				'post_excerpt' => wp_kses_post( $ai_data['short_desc'] ),
 				'post_status'  => 'draft',
