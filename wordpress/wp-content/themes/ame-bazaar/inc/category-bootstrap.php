@@ -268,30 +268,36 @@ function ame_bazaar_bootstrap_categories() {
 				),
 			),
 		),
-		'boys-wear' => array(
-			'name'        => "Boy's Wear",
-			'description' => 'Hypoallergenic soft cotton shirts, tees, jeans, and ethnic wear for boys aged 0 to 14 years.',
+		'kids-wear' => array(
+			'name'        => 'Kids Wear',
+			'description' => 'Hypoallergenic soft cotton shirts, tees, jeans, and ethnic wear for kids aged 0 to 14 years.',
 			'children'    => array(
-				'boys-tops'    => array( 'name' => 'Shirts & Tees' ),
-				'boys-bottoms' => array( 'name' => 'Jeans & Shorts' ),
-				'boys-ethnic'  => array( 'name' => 'Ethnic Wear' ),
-				'boys-winter'  => array( 'name' => 'Winter Wear' ),
+				'boys-wear' => array(
+					'name'        => "Boy's Wear",
+					'description' => 'Hypoallergenic soft cotton shirts, tees, jeans, and ethnic wear for boys aged 0 to 14 years.',
+					'children'    => array(
+						'boys-tops'    => array( 'name' => 'Shirts & Tees' ),
+						'boys-bottoms' => array( 'name' => 'Jeans & Shorts' ),
+						'boys-ethnic'  => array( 'name' => 'Ethnic Wear' ),
+						'boys-winter'  => array( 'name' => 'Winter Wear' ),
+					),
+				),
+				'girls-wear' => array(
+					'name'        => "Girl's Wear",
+					'description' => 'Hypoallergenic and soft-lined dresses, frocks, lehenga cholis, and bottoms for girls.',
+					'children'    => array(
+						'girls-dresses-frocks' => array( 'name' => 'Dresses & Frocks' ),
+						'girls-tops'           => array( 'name' => 'Tops & Tees' ),
+						'girls-bottoms'        => array( 'name' => 'Leggings & Jeans' ),
+						'girls-ethnic'         => array( 'name' => 'Ethnic Wear' ),
+						'girls-winter'         => array( 'name' => 'Winter Wear' ),
+					),
+				),
+				'baby-wear' => array(
+					'name'        => 'Infant Items',
+					'description' => 'Soft rompers, bodysuits, and baby gift sets.',
+				),
 			),
-		),
-		'girls-wear' => array(
-			'name'        => "Girl's Wear",
-			'description' => 'Hypoallergenic and soft-lined dresses, frocks, lehenga cholis, and bottoms for girls.',
-			'children'    => array(
-				'girls-dresses-frocks' => array( 'name' => 'Dresses & Frocks' ),
-				'girls-tops'           => array( 'name' => 'Tops & Tees' ),
-				'girls-bottoms'        => array( 'name' => 'Leggings & Jeans' ),
-				'girls-ethnic'         => array( 'name' => 'Ethnic Wear' ),
-				'girls-winter'         => array( 'name' => 'Winter Wear' ),
-			),
-		),
-		'baby-wear' => array(
-			'name'        => 'Infant Items',
-			'description' => 'Soft rompers, bodysuits, and baby gift sets.',
 		),
 		'accessories' => array(
 			'name'        => 'Accessories',

@@ -1357,6 +1357,7 @@ function ame_bazaar_render_homepage_media_page() {
 		'ame_bazaar_media_women'              => __( "Women's Wear Banner", 'ame-bazaar' ),
 		'ame_bazaar_media_kids'               => __( "Kids Wear Banner", 'ame-bazaar' ),
 		'ame_bazaar_media_accessories'        => __( 'Accessories Banner', 'ame-bazaar' ),
+		'ame_bazaar_media_footwear'           => __( 'Footwear Banner', 'ame-bazaar' ),
 		'ame_bazaar_media_tailoring'          => __( 'Tailoring Section Image', 'ame-bazaar' ),
 		'ame_bazaar_media_visit_store'        => __( 'Visit Store Banner', 'ame-bazaar' ),
 		'ame_bazaar_media_about'              => __( 'About AME Bazaar Image', 'ame-bazaar' ),
@@ -1371,10 +1372,29 @@ function ame_bazaar_render_homepage_media_page() {
 	if ( isset( $_POST['ame_homepage_media_submit'] ) && check_admin_referer( 'ame_homepage_media_nonce_action', 'ame_homepage_media_nonce' ) ) {
 		foreach ( $fields as $field_key => $field_label ) {
 			if ( isset( $_POST[ $field_key ] ) ) {
-				update_option( $field_key, sanitize_text_field( $_POST[ $field_key ] ) );
+				$val = sanitize_text_field( wp_unslash( $_POST[ $field_key ] ) );
+				update_option( $field_key, $val );
+				
+				// Automatically sync to WooCommerce Category Term Meta
+				$slug_map = array(
+					'ame_bazaar_media_men'         => 'mens-wear',
+					'ame_bazaar_media_women'       => 'womens-wear',
+					'ame_bazaar_media_kids'        => 'kids-wear',
+					'ame_bazaar_media_accessories' => 'accessories',
+					'ame_bazaar_media_footwear'    => 'footwear',
+				);
+				
+				if ( isset( $slug_map[ $field_key ] ) ) {
+					$slug = $slug_map[ $field_key ];
+					$term = get_term_by( 'slug', $slug, 'product_cat' );
+					if ( $term ) {
+						update_term_meta( $term->term_id, '_ame_homepage_card', $val );
+						update_term_meta( $term->term_id, '_ame_category_banner', $val );
+					}
+				}
 			}
 		}
-		echo '<div class="notice notice-success is-dismissible"><p>' . esc_html__( 'Homepage Media Mapping successfully saved.', 'ame-bazaar' ) . '</p></div>';
+		echo '<div class="notice notice-success is-dismissible"><p>' . esc_html__( 'Homepage Media Mapping successfully saved and synced to WooCommerce category meta.', 'ame-bazaar' ) . '</p></div>';
 	}
 	?>
 	<div class="wrap">

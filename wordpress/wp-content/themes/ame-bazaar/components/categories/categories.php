@@ -73,31 +73,30 @@ $categories = array(
 			$departments = get_terms( array(
 				'taxonomy'   => 'product_cat',
 				'parent'     => 0,
-				'hide_empty' => false,
+				'hide_empty' => true,
 			) );
 
 			if ( ! is_wp_error( $departments ) && ! empty( $departments ) ) :
 				foreach ( $departments as $dept ) :
 					$key = $dept->slug;
+					if ( 'uncategorized' === $key ) {
+						continue;
+					}
+					
+					$homepage_card_id = get_term_meta( $dept->term_id, '_ame_homepage_card', true );
+					if ( empty( $homepage_card_id ) ) {
+						continue; // Hide categories without image
+					}
+					
 					$label = $dept->name;
 					$desc = $dept->description ? $dept->description : sprintf( __( 'Explore premium custom %s collections.', 'ame-bazaar' ), $label );
 					$url = get_term_link( $dept );
 
-					// Resolve Image: check term meta first
-					$img_html = '';
-					$homepage_card_id = get_term_meta( $dept->term_id, '_ame_homepage_card', true );
-					if ( $homepage_card_id ) {
-						$img_html = wp_get_attachment_image( $homepage_card_id, 'medium_large', false, array(
-							'class'   => 'ame-category-img',
-							'loading' => 'lazy',
-							'alt'     => esc_attr( sprintf( __( '%s - AME Bazaar Premium Collection', 'ame-bazaar' ), $label ) ),
-						) );
-					}
-
-					// Fallback to default thumbnail if empty
-					if ( empty( $img_html ) ) {
-						$img_html = '<img src="' . esc_url( wc_placeholder_img_src() ) . '" alt="' . esc_attr( sprintf( __( '%s - AME Bazaar Premium Collection', 'ame-bazaar' ), $label ) ) . '" class="ame-category-img" loading="lazy">';
-					}
+					$img_html = wp_get_attachment_image( $homepage_card_id, 'medium_large', false, array(
+						'class'   => 'ame-category-img',
+						'loading' => 'lazy',
+						'alt'     => esc_attr( sprintf( __( '%s - AME Bazaar Premium Collection', 'ame-bazaar' ), $label ) ),
+					) );
 					?>
 					<!-- TERM <?php echo intval( $dept->term_id ); ?> -->
 					<!-- ATTACHMENT <?php echo intval( $homepage_card_id ); ?> -->
