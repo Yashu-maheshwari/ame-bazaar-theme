@@ -77,6 +77,28 @@ $categories = array(
 			) );
 
 			if ( ! is_wp_error( $departments ) && ! empty( $departments ) ) :
+				
+				// Enforce strict business order requested for Phase 1 completion
+				$order_map = array(
+					'mens-wear'        => 1,
+					'womens-wear'      => 2,
+					'kids-wear'        => 3,
+					'footwear'         => 4,
+					'accessories'      => 5,
+					'tailoring'        => 6,
+					'rainwear'         => 7,
+					'online-exclusive' => 8,
+				);
+				
+				usort( $departments, function( $a, $b ) use ( $order_map ) {
+					$pos_a = isset( $order_map[ $a->slug ] ) ? $order_map[ $a->slug ] : 999;
+					$pos_b = isset( $order_map[ $b->slug ] ) ? $order_map[ $b->slug ] : 999;
+					if ( $pos_a === $pos_b ) {
+						return strcmp( $a->name, $b->name );
+					}
+					return $pos_a - $pos_b;
+				} );
+
 				foreach ( $departments as $dept ) :
 					$key = $dept->slug;
 					if ( 'uncategorized' === $key ) {
