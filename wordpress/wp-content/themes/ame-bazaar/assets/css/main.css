@@ -6238,186 +6238,263 @@
 }
 
 /* ==========================================================================
-   PHASE 15 - Step 2: Premium Hero Section Polish
+   PHASE 15 - Step 2: Premium Hero Section Polish (TICKET #027)
    ========================================================================== */
 
-.ame-hero {
-	padding: 5rem 0 !important;
-	background: radial-gradient(circle at 10% 20%, rgba(243, 244, 246, 0.4) 0%, rgba(255, 255, 255, 1) 90.1%) !important;
+.ame-hero-premium {
+	position: relative;
+	width: 100%;
+	min-height: 90vh; /* Cinematic height */
+	display: flex;
+	align-items: center;
+	background-color: #FAFAFA; /* Off-white museum base */
 	overflow: hidden;
 }
 
-.ame-hero-inner {
-	display: grid !important;
-	grid-template-columns: 1.1fr 0.9fr !important;
-	gap: 4rem !important;
-	align-items: center !important;
+/* 
+ * The Visual (Image) dominates the right side on Desktop, 
+ * and bleeds edge-to-edge on Mobile 
+ */
+.ame-hero-premium__visual {
+	position: absolute;
+	top: 0;
+	right: 0;
+	width: 55%;
+	height: 100%;
+	z-index: 1;
 }
 
-.ame-hero-headline {
-	font-family: 'Outfit', 'Inter', sans-serif !important;
-	font-size: 3.5rem !important;
-	font-weight: 800 !important;
-	line-height: 1.15 !important;
-	letter-spacing: -0.02em !important;
-	color: var(--ame-color-primary, #002347) !important;
-	margin-bottom: 1.5rem !important;
+.ame-hero-premium__img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	object-position: center top;
+	display: block;
 }
 
-.ame-hero-subheadline {
-	font-size: 1.15rem !important;
-	font-weight: 500 !important;
-	line-height: 1.6 !important;
-	color: #475569 !important;
-	margin-bottom: 2.5rem !important;
-	letter-spacing: 0.05em;
-	text-transform: uppercase;
+.ame-hero-premium__overlay {
+	display: none; /* Only used on mobile for text legibility */
 }
 
-.ame-hero-ctas {
-	display: flex !important;
-	gap: 1.25rem !important;
-	margin-bottom: 3.5rem !important;
-	flex-wrap: wrap;
-}
-
-/* Premium Buttons Styling */
-.ame-bazaar-btn--primary {
-	background: var(--ame-color-primary, #002347) !important;
-	color: #ffffff !important;
-	border: 1px solid var(--ame-color-primary, #002347) !important;
-}
-
-.ame-bazaar-btn--primary:hover {
-	background: #001224 !important;
-	border-color: #001224 !important;
-}
-
-.ame-bazaar-btn--secondary {
-	background: transparent !important;
-	color: var(--ame-color-primary, #002347) !important;
-	border: 1.5px solid var(--ame-color-primary, #002347) !important;
-}
-
-.ame-bazaar-btn--secondary:hover {
-	background: rgba(0, 35, 71, 0.03) !important;
-}
-
-.ame-hero-btn-shop, .ame-hero-btn-visit {
-	display: inline-flex !important;
-	align-items: center !important;
-	gap: 0.6rem !important;
-	padding: 0.9rem 2.25rem !important;
-	font-size: 0.95rem !important;
-	font-weight: 700 !important;
-	border-radius: 50px !important;
-	letter-spacing: 0.03em !important;
-	transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
-	box-shadow: 0 4px 14px rgba(0, 35, 71, 0.08) !important;
-}
-
-.ame-hero-btn-shop:hover, .ame-hero-btn-visit:hover {
-	transform: translateY(-3px) !important;
-	box-shadow: 0 8px 24px rgba(0, 35, 71, 0.15) !important;
-}
-
-.ame-hero-icon {
-	width: 18px !important;
-	height: 18px !important;
-}
-
-/* Trust items underneath CTAs */
-.ame-hero-trust-row {
-	display: flex !important;
-	flex-wrap: wrap !important;
-	gap: 1.5rem !important;
-	border-top: 1px solid rgba(226, 232, 240, 0.8) !important;
-	padding-top: 2rem !important;
-}
-
-.ame-trust-item {
-	display: flex !important;
-	align-items: center !important;
-	gap: 0.5rem !important;
-}
-
-.ame-trust-icon {
-	width: 16px !important;
-	height: 16px !important;
-	color: var(--ame-color-accent, #f59e0b) !important;
-}
-
-.ame-trust-text {
-	font-size: 0.85rem !important;
-	font-weight: 600 !important;
-	color: #475569 !important;
-}
-
-/* Right Visual element */
-.ame-hero-visual {
+/* 
+ * The Content wrapper contains the typography on the left 
+ */
+.ame-hero-premium__content-wrapper {
 	position: relative;
+	z-index: 2;
+	width: 100%;
+	max-width: 1440px;
+	margin: 0 auto;
+	padding: 0 4rem;
 	display: flex;
-	justify-content: flex-end;
+	align-items: center;
 }
 
-.ame-hero-visual::before {
+.ame-hero-premium__content {
+	max-width: 650px;
+	background: transparent; /* No boxed feeling */
+	padding: 4rem 0;
+}
+
+.ame-hero-premium__trust-badge {
+	font-family: 'Inter', sans-serif;
+	font-size: 0.8rem;
+	font-weight: 600;
+	letter-spacing: 0.2em;
+	text-transform: uppercase;
+	color: #D4AF37; /* Subtle Gold */
+	margin-bottom: 2rem;
+	display: inline-block;
+	position: relative;
+}
+
+.ame-hero-premium__trust-badge::before {
 	content: '';
 	position: absolute;
-	top: -10%;
-	right: -10%;
-	width: 80%;
-	height: 80%;
-	background: radial-gradient(circle, rgba(245, 158, 11, 0.08) 0%, transparent 70%);
-	z-index: 1;
-	pointer-events: none;
+	left: -2rem;
+	top: 50%;
+	width: 1.5rem;
+	height: 1px;
+	background: #D4AF37;
 }
 
-.ame-hero-img {
-	max-width: 100% !important;
-	height: 520px !important;
-	object-fit: cover !important;
-	border-radius: 24px !important;
-	box-shadow: 0 20px 40px rgba(0, 35, 71, 0.1) !important;
-	border: 1px solid rgba(255, 255, 255, 0.5);
-	z-index: 2;
+.ame-hero-premium__headline {
+	font-family: 'Outfit', 'Inter', sans-serif;
+	font-size: 4.5rem;
+	font-weight: 300; /* Luxury light weight */
+	line-height: 1.05;
+	letter-spacing: -0.03em;
+	color: #1A1A1A; /* Deep charcoal */
+	text-transform: uppercase;
+	margin-bottom: 2rem;
 	position: relative;
-	transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.ame-hero-img:hover {
-	transform: scale(1.02) translateY(-4px);
+/* Make one specific line bolder if needed, but keeping it clean */
+.ame-hero-premium__headline b, 
+.ame-hero-premium__headline strong {
+	font-weight: 600;
 }
 
-/* Responsive adjustments */
+.ame-hero-premium__subheadline {
+	font-family: 'Inter', sans-serif;
+	font-size: 1.25rem;
+	font-weight: 400;
+	line-height: 1.6;
+	color: #4A4A4A;
+	margin-bottom: 3.5rem;
+	max-width: 80%;
+}
+
+/* Premium Buttons */
+.ame-hero-premium__ctas {
+	display: flex;
+	gap: 1.5rem;
+	align-items: center;
+	margin-bottom: 4rem;
+}
+
+.ame-btn-premium {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	padding: 1.1rem 2.8rem;
+	font-family: 'Inter', sans-serif;
+	font-size: 0.9rem;
+	font-weight: 600;
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+	text-decoration: none;
+	border-radius: 2px; /* Edgy, high-end feel */
+	transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+	position: relative;
+	overflow: hidden;
+}
+
+.ame-btn-premium--solid {
+	background-color: #1A1A1A;
+	color: #FFFFFF !important;
+	border: 1px solid #1A1A1A;
+	box-shadow: 0 10px 30px rgba(26, 26, 26, 0.15);
+}
+
+.ame-btn-premium--solid:hover {
+	background-color: #333333;
+	border-color: #333333;
+	transform: translateY(-2px);
+	box-shadow: 0 15px 35px rgba(26, 26, 26, 0.25);
+}
+
+.ame-btn-premium--ghost {
+	background-color: transparent;
+	color: #1A1A1A !important;
+	border: 1px solid #1A1A1A;
+}
+
+.ame-btn-premium--ghost:hover {
+	background-color: #1A1A1A;
+	color: #FFFFFF !important;
+}
+
+/* Micro Trust Ticker */
+.ame-hero-premium__ticker {
+	font-family: 'Inter', sans-serif;
+	font-size: 0.75rem;
+	font-weight: 500;
+	letter-spacing: 0.15em;
+	color: #71717A; /* Muted gray */
+	display: flex;
+	gap: 0.75rem;
+	align-items: center;
+	opacity: 0.8;
+}
+
+/* 
+ * RESPONSIVE: Tablet & Mobile
+ */
 @media (max-width: 1024px) {
-	.ame-hero-inner {
-		gap: 2.5rem !important;
+	.ame-hero-premium {
+		min-height: 70vh;
 	}
-	.ame-hero-headline {
-		font-size: 2.75rem !important;
+	.ame-hero-premium__content-wrapper {
+		padding: 0 2rem;
 	}
-	.ame-hero-img {
-		height: 420px !important;
+	.ame-hero-premium__headline {
+		font-size: 3.5rem;
+	}
+	.ame-hero-premium__visual {
+		width: 50%;
 	}
 }
 
 @media (max-width: 768px) {
-	.ame-hero {
-		padding: 3.5rem 0 !important;
+	/* Mobile First / Full Takeover layout */
+	.ame-hero-premium {
+		min-height: 100vh; /* Full bleed on mobile */
+		height: 100vh;
+		display: flex;
+		align-items: flex-end; /* Push content to bottom */
+		padding-bottom: 3rem;
 	}
-	.ame-hero-inner {
-		grid-template-columns: 1fr !important;
-		gap: 3rem !important;
+
+	.ame-hero-premium__visual {
+		width: 100%;
+		height: 100%;
+		z-index: 1;
 	}
-	.ame-hero-headline {
-		font-size: 2.25rem !important;
+
+	.ame-hero-premium__overlay {
+		display: block;
+		position: absolute;
+		bottom: 0;
+		left: 0;
+		width: 100%;
+		height: 70%;
+		background: linear-gradient(to top, rgba(250, 250, 250, 1) 0%, rgba(250, 250, 250, 0.9) 30%, rgba(250, 250, 250, 0) 100%);
+		z-index: 2;
 	}
-	.ame-hero-img {
-		height: 350px !important;
-		width: 100% !important;
+
+	.ame-hero-premium__content-wrapper {
+		padding: 0 1.5rem;
+		z-index: 3;
 	}
-	.ame-hero-ctas {
-		margin-bottom: 2.5rem !important;
+
+	.ame-hero-premium__content {
+		padding: 2rem 0 0 0;
+	}
+
+	.ame-hero-premium__trust-badge {
+		margin-bottom: 1rem;
+	}
+
+	.ame-hero-premium__trust-badge::before {
+		display: none; /* Remove line on mobile to save space */
+	}
+
+	.ame-hero-premium__headline {
+		font-size: 2.8rem;
+		margin-bottom: 1rem;
+	}
+
+	.ame-hero-premium__subheadline {
+		font-size: 1.1rem;
+		margin-bottom: 2rem;
+		max-width: 100%;
+	}
+
+	.ame-hero-premium__ctas {
+		flex-direction: column;
+		gap: 1rem;
+		margin-bottom: 2.5rem;
+	}
+
+	.ame-btn-premium {
+		width: 100%;
+	}
+
+	.ame-hero-premium__ticker {
+		justify-content: center;
+		font-size: 0.65rem;
 	}
 }
 
