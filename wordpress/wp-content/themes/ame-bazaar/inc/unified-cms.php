@@ -1498,6 +1498,40 @@ function ame_bazaar_api_run_import_verification() {
 	$after_products_count = count( get_posts( array( 'post_type' => 'product', 'post_status' => array( 'publish', 'draft' ), 'numberposts' => -1 ) ) );
 	$after_categories_count = count( get_terms( array( 'taxonomy' => 'product_cat', 'hide_empty' => false ) ) );
 
+	$published_via_api = 0;
+	if ( isset( $_GET['publish_ready'] ) ) {
+		$drafts = get_posts( array(
+			'post_type'   => 'product',
+			'post_status' => 'draft',
+			'numberposts' => -1,
+		) );
+		foreach ( $drafts as $d ) {
+			$ai = get_post_meta( $d->ID, '_ame_ai_generated_data', true );
+			$score = isset( $ai['overall_score'] ) ? intval( $ai['overall_score'] ) : 0;
+			if ( $score > 90 ) {
+				// Resolve category term object assignments on publish trigger
+				if ( $ai ) {
+					$cat_id = ame_bazaar_get_or_create_import_category(
+						$ai['department'],
+						$ai['category'],
+						$ai['subcategory'],
+						$ai['collection']
+					);
+					if ( $cat_id ) {
+						wp_set_object_terms( $d->ID, $cat_id, 'product_cat' );
+					}
+				}
+				wp_update_post( array(
+					'ID'          => $d->ID,
+					'post_status' => 'publish',
+				) );
+				$published_via_api++;
+			}
+		}
+		// Refresh stats
+		$after_products_count = count( get_posts( array( 'post_type' => 'product', 'post_status' => array( 'publish', 'draft' ), 'numberposts' => -1 ) ) );
+	}
+
 	return new WP_REST_Response( array(
 		'status' => 'success',
 		'before' => array(
@@ -1508,6 +1542,7 @@ function ame_bazaar_api_run_import_verification() {
 			'products'   => $after_products_count,
 			'categories' => $after_categories_count,
 			'new_categories_created' => ($after_categories_count - $before_categories_count),
+			'published_count'        => $published_via_api,
 		),
 		'summary'  => $summary,
 		'skipped_reasons' => $skipped_reasons,
