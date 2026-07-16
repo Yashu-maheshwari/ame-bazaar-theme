@@ -1169,7 +1169,187 @@ function ame_bazaar_render_product_queue_page() {
 			<?php endif; ?>
 		</div>
 	</div>
-	<?php
 }
+
+/**
+ * 7. AUTOMATED IMPORTER TRIGGER & METRIC VERIFICATION ENDPOINT
+ */
+add_action( 'rest_api_init', function () {
+	register_rest_route( 'ame/v1', '/import-raintech', array(
+		'methods'             => 'GET',
+		'callback'            => 'ame_bazaar_api_run_import_verification',
+		'permission_callback' => '__return_true', // public trigger endpoint for pipeline execution
+	) );
+} );
+
+function ame_bazaar_api_run_import_verification() {
+	// 1. Get stats BEFORE import
+	$before_products_count = count( get_posts( array( 'post_type' => 'product', 'post_status' => array( 'publish', 'draft' ), 'numberposts' => -1 ) ) );
+	$before_categories_count = count( get_terms( array( 'taxonomy' => 'product_cat', 'hide_empty' => false ) ) );
+
+	// Clean out existing drafts to get a clean run if requested
+	if ( isset( $_GET['clean'] ) ) {
+		$drafts = get_posts( array( 'post_type' => 'product', 'post_status' => 'draft', 'numberposts' => -1 ) );
+		foreach ( $drafts as $d ) {
+			wp_delete_post( $d->ID, true );
+		}
+		$before_products_count = count( get_posts( array( 'post_type' => 'product', 'post_status' => array( 'publish', 'draft' ), 'numberposts' => -1 ) ) );
+	}
+
+	// 2. Perform the import of first 20 rows
+	$file_path = dirname(__FILE__) . '/raintech_products.csv';
+	$imported_products_list = array();
+	$summary = array();
+
+	if ( file_exists( $file_path ) ) {
+		$handle = fopen( $file_path, 'r' );
+		$headers = fgetcsv( $handle );
+		
+		$total_rows = 0;
+		$imported = 0;
+		$drafts_count = 0;
+		$errors = 0;
+		$missing_images = 0;
+		$new_categories = 0;
+		$duplicates = 0;
+
+		while ( ( $row = fgetcsv( $handle ) ) !== false && $total_rows < 20 ) {
+			$total_rows++;
+			$data = array_combine( $headers, $row );
+			if ( ! $data ) {
+				$errors++;
+				continue;
+			}
+
+			$raw_title = $data['Product Name'] ?? ($data['Item Name'] ?? '');
+			$product_code = $data['Product Code'] ?? ($data['Item Code'] ?? '');
+			$barcode = $data['Barcode'] ?? '';
+			$mrp = $data['MRP'] ?? 0;
+			$price = $data['Retail Sale Price'] ?? ($data['Selling Price'] ?? 0);
+
+			if ( empty( $raw_title ) ) {
+				$errors++;
+				continue;
+			}
+
+			// Check duplicates
+			$existing_prod = get_posts( array(
+				'post_type'  => 'product',
+				'meta_key'   => '_sku',
+				'meta_value' => $product_code,
+				'post_status'=> array( 'publish', 'draft' )
+			) );
+
+			if ( ! empty( $existing_prod ) ) {
+				$duplicates++;
+				continue;
+			}
+
+			// Detect Attributes & Create Category
+			$ai_data = ame_bazaar_detect_raintech_attributes( $raw_title, $mrp, $price, $barcode, $product_code );
+			
+			// Auto create category hierarchy
+			$cat_id = ame_bazaar_get_or_create_import_category(
+				$ai_data['department'],
+				$ai_data['category'],
+				$ai_data['subcategory'],
+				$ai_data['collection']
+			);
+
+			// Check Image mapping
+			global $wpdb;
+			$attachment_id = $wpdb->get_var( $wpdb->prepare(
+				"SELECT ID FROM $wpdb->posts WHERE post_name = %s AND post_type = 'attachment'",
+				sanitize_title( $product_code )
+			) );
+
+			$img_status = $attachment_id ? 'ready' : 'missing';
+			if ( 'missing' === $img_status ) {
+				$missing_images++;
+			}
+
+			// Insert WooCommerce draft
+			$post_id = wp_insert_post( array(
+				'post_title'   => sanitize_text_field( $ai_data['clean_title'] ),
+				'post_content' => wp_kses_post( $ai_data['long_desc'] ),
+				'post_excerpt' => wp_kses_post( $ai_data['short_desc'] ),
+				'post_status'  => 'draft',
+				'post_type'    => 'product',
+			) );
+
+			if ( $post_id && ! is_wp_error( $post_id ) ) {
+				update_post_meta( $post_id, '_regular_price', $mrp );
+				update_post_meta( $post_id, '_price', $price );
+				update_post_meta( $post_id, '_sale_price', $price );
+				update_post_meta( $post_id, '_sku', $product_code );
+				update_post_meta( $post_id, '_ame_raw_raintech_data', $data );
+				update_post_meta( $post_id, '_ame_ai_generated_data', $ai_data );
+				update_post_meta( $post_id, '_ame_image_status', $img_status );
+				
+				if ( $cat_id ) {
+					wp_set_object_terms( $post_id, $cat_id, 'product_cat' );
+				}
+				if ( $attachment_id ) {
+					set_post_thumbnail( $post_id, $attachment_id );
+				}
+
+				$imported_products_list[] = array(
+					'post_id'          => $post_id,
+					'title'            => $ai_data['clean_title'],
+					'sku'              => $product_code,
+					'status'           => 'draft',
+					'category'         => $ai_data['category'],
+					'short_desc'       => $ai_data['short_desc'],
+					'long_desc'        => $ai_data['long_desc'],
+					'seo_title'        => $ai_data['seo_title'],
+					'seo_desc'         => $ai_data['seo_desc'],
+					'brand'            => $ai_data['brand'],
+					'price'            => $price,
+					'mrp'              => $mrp,
+					'ai_summary'       => $ai_data['ai_summary'],
+					'faq'              => array(
+						'question' => 'How to verify the fit?',
+						'answer'   => 'Double check the shoulders and sleeve lines.'
+					)
+				);
+
+				$drafts_count++;
+				$imported++;
+			} else {
+				$errors++;
+			}
+		}
+		fclose( $handle );
+
+		$summary = array(
+			'total_rows'     => $total_rows,
+			'imported'       => $imported,
+			'drafts'         => $drafts_count,
+			'errors'         => $errors,
+			'missing_images' => $missing_images,
+			'duplicates'     => $duplicates,
+		);
+	}
+
+	// 3. Get stats AFTER import
+	$after_products_count = count( get_posts( array( 'post_type' => 'product', 'post_status' => array( 'publish', 'draft' ), 'numberposts' => -1 ) ) );
+	$after_categories_count = count( get_terms( array( 'taxonomy' => 'product_cat', 'hide_empty' => false ) ) );
+
+	return new WP_REST_Response( array(
+		'status' => 'success',
+		'before' => array(
+			'products'   => $before_products_count,
+			'categories' => $before_categories_count,
+		),
+		'after' => array(
+			'products'   => $after_products_count,
+			'categories' => $after_categories_count,
+			'new_categories_created' => ($after_categories_count - $before_categories_count),
+		),
+		'summary'  => $summary,
+		'products' => $imported_products_list,
+	), 200 );
+}
+
 
 
