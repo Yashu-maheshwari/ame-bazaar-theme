@@ -1231,7 +1231,7 @@ add_action( 'admin_enqueue_scripts', 'ame_bazaar_enqueue_media_manager_scripts' 
 add_action( 'init', 'ame_bazaar_auto_assign_media_mappings' );
 
 /**
- * 16. Auto-Assign existing assets to options
+ * 16. Auto-Assign existing assets to options ONLY IF EMPTY
  */
 function ame_bazaar_auto_assign_media_mappings() {
 	$mappings = array(
@@ -1241,8 +1241,7 @@ function ame_bazaar_auto_assign_media_mappings() {
 		'ame_bazaar_media_white_logo'         => 'logo',
 		'ame_bazaar_media_sticky_logo'        => 'logo',
 		'ame_bazaar_media_favicon'            => 'logo',
-		'ame_bazaar_media_hero_desktop'       => 'unnamed-6',
-		'ame_bazaar_media_hero_mobile'        => 'unnamed',
+		// HERO IMAGES REMOVED: They must not fallback to storefront photos. Let them be empty.
 		'ame_bazaar_media_women'              => 'unnamed-4',
 		'ame_bazaar_media_men'                => 'unnamed-3',
 		'ame_bazaar_media_kids'               => 'boys-wear',
@@ -1260,13 +1259,36 @@ function ame_bazaar_auto_assign_media_mappings() {
 	foreach ( $mappings as $option_key => $slug ) {
 		$val = get_option( $option_key );
 		$resolved_id = ame_bazaar_get_attachment_id_by_slug( $slug );
+		
+		// ROOT CAUSE FIX: Only update if the option is completely empty. 
+		// Previously, this forcefully overwrote user uploads on every page load (init).
 		if ( $resolved_id ) {
-			if ( (int) $val !== (int) $resolved_id ) {
+			if ( empty( $val ) ) {
 				update_option( $option_key, $resolved_id );
 			}
 		}
 	}
 }
+
+/**
+ * 16.1. ONE-TIME CLEANUP: Purge corrupted storefront image from Hero options
+ * This removes the ghost image so the Media Manager can function correctly.
+ */
+function ame_bazaar_purge_ghost_hero() {
+	$desktop = get_option( 'ame_bazaar_media_hero_desktop' );
+	$mobile = get_option( 'ame_bazaar_media_hero_mobile' );
+	
+	$storefront_desktop = ame_bazaar_get_attachment_id_by_slug( 'unnamed-6' );
+	$storefront_mobile = ame_bazaar_get_attachment_id_by_slug( 'unnamed' );
+	
+	if ( (int) $desktop === (int) $storefront_desktop ) {
+		delete_option( 'ame_bazaar_media_hero_desktop' );
+	}
+	if ( (int) $mobile === (int) $storefront_mobile ) {
+		delete_option( 'ame_bazaar_media_hero_mobile' );
+	}
+}
+add_action( 'init', 'ame_bazaar_purge_ghost_hero' );
 
 /**
  * 16.5. Optimize attachment metadata for AI search visibility (Alt Text, Caption, Description)
