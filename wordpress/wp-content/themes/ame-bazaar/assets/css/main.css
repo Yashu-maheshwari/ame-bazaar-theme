@@ -54,334 +54,179 @@
 }
 
 /* ==========================================================================
-   HEADER MAIN
+   MINIMALIST LUXURY HEADER (APPLE / COS / ZARA)
    ========================================================================== */
-.ame-header-main-wrapper {
+
+.ame-header-luxury-wrapper {
 	position: sticky;
 	top: 0;
-	z-index: 100;
-	background: rgba(255, 255, 255, 0.98);
-	border-bottom: 1px solid rgba(226, 232, 240, 0.8);
-	transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-	padding-block: 1.25rem;
-	box-shadow: 0 4px 30px rgba(0, 0, 0, 0.02);
-	backdrop-filter: blur(12px);
-	-webkit-backdrop-filter: blur(12px);
+	z-index: 1000;
+	background: rgba(255, 255, 255, 0.95);
+	backdrop-filter: blur(20px);
+	-webkit-backdrop-filter: blur(20px);
+	border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+	transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+	padding-block: 1rem;
 }
 
-/* Scroll-triggered states */
-.ame-header-main-wrapper.is-scrolled {
-	padding-block: 0.75rem;
-	box-shadow: 0 10px 30px rgba(15, 23, 42, 0.06);
-	background: rgba(255, 255, 255, 0.85);
-}
-
-.ame-header-inner {
-	display: flex;
-	align-items: center;
-	justify-content: space-between;
-}
-
-.ame-header-left {
-	display: flex;
-	align-items: center;
-	gap: 1.5rem;
-}
-
-/* ==========================================================================
-   BRAND LOGO
-   ========================================================================== */
-.ame-brand-logo-container {
-	display: flex;
-	align-items: center;
-}
-
-.ame-logo-link {
-	display: block;
-	transition: transform 0.2s ease;
-}
-.ame-logo-link:hover {
-	transform: scale(1.02);
-}
-
-.ame-logo-img {
-	height: auto;
-	max-height: 64px;
-	width: auto;
-	display: block;
-	transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-	filter: drop-shadow(0 2px 4px rgba(15, 23, 42, 0.04));
-}
-
-.is-scrolled .ame-logo-img {
-	max-height: 50px;
-}
-
-.ame-logo-text {
-	font-family: var(--ame-font-heading);
-	font-size: 1.8rem;
-	font-weight: 800;
-	background: linear-gradient(135deg, var(--ame-color-navy) 0%, var(--ame-color-charcoal) 100%);
-	-webkit-background-clip: text;
-	-webkit-text-fill-color: transparent;
-	text-decoration: none;
-	letter-spacing: -0.03em;
-}
-
-/* ==========================================================================
-   DESKTOP NAVIGATION (Premium Minimal Luxury Retail Experience)
-   ========================================================================== */
-.ame-desktop-navigation {
-	display: none;
-}
-
-@media (min-width: 1024px) {
-	.ame-desktop-navigation {
-		display: block;
-	}
-}
-
-.ame-desktop-menu-list {
-	display: flex;
-	list-style: none;
-	margin: 0;
-	padding: 0;
-	gap: 2.2rem;
-}
-
-.ame-desktop-menu-list a {
-	font-size: 0.85rem;
-	font-weight: 500;
-	color: var(--ame-color-charcoal);
-	text-decoration: none;
-	letter-spacing: 0.05em;
-	text-transform: uppercase;
-	position: relative;
+.is-scrolled .ame-header-luxury-wrapper {
 	padding-block: 0.5rem;
+	background: rgba(255, 255, 255, 0.98);
+	box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
 }
 
-.ame-desktop-menu-list a::after {
-	content: '';
-	position: absolute;
-	bottom: 0;
-	left: 0;
-	width: 100%;
-	height: 2px;
-	background: var(--ame-color-gold);
-	transform: scaleX(0);
-	transform-origin: right;
-	transition: transform var(--ame-transition);
+.ame-header-luxury-inner {
+	display: grid;
+	grid-template-columns: 1fr auto 1fr;
+	align-items: center;
+	gap: 2rem;
 }
 
-.ame-desktop-menu-list a:hover {
-	color: var(--ame-color-navy);
-}
-
-.ame-desktop-menu-list a:hover::after {
-	transform: scaleX(1);
-	transform-origin: left;
-}
-
-/* Highlight current page */
-.ame-desktop-menu-list .current-menu-item > a {
-	color: var(--ame-color-navy);
-	font-weight: 600;
-}
-
-.ame-desktop-menu-list .current-menu-item > a::after {
-	transform: scaleX(1);
-}
-
-/* ==========================================================================
-   HEADER ACTIONS (Cart, Account, CTA Buttons)
-   ========================================================================== */
-.ame-header-actions {
+/* Left: Nav & Hamburger */
+.ame-header-luxury-left {
 	display: flex;
 	align-items: center;
-	gap: 0.8rem;
+	gap: 2rem;
 }
 
-@media (min-width: 1024px) {
-	.ame-header-actions {
-		gap: 1.2rem;
-	}
-}
-
-.ame-action-btn {
-	background: none;
-	border: none;
-	padding: 0.5rem;
-	color: var(--ame-color-charcoal);
-	cursor: pointer;
-	position: relative;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	border-radius: 50%;
-	transition: background var(--ame-transition), color var(--ame-transition);
-}
-
-.ame-action-btn:hover {
-	background: var(--ame-color-cream);
-	color: var(--ame-color-navy);
-}
-
-.ame-icon {
-	width: 20px;
-	height: 20px;
-	stroke-width: 1.8px;
-}
-
-.ame-cart-link {
-	position: relative;
-}
-
-/* CTA buttons in header */
-.ame-btn-call,
-.ame-btn-visit {
-	display: none;
-}
-
-@media (min-width: 1024px) {
-	.ame-btn-call,
-	.ame-btn-visit {
-		display: inline-flex;
-		padding: 0.6rem 1.2rem;
-		font-size: 0.8rem;
-	}
-}
-
-.ame-icon-btn {
-	width: 14px;
-	height: 14px;
-}
-
-.ame-wishlist-link {
-	position: relative;
-}
-
-/* Desktop Search Overlay */
-.ame-search-overlay {
-	position: fixed;
-	top: 0;
-	left: 0;
-	width: 100%;
-	height: 100%;
-	background: rgba(0, 35, 71, 0.98); /* Deep navy translucent background */
-	z-index: 10000;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	opacity: 0;
-	visibility: hidden;
-	transition: opacity 0.3s ease, visibility 0.3s ease;
-}
-
-.ame-search-overlay.is-active {
-	opacity: 1;
-	visibility: visible;
-}
-
-.ame-search-overlay-inner {
-	position: relative;
-	width: 100%;
-	max-width: 600px;
-	padding: 2rem;
-	display: flex;
-	align-items: center;
-	gap: 1rem;
-}
-
-.ame-search-overlay .ame-search-form {
-	display: flex;
-	width: 100%;
-	border-bottom: 2px solid var(--ame-color-gold);
-	padding-bottom: 0.5rem;
-}
-
-.ame-search-overlay .ame-search-input {
-	flex: 1;
-	background: none;
-	border: none;
-	color: var(--ame-color-white);
-	font-size: 1.5rem;
-	font-family: var(--ame-font-heading);
-	outline: none;
-	padding: 0.5rem 0;
-}
-
-.ame-search-overlay .ame-search-input::placeholder {
-	color: rgba(255, 255, 255, 0.6);
-}
-
-.ame-search-overlay .ame-search-submit {
-	background: none;
-	border: none;
-	color: var(--ame-color-gold);
-	cursor: pointer;
-	padding: 0.5rem;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-}
-
-.ame-search-overlay .ame-search-submit:hover {
-	color: var(--ame-color-white);
-}
-
-.ame-search-overlay .ame-search-close-btn {
-	position: absolute;
-	top: -3rem;
-	right: 2rem;
-	background: none;
-	border: none;
-	color: var(--ame-color-white);
-	cursor: pointer;
-	padding: 0.5rem;
-	border-radius: 50%;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	transition: background var(--ame-transition);
-}
-
-.ame-search-overlay .ame-search-close-btn:hover {
-	background: rgba(255, 255, 255, 0.1);
-	color: var(--ame-color-gold);
-}
-
-/* ==========================================================================
-   MOBILE MENU TOGGLE BUTTON
-   ========================================================================== */
-.ame-mobile-menu-toggle {
+.ame-luxury-menu-toggle {
 	background: none;
 	border: none;
 	cursor: pointer;
 	display: flex;
 	flex-direction: column;
 	justify-content: space-between;
-	width: 20px;
-	height: 14px;
+	width: 22px;
+	height: 12px;
 	padding: 0;
 	z-index: 105;
 }
 
 @media (min-width: 1024px) {
-	.ame-mobile-menu-toggle {
+	.ame-luxury-menu-toggle {
 		display: none;
 	}
 }
 
-.ame-hamburger-line {
+.ame-luxury-menu-toggle .ame-hamburger-line {
 	display: block;
 	width: 100%;
-	height: 2px;
+	height: 1px;
 	background-color: var(--ame-color-charcoal);
-	transition: transform var(--ame-transition), opacity var(--ame-transition);
+	transition: all 0.3s ease;
+}
+
+/* Desktop Navigation (Left Aligned) */
+.ame-desktop-nav-luxury {
+	display: none;
+}
+
+@media (min-width: 1024px) {
+	.ame-desktop-nav-luxury {
+		display: block;
+	}
+}
+
+.ame-desktop-menu-luxury {
+	display: flex;
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	gap: 2.5rem;
+}
+
+.ame-desktop-menu-luxury a {
+	font-family: 'Inter', sans-serif;
+	font-size: 11px;
+	font-weight: 500;
+	color: rgba(0, 0, 0, 0.6);
+	text-decoration: none;
+	letter-spacing: 0.1em;
+	text-transform: uppercase;
+	transition: color 0.3s ease;
+}
+
+.ame-desktop-menu-luxury a:hover,
+.ame-desktop-menu-luxury .current-menu-item > a {
+	color: #000000;
+}
+
+/* Center: Brand Identity */
+.ame-header-luxury-center {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.ame-logo-img {
+	height: auto;
+	max-height: 24px; /* Ultra minimal */
+	width: auto;
+	display: block;
+	transition: max-height 0.3s ease;
+}
+
+.is-scrolled .ame-logo-img {
+	max-height: 20px;
+}
+
+.ame-logo-text {
+	font-family: 'Outfit', serif;
+	font-size: 1.5rem;
+	font-weight: 300;
+	letter-spacing: -0.02em;
+	color: #000;
+	text-decoration: none;
+}
+
+/* Right: Minimal Actions */
+.ame-header-luxury-right {
+	display: flex;
+	align-items: center;
+	justify-content: flex-end;
+	gap: 1.5rem;
+}
+
+.ame-luxury-action-btn {
+	background: none;
+	border: none;
+	padding: 0;
+	color: #000;
+	cursor: pointer;
+	position: relative;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	transition: opacity 0.3s ease;
+	opacity: 0.7;
+}
+
+.ame-luxury-action-btn:hover {
+	opacity: 1;
+}
+
+.ame-luxury-icon {
+	width: 18px;
+	height: 18px;
+}
+
+/* Elegant Cart Dot instead of bulky badge */
+.ame-cart-icon-wrapper {
+	position: relative;
+}
+
+.ame-luxury-cart-dot {
+	position: absolute;
+	top: -2px;
+	right: -4px;
+	width: 6px;
+	height: 6px;
+	background-color: #d4af37; /* Soft gold indicator */
+	border-radius: 50%;
 }
 
 /* ==========================================================================
-   MOBILE NAVIGATION DRAWER
+   MINIMAL MOBILE DRAWER
    ========================================================================== */
 .ame-mobile-drawer {
 	position: fixed;
@@ -391,7 +236,7 @@
 	height: 100%;
 	z-index: 9999;
 	visibility: hidden;
-	transition: visibility var(--ame-transition);
+	transition: visibility 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .ame-mobile-drawer.is-active {
@@ -402,17 +247,16 @@
 .ame-mobile-drawer-inner {
 	position: absolute;
 	top: 0;
-	left: -320px;
-	width: 320px;
-	max-width: 85%;
+	left: -100%;
+	width: 100%;
+	max-width: 400px;
 	height: 100%;
-	background: var(--ame-color-white);
-	box-shadow: var(--ame-shadow-lg);
+	background: #ffffff;
 	z-index: 10001;
 	display: flex;
 	flex-direction: column;
-	transition: left var(--ame-transition);
-	padding: 1.5rem;
+	transition: left 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+	padding: 2rem;
 }
 
 .ame-mobile-drawer.is-active .ame-mobile-drawer-inner {
@@ -425,10 +269,11 @@
 	left: 0;
 	width: 100%;
 	height: 100%;
-	background: rgba(0, 35, 71, 0.4);
+	background: rgba(0, 0, 0, 0.2);
+	backdrop-filter: blur(4px);
 	opacity: 0;
 	z-index: 10000;
-	transition: opacity var(--ame-transition);
+	transition: opacity 0.4s ease;
 	pointer-events: none;
 }
 
@@ -439,112 +284,112 @@
 
 .ame-mobile-drawer-header {
 	display: flex;
-	align-items: center;
-	justify-content: space-between;
-	margin-bottom: 2rem;
+	justify-content: flex-end;
+	margin-bottom: 3rem;
 }
 
-.ame-mobile-drawer-close-btn,
-.ame-search-close-btn {
+.ame-mobile-drawer-close-btn {
 	background: none;
 	border: none;
-	cursor: pointer;
 	padding: 0.5rem;
-	color: var(--ame-color-charcoal);
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	border-radius: 50%;
-}
-
-.ame-mobile-drawer-close-btn:hover,
-.ame-search-close-btn:hover {
-	background: var(--ame-color-cream);
-}
-
-.ame-icon-close {
-	width: 24px;
-	height: 24px;
-}
-
-/* Mobile search */
-.ame-mobile-drawer-search {
-	margin-bottom: 1.5rem;
-}
-
-.ame-mobile-search-form {
-	display: flex;
-	border: 1px solid var(--ame-color-border);
-	border-radius: var(--ame-radius-sm);
-	overflow: hidden;
-}
-
-.ame-mobile-search-input {
-	flex: 1;
-	border: none;
-	padding: 0.75rem 1rem;
-	font-size: 0.9rem;
-	outline: none;
-	background: var(--ame-color-cream);
-}
-
-.ame-mobile-search-submit {
-	background: var(--ame-color-cream);
-	border: none;
-	padding-inline: 1rem;
 	cursor: pointer;
-	color: var(--ame-color-slate);
+	color: #000;
 }
 
-/* Drawer navigation links */
+.ame-mobile-drawer-search {
+	margin-bottom: 3rem;
+}
+
+.ame-luxury-search-form {
+	border-bottom: 1px solid rgba(0,0,0,0.1);
+	padding-bottom: 0.5rem;
+}
+
+.ame-luxury-search-input {
+	width: 100%;
+	border: none;
+	background: none;
+	font-family: 'Inter', sans-serif;
+	font-size: 1rem;
+	outline: none;
+	color: #000;
+}
+
 .ame-mobile-drawer-navigation {
 	flex: 1;
 	overflow-y: auto;
-	margin-bottom: 2rem;
 }
 
-.ame-mobile-menu-list {
+.ame-mobile-menu-luxury {
 	list-style: none;
 	padding: 0;
 	margin: 0;
 	display: flex;
 	flex-direction: column;
-	gap: 1.5rem;
+	gap: 2rem;
 }
 
-.ame-mobile-menu-list a {
-	font-size: 1rem;
-	font-weight: 600;
-	color: var(--ame-color-charcoal);
+.ame-mobile-menu-luxury a {
+	font-family: 'Outfit', serif;
+	font-size: 2rem;
+	font-weight: 300;
+	color: #000;
 	text-decoration: none;
-	text-transform: uppercase;
-	letter-spacing: 0.05em;
-	display: block;
-	padding-block: 0.25rem;
+	letter-spacing: -0.02em;
 }
 
-.ame-mobile-menu-list a:hover,
-.ame-mobile-menu-list .current-menu-item > a {
-	color: var(--ame-color-gold-dark);
-}
-
-/* Drawer Footer */
-.ame-mobile-drawer-footer {
-	border-top: 1px solid var(--ame-color-border);
-	padding-top: 1.5rem;
-}
-
-.ame-mobile-ctas {
-	display: flex;
-	flex-direction: column;
-	gap: 0.8rem;
-}
-
-.ame-btn-mobile-call,
-.ame-btn-mobile-visit {
+/* Desktop Search Overlay */
+.ame-search-overlay {
+	position: fixed;
+	top: 0;
+	left: 0;
 	width: 100%;
-	padding-block: 0.8rem;
-	font-size: 0.9rem;
+	height: 100%;
+	background: rgba(255, 255, 255, 0.98);
+	backdrop-filter: blur(20px);
+	z-index: 10000;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	opacity: 0;
+	visibility: hidden;
+	transition: opacity 0.4s ease, visibility 0.4s ease;
+}
+
+.ame-search-overlay.is-active {
+	opacity: 1;
+	visibility: visible;
+}
+
+.ame-search-overlay-inner {
+	position: relative;
+	width: 100%;
+	max-width: 800px;
+	padding: 2rem;
+}
+
+.ame-luxury-search-input-massive {
+	width: 100%;
+	border: none;
+	background: none;
+	font-family: 'Outfit', serif;
+	font-size: 4rem;
+	font-weight: 200;
+	color: #000;
+	outline: none;
+	border-bottom: 1px solid rgba(0,0,0,0.1);
+	padding-bottom: 1rem;
+}
+
+.ame-search-close-btn {
+	position: absolute;
+	top: -3rem;
+	right: 2rem;
+	background: none;
+	border: none;
+	color: #000;
+	cursor: pointer;
+	padding: 0.5rem;
 }
 
 /* ==========================================================================
