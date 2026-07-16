@@ -1169,6 +1169,7 @@ function ame_bazaar_render_product_queue_page() {
 			<?php endif; ?>
 		</div>
 	</div>
+	<?php
 }
 
 /**
