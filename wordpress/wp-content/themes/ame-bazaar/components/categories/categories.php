@@ -55,7 +55,7 @@ $categories = array(
 	),
 );
 ?>
-
+<!-- CATEGORIES COMPONENT LOADED -->
 <section class="ame-categories-section" id="categories" aria-labelledby="ame-categories-title">
 	<div class="ame-bazaar-container">
 		
@@ -99,6 +99,9 @@ $categories = array(
 						$img_html = '<img src="' . esc_url( wc_placeholder_img_src() ) . '" alt="' . esc_attr( sprintf( __( '%s - AME Bazaar Premium Collection', 'ame-bazaar' ), $label ) ) . '" class="ame-category-img" loading="lazy">';
 					}
 					?>
+					<!-- TERM <?php echo intval( $dept->term_id ); ?> -->
+					<!-- ATTACHMENT <?php echo intval( $homepage_card_id ); ?> -->
+					<!-- URL <?php echo esc_url( wp_get_attachment_image_url( $homepage_card_id, 'medium_large' ) ); ?> -->
 					<article class="ame-category-card">
 						<?php if ( ! empty( $img_html ) ) : ?>
 							<a href="<?php echo esc_url( $url ); ?>" class="ame-category-card-visual-link" tabindex="-1" aria-hidden="true" data-category-slug="<?php echo esc_attr( $key ); ?>">
