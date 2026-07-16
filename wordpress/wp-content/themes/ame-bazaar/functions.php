@@ -25,6 +25,7 @@ require_once AME_BAZAAR_PATH . '/inc/content-framework.php';
 require_once AME_BAZAAR_PATH . '/inc/woocommerce.php';
 require_once AME_BAZAAR_PATH . '/inc/category-bootstrap.php';
 require_once AME_BAZAAR_PATH . '/inc/admin-operations.php';
+require_once AME_BAZAAR_PATH . '/inc/unified-cms.php';
 require_once AME_BAZAAR_PATH . '/inc/class-ai-advisor.php';
 require_once AME_BAZAAR_PATH . '/inc/faq-data.php';
 require_once AME_BAZAAR_PATH . '/components/local-entity/trust-cards.php';
