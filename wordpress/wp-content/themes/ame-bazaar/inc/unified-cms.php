@@ -1328,13 +1328,14 @@ add_action( 'rest_api_init', function () {
 	) );
 } );
 
-function ame_bazaar_api_run_import_verification() {
+function ame_bazaar_api_run_import_verification( $request ) {
 	// 1. Get stats BEFORE import
 	$before_products_count = count( get_posts( array( 'post_type' => 'product', 'post_status' => array( 'publish', 'draft' ), 'numberposts' => -1 ) ) );
 	$before_categories_count = count( get_terms( array( 'taxonomy' => 'product_cat', 'hide_empty' => false ) ) );
 
+	$clean = $request->get_param( 'clean' );
 	// Clean out existing drafts to get a clean run if requested
-	if ( isset( $_GET['clean'] ) ) {
+	if ( ! empty( $clean ) ) {
 		$drafts = get_posts( array( 'post_type' => 'product', 'post_status' => 'draft', 'numberposts' => -1 ) );
 		foreach ( $drafts as $d ) {
 			wp_delete_post( $d->ID, true );
@@ -1342,8 +1343,8 @@ function ame_bazaar_api_run_import_verification() {
 		$before_products_count = count( get_posts( array( 'post_type' => 'product', 'post_status' => array( 'publish', 'draft' ), 'numberposts' => -1 ) ) );
 	}
 
-	$offset = isset( $_GET['offset'] ) ? intval( $_GET['offset'] ) : 0;
-	$limit  = isset( $_GET['limit'] ) ? intval( $_GET['limit'] ) : 200;
+	$offset = $request->get_param( 'offset' ) ? intval( $request->get_param( 'offset' ) ) : 0;
+	$limit  = $request->get_param( 'limit' ) ? intval( $request->get_param( 'limit' ) ) : 200;
 
 	// 2. Perform the import
 	$file_path = dirname(__FILE__) . '/raintech_products.csv';
@@ -1499,7 +1500,8 @@ function ame_bazaar_api_run_import_verification() {
 	$after_categories_count = count( get_terms( array( 'taxonomy' => 'product_cat', 'hide_empty' => false ) ) );
 
 	$published_via_api = 0;
-	if ( isset( $_GET['publish_ready'] ) ) {
+	$publish_ready = $request->get_param( 'publish_ready' );
+	if ( ! empty( $publish_ready ) ) {
 		$drafts = get_posts( array(
 			'post_type'   => 'product',
 			'post_status' => 'draft',
