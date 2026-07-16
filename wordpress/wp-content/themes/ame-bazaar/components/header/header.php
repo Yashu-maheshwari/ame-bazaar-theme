@@ -9,6 +9,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+$phone_number = ame_bazaar_get_business_setting( 'phone', '+91 99535 69533' );
+$phone_tel_link = preg_replace( '/[^0-9+]/', '', $phone_number );
+$maps_url = ame_bazaar_get_business_setting( 'maps_url', 'https://maps.google.com/?q=AME+Bazaar+Kirari+Delhi' );
 $logo_id = get_option( 'ame_bazaar_media_primary_logo' ) ?: get_theme_mod( 'custom_logo' );
 ?>
 
@@ -70,8 +73,18 @@ $logo_id = get_option( 'ame_bazaar_media_primary_logo' ) ?: get_theme_mod( 'cust
 			</div>
 		</div>
 
-		<!-- Right: Minimal Icons (Search, Profile, Bag) -->
+		<!-- Right: Minimal Actions -->
 		<div class="ame-header-luxury-right">
+			<!-- Call Now Button -->
+			<a href="tel:<?php echo esc_attr( $phone_tel_link ); ?>" class="ame-luxury-pill-btn ame-btn-call" aria-label="<?php echo esc_attr( sprintf( __( 'Call Now: %s', 'ame-bazaar' ), $phone_number ) ); ?>">
+				<span class="ame-pill-text"><?php esc_html_e( 'Call', 'ame-bazaar' ); ?></span>
+			</a>
+
+			<!-- Visit Store Button -->
+			<a href="<?php echo esc_url( $maps_url ); ?>" target="_blank" rel="noopener noreferrer" class="ame-luxury-pill-btn ame-btn-visit" aria-label="<?php esc_attr_e( 'Visit Store', 'ame-bazaar' ); ?>">
+				<span class="ame-pill-text"><?php esc_html_e( 'Store', 'ame-bazaar' ); ?></span>
+			</a>
+
 			<!-- Search -->
 			<button class="ame-luxury-action-btn ame-search-toggle" id="ame-search-open-btn" aria-label="<?php esc_attr_e( 'Search', 'ame-bazaar' ); ?>">
 				<svg class="ame-luxury-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="square" aria-hidden="true">

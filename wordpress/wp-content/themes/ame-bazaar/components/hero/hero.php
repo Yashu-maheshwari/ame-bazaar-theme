@@ -54,11 +54,8 @@ $maps_url = ame_bazaar_get_business_setting( 'maps_url', 'https://maps.google.co
 		</h1>
 		
 		<div class="ame-luxury-hero__actions">
-			<a href="#categories" class="ame-luxury-link">
-				<?php esc_html_e( 'Explore Collection', 'ame-bazaar' ); ?>
-			</a>
-			<a href="<?php echo esc_url( $maps_url ); ?>" target="_blank" rel="noopener noreferrer" class="ame-luxury-link">
-				<?php esc_html_e( 'Visit Flagship', 'ame-bazaar' ); ?>
+			<a href="#categories" class="ame-premium-btn ame-premium-btn--primary">
+				<span class="ame-premium-btn__text"><?php esc_html_e( 'Shop Collection', 'ame-bazaar' ); ?></span>
 			</a>
 		</div>
 	</div>

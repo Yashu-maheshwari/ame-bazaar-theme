@@ -25,7 +25,12 @@ function ame_bazaar_enqueue_assets() {
 		$parent_style_version
 	);
 
-
+	wp_enqueue_style(
+		'ame-bazaar-fonts',
+		'https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap',
+		array(),
+		null
+	);
 
 	wp_enqueue_style(
 		'ame-bazaar-style',
