@@ -983,126 +983,131 @@ function ame_bazaar_render_raintech_import_page() {
 		// Try parsing from uploaded file or fall back to theme's raintech_products.csv
 		$file_path = '';
 		if ( ! empty( $_FILES['raintech_file']['tmp_name'] ) ) {
-			$file_path = $_FILES['raintech_file']['tmp_name'];
+			$ext = pathinfo( $_FILES['raintech_file']['name'], PATHINFO_EXTENSION );
+			$temp_file = dirname(__FILE__) . '/importer/upload-' . time() . '.' . $ext;
+			move_uploaded_file( $_FILES['raintech_file']['tmp_name'], $temp_file );
+			$file_path = $temp_file;
 		} else {
 			$file_path = dirname(__FILE__) . '/raintech_products.csv';
 		}
 
 		if ( file_exists( $file_path ) ) {
-			$handle = fopen( $file_path, 'r' );
-			$headers = fgetcsv( $handle );
+			$worker_script = dirname(__FILE__) . '/importer/raintech-worker.js';
+			$output_json = dirname(__FILE__) . '/importer/output-' . time() . '.json';
 			
-			$total_rows = 0;
-			$imported = 0;
-			$drafts = 0;
-			$errors = 0;
-			$missing_images = 0;
-			$new_categories = 0;
-			$duplicates = 0;
+			// Execute Node.js background worker
+			$cmd = escapeshellcmd("node " . $worker_script . " " . escapeshellarg($file_path) . " " . escapeshellarg($output_json));
+			$node_output = shell_exec($cmd);
+			
+			if ( file_exists( $output_json ) ) {
+				$json_data = json_decode( file_get_contents( $output_json ), true );
+				$products = isset($json_data['products']) ? $json_data['products'] : array();
+				
+				$total_rows = isset($json_data['metrics']['rowsProcessed']) ? $json_data['metrics']['rowsProcessed'] : 0;
+				$imported = 0;
+				$published = 0;
+				$errors = 0;
+				$missing_images = 0;
+				$new_categories = 0;
+				$duplicates = 0;
 
-			// Process first 500 rows for production scale
-			while ( ( $row = fgetcsv( $handle ) ) !== false && $total_rows < 500 ) {
-				$total_rows++;
-				$data = array_combine( $headers, $row );
-				if ( ! $data ) {
-					$errors++;
-					continue;
-				}
-
-				$raw_title = $data['Product Name'] ?? ($data['Item Name'] ?? '');
-				$product_code = $data['Product Code'] ?? ($data['Item Code'] ?? '');
-				$barcode = $data['Barcode'] ?? '';
-				$mrp = $data['MRP'] ?? 0;
-				$price = $data['Retail Price'] ?? $data['Retail Sale Price'] ?? $data['Selling Price'] ?? 0;
-				$raw_dept = $data['Category'] ?? '';
-				$raw_cat = $data['Sub Category / Brand'] ?? '';
-
-				if ( empty( $raw_title ) ) {
-					$errors++;
-					continue;
-				}
-
-				// Check duplicates
-				$existing_prod = get_posts( array(
-					'post_type'  => 'product',
-					'meta_key'   => '_sku',
-					'meta_value' => $product_code,
-					'post_status'=> array( 'publish', 'draft' )
-				) );
-
-				if ( ! empty( $existing_prod ) ) {
-					$duplicates++;
-					continue;
-				}
-
-				// Detect Attributes
-				$ai_data = ame_bazaar_detect_raintech_attributes( $raw_title, $mrp, $price, $barcode, $product_code, $raw_dept, $raw_cat );
-
-				// Check Image mapping
-				global $wpdb;
-				$attachment_id = 0;
-				if ( $product_code ) {
-					$attachment_id = $wpdb->get_var( $wpdb->prepare(
-						"SELECT ID FROM $wpdb->posts WHERE post_name = %s AND post_type = 'attachment'",
-						sanitize_title( $product_code )
-					) );
-				}
-				if ( ! $attachment_id && $barcode ) {
-					$attachment_id = $wpdb->get_var( $wpdb->prepare(
-						"SELECT ID FROM $wpdb->posts WHERE post_name = %s AND post_type = 'attachment'",
-						sanitize_title( $barcode )
-					) );
-				}
-
-				$img_status = $attachment_id ? 'ready' : 'missing';
-				if ( 'missing' === $img_status ) {
-					$missing_images++;
-				}
-
-				// Insert WooCommerce draft product with review metadata
-				$post_id = wp_insert_post( array(
-					'post_title'   => sanitize_text_field( $raw_title ),
-					'post_content' => wp_kses_post( $ai_data['long_desc'] ),
-					'post_excerpt' => wp_kses_post( $ai_data['short_desc'] ),
-					'post_status'  => 'draft',
-					'post_type'    => 'product',
-				) );
-
-				if ( $post_id && ! is_wp_error( $post_id ) ) {
-					// Save WooCommerce pricing, SKU
-					update_post_meta( $post_id, '_regular_price', $mrp );
-					update_post_meta( $post_id, '_price', $price );
-					update_post_meta( $post_id, '_sale_price', $price );
-					update_post_meta( $post_id, '_sku', $product_code );
+				foreach ( $products as $data ) {
+					$product_code = $data['sku'];
 					
-					// Save custom Raintech review data
-					update_post_meta( $post_id, '_ame_raw_raintech_data', $data );
-					update_post_meta( $post_id, '_ame_ai_generated_data', $ai_data );
-					update_post_meta( $post_id, '_ame_image_status', $img_status );
+					// Check duplicates
+					$existing_prod = get_posts( array(
+						'post_type'  => 'product',
+						'meta_key'   => '_sku',
+						'meta_value' => $product_code,
+						'post_status'=> array( 'publish', 'draft' )
+					) );
+
+					if ( ! empty( $existing_prod ) ) {
+						$duplicates++;
+						continue;
+					}
 					
-					if ( $attachment_id ) {
-						set_post_thumbnail( $post_id, $attachment_id );
+					// Auto create category hierarchy
+					$cat_id = ame_bazaar_get_or_create_import_category(
+						$data['department'],
+						$data['category'],
+						'',
+						''
+					);
+
+					// Check Image mapping
+					global $wpdb;
+					$attachment_id = 0;
+					if ( $product_code ) {
+						$attachment_id = $wpdb->get_var( $wpdb->prepare(
+							"SELECT ID FROM $wpdb->posts WHERE post_name = %s AND post_type = 'attachment'",
+							sanitize_title( $product_code )
+						) );
+					}
+					if ( ! $attachment_id && $data['barcode'] ) {
+						$attachment_id = $wpdb->get_var( $wpdb->prepare(
+							"SELECT ID FROM $wpdb->posts WHERE post_name = %s AND post_type = 'attachment'",
+							sanitize_title( $data['barcode'] )
+						) );
 					}
 
-					$drafts++;
-					$imported++;
-				} else {
-					$errors++;
-				}
-			}
-			fclose( $handle );
+					$img_status = $attachment_id ? 'ready' : 'IMAGE_PENDING';
+					if ( 'IMAGE_PENDING' === $img_status ) {
+						$missing_images++;
+					}
 
-			$summary = array(
-				'total_rows'     => $total_rows,
-				'imported'       => $imported,
-				'drafts'         => $drafts,
-				'errors'         => $errors,
-				'missing_images' => $missing_images,
-				'new_categories' => $new_categories,
-				'duplicates'     => $duplicates,
-			);
-			update_option( 'ame_raintech_import_summary', $summary );
-			$msg = "Processed Raintech product feed lines successfully.";
+					// Insert WooCommerce published product
+					$post_id = wp_insert_post( array(
+						'post_title'   => sanitize_text_field( $data['raw_title'] ),
+						'post_content' => wp_kses_post( $data['long_desc'] ),
+						'post_excerpt' => wp_kses_post( $data['short_desc'] ),
+						'post_status'  => 'publish', // Publishing immediately as requested
+						'post_type'    => 'product',
+					) );
+
+					if ( $post_id && ! is_wp_error( $post_id ) ) {
+						update_post_meta( $post_id, '_regular_price', $data['mrp'] );
+						update_post_meta( $post_id, '_price', $data['price'] );
+						update_post_meta( $post_id, '_sale_price', $data['price'] );
+						update_post_meta( $post_id, '_sku', $product_code );
+						update_post_meta( $post_id, '_ame_image_status', $img_status );
+						update_post_meta( $post_id, '_ame_ai_generated_data', $data );
+						
+						if ( $cat_id ) {
+							wp_set_object_terms( $post_id, $cat_id, 'product_cat' );
+						}
+						
+						if ( $attachment_id ) {
+							set_post_thumbnail( $post_id, $attachment_id );
+						}
+
+						$published++;
+						$imported++;
+					} else {
+						$errors++;
+					}
+				}
+				
+				unlink( $output_json ); // Clean up node output
+				if ( strpos( $file_path, '/importer/upload-' ) !== false && file_exists( $file_path ) ) {
+					unlink( $file_path ); // Clean up uploaded file
+				}
+				
+				$summary = array(
+					'total_rows'     => $total_rows,
+					'imported'       => $imported,
+					'published'      => $published,
+					'errors'         => $errors,
+					'missing_images' => $missing_images,
+					'new_categories' => $new_categories,
+					'duplicates'     => $duplicates,
+					'time_taken'     => (time() - $_SERVER['REQUEST_TIME']) . 's'
+				);
+				update_option( 'ame_raintech_import_summary', $summary );
+				$msg = "Processed Raintech feed lines successfully via Node.js AI Engine.";
+			} else {
+				$msg = "Error: Node.js worker failed to parse the file. Output: " . $node_output;
+			}
 		} else {
 			$msg = "Error: Raintech import feed file not found.";
 		}
@@ -1118,30 +1123,42 @@ function ame_bazaar_render_raintech_import_page() {
 		<?php endif; ?>
 
 		<?php if ( ! empty( $summary ) ) : ?>
-			<div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap:15px; margin-block:25px;">
+			<div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap:15px; margin-block:25px;">
 				<div style="background:#f8fafc; border:1px solid #cbd5e1; padding:15px; border-radius:6px; text-align:center;">
-					<strong style="font-size:0.85em; color:#475569;">Total Rows</strong>
-					<div style="font-size:1.8em; font-weight:800; color:#002347; margin-top:5px;"><?php echo esc_html( $summary['total_rows'] ); ?></div>
+					<strong style="font-size:0.85em; color:#475569;">Rows Processed</strong>
+					<div style="font-size:1.8em; font-weight:800; color:#002347; margin-top:5px;"><?php echo esc_html( $summary['total_rows'] ?? 0 ); ?></div>
 				</div>
 				<div style="background:#f0fdf4; border:1px solid #bbf7d0; padding:15px; border-radius:6px; text-align:center;">
-					<strong style="font-size:0.85em; color:#16a34a;">Imported Drafts</strong>
-					<div style="font-size:1.8em; font-weight:800; color:#14532d; margin-top:5px;"><?php echo esc_html( $summary['imported'] ); ?></div>
+					<strong style="font-size:0.85em; color:#16a34a;">Imported</strong>
+					<div style="font-size:1.8em; font-weight:800; color:#14532d; margin-top:5px;"><?php echo esc_html( $summary['imported'] ?? 0 ); ?></div>
 				</div>
-				<div style="background:#fef2f2; border:1px solid #fecaca; padding:15px; border-radius:6px; text-align:center;">
-					<strong style="font-size:0.85em; color:#dc2626;">Missing Images</strong>
-					<div style="font-size:1.8em; font-weight:800; color:#7f1d1d; margin-top:5px;"><?php echo esc_html( $summary['missing_images'] ); ?></div>
+				<div style="background:#ecfdf5; border:1px solid #a7f3d0; padding:15px; border-radius:6px; text-align:center;">
+					<strong style="font-size:0.85em; color:#059669;">Published</strong>
+					<div style="font-size:1.8em; font-weight:800; color:#064e3b; margin-top:5px;"><?php echo esc_html( $summary['published'] ?? 0 ); ?></div>
 				</div>
 				<div style="background:#fffbeb; border:1px solid #fef3c7; padding:15px; border-radius:6px; text-align:center;">
 					<strong style="font-size:0.85em; color:#d97706;">Duplicates</strong>
-					<div style="font-size:1.8em; font-weight:800; color:#78350f; margin-top:5px;"><?php echo esc_html( $summary['duplicates'] ); ?></div>
+					<div style="font-size:1.8em; font-weight:800; color:#78350f; margin-top:5px;"><?php echo esc_html( $summary['duplicates'] ?? 0 ); ?></div>
+				</div>
+				<div style="background:#fef2f2; border:1px solid #fecaca; padding:15px; border-radius:6px; text-align:center;">
+					<strong style="font-size:0.85em; color:#dc2626;">Failed</strong>
+					<div style="font-size:1.8em; font-weight:800; color:#7f1d1d; margin-top:5px;"><?php echo esc_html( $summary['errors'] ?? 0 ); ?></div>
+				</div>
+				<div style="background:#fef2f2; border:1px solid #fecaca; padding:15px; border-radius:6px; text-align:center;">
+					<strong style="font-size:0.85em; color:#dc2626;">Missing Images</strong>
+					<div style="font-size:1.8em; font-weight:800; color:#7f1d1d; margin-top:5px;"><?php echo esc_html( $summary['missing_images'] ?? 0 ); ?></div>
+				</div>
+				<div style="background:#f8fafc; border:1px solid #cbd5e1; padding:15px; border-radius:6px; text-align:center;">
+					<strong style="font-size:0.85em; color:#475569;">Time Taken</strong>
+					<div style="font-size:1.8em; font-weight:800; color:#002347; margin-top:5px;"><?php echo esc_html( $summary['time_taken'] ?? '0s' ); ?></div>
 				</div>
 			</div>
 		<?php endif; ?>
 
 		<form method="post" enctype="multipart/form-data" style="background:#f8fafc; padding:20px; border-radius:6px; border:1px dashed #cbd5e1; margin-top:20px;">
 			<?php wp_nonce_field( 'ame_raintech_import_action', 'ame_raintech_nonce' ); ?>
-			<label style="display:block; font-weight:700; color:#002347; margin-bottom:10px;">Select Raintech POS CSV File (Or execute with committed feed):</label>
-			<input type="file" name="raintech_file" accept=".csv" style="margin-bottom:20px; display:block;" />
+			<label style="display:block; font-weight:700; color:#002347; margin-bottom:10px;">Select Raintech POS File (XLSX, XLS, CSV, TXT, JSON):</label>
+			<input type="file" name="raintech_file" accept=".csv,.xlsx,.xls,.txt,.json" style="margin-bottom:20px; display:block;" />
 			<button type="submit" name="ame_run_raintech_import" class="button button-primary button-large">Execute AI Product Import</button>
 		</form>
 	</div>
