@@ -1343,10 +1343,22 @@ function ame_bazaar_api_run_import_verification( $request ) {
 				'all_meta' => get_term_meta( $dept->term_id ),
 			);
 		}
-		return new WP_REST_Response( $meta_data, 200 );
+		return new WP_REST_Response( array(
+			'categories' => $meta_data,
+			'migration_completed' => get_option( 'ame_taxonomy_migration_completed' ),
+			'migration_log'       => get_option( 'ame_taxonomy_migration_log' ),
+		), 200 );
 	}
 
 	if ( $request->get_param( 'set_meta' ) ) {
+		delete_option( 'ame_taxonomy_migration_completed' );
+		if ( function_exists( 'ame_bazaar_bootstrap_categories' ) ) {
+			ame_bazaar_bootstrap_categories();
+		}
+		
+		$kids_term = get_term_by( 'slug', 'kids-wear', 'product_cat' );
+		$kids_id = $kids_term ? $kids_term->term_id : 0;
+		
 		update_term_meta( 28, '_ame_homepage_card', 469 );
 		update_term_meta( 28, '_ame_category_banner', 469 );
 		
@@ -1359,7 +1371,12 @@ function ame_bazaar_api_run_import_verification( $request ) {
 		update_term_meta( 33, '_ame_homepage_card', 320 );
 		update_term_meta( 33, '_ame_category_banner', 320 );
 		
-		return new WP_REST_Response( array( 'status' => 'meta_populated' ), 200 );
+		if ( $kids_id ) {
+			update_term_meta( $kids_id, '_ame_homepage_card', 198 );
+			update_term_meta( $kids_id, '_ame_category_banner', 198 );
+		}
+		
+		return new WP_REST_Response( array( 'status' => 'meta_populated', 'kids_id' => $kids_id ), 200 );
 	}
 
 	if ( $request->get_param( 'dump_file' ) ) {
