@@ -6238,263 +6238,216 @@
 }
 
 /* ==========================================================================
-   PHASE 15 - Step 2: Premium Hero Section Polish (TICKET #027)
+   PHASE 15 - Step 2: Cinematic Premium Hero (Zara / Apple Aesthetic)
    ========================================================================== */
 
-.ame-hero-premium {
+.ame-cinematic-hero {
 	position: relative;
 	width: 100%;
-	min-height: 90vh; /* Cinematic height */
+	height: 100vh;
+	min-height: 700px;
+	overflow: hidden;
 	display: flex;
 	align-items: center;
-	background-color: #FAFAFA; /* Off-white museum base */
-	overflow: hidden;
+	justify-content: center;
+	background-color: #000;
 }
 
-/* 
- * The Visual (Image) dominates the right side on Desktop, 
- * and bleeds edge-to-edge on Mobile 
- */
-.ame-hero-premium__visual {
+/* 1. Full Bleed Canvas */
+.ame-cinematic-hero__canvas {
 	position: absolute;
 	top: 0;
-	right: 0;
-	width: 55%;
+	left: 0;
+	width: 100%;
 	height: 100%;
 	z-index: 1;
 }
 
-.ame-hero-premium__img {
+.ame-cinematic-hero__image {
 	width: 100%;
 	height: 100%;
 	object-fit: cover;
-	object-position: center top;
+	object-position: center;
 	display: block;
+	animation: subtleZoom 20s ease-out forwards;
 }
 
-.ame-hero-premium__overlay {
-	display: none; /* Only used on mobile for text legibility */
+@keyframes subtleZoom {
+	from { transform: scale(1.05); }
+	to { transform: scale(1); }
 }
 
-/* 
- * The Content wrapper contains the typography on the left 
- */
-.ame-hero-premium__content-wrapper {
-	position: relative;
-	z-index: 2;
-	width: 100%;
-	max-width: 1440px;
-	margin: 0 auto;
-	padding: 0 4rem;
-	display: flex;
-	align-items: center;
-}
-
-.ame-hero-premium__content {
-	max-width: 650px;
-	background: transparent; /* No boxed feeling */
-	padding: 4rem 0;
-}
-
-.ame-hero-premium__trust-badge {
-	font-family: 'Inter', sans-serif;
-	font-size: 0.8rem;
-	font-weight: 600;
-	letter-spacing: 0.2em;
-	text-transform: uppercase;
-	color: #D4AF37; /* Subtle Gold */
-	margin-bottom: 2rem;
-	display: inline-block;
-	position: relative;
-}
-
-.ame-hero-premium__trust-badge::before {
-	content: '';
+/* Soft cinematic vignette to pull focus and improve text legibility */
+.ame-cinematic-hero__vignette {
 	position: absolute;
-	left: -2rem;
-	top: 50%;
-	width: 1.5rem;
-	height: 1px;
-	background: #D4AF37;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background: radial-gradient(circle, rgba(0,0,0,0) 40%, rgba(0,0,0,0.5) 100%),
+				linear-gradient(to bottom, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0) 30%, rgba(0,0,0,0.6) 100%);
+	z-index: 2;
+	pointer-events: none;
 }
 
-.ame-hero-premium__headline {
-	font-family: 'Outfit', 'Inter', sans-serif;
-	font-size: 4.5rem;
-	font-weight: 300; /* Luxury light weight */
-	line-height: 1.05;
-	letter-spacing: -0.03em;
-	color: #1A1A1A; /* Deep charcoal */
-	text-transform: uppercase;
-	margin-bottom: 2rem;
+/* 2. Floating Glassmorphism Panel */
+.ame-cinematic-hero__glass-panel {
 	position: relative;
+	z-index: 3;
+	background: rgba(255, 255, 255, 0.15);
+	backdrop-filter: blur(20px);
+	-webkit-backdrop-filter: blur(20px);
+	border: 1px solid rgba(255, 255, 255, 0.3);
+	padding: 4rem;
+	border-radius: 2px;
+	max-width: 700px;
+	text-align: center;
+	box-shadow: 0 30px 60px rgba(0, 0, 0, 0.2);
+	animation: floatSoft 6s ease-in-out infinite;
+	margin-top: 10vh;
 }
 
-/* Make one specific line bolder if needed, but keeping it clean */
-.ame-hero-premium__headline b, 
-.ame-hero-premium__headline strong {
-	font-weight: 600;
+@keyframes floatSoft {
+	0% { transform: translateY(0px); }
+	50% { transform: translateY(-8px); }
+	100% { transform: translateY(0px); }
 }
 
-.ame-hero-premium__subheadline {
+/* 3. Typography */
+.ame-cinematic-hero__badge {
 	font-family: 'Inter', sans-serif;
-	font-size: 1.25rem;
-	font-weight: 400;
-	line-height: 1.6;
-	color: #4A4A4A;
-	margin-bottom: 3.5rem;
-	max-width: 80%;
+	font-size: 0.75rem;
+	font-weight: 600;
+	letter-spacing: 0.25em;
+	text-transform: uppercase;
+	color: #fff;
+	margin-bottom: 2rem;
+	opacity: 0.9;
 }
 
-/* Premium Buttons */
-.ame-hero-premium__ctas {
+.ame-cinematic-hero__title {
+	font-family: 'Outfit', 'Inter', sans-serif;
+	font-size: 4rem;
+	font-weight: 200; /* Ultra luxury */
+	line-height: 1.1;
+	letter-spacing: -0.02em;
+	color: #fff;
+	text-transform: uppercase;
+	margin-bottom: 1.5rem;
+	text-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.ame-cinematic-hero__subtitle {
+	font-family: 'Inter', sans-serif;
+	font-size: 1.1rem;
+	font-weight: 300;
+	line-height: 1.7;
+	color: rgba(255, 255, 255, 0.9);
+	margin-bottom: 3rem;
+	margin-left: auto;
+	margin-right: auto;
+	max-width: 85%;
+}
+
+/* 4. Luxury Buttons */
+.ame-cinematic-hero__actions {
 	display: flex;
 	gap: 1.5rem;
-	align-items: center;
-	margin-bottom: 4rem;
+	justify-content: center;
 }
 
-.ame-btn-premium {
+.ame-btn-luxury {
 	display: inline-flex;
 	align-items: center;
 	justify-content: center;
-	padding: 1.1rem 2.8rem;
+	padding: 1.1rem 3rem;
 	font-family: 'Inter', sans-serif;
-	font-size: 0.9rem;
+	font-size: 0.85rem;
 	font-weight: 600;
-	letter-spacing: 0.08em;
+	letter-spacing: 0.1em;
 	text-transform: uppercase;
 	text-decoration: none;
-	border-radius: 2px; /* Edgy, high-end feel */
-	transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-	position: relative;
-	overflow: hidden;
+	border-radius: 1px;
+	transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.ame-btn-premium--solid {
-	background-color: #1A1A1A;
-	color: #FFFFFF !important;
-	border: 1px solid #1A1A1A;
-	box-shadow: 0 10px 30px rgba(26, 26, 26, 0.15);
+.ame-btn-luxury--primary {
+	background-color: #fff;
+	color: #000 !important;
+	border: 1px solid #fff;
 }
 
-.ame-btn-premium--solid:hover {
-	background-color: #333333;
-	border-color: #333333;
-	transform: translateY(-2px);
-	box-shadow: 0 15px 35px rgba(26, 26, 26, 0.25);
-}
-
-.ame-btn-premium--ghost {
+.ame-btn-luxury--primary:hover {
 	background-color: transparent;
-	color: #1A1A1A !important;
-	border: 1px solid #1A1A1A;
+	color: #fff !important;
 }
 
-.ame-btn-premium--ghost:hover {
-	background-color: #1A1A1A;
-	color: #FFFFFF !important;
+.ame-btn-luxury--secondary {
+	background-color: transparent;
+	color: #fff !important;
+	border: 1px solid rgba(255, 255, 255, 0.6);
 }
 
-/* Micro Trust Ticker */
-.ame-hero-premium__ticker {
-	font-family: 'Inter', sans-serif;
-	font-size: 0.75rem;
-	font-weight: 500;
-	letter-spacing: 0.15em;
-	color: #71717A; /* Muted gray */
-	display: flex;
-	gap: 0.75rem;
-	align-items: center;
-	opacity: 0.8;
+.ame-btn-luxury--secondary:hover {
+	background-color: #fff;
+	color: #000 !important;
 }
 
 /* 
  * RESPONSIVE: Tablet & Mobile
  */
 @media (max-width: 1024px) {
-	.ame-hero-premium {
-		min-height: 70vh;
+	.ame-cinematic-hero__glass-panel {
+		padding: 3rem;
+		max-width: 600px;
 	}
-	.ame-hero-premium__content-wrapper {
-		padding: 0 2rem;
-	}
-	.ame-hero-premium__headline {
-		font-size: 3.5rem;
-	}
-	.ame-hero-premium__visual {
-		width: 50%;
+	.ame-cinematic-hero__title {
+		font-size: 3rem;
 	}
 }
 
 @media (max-width: 768px) {
-	/* Mobile First / Full Takeover layout */
-	.ame-hero-premium {
-		min-height: 100vh; /* Full bleed on mobile */
-		height: 100vh;
-		display: flex;
-		align-items: flex-end; /* Push content to bottom */
-		padding-bottom: 3rem;
+	.ame-cinematic-hero {
+		align-items: flex-end; /* Push to bottom on mobile */
+		padding-bottom: 4rem;
 	}
-
-	.ame-hero-premium__visual {
-		width: 100%;
-		height: 100%;
-		z-index: 1;
-	}
-
-	.ame-hero-premium__overlay {
-		display: block;
-		position: absolute;
-		bottom: 0;
-		left: 0;
-		width: 100%;
-		height: 70%;
-		background: linear-gradient(to top, rgba(250, 250, 250, 1) 0%, rgba(250, 250, 250, 0.9) 30%, rgba(250, 250, 250, 0) 100%);
-		z-index: 2;
-	}
-
-	.ame-hero-premium__content-wrapper {
+	
+	.ame-cinematic-hero__glass-panel {
+		background: transparent;
+		backdrop-filter: none;
+		-webkit-backdrop-filter: none;
+		border: none;
+		box-shadow: none;
 		padding: 0 1.5rem;
-		z-index: 3;
+		margin-top: 0;
+		animation: none; /* Disable float on mobile */
+		width: 100%;
+	}
+	
+	/* Heavier vignette for mobile bottom text */
+	.ame-cinematic-hero__vignette {
+		background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.4) 40%, rgba(0,0,0,0) 100%);
 	}
 
-	.ame-hero-premium__content {
-		padding: 2rem 0 0 0;
+	.ame-cinematic-hero__title {
+		font-size: 2.5rem;
+		line-height: 1.05;
 	}
 
-	.ame-hero-premium__trust-badge {
-		margin-bottom: 1rem;
-	}
-
-	.ame-hero-premium__trust-badge::before {
-		display: none; /* Remove line on mobile to save space */
-	}
-
-	.ame-hero-premium__headline {
-		font-size: 2.8rem;
-		margin-bottom: 1rem;
-	}
-
-	.ame-hero-premium__subheadline {
-		font-size: 1.1rem;
-		margin-bottom: 2rem;
+	.ame-cinematic-hero__subtitle {
+		font-size: 1rem;
 		max-width: 100%;
+		margin-bottom: 2rem;
 	}
 
-	.ame-hero-premium__ctas {
+	.ame-cinematic-hero__actions {
 		flex-direction: column;
 		gap: 1rem;
-		margin-bottom: 2.5rem;
 	}
 
-	.ame-btn-premium {
+	.ame-btn-luxury {
 		width: 100%;
-	}
-
-	.ame-hero-premium__ticker {
-		justify-content: center;
-		font-size: 0.65rem;
+		padding: 1.1rem 0;
 	}
 }
 
