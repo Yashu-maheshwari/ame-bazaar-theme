@@ -22,24 +22,36 @@ $categories = array(
 		'default_img' => ame_bazaar_asset_uri( 'assets/images/women-wear-new.jpg' ),
 	),
 	'boys' => array(
-		'label'       => 'Boys Wear',
+		'label'       => 'Boy\'s Wear',
 		'default_img' => ame_bazaar_asset_uri( 'assets/images/kids-wear-new.jpg' ),
 	),
 	'girls' => array(
-		'label'       => 'Girls Wear',
+		'label'       => 'Girl\'s Wear',
 		'default_img' => ame_bazaar_asset_uri( 'assets/images/kids-wear-new.jpg' ),
 	),
-	'sarees' => array(
-		'label'       => 'Sarees',
-		'default_img' => ame_bazaar_asset_uri( 'assets/images/sarees-new.jpg' ),
+	'infant' => array(
+		'label'       => 'Infant Items',
+		'default_img' => ame_bazaar_asset_uri( 'assets/images/kids-wear-new.jpg' ),
 	),
 	'accessories' => array(
 		'label'       => 'Accessories',
 		'default_img' => ame_bazaar_asset_uri( 'assets/images/accessories-new.jpg' ),
 	),
+	'footwear' => array(
+		'label'       => 'Footwear',
+		'default_img' => ame_bazaar_asset_uri( 'assets/images/accessories-new.jpg' ),
+	),
+	'rainwear' => array(
+		'label'       => 'Rainwear',
+		'default_img' => ame_bazaar_asset_uri( 'assets/images/accessories-new.jpg' ),
+	),
 	'tailoring' => array(
-		'label'       => 'Tailoring',
+		'label'       => 'Tailoring Services',
 		'default_img' => ame_bazaar_asset_uri( 'assets/images/tailoring-new.jpg' ),
+	),
+	'exclusive' => array(
+		'label'       => 'Online Exclusive',
+		'default_img' => ame_bazaar_asset_uri( 'assets/images/accessories-new.jpg' ),
 	),
 );
 ?>
@@ -72,11 +84,17 @@ $categories = array(
 						$slugs_to_check[] = 'womens-wear';
 						$slugs_to_check[] = 'women-wear';
 					} elseif ( 'boys' === $key ) {
-						$slugs_to_check[] = 'boy-wear';
 						$slugs_to_check[] = 'boys-wear';
+						$slugs_to_check[] = 'boy-wear';
 					} elseif ( 'girls' === $key ) {
-						$slugs_to_check[] = 'girl-wear';
 						$slugs_to_check[] = 'girls-wear';
+						$slugs_to_check[] = 'girl-wear';
+					} elseif ( 'infant' === $key ) {
+						$slugs_to_check[] = 'infant-items';
+					} elseif ( 'tailoring' === $key ) {
+						$slugs_to_check[] = 'tailoring-services';
+					} elseif ( 'exclusive' === $key ) {
+						$slugs_to_check[] = 'online-exclusive';
 					}
 
 					foreach ( $slugs_to_check as $slug ) {
@@ -94,16 +112,22 @@ $categories = array(
 					if ( ! $url || '#' === $url ) {
 						if ( 'tailoring' === $key ) {
 							$url = home_url( '/tailoring-near-me/' );
-						} elseif ( 'sarees' === $key ) {
-							$url = home_url( '/product-category/womens-wear/' );
 						} elseif ( 'men' === $key ) {
 							$url = home_url( '/product-category/mens-wear/' );
 						} elseif ( 'women' === $key ) {
 							$url = home_url( '/product-category/womens-wear/' );
 						} elseif ( 'boys' === $key ) {
-							$url = home_url( '/product-category/boy-wear/' );
+							$url = home_url( '/product-category/boys-wear/' );
 						} elseif ( 'girls' === $key ) {
-							$url = home_url( '/product-category/girl-wear/' );
+							$url = home_url( '/product-category/girls-wear/' );
+						} elseif ( 'infant' === $key ) {
+							$url = home_url( '/product-category/infant-items/' );
+						} elseif ( 'footwear' === $key ) {
+							$url = home_url( '/product-category/footwear/' );
+						} elseif ( 'rainwear' === $key ) {
+							$url = home_url( '/product-category/rainwear/' );
+						} elseif ( 'exclusive' === $key ) {
+							$url = home_url( '/product-category/online-exclusive/' );
 						} else {
 							$url = home_url( '/product-category/' . $key . '/' );
 						}
@@ -116,10 +140,7 @@ $categories = array(
 						$url = str_replace( '/category/', '/product-category/', $url );
 					}
 					if ( strpos( $url, '/product-category/kids/' ) !== false || strpos( $url, '/product-category/kids-wear/' ) !== false ) {
-						$url = home_url( '/product-category/boy-wear/' );
-					}
-					if ( strpos( $url, '/product-category/sarees/' ) !== false ) {
-						$url = home_url( '/product-category/womens-wear/' );
+						$url = home_url( '/product-category/boys-wear/' );
 					}
 					if ( strpos( $url, '/product-category/tailoring/' ) !== false ) {
 						$url = home_url( '/tailoring-near-me/' );
