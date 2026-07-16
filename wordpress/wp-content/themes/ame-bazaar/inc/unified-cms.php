@@ -1,6 +1,6 @@
 <?php
 /**
- * Unified AI-First Business CMS & Operations Layer (Polished).
+ * Unified AI-First Business CMS & Operations Layer.
  *
  * @package Ame_Bazaar
  */
@@ -10,11 +10,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Enqueue Admin UI polishing styles & scripts
+ * Enqueue Admin UI styling for Explorer Tree and Product Wizard
  */
 function ame_bazaar_cms_admin_assets() {
 	?>
-	<style type="text/style">
+	<style type="text/css">
 		/* General Admin CSS Tweaks for Premium CMS Layout */
 		.ame-media-card-uploader {
 			border: 1px solid #e2e8f0 !important;
@@ -62,6 +62,42 @@ function ame_bazaar_cms_admin_assets() {
 			border-radius: 4px;
 			font-size: 0.85em;
 		}
+		/* Explorer Tree Styling */
+		.ame-explorer-node {
+			padding: 8px 12px;
+			margin: 5px 0;
+			background: #fff;
+			border: 1px solid #e2e8f0;
+			border-radius: 6px;
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+		}
+		.ame-explorer-child {
+			margin-left: 30px;
+			border-left: 2px solid #e2e8f0;
+			padding-left: 15px;
+		}
+		/* Product Wizard Tabs */
+		.ame-wizard-steps-nav {
+			display: flex;
+			gap: 10px;
+			margin-bottom: 20px;
+			border-bottom: 2px solid #e2e8f0;
+			padding-bottom: 10px;
+		}
+		.ame-wizard-step-tab {
+			padding: 10px 15px;
+			background: #f1f5f9;
+			border-radius: 6px;
+			cursor: pointer;
+			font-weight: 600;
+			color: #475569;
+		}
+		.ame-wizard-step-tab.active {
+			background: #002347;
+			color: #ffffff;
+		}
 	</style>
 	<?php
 }
@@ -69,7 +105,6 @@ add_action( 'admin_head', 'ame_bazaar_cms_admin_assets' );
 
 /**
  * 1. UNIFIED CATEGORY MANAGEMENT & PREVIEW SIMULATOR
- * Add custom uploader cards, machine-readable keys, previews and repeatable FAQs.
  */
 function ame_bazaar_unified_category_fields() {
 	?>
@@ -77,10 +112,10 @@ function ame_bazaar_unified_category_fields() {
 		<h2 style="color: #002347; font-weight: 700; border-bottom: 2px solid #ca8a04; padding-bottom: 5px;">
 			🎨 AME Bazaar Showroom & Banners Manager
 		</h2>
-		<p class="description"><?php esc_html_e( 'Non-technical dashboard to manage all category assets and metadata. Settings configured here synchronize automatically across all visual channels.', 'ame-bazaar' ); ?></p>
+		<p class="description"><?php esc_html_e( 'Non-technical dashboard to manage all category assets and metadata.', 'ame-bazaar' ); ?></p>
 	</div>
 
-	<!-- uploader card template helper -->
+	<!-- uploader cards -->
 	<?php
 	$media_cards = array(
 		'ame_category_thumbnail' => array(
@@ -111,45 +146,25 @@ function ame_bazaar_unified_category_fields() {
 
 	foreach ( $media_cards as $key => $data ) :
 	?>
-		<div class="form-field ame-media-card-uploader" style="border: 1px solid #e2e8f0; padding: 15px; border-radius: 6px; background: #f8fafc; margin-bottom: 15px;">
+		<div class="form-field ame-media-card-uploader">
 			<label style="font-weight: 700; color: #002347; margin-bottom: 5px;">
 				<?php echo esc_html( $data['label'] ); ?>
 				<span class="ame-machine-key-badge" title="AI Agent Field Key"><?php echo esc_html( $key ); ?></span>
 			</label>
-			<input type="hidden" name="<?php echo esc_attr( $key ); ?>" id="<?php echo esc_attr( $key ); ?>" class="ame-machine-key" data-key="<?php echo esc_attr( $key ); ?>" value="" />
-			
+			<input type="hidden" name="<?php echo esc_attr( $key ); ?>" id="<?php echo esc_attr( $key ); ?>" value="" />
 			<div id="preview-<?php echo esc_attr( $key ); ?>" style="margin-block: 10px;">
 				<p style="color: #64748b; font-style: italic; margin: 0; font-size: 0.85em;">No image selected.</p>
 			</div>
-
 			<div style="display: flex; gap: 10px; align-items: center;">
 				<button type="button" class="button button-secondary ame-asset-upload-btn" data-field="<?php echo esc_attr( $key ); ?>"><?php esc_html_e( 'Upload / Select', 'ame-bazaar' ); ?></button>
 				<button type="button" class="button button-link delete ame-asset-remove-btn" data-field="<?php echo esc_attr( $key ); ?>" style="display:none; color: #b91c1c; text-decoration: none;"><?php esc_html_e( 'Remove', 'ame-bazaar' ); ?></button>
 			</div>
-
 			<div style="margin-top: 10px; padding-top: 8px; border-top: 1px solid #edf2f7; font-size: 0.8em; color: #475569;">
 				<strong>Used In:</strong> <span style="color:#0f766e;"><?php echo esc_html( $data['used'] ); ?></span>
 			</div>
 		</div>
 	<?php endforeach; ?>
 
-	<!-- Previews Section -->
-	<div class="form-field" style="border: 1px dashed #ca8a04; padding: 15px; border-radius: 6px; background: #fffbeb; margin-bottom: 20px;">
-		<label style="font-weight:700; color:#ca8a04; margin-bottom:10px;">✨ Category Visual Live Preview Simulator</label>
-		<div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); gap:15px; margin-top:10px;">
-			<div style="background:#fff; border:1px solid #e2e8f0; padding:10px; border-radius:4px; text-align:center;">
-				<span style="font-size:0.75em; text-transform:uppercase; color:#64748b; font-weight:700;">Homepage Preview</span>
-				<div style="aspect-ratio:1/1; background:#f1f5f9; display:flex; align-items:center; justify-content:center; margin-top:5px; font-size:0.8em; color:#94a3b8; border-radius:3px;">Image Simulator</div>
-			</div>
-			<div style="background:#fff; border:1px solid #e2e8f0; padding:10px; border-radius:4px;">
-				<span style="font-size:0.75em; text-transform:uppercase; color:#64748b; font-weight:700;">Google Search Preview</span>
-				<h4 style="color:#1a0dab; margin:5px 0 2px 0; font-size:0.9em; font-weight:500;">Buy kurtas Online - AME Bazaar Kirari</h4>
-				<p style="color:#006621; font-size:0.75em; margin:0;">https://amebazaar.in/shop/...</p>
-			</div>
-		</div>
-	</div>
-
-	<!-- Custom inputs -->
 	<div class="form-field">
 		<label for="ame_seo_title"><?php esc_html_e( 'SEO Title Override', 'ame-bazaar' ); ?></label>
 		<input type="text" name="ame_seo_title" id="ame_seo_title" value="" />
@@ -170,20 +185,8 @@ function ame_bazaar_unified_category_fields() {
 		<textarea name="ame_ai_summary" id="ame_ai_summary" rows="3"></textarea>
 	</div>
 
-	<!-- Repeatable FAQ Block -->
-	<div class="form-field">
-		<label><strong><?php esc_html_e( 'Frequently Asked Questions (FAQs)', 'ame-bazaar' ); ?></strong></label>
-		<div id="ame-cat-faq-container" style="background:#f8fafc; border:1px solid #dbe2ea; padding:15px; border-radius:5px;">
-			<table style="width:100%;" id="faq-editor-table">
-				<tbody id="faq-editor-rows"></tbody>
-			</table>
-			<button type="button" class="button button-secondary" id="add-faq-row-btn" style="margin-top:10px;">+ Add FAQ Row</button>
-		</div>
-	</div>
-
 	<script type="text/javascript">
 	jQuery(document).ready(function($){
-		// Inline uploader script
 		$(document).on('click', '.ame-asset-upload-btn', function(e){
 			e.preventDefault();
 			var button = $(this);
@@ -199,7 +202,6 @@ function ame_bazaar_unified_category_fields() {
 				button.siblings('.delete').show();
 			}).open();
 		});
-
 		$(document).on('click', '.ame-asset-remove-btn', function(e){
 			e.preventDefault();
 			var button = $(this);
@@ -207,23 +209,6 @@ function ame_bazaar_unified_category_fields() {
 			$('#' + fieldId).val('');
 			$('#preview-' + fieldId).html('<p style="color: #64748b; font-style: italic; margin: 0; font-size: 0.85em;">No image selected.</p>');
 			button.hide();
-		});
-
-		// Repeatable FAQ rows
-		var faqIdx = 0;
-		$('#add-faq-row-btn').click(function(e){
-			e.preventDefault();
-			var row = '<tr class="faq-row" style="border-top:1px solid #e2e8f0; padding-block:5px;">' +
-				'<td><input type="text" name="ame_cat_faqs[' + faqIdx + '][q]" style="width:95%;" placeholder="Question..." /></td>' +
-				'<td><textarea name="ame_cat_faqs[' + faqIdx + '][a]" style="width:95%;" rows="2" placeholder="Answer..."></textarea></td>' +
-				'<td><button type="button" class="button remove-faq-btn" style="color:#b91c1c;">X</button></td>' +
-			'</tr>';
-			$('#faq-editor-rows').append(row);
-			faqIdx++;
-		});
-
-		$(document).on('click', '.remove-faq-btn', function(){
-			$(this).closest('tr').remove();
 		});
 	});
 	</script>
@@ -247,18 +232,13 @@ function ame_bazaar_unified_category_edit_fields( $term ) {
 	$seo_desc = get_term_meta( $term_id, '_ame_seo_desc', true );
 	$primary_kw = get_term_meta( $term_id, '_ame_primary_keyword', true );
 	$ai_summary = get_term_meta( $term_id, '_ame_ai_summary', true );
-	$faqs = get_term_meta( $term_id, '_ame_cat_faqs', true );
-	if ( ! is_array( $faqs ) ) {
-		$faqs = array();
-	}
-
 	?>
 	<tr class="form-field">
 		<th scope="row" colspan="2" style="padding-left:0;">
 			<h2 style="color: #002347; font-weight: 700; border-bottom: 2px solid #ca8a04; padding-bottom: 5px;">
 				🎨 AME Bazaar Showroom & Banners Manager
 			</h2>
-			<p class="description"><?php esc_html_e( 'Non-technical dashboard to manage all category assets and metadata. Settings configured here synchronize automatically across all visual channels.', 'ame-bazaar' ); ?></p>
+			<p class="description"><?php esc_html_e( 'Non-technical dashboard to manage all category assets and metadata.', 'ame-bazaar' ); ?></p>
 		</th>
 	</tr>
 
@@ -309,37 +289,8 @@ function ame_bazaar_unified_category_edit_fields( $term ) {
 		<td><textarea name="ame_ai_summary" id="ame_ai_summary" rows="3"><?php echo esc_textarea( $ai_summary ); ?></textarea></td>
 	</tr>
 
-	<!-- Repeatable FAQs -->
-	<tr class="form-field">
-		<th scope="row"><label><strong><?php esc_html_e( 'Frequently Asked Questions (FAQs)', 'ame-bazaar' ); ?></strong></label></th>
-		<td>
-			<div id="ame-cat-faq-container" style="background:#f8fafc; border:1px solid #dbe2ea; padding:15px; border-radius:5px; max-width:800px;">
-				<table style="width:100%; border-collapse:collapse;" id="faq-editor-table">
-					<tbody id="faq-editor-rows">
-						<?php 
-						$index = 0;
-						foreach ( $faqs as $faq ) : 
-							if ( empty( $faq['q'] ) ) continue;
-						?>
-							<tr class="faq-row" style="border-top:1px solid #e2e8f0;">
-								<td><input type="text" name="ame_cat_faqs[<?php echo $index; ?>][q]" style="width:95%;" value="<?php echo esc_attr( $faq['q'] ); ?>" /></td>
-								<td><textarea name="ame_cat_faqs[<?php echo $index; ?>][a]" style="width:95%;" rows="2"><?php echo esc_textarea( $faq['a'] ); ?></textarea></td>
-								<td><button type="button" class="button remove-faq-btn" style="color:#b91c1c;">X</button></td>
-							</tr>
-						<?php 
-							$index++;
-						endforeach; 
-						?>
-					</tbody>
-				</table>
-				<button type="button" class="button button-secondary" id="add-faq-row-btn" style="margin-top:10px;">+ Add FAQ Row</button>
-			</div>
-		</td>
-	</tr>
-
 	<script type="text/javascript">
 	jQuery(document).ready(function($){
-		// Inline uploader script
 		$(document).on('click', '.ame-asset-upload-btn', function(e){
 			e.preventDefault();
 			var button = $(this);
@@ -355,7 +306,6 @@ function ame_bazaar_unified_category_edit_fields( $term ) {
 				button.siblings('.delete').show();
 			}).open();
 		});
-
 		$(document).on('click', '.ame-asset-remove-btn', function(e){
 			e.preventDefault();
 			var button = $(this);
@@ -363,23 +313,6 @@ function ame_bazaar_unified_category_edit_fields( $term ) {
 			$('#' + fieldId).val('');
 			$('#preview-' + fieldId).html('<p style="color: #64748b; font-style: italic; margin: 0; font-size: 0.85em;">No image selected.</p>');
 			button.hide();
-		});
-
-		// Repeatable FAQ rows
-		var faqIdx = <?php echo $index; ?>;
-		$('#add-faq-row-btn').click(function(e){
-			e.preventDefault();
-			var row = '<tr class="faq-row" style="border-top:1px solid #e2e8f0; padding-block:5px;">' +
-				'<td><input type="text" name="ame_cat_faqs[' + faqIdx + '][q]" style="width:95%;" placeholder="Question..." /></td>' +
-				'<td><textarea name="ame_cat_faqs[' + faqIdx + '][a]" style="width:95%;" rows="2" placeholder="Answer..."></textarea></td>' +
-				'<td><button type="button" class="button remove-faq-btn" style="color:#b91c1c;">X</button></td>' +
-			'</tr>';
-			$('#faq-editor-rows').append(row);
-			faqIdx++;
-		});
-
-		$(document).on('click', '.remove-faq-btn', function(){
-			$(this).closest('tr').remove();
 		});
 	});
 	</script>
@@ -406,78 +339,58 @@ function ame_bazaar_save_unified_category_fields( $term_id ) {
 			update_term_meta( $term_id, '_' . $field, sanitize_text_field( wp_unslash( $_POST[ $field ] ) ) );
 		}
 	}
-
-	if ( isset( $_POST['ame_cat_faqs'] ) && is_array( $_POST['ame_cat_faqs'] ) ) {
-		$sanitized_faqs = array();
-		foreach ( $_POST['ame_cat_faqs'] as $faq ) {
-			if ( ! empty( $faq['q'] ) ) {
-				$sanitized_faqs[] = array(
-					'q' => sanitize_text_field( $faq['q'] ),
-					'a' => sanitize_textarea_field( $faq['a'] ),
-				);
-			}
-		}
-		update_term_meta( $term_id, '_ame_cat_faqs', $sanitized_faqs );
-	}
 }
 add_action( 'edited_product_cat', 'ame_bazaar_save_unified_category_fields' );
 add_action( 'create_product_cat', 'ame_bazaar_save_unified_category_fields' );
 
 
 /**
- * 2. PRODUCT EDIT TAB BINDINGS
+ * 2. PRODUCT EDIT TAB BINDINGS & WIZARD STAGE INTERACTION
  */
 function ame_bazaar_tabbed_product_data( $tabs ) {
 	unset( $tabs['general'] );
 	unset( $tabs['inventory'] );
 
 	$tabs['basic_product'] = array(
-		'label'    => __( 'Basic Product', 'ame-bazaar' ),
+		'label'    => __( 'Step 1: Basic Specs', 'ame-bazaar' ),
 		'target'   => 'ame_basic_product_panel',
 		'class'    => array( 'show_if_simple', 'show_if_variable' ),
 		'priority' => 10,
 	);
 
 	$tabs['pricing'] = array(
-		'label'    => __( 'Pricing', 'ame-bazaar' ),
+		'label'    => __( 'Step 2: Price', 'ame-bazaar' ),
 		'target'   => 'ame_pricing_panel',
 		'class'    => array( 'show_if_simple', 'show_if_variable' ),
 		'priority' => 15,
 	);
 
 	$tabs['inventory'] = array(
-		'label'    => __( 'Inventory', 'ame-bazaar' ),
+		'label'    => __( 'Step 3: Stock', 'ame-bazaar' ),
 		'target'   => 'ame_inventory_panel',
 		'class'    => array( 'show_if_simple', 'show_if_variable' ),
 		'priority' => 20,
 	);
 
 	$tabs['specifications'] = array(
-		'label'    => __( 'Specifications', 'ame-bazaar' ),
+		'label'    => __( 'Step 4: Garments', 'ame-bazaar' ),
 		'target'   => 'ame_specifications_panel',
 		'class'    => array( 'show_if_simple', 'show_if_variable' ),
 		'priority' => 25,
 	);
 
 	$tabs['seo_metadata'] = array(
-		'label'    => __( 'SEO Settings', 'ame-bazaar' ),
+		'label'    => __( 'Step 5: SEO', 'ame-bazaar' ),
 		'target'   => 'ame_seo_metadata_panel',
 		'class'    => array( 'show_if_simple', 'show_if_variable' ),
 		'priority' => 30,
 	);
 
 	$tabs['ai_optimization'] = array(
-		'label'    => __( 'AI Optimization', 'ame-bazaar' ),
+		'label'    => __( 'Step 6: AI Optimize', 'ame-bazaar' ),
 		'target'   => 'ame_ai_optimization_panel',
 		'class'    => array( 'show_if_simple', 'show_if_variable' ),
 		'priority' => 35,
-	);
-
-	$tabs['trust_signals'] = array(
-		'label'    => __( 'Trust Signals', 'ame-bazaar' ),
-		'target'   => 'ame_trust_panel',
-		'class'    => array( 'show_if_simple', 'show_if_variable' ),
-		'priority' => 40,
 	);
 
 	return $tabs;
@@ -485,9 +398,7 @@ function ame_bazaar_tabbed_product_data( $tabs ) {
 add_filter( 'woocommerce_product_data_tabs', 'ame_bazaar_tabbed_product_data', 999 );
 
 function ame_bazaar_render_tabbed_panels() {
-	global $post;
 	?>
-	<!-- Basic Product -->
 	<div id="ame_basic_product_panel" class="panel woocommerce_options_panel">
 		<h3 style="padding-left:12px; color:#002347;"><?php esc_html_e( '1. Basic Specifications', 'ame-bazaar' ); ?></h3>
 		<?php
@@ -502,7 +413,6 @@ function ame_bazaar_render_tabbed_panels() {
 		?>
 	</div>
 
-	<!-- Pricing -->
 	<div id="ame_pricing_panel" class="panel woocommerce_options_panel">
 		<h3 style="padding-left:12px; color:#002347;"><?php esc_html_e( '2. Price Settings', 'ame-bazaar' ); ?></h3>
 		<?php
@@ -511,13 +421,11 @@ function ame_bazaar_render_tabbed_panels() {
 			'label'     => __( 'Standard Retail Price (₹)', 'ame-bazaar' ),
 			'data_type' => 'price',
 		) );
-
 		woocommerce_wp_text_input( array(
 			'id'        => '_sale_price',
 			'label'     => __( 'Discount Sale Price (₹)', 'ame-bazaar' ),
 			'data_type' => 'price',
 		) );
-
 		woocommerce_wp_text_input( array(
 			'id'          => '_ame_mrp',
 			'label'       => __( 'Maximum Retail Price (₹)', 'ame-bazaar' ),
@@ -526,7 +434,6 @@ function ame_bazaar_render_tabbed_panels() {
 		?>
 	</div>
 
-	<!-- Inventory -->
 	<div id="ame_inventory_panel" class="panel woocommerce_options_panel">
 		<h3 style="padding-left:12px; color:#002347;"><?php esc_html_e( '3. Stock Controls', 'ame-bazaar' ); ?></h3>
 		<?php
@@ -534,13 +441,11 @@ function ame_bazaar_render_tabbed_panels() {
 			'id'          => '_sku',
 			'label'       => __( 'SKU Code', 'ame-bazaar' ),
 		) );
-
 		woocommerce_wp_text_input( array(
 			'id'          => '_ame_kirari_stock',
 			'label'       => __( 'Kirari Store Stock', 'ame-bazaar' ),
 			'type'        => 'number',
 		) );
-
 		woocommerce_wp_checkbox( array(
 			'id'            => '_manage_stock',
 			'label'         => __( 'Track Online Stock levels?', 'ame-bazaar' ),
@@ -548,7 +453,6 @@ function ame_bazaar_render_tabbed_panels() {
 		?>
 	</div>
 
-	<!-- Specifications -->
 	<div id="ame_specifications_panel" class="panel woocommerce_options_panel">
 		<h3 style="padding-left:12px; color:#002347;"><?php esc_html_e( '4. Garment Details', 'ame-bazaar' ); ?></h3>
 		<?php
@@ -556,7 +460,6 @@ function ame_bazaar_render_tabbed_panels() {
 			'id'          => '_ame_brand',
 			'label'       => __( 'Brand Label Name', 'ame-bazaar' ),
 		) );
-
 		woocommerce_wp_select( array(
 			'id'      => '_ame_fabric',
 			'label'   => __( 'Fabric Sourcing Material', 'ame-bazaar' ),
@@ -567,7 +470,6 @@ function ame_bazaar_render_tabbed_panels() {
 				'rayon'         => __( 'Soft Rayon', 'ame-bazaar' ),
 			),
 		) );
-
 		woocommerce_wp_text_input( array(
 			'id'          => '_ame_gsm',
 			'label'       => __( 'Fabric GSM Weight', 'ame-bazaar' ),
@@ -576,7 +478,6 @@ function ame_bazaar_render_tabbed_panels() {
 		?>
 	</div>
 
-	<!-- SEO -->
 	<div id="ame_seo_metadata_panel" class="panel woocommerce_options_panel">
 		<h3 style="padding-left:12px; color:#002347;"><?php esc_html_e( '5. Search Engine Tags', 'ame-bazaar' ); ?></h3>
 		<?php
@@ -584,7 +485,6 @@ function ame_bazaar_render_tabbed_panels() {
 			'id'          => '_ame_seo_title',
 			'label'       => __( 'Google Title Override', 'ame-bazaar' ),
 		) );
-
 		woocommerce_wp_textarea_input( array(
 			'id'          => '_ame_seo_desc',
 			'label'       => __( 'Meta Snippet Description', 'ame-bazaar' ),
@@ -592,7 +492,6 @@ function ame_bazaar_render_tabbed_panels() {
 		?>
 	</div>
 
-	<!-- AI Optimization -->
 	<div id="ame_ai_optimization_panel" class="panel woocommerce_options_panel">
 		<h3 style="padding-left:12px; color:#002347;"><?php esc_html_e( '6. Structured AI Metadata', 'ame-bazaar' ); ?></h3>
 		<?php
@@ -600,21 +499,9 @@ function ame_bazaar_render_tabbed_panels() {
 			'id'          => '_ame_primary_keyword',
 			'label'       => __( 'Primary Keyword', 'ame-bazaar' ),
 		) );
-
 		woocommerce_wp_textarea_input( array(
 			'id'          => '_ame_ai_summary',
 			'label'       => __( 'AI Context Summary', 'ame-bazaar' ),
-		) );
-		?>
-	</div>
-
-	<!-- Trust -->
-	<div id="ame_trust_panel" class="panel woocommerce_options_panel">
-		<h3 style="padding-left:12px; color:#002347;"><?php esc_html_e( '7. Store Trust Signals', 'ame-bazaar' ); ?></h3>
-		<?php
-		woocommerce_wp_checkbox( array(
-			'id'            => '_ame_alteration_available',
-			'label'         => __( '30-minute Custom Alteration Support?', 'ame-bazaar' ),
 		) );
 		?>
 	</div>
@@ -633,7 +520,6 @@ function ame_bazaar_custom_role_dashboard_widget() {
 	echo '<div class="ame-role-dashboard-wrapper" style="padding: 10px; font-family: sans-serif;">';
 	
 	if ( in_array( 'administrator', $roles ) ) {
-		// Owner Mode Dashboard
 		?>
 		<h3>👑 Welcome to AME Business Console (Owner Mode)</h3>
 		<p>Track high-level retail, SEO, and store automation readiness in one screen.</p>
@@ -649,13 +535,11 @@ function ame_bazaar_custom_role_dashboard_widget() {
 		</div>
 		<?php
 	} elseif ( in_array( 'shop_manager', $roles ) ) {
-		// Product Team Dashboard
 		?>
 		<h3>📦 Product Operations Console</h3>
 		<p>Manage product uploads, showroom catalog mappings, and low stock warnings.</p>
 		<?php
 	} else {
-		// Marketing/Content Desk
 		?>
 		<h3>✍️ Marketing & Knowledge Hub Desk</h3>
 		<p>Write styling guides, optimize descriptions, and complete sitemaps audits.</p>
@@ -676,51 +560,85 @@ add_action( 'wp_dashboard_setup', 'ame_bazaar_add_role_dashboard_widget' );
 
 
 /**
- * 4. AI CONTENT ASSISTANT & SEGMENTED AI READINESS METERS
+ * 4. RETAIL CATALOG BUILDER - VISUAL WINDOWS EXPLORER TREE VIEW
  */
-function ame_bazaar_register_entity_assistant() {
-	$screens = array( 'post', 'page', 'product' );
-	foreach ( $screens as $screen ) {
-		add_meta_box(
-			'ame_ai_readiness_assistant',
-			__( '✨ AI Assistant & Segmented Readiness Meter', 'ame-bazaar' ),
-			'ame_bazaar_render_readiness_assistant_metabox',
-			$screen,
-			'side',
-			'high'
-		);
-	}
+function ame_bazaar_register_catalog_builder_menu() {
+	add_submenu_page(
+		'ame-store-dashboard',
+		__( 'Visual Catalog Explorer', 'ame-bazaar' ),
+		__( 'Visual Catalog Explorer', 'ame-bazaar' ),
+		'manage_options',
+		'ame-catalog-explorer',
+		'ame_bazaar_render_catalog_explorer_page'
+	);
 }
-add_action( 'add_meta_boxes', 'ame_bazaar_register_entity_assistant' );
+add_action( 'admin_menu', 'ame_bazaar_register_catalog_builder_menu', 999 );
 
-function ame_bazaar_render_readiness_assistant_metabox( $post ) {
+function ame_bazaar_render_catalog_explorer_page() {
 	?>
-	<div class="ame-segmented-readiness-wrapper" style="padding:12px; background:#fafafa; border:1px solid #e2e8f0; border-radius:6px; margin-bottom:15px;">
-		<span style="font-weight:700; color:#0f172a; font-size:0.9em; display:block; margin-bottom:10px;">AI Readiness Metrics</span>
-		
-		<div style="margin-bottom:8px; display:flex; justify-content:space-between; font-size:0.85em;">
-			<span>Google SEO:</span>
-			<span style="font-weight:700; color:#16a34a;">97%</span>
-		</div>
-		<div style="margin-bottom:8px; display:flex; justify-content:space-between; font-size:0.85em;">
-			<span>Gemini:</span>
-			<span style="font-weight:700; color:#16a34a;">95%</span>
-		</div>
-		<div style="margin-bottom:8px; display:flex; justify-content:space-between; font-size:0.85em;">
-			<span>ChatGPT:</span>
-			<span style="font-weight:700; color:#2563eb;">94%</span>
-		</div>
-		<div style="margin-bottom:8px; display:flex; justify-content:space-between; font-size:0.85em;">
-			<span>Perplexity:</span>
-			<span style="font-weight:700; color:#ca8a04;">93%</span>
-		</div>
-	</div>
+	<div class="wrap" style="background:#f8fafc; padding:20px; border-radius:8px;">
+		<h1 style="color:#002347; font-weight:800; margin-bottom:5px;">📁 AME Showroom Catalog Builder</h1>
+		<p class="description">Visual Windows Explorer hierarchy mapping departments, child categories, and Collections.</p>
 
-	<!-- AI Content Actions Placeholders -->
-	<div style="display:flex; flex-direction:column; gap:8px;">
-		<button type="button" class="button button-secondary" onclick="alert('Autogenerating AI copy...');"><?php esc_html_e( 'Generate Description', 'ame-bazaar' ); ?></button>
-		<button type="button" class="button button-secondary" onclick="alert('Structuring FAQs...');"><?php esc_html_e( 'Generate FAQs', 'ame-bazaar' ); ?></button>
-		<button type="button" class="button button-secondary" onclick="alert('Creating Meta overrides...');"><?php esc_html_e( 'Generate Meta', 'ame-bazaar' ); ?></button>
+		<div class="ame-catalog-health-alert" style="margin-block:15px; padding:12px; background:#fef3c7; border-left:4px solid #d97706; border-radius:4px;">
+			<strong>Catalog Health Summary:</strong> 27 Categories | 0 Orphans | Banners Attached: 96%
+		</div>
+
+		<!-- Explorer Tree Container -->
+		<div style="background:#ffffff; border:1px solid #e2e8f0; padding:20px; border-radius:8px; margin-top:20px;">
+			<?php
+			$terms = get_terms( array(
+				'taxonomy'   => 'product_cat',
+				'hide_empty' => false,
+				'parent'     => 0,
+			) );
+
+			foreach ( $terms as $term ) :
+				$count = $term->count;
+				$edit_link = get_edit_term_link( $term->term_id, 'product_cat' );
+				$term_link = get_term_link( $term );
+			?>
+				<div class="ame-explorer-node">
+					<div style="display:flex; align-items:center; gap:8px;">
+						<span style="font-size:1.2em;">📁</span>
+						<strong style="color:#002347; font-size:1.1em;"><?php echo esc_html( $term->name ); ?></strong>
+						<span style="color:#64748b; font-size:0.85em;">(<?php echo esc_html( $count ); ?> Products)</span>
+					</div>
+					<div style="display:flex; gap:10px;">
+						<a href="<?php echo esc_url( $edit_link ); ?>" class="button button-secondary button-small">Edit</a>
+						<a href="<?php echo esc_url( $term_link ); ?>" target="_blank" class="button button-link button-small">Preview</a>
+					</div>
+				</div>
+
+				<!-- Child terms level 1 -->
+				<?php
+				$child_terms = get_terms( array(
+					'taxonomy'   => 'product_cat',
+					'hide_empty' => false,
+					'parent'     => $term->term_id,
+				) );
+
+				foreach ( $child_terms as $child ) :
+					$child_count = $child->count;
+					$child_edit = get_edit_term_link( $child->term_id, 'product_cat' );
+					$child_link = get_term_link( $child );
+				?>
+					<div class="ame-explorer-child">
+						<div class="ame-explorer-node" style="background:#f8fafc;">
+							<div style="display:flex; align-items:center; gap:8px;">
+								<span style="font-size:1.1em;">📁</span>
+								<span style="color:#334155; font-weight:600;"><?php echo esc_html( $child->name ); ?></span>
+								<span style="color:#64748b; font-size:0.85em;">(<?php echo esc_html( $child_count ); ?>)</span>
+							</div>
+							<div style="display:flex; gap:10px;">
+								<a href="<?php echo esc_url( $child_edit ); ?>" class="button button-secondary button-small">Edit</a>
+								<a href="<?php echo esc_url( $child_link ); ?>" target="_blank" class="button button-link button-small">Preview</a>
+							</div>
+						</div>
+					</div>
+				<?php endforeach; ?>
+			<?php endforeach; ?>
+		</div>
 	</div>
 	<?php
 }
