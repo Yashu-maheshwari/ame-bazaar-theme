@@ -42,9 +42,12 @@ $logo_id = get_option( 'ame_bazaar_media_primary_logo' ) ?: get_theme_mod( 'cust
 				} else {
 					?>
 					<ul class="ame-desktop-menu-luxury">
+						<li><a href="<?php echo esc_url( home_url( '/' ) ); ?>"><?php esc_html_e( 'Home', 'ame-bazaar' ); ?></a></li>
+						<li><a href="<?php echo esc_url( home_url( '/about-ame-bazaar/' ) ); ?>"><?php esc_html_e( 'About', 'ame-bazaar' ); ?></a></li>
 						<li><a href="<?php echo esc_url( home_url( '/shop/' ) ); ?>"><?php esc_html_e( 'Shop', 'ame-bazaar' ); ?></a></li>
-						<li><a href="<?php echo esc_url( home_url( '/about-ame-bazaar/' ) ); ?>"><?php esc_html_e( 'Brand', 'ame-bazaar' ); ?></a></li>
-						<li><a href="<?php echo esc_url( home_url( '/fashion-advisor/' ) ); ?>"><?php esc_html_e( 'AI Stylist', 'ame-bazaar' ); ?></a></li>
+						<li><a href="<?php echo esc_url( home_url( '/faq/' ) ); ?>"><?php esc_html_e( 'FAQ', 'ame-bazaar' ); ?></a></li>
+						<li><a href="<?php echo esc_url( home_url( '/fashion-advisor/' ) ); ?>"><?php esc_html_e( 'Fashion Advisor', 'ame-bazaar' ); ?></a></li>
+						<li><a href="<?php echo esc_url( home_url( '/contact/' ) ); ?>"><?php esc_html_e( 'Contact', 'ame-bazaar' ); ?></a></li>
 					</ul>
 					<?php
 				}
@@ -77,12 +80,12 @@ $logo_id = get_option( 'ame_bazaar_media_primary_logo' ) ?: get_theme_mod( 'cust
 		<div class="ame-header-luxury-right">
 			<!-- Call Now Button -->
 			<a href="tel:<?php echo esc_attr( $phone_tel_link ); ?>" class="ame-luxury-pill-btn ame-btn-call" aria-label="<?php echo esc_attr( sprintf( __( 'Call Now: %s', 'ame-bazaar' ), $phone_number ) ); ?>">
-				<span class="ame-pill-text"><?php esc_html_e( 'Call', 'ame-bazaar' ); ?></span>
+				<span class="ame-pill-text"><?php esc_html_e( 'Call Now', 'ame-bazaar' ); ?></span>
 			</a>
 
 			<!-- Visit Store Button -->
 			<a href="<?php echo esc_url( $maps_url ); ?>" target="_blank" rel="noopener noreferrer" class="ame-luxury-pill-btn ame-btn-visit" aria-label="<?php esc_attr_e( 'Visit Store', 'ame-bazaar' ); ?>">
-				<span class="ame-pill-text"><?php esc_html_e( 'Store', 'ame-bazaar' ); ?></span>
+				<span class="ame-pill-text"><?php esc_html_e( 'Visit Store', 'ame-bazaar' ); ?></span>
 			</a>
 
 			<!-- Search -->
@@ -91,6 +94,14 @@ $logo_id = get_option( 'ame_bazaar_media_primary_logo' ) ?: get_theme_mod( 'cust
 					<circle cx="11" cy="11" r="7"></circle><line x1="21" y1="21" x2="16" y2="16"></line>
 				</svg>
 			</button>
+
+			<!-- Wishlist -->
+			<?php $wishlist_url = function_exists( 'YITH_WCWL' ) ? YITH_WCWL()->get_wishlist_url() : '#'; ?>
+			<a href="<?php echo esc_url( $wishlist_url ); ?>" class="ame-luxury-action-btn" aria-label="<?php esc_attr_e( 'Wishlist', 'ame-bazaar' ); ?>">
+				<svg class="ame-luxury-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="square" aria-hidden="true">
+					<path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+				</svg>
+			</a>
 
 			<?php
 			$cart_url = function_exists( 'wc_get_cart_url' ) ? wc_get_cart_url() : '#';

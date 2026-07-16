@@ -1,0 +1,115 @@
+
+  <!DOCTYPE html>
+  <html>
+  <head>
+    <title>AME Bazaar QA Report</title>
+    <style>
+      body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; line-height: 1.6; color: #1e293b; max-width: 1000px; margin: 0 auto; padding: 2rem; background: #fafaf9; }
+      h1, h2, h3 { color: #0f172a; }
+      .badge { display: inline-block; padding: 0.25rem 0.75rem; border-radius: 9999px; font-weight: 700; font-size: 0.85rem; }
+      .badge-success { background: #dcfce7; color: #15803d; }
+      .badge-danger { background: #fee2e2; color: #b91c1c; }
+      .metrics-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin: 2rem 0; }
+      .metric-card { background: #fff; padding: 1.5rem; border-radius: 8px; border: 1px solid #e2e8f0; text-align: center; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+      .metric-val { font-size: 2.25rem; font-weight: 800; color: #0f172a; margin-top: 0.5rem; }
+      .screenshot-container { display: flex; gap: 1rem; flex-wrap: wrap; margin-top: 2rem; }
+      .screenshot-card { background: #fff; border: 1px solid #e2e8f0; padding: 1rem; border-radius: 8px; width: 300px; }
+      .screenshot-card img { width: 100%; height: auto; border: 1px solid #cbd5e1; border-radius: 4px; }
+      .error-list { background: #fff; border: 1px solid #fee2e2; border-radius: 8px; padding: 1.5rem; color: #b91c1c; list-style: none; }
+      .error-list li { margin-bottom: 0.5rem; border-bottom: 1px solid #fecaca; padding-bottom: 0.5rem; }
+    </style>
+  </head>
+  <body>
+    <header style="border-bottom: 1px solid #e2e8f0; padding-bottom: 1.5rem; margin-bottom: 2rem; display: flex; justify-content: space-between; align-items: center;">
+      <div>
+        <h1>AME Bazaar QA Verification</h1>
+        <p style="color: #64748b; margin: 0;">Audit URL: <a href="https://amebazaar.in">https://amebazaar.in</a> | Date: 2026-07-15T11:06:30.675Z</p>
+      </div>
+      <span class="badge badge-success">PASSED</span>
+    </header>
+
+    <h2>Open Graph Properties</h2>
+    <table style="width: 100%; border-collapse: collapse; background: #fff; border: 1px solid #e2e8f0; border-radius: 8px; overflow: hidden; margin: 2rem 0;">
+      <thead>
+        <tr style="background: #f8fafc; border-bottom: 1px solid #e2e8f0;">
+          <th style="padding: 1rem; text-align: left;">Property</th>
+          <th style="padding: 1rem; text-align: left;">Value</th>
+        </tr>
+      </thead>
+      <tbody>
+        
+          <tr style="border-bottom: 1px solid #f1f5f9;">
+            <td style="padding: 1rem; font-weight: 600;">og:site_name</td>
+            <td style="padding: 1rem; color: #475569;">amebazaar.in</td>
+          </tr>
+        
+          <tr style="border-bottom: 1px solid #f1f5f9;">
+            <td style="padding: 1rem; font-weight: 600;">og:title</td>
+            <td style="padding: 1rem; color: #475569;">AME Bazaar – Family Fashion Store & Custom Tailoring in Kirari, Delhi</td>
+          </tr>
+        
+          <tr style="border-bottom: 1px solid #f1f5f9;">
+            <td style="padding: 1rem; font-weight: 600;">og:description</td>
+            <td style="padding: 1rem; color: #475569;">Apparel Maheshwari Enterprises (AME Bazaar) offers premium fashion ethnic wear for men, women, and kids, along with custom tailoring and alteration service...</td>
+          </tr>
+        
+          <tr style="border-bottom: 1px solid #f1f5f9;">
+            <td style="padding: 1rem; font-weight: 600;">og:url</td>
+            <td style="padding: 1rem; color: #475569;">https://amebazaar.in/</td>
+          </tr>
+        
+          <tr style="border-bottom: 1px solid #f1f5f9;">
+            <td style="padding: 1rem; font-weight: 600;">og:type</td>
+            <td style="padding: 1rem; color: #475569;">website</td>
+          </tr>
+        
+          <tr style="border-bottom: 1px solid #f1f5f9;">
+            <td style="padding: 1rem; font-weight: 600;">twitter:card</td>
+            <td style="padding: 1rem; color: #475569;">summary_large_image</td>
+          </tr>
+        
+          <tr style="border-bottom: 1px solid #f1f5f9;">
+            <td style="padding: 1rem; font-weight: 600;">twitter:title</td>
+            <td style="padding: 1rem; color: #475569;">AME Bazaar – Family Fashion Store & Custom Tailoring in Kirari, Delhi</td>
+          </tr>
+        
+          <tr style="border-bottom: 1px solid #f1f5f9;">
+            <td style="padding: 1rem; font-weight: 600;">twitter:description</td>
+            <td style="padding: 1rem; color: #475569;">Apparel Maheshwari Enterprises (AME Bazaar) offers premium fashion ethnic wear for men, women, and kids, along with custom tailoring and alteration service...</td>
+          </tr>
+        
+          <tr style="border-bottom: 1px solid #f1f5f9;">
+            <td style="padding: 1rem; font-weight: 600;">og:image</td>
+            <td style="padding: 1rem; color: #475569;">https://amebazaar.in/wp-content/uploads/2026/07/logo.png</td>
+          </tr>
+        
+          <tr style="border-bottom: 1px solid #f1f5f9;">
+            <td style="padding: 1rem; font-weight: 600;">twitter:image</td>
+            <td style="padding: 1rem; color: #475569;">https://amebazaar.in/wp-content/uploads/2026/07/logo.png</td>
+          </tr>
+        
+      </tbody>
+    </table>
+
+    <h2>Console Errors</h2><p style="color: #16a34a; font-weight: bold;">✔ No console errors recorded.</p>
+
+    <h2>Broken Links</h2><p style="color: #16a34a; font-weight: bold;">✔ No broken links detected.</p>
+
+    <h2>Screenshots</h2>
+    <div class="screenshot-container">
+      <div class="screenshot-card">
+        <h3>Desktop (1280x800)</h3>
+        <img src="screenshots/desktop.png" />
+      </div>
+      <div class="screenshot-card">
+        <h3>Mobile (375x812)</h3>
+        <img src="screenshots/mobile.png" />
+      </div>
+      <div class="screenshot-card">
+        <h3>Full Page</h3>
+        <img src="screenshots/fullpage.png" />
+      </div>
+    </div>
+  </body>
+  </html>
+  
