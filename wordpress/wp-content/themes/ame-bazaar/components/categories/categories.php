@@ -102,7 +102,7 @@ $categories = array(
 					}
 					
 					// Hide categories without products
-					if ( $total_products === 0 ) {
+					if ( $total_products === 0 && ! in_array( $key, array( 'mens-wear', 'womens-wear', 'kids-wear', 'accessories', 'footwear' ) ) ) {
 						continue;
 					}
 					
