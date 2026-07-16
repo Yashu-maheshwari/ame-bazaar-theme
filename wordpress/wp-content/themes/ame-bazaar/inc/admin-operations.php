@@ -1404,31 +1404,70 @@ function ame_bazaar_render_homepage_media_page() {
 		<form method="post" action="">
 			<?php wp_nonce_field( 'ame_homepage_media_nonce_action', 'ame_homepage_media_nonce' ); ?>
 			
-			<table class="form-table" role="presentation">
+			<table class="wp-list-table widefat fixed striped" role="presentation">
+				<thead>
+					<tr>
+						<th style="width:20%;"><?php esc_html_e( 'Asset Type', 'ame-bazaar' ); ?></th>
+						<th style="width:25%;"><?php esc_html_e( 'Current Preview & Size', 'ame-bazaar' ); ?></th>
+						<th style="width:30%;"><?php esc_html_e( 'Technical Specs & Where Used', 'ame-bazaar' ); ?></th>
+						<th style="width:25%;"><?php esc_html_e( 'Actions', 'ame-bazaar' ); ?></th>
+					</tr>
+				</thead>
 				<tbody>
-					<?php foreach ( $fields as $field_key => $field_label ) : 
+					<?php 
+					$specs_map = array(
+						'ame_bazaar_media_hero_desktop' => array( 'res' => '1920x800', 'used' => 'Desktop Hero Banner' ),
+						'ame_bazaar_media_hero_mobile'  => array( 'res' => '768x1024', 'used' => 'Mobile Hero Banner' ),
+						'ame_bazaar_media_men'          => array( 'res' => '800x1200', 'used' => 'Homepage Category & Men\'s Banner' ),
+						'ame_bazaar_media_women'        => array( 'res' => '800x1200', 'used' => 'Homepage Category & Women\'s Banner' ),
+						'ame_bazaar_media_kids'         => array( 'res' => '800x1200', 'used' => 'Homepage Category & Kids Banner' ),
+						'ame_bazaar_media_accessories'  => array( 'res' => '800x1200', 'used' => 'Homepage Category & Accessories Banner' ),
+						'ame_bazaar_media_footwear'     => array( 'res' => '800x1200', 'used' => 'Homepage Category & Footwear Banner' ),
+						'ame_bazaar_media_tailoring'    => array( 'res' => '800x1200', 'used' => 'Homepage Category & Tailoring Banner' ),
+					);
+
+					foreach ( $fields as $field_key => $field_label ) : 
 						$current_val = get_option( $field_key );
 						$preview_html = '';
+						$img_size_html = 'N/A';
+						
 						if ( $current_val ) {
 							$preview_url = wp_get_attachment_url( $current_val );
+							$meta = wp_get_attachment_metadata( $current_val );
 							if ( $preview_url ) {
-								$preview_html = '<img src="' . esc_url( $preview_url ) . '" style="max-width:150px;max-height:150px;margin-top:10px;border:1px solid #ccc;padding:5px;display:block;" />';
+								$preview_html = '<img src="' . esc_url( $preview_url ) . '" style="max-width:180px;max-height:100px;border:1px solid #ccc;border-radius:4px;" />';
+							}
+							if ( ! empty( $meta['width'] ) && ! empty( $meta['height'] ) ) {
+								$img_size_html = $meta['width'] . ' &times; ' . $meta['height'] . ' px';
 							}
 						}
+						
+						$spec = isset( $specs_map[ $field_key ] ) ? $specs_map[ $field_key ] : array( 'res' => 'Auto', 'used' => 'Global UI Element' );
 					?>
 						<tr>
-							<th scope="row"><label for="<?php echo esc_attr( $field_key ); ?>"><?php echo esc_html( $field_label ); ?></label></th>
 							<td>
-								<input type="text" id="<?php echo esc_attr( $field_key ); ?>" name="<?php echo esc_attr( $field_key ); ?>" value="<?php echo esc_attr( $current_val ); ?>" class="regular-text" style="width: 120px;" readonly />
-								<button class="button button-secondary ame-media-select" data-field="<?php echo esc_attr( $field_key ); ?>"><?php esc_html_e( 'Select Image', 'ame-bazaar' ); ?></button>
-								<button class="button button-link delete ame-media-remove" data-field="<?php echo esc_attr( $field_key ); ?>"><?php esc_html_e( 'Remove', 'ame-bazaar' ); ?></button>
-								
+								<strong><?php echo esc_html( $field_label ); ?></strong>
+								<br><code style="font-size:10px; color:#666;"><?php echo esc_html( $field_key ); ?></code>
+							</td>
+							<td>
 								<div id="preview-<?php echo esc_attr( $field_key ); ?>" class="ame-media-preview-container">
 									<?php if ( $preview_html ) { 
 										echo $preview_html; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+										echo '<div style="margin-top:5px; font-size:12px; font-weight:600; color:#1e40af;">Size: ' . $img_size_html . '</div>';
 									} else { ?>
-										<p style="color:#666;font-style:italic;margin: 5px 0 0 0;"><?php esc_html_e( 'No image selected.', 'ame-bazaar' ); ?></p>
+										<div style="width:180px;height:80px;background:#f1f5f9;border:1px dashed #cbd5e1;display:flex;align-items:center;justify-content:center;color:#64748b;font-size:12px;">No Image</div>
 									<?php } ?>
+								</div>
+							</td>
+							<td>
+								<p style="margin:0 0 5px 0;"><strong>Recommended:</strong> <span style="color:#047857;"><?php echo esc_html( $spec['res'] ); ?></span></p>
+								<p style="margin:0; font-size:12px; color:#475569;"><strong>Where Used:</strong> <?php echo esc_html( $spec['used'] ); ?></p>
+							</td>
+							<td>
+								<input type="hidden" id="<?php echo esc_attr( $field_key ); ?>" name="<?php echo esc_attr( $field_key ); ?>" value="<?php echo esc_attr( $current_val ); ?>" />
+								<div style="display:flex; gap:10px;">
+									<button type="button" class="button button-secondary ame-media-select" data-field="<?php echo esc_attr( $field_key ); ?>"><?php esc_html_e( 'Replace', 'ame-bazaar' ); ?></button>
+									<button type="button" class="button button-link delete ame-media-remove" data-field="<?php echo esc_attr( $field_key ); ?>" style="color:#dc2626; text-decoration:none;"><?php esc_html_e( 'Remove', 'ame-bazaar' ); ?></button>
 								</div>
 							</td>
 						</tr>

@@ -22,17 +22,7 @@ if ( ! $hero_desktop_id ) {
 	$hero_desktop_id = get_theme_mod( 'ame_bazaar_hero_image_id' ) ?: ame_bazaar_get_attachment_id_by_slug( 'hero-banner-image' );
 }
 
-// Override with manually selected Customizer image mapping if defined
-$custom_hero_url = get_theme_mod( 'ame_bazaar_img_hero' );
-if ( ! empty( $custom_hero_url ) ) {
-	$custom_hero_id = attachment_url_to_postid( $custom_hero_url );
-	if ( $custom_hero_id ) {
-		$hero_desktop_id = $custom_hero_id;
-	} else {
-		// Set to 0 but store URL to fallback in the HTML section
-		$hero_desktop_id = 0;
-	}
-}
+// Customizer override intentionally removed to lock architecture to Media Manager
 
 
 $phone_number = ame_bazaar_get_business_setting( 'phone', '+91 99535 69533' );
@@ -122,7 +112,7 @@ $maps_url = ame_bazaar_get_business_setting( 'maps_url', 'https://maps.google.co
 				</picture>
 				<?php
 			} else {
-				$fallback_url = get_theme_mod( 'ame_bazaar_img_hero' ) ?: get_theme_mod( 'ame_bazaar_hero_image', ame_bazaar_asset_uri( 'assets/images/hero-lifestyle.png' ) );
+				$fallback_url = ame_bazaar_asset_uri( 'assets/images/hero-lifestyle.png' );
 				echo '<img src="' . esc_url( $fallback_url ) . '" alt="' . esc_attr__( 'Premium Fashion Store Front - AME Bazaar Kirari, Delhi', 'ame-bazaar' ) . '" class="ame-hero-img" loading="eager" fetchpriority="high">';
 			}
 			?>
