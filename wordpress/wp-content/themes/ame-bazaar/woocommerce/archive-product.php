@@ -24,20 +24,43 @@ do_action( 'woocommerce_before_main_content' );
 	<div class="ame-bazaar-container">
 
 		<!-- Category Hero -->
-		<header class="ame-category-hero" style="margin-bottom: 2rem; padding: 2rem; background: linear-gradient(135deg, #fdfdfa 0%, #f8f7f4 100%); border-left: 5px solid var(--ame-color-gold, #ca8a04); border-radius: 8px; box-shadow: var(--ame-shadow-sm, 0 1px 2px rgba(0,0,0,0.05));" class="ame-premium-card ame-depth-2">
+		<?php
+		$banner_img_url = '';
+		$text_color = 'var(--ame-color-navy)';
+		$desc_color = 'var(--ame-color-slate)';
+		if ( is_product_category() ) {
+			$current_term = get_queried_object();
+			if ( $current_term && ! is_wp_error( $current_term ) ) {
+				$banner_id = get_term_meta( $current_term->term_id, '_ame_category_banner', true );
+				if ( $banner_id ) {
+					$banner_img_url = wp_get_attachment_image_url( $banner_id, 'full' );
+				}
+			}
+		}
+
+		$header_style = 'margin-bottom: 2rem; padding: 3rem 2rem; border-radius: 8px; position: relative; overflow: hidden;';
+		if ( $banner_img_url ) {
+			$header_style .= ' background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url(' . esc_url( $banner_img_url ) . ') no-repeat center center; background-size: cover;';
+			$text_color = '#ffffff';
+			$desc_color = '#f1f5f9';
+		} else {
+			$header_style .= ' background: linear-gradient(135deg, #fdfdfa 0%, #f8f7f4 100%); border-left: 5px solid var(--ame-color-gold, #ca8a04); box-shadow: var(--ame-shadow-sm, 0 1px 2px rgba(0,0,0,0.05));';
+		}
+		?>
+		<header class="ame-category-hero ame-premium-card ame-depth-2" style="<?php echo esc_attr( $header_style ); ?>">
 			<!-- Custom Dynamic Breadcrumbs -->
 			<?php get_template_part( 'components/breadcrumbs/breadcrumbs' ); ?>
 			
-			<div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 1rem; margin-top: 1rem;">
+			<div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 1rem; margin-top: 1rem; position: relative; z-index: 2;">
 				<div>
 					<?php if ( is_product_category() ) : ?>
-						<h1 class="ame-shop-category-title" style="margin: 0; font-size: 2rem; font-weight: 800; color: var(--ame-color-navy); text-transform: uppercase; letter-spacing: 0.02em;"><?php single_term_title(); ?></h1>
-						<div class="ame-shop-category-desc" style="margin-top: 0.5rem; font-size: 0.95rem; color: var(--ame-color-slate); max-width: 700px; line-height: 1.5;">
+						<h1 class="ame-shop-category-title" style="margin: 0; font-size: 2rem; font-weight: 800; color: <?php echo esc_attr( $text_color ); ?>; text-transform: uppercase; letter-spacing: 0.02em;"><?php single_term_title(); ?></h1>
+						<div class="ame-shop-category-desc" style="margin-top: 0.5rem; font-size: 0.95rem; color: <?php echo esc_attr( $desc_color ); ?>; max-width: 700px; line-height: 1.5;">
 							<?php the_archive_description(); ?>
 						</div>
 					<?php else : ?>
-						<h1 class="ame-shop-category-title" style="margin: 0; font-size: 2rem; font-weight: 800; color: var(--ame-color-navy); text-transform: uppercase; letter-spacing: 0.02em;"><?php woocommerce_page_title(); ?></h1>
-						<p class="ame-shop-category-desc" style="margin-top: 0.5rem; font-size: 0.95rem; color: var(--ame-color-slate); max-width: 700px; line-height: 1.5;">
+						<h1 class="ame-shop-category-title" style="margin: 0; font-size: 2rem; font-weight: 800; color: <?php echo esc_attr( $text_color ); ?>; text-transform: uppercase; letter-spacing: 0.02em;"><?php woocommerce_page_title(); ?></h1>
+						<p class="ame-shop-category-desc" style="margin-top: 0.5rem; font-size: 0.95rem; color: <?php echo esc_attr( $desc_color ); ?>; max-width: 700px; line-height: 1.5;">
 							<?php esc_html_e( 'Explore our premium handloomed silk sarees, customized cotton coordinates, and local Delhi tailoring collections.', 'ame-bazaar' ); ?>
 						</p>
 					<?php endif; ?>
@@ -53,7 +76,7 @@ do_action( 'woocommerce_before_main_content' );
 			</div>
 			
 			<!-- Category SEO Intro -->
-			<div class="ame-category-seo-intro" style="margin-top: 1.25rem; font-size: 0.82rem; color: #64748b; line-height: 1.5; border-top: 1px solid #e2e8f0; padding-top: 1rem;">
+			<div class="ame-category-seo-intro" style="margin-top: 1.25rem; font-size: 0.82rem; color: <?php echo esc_attr( $banner_img_url ? '#e2e8f0' : '#64748b' ); ?>; line-height: 1.5; border-top: 1px solid <?php echo esc_attr( $banner_img_url ? 'rgba(255,255,255,0.2)' : '#e2e8f0' ); ?>; padding-top: 1rem; position: relative; z-index: 2;">
 				<strong>Factual Retailer Directives:</strong> Authentically sourced apparel directly from regional weavers and master handloom artisans. Certified for colorfastness, anti-shrink treatment, and 100% skin-safe cotton fibers. Hand-selected for Delhi's extreme climate patterns.
 			</div>
 		</header>

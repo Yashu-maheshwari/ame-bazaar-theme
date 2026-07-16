@@ -147,81 +147,81 @@ $categories = array(
 					}
 				}
 
-				// 1. Resolve Image from customizer showroom settings if defined: ame_bazaar_img_{key}
-				$customizer_url = get_theme_mod( 'ame_bazaar_img_' . $key );
-
-				// 2. Fallback to categories settings: ame_bazaar_cat_{key}_image
-				if ( empty( $customizer_url ) ) {
-					$customizer_url = get_theme_mod( 'ame_bazaar_cat_' . $key . '_image' );
-				}
-
-				// 3. Special fallback for kids category to ensure backward compatibility
-				if ( empty( $customizer_url ) && ( 'boys' === $key || 'girls' === $key ) ) {
-					$customizer_url = get_theme_mod( 'ame_bazaar_cat_kids_image' );
-				}
-
+				// Resolve Image: check term meta first (Single Source of Truth)
 				$img_html = '';
-				if ( ! empty( $customizer_url ) ) {
-					$attachment_id = attachment_url_to_postid( $customizer_url );
-					if ( $attachment_id ) {
-						$img_html = wp_get_attachment_image( $attachment_id, 'medium_large', false, array(
+				$term_id = 0;
+				if ( isset( $term ) && ! is_wp_error( $term ) ) {
+					$term_id = $term->term_id;
+				}
+
+				if ( $term_id ) {
+					$homepage_card_id = get_term_meta( $term_id, '_ame_homepage_card', true );
+					if ( $homepage_card_id ) {
+						$img_html = wp_get_attachment_image( $homepage_card_id, 'medium_large', false, array(
 							'class'   => 'ame-category-img',
 							'loading' => 'lazy',
 							'alt'     => esc_attr( sprintf( __( '%s - AME Bazaar Premium Collection', 'ame-bazaar' ), $cat['label'] ) ),
 						) );
+					}
+				}
+
+				// Fallbacks if no term meta image is set
+				if ( empty( $img_html ) ) {
+					$customizer_url = get_theme_mod( 'ame_bazaar_img_' . $key );
+					if ( empty( $customizer_url ) ) {
+						$customizer_url = get_theme_mod( 'ame_bazaar_cat_' . $key . '_image' );
+					}
+					if ( empty( $customizer_url ) && ( 'boys' === $key || 'girls' === $key ) ) {
+						$customizer_url = get_theme_mod( 'ame_bazaar_cat_kids_image' );
+					}
+
+					if ( ! empty( $customizer_url ) ) {
+						$attachment_id = attachment_url_to_postid( $customizer_url );
+						if ( $attachment_id ) {
+							$img_html = wp_get_attachment_image( $attachment_id, 'medium_large', false, array(
+								'class'   => 'ame-category-img',
+								'loading' => 'lazy',
+								'alt'     => esc_attr( sprintf( __( '%s - AME Bazaar Premium Collection', 'ame-bazaar' ), $cat['label'] ) ),
+							) );
+						} else {
+							$img_html = '<img src="' . esc_url( $customizer_url ) . '" alt="' . esc_attr( sprintf( __( '%s - AME Bazaar Premium Collection', 'ame-bazaar' ), $cat['label'] ) ) . '" class="ame-category-img" loading="lazy">';
+						}
 					} else {
-						$img_html = '<img src="' . esc_url( $customizer_url ) . '" alt="' . esc_attr( sprintf( __( '%s - AME Bazaar Premium Collection', 'ame-bazaar' ), $cat['label'] ) ) . '" class="ame-category-img" loading="lazy">';
-					}
-				} else {
-					// Fallback to Media Library attachment options mapping
-					$img_id = get_option( 'ame_bazaar_media_' . $key );
-					if ( ! $img_id && ( 'boys' === $key || 'girls' === $key ) ) {
-						$img_id = get_option( 'ame_bazaar_media_kids' );
-					}
-
-					if ( ! $img_id ) {
-						$img_id = get_theme_mod( 'ame_bazaar_cat_' . $key . '_image_id' );
+						$img_id = get_option( 'ame_bazaar_media_' . $key );
 						if ( ! $img_id && ( 'boys' === $key || 'girls' === $key ) ) {
-							$img_id = get_theme_mod( 'ame_bazaar_cat_kids_image_id' );
+							$img_id = get_option( 'ame_bazaar_media_kids' );
 						}
-					}
-
-					// Dynamic slug mapping for attachment verification
-					if ( ! $img_id ) {
-						$slugs_to_check = array(
-							$key . '-wear-image',
-							$key . '-wear',
-							$key . '-image',
-							$key . '-banner',
-							$key
-						);
-						if ( 'boys' === $key ) {
-							$slugs_to_check[] = 'boy-wear';
-							$slugs_to_check[] = 'boys-wear';
-							$slugs_to_check[] = 'boys_wear';
-						} elseif ( 'girls' === $key ) {
-							$slugs_to_check[] = 'girl-wear';
-							$slugs_to_check[] = 'girls-wear';
-							$slugs_to_check[] = 'girls_dress';
-						}
-
-						foreach ( $slugs_to_check as $slug ) {
-							$resolved_id = ame_bazaar_get_attachment_id_by_slug( $slug );
-							if ( $resolved_id ) {
-								$img_id = $resolved_id;
-								break;
+						if ( ! $img_id ) {
+							$img_id = get_theme_mod( 'ame_bazaar_cat_' . $key . '_image_id' );
+							if ( ! $img_id && ( 'boys' === $key || 'girls' === $key ) ) {
+								$img_id = get_theme_mod( 'ame_bazaar_cat_kids_image_id' );
 							}
 						}
-					}
-
-					if ( $img_id ) {
-						$img_html = wp_get_attachment_image( $img_id, 'medium_large', false, array(
-							'class'   => 'ame-category-img',
-							'loading' => 'lazy',
-							'alt'     => esc_attr( sprintf( __( '%s - AME Bazaar Premium Collection', 'ame-bazaar' ), $cat['label'] ) ),
-						) );
-					} elseif ( ! empty( $cat['default_img'] ) ) {
-						$img_html = '<img src="' . esc_url( $cat['default_img'] ) . '" alt="' . esc_attr( sprintf( __( '%s - AME Bazaar Premium Collection', 'ame-bazaar' ), $cat['label'] ) ) . '" class="ame-category-img" loading="lazy">';
+						if ( ! $img_id ) {
+							$slugs_to_check = array(
+								$key . '-wear-image',
+								$key . '-wear',
+								$key . '-image',
+								$key . '-banner',
+								$key
+							);
+							foreach ( $slugs_to_check as $slug ) {
+								$resolved_id = ame_bazaar_get_attachment_id_by_slug( $slug );
+								if ( $resolved_id ) {
+									$img_id = $resolved_id;
+									break;
+								}
+							}
+						}
+						if ( $img_id ) {
+							$img_html = wp_get_attachment_image( $img_id, 'medium_large', false, array(
+								'class'   => 'ame-category-img',
+								'loading' => 'lazy',
+								'alt'     => esc_attr( sprintf( __( '%s - AME Bazaar Premium Collection', 'ame-bazaar' ), $cat['label'] ) ),
+							) );
+						} elseif ( ! empty( $cat['default_img'] ) ) {
+							$img_html = '<img src="' . esc_url( $cat['default_img'] ) . '" alt="' . esc_attr( sprintf( __( '%s - AME Bazaar Premium Collection', 'ame-bazaar' ), $cat['label'] ) ) . '" class="ame-category-img" loading="lazy">';
+						}
 					}
 				}
 				?>
