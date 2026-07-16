@@ -836,7 +836,7 @@ function ame_bazaar_get_or_create_import_category( $dept, $cat, $subcat = '', $c
 	return $parent_id;
 }
 
-function ame_bazaar_detect_raintech_attributes( $raw_title, $mrp, $price, $barcode, $sku ) {
+function ame_bazaar_detect_raintech_attributes( $raw_title, $mrp, $price, $barcode, $sku, $raw_dept = '', $raw_cat = '' ) {
 	$brand = 'AME Bazaar';
 	if ( stripos( $raw_title, 'RR' ) !== false || stripos( $raw_title, 'R.R.' ) !== false ) {
 		$brand = 'R.R. Apparel';
@@ -850,40 +850,52 @@ function ame_bazaar_detect_raintech_attributes( $raw_title, $mrp, $price, $barco
 	$subcat = 'New Arrivals';
 	$collection = 'Standard Collection';
 	
-	// Gender & Department detection
-	if ( preg_match( '/\b(men|mens|male)\b/i', $raw_title ) || stripos( $sku, 'men' ) !== false || stripos( $raw_title, ' BC ' ) !== false ) {
-		$gender = 'men';
-		$dept = "Men's Wear";
-	} elseif ( preg_match( '/\b(women|womens|female|ladies|saree|kurti)\b/i', $raw_title ) ) {
-		$gender = 'women';
-		$dept = "Women's Wear";
-	} elseif ( preg_match( '/\b(boy|boys|kids boy)\b/i', $raw_title ) ) {
-		$gender = 'boys';
-		$dept = "Boy's Wear";
-	} elseif ( preg_match( '/\b(girl|girls|kids girl)\b/i', $raw_title ) ) {
-		$gender = 'girls';
-		$dept = "Girl's Wear";
+	// Map raw department from excel Category column
+	if ( ! empty( $raw_dept ) ) {
+		if ( stripos( $raw_dept, 'mens' ) !== false || stripos( $raw_dept, 'men' ) !== false ) {
+			$dept = "Men's Wear";
+			$gender = 'men';
+		} elseif ( stripos( $raw_dept, 'womens' ) !== false || stripos( $raw_dept, 'women' ) !== false ) {
+			$dept = "Women's Wear";
+			$gender = 'women';
+		} elseif ( stripos( $raw_dept, 'kids' ) !== false || stripos( $raw_dept, 'boy' ) !== false ) {
+			$dept = "Boy's Wear";
+			$gender = 'boys';
+		} elseif ( stripos( $raw_dept, 'girl' ) !== false ) {
+			$dept = "Girl's Wear";
+			$gender = 'girls';
+		}
 	}
 	
-	// Category and subcategory detection
-	if ( preg_match( '/\b(shirt|shirts|tshirt|t-shirt)\b/i', $raw_title ) ) {
-		$cat = 'Shirts';
-		if ( stripos( $raw_title, 't-shirt' ) !== false || stripos( $raw_title, 'tshirt' ) !== false ) {
+	// Map raw category from excel Sub Category / Brand column
+	if ( ! empty( $raw_cat ) ) {
+		if ( stripos( $raw_cat, 'tshirt' ) !== false || stripos( $raw_cat, 't-shirt' ) !== false ) {
 			$cat = 'T-Shirts';
 			$subcat = 'Polo';
 			$collection = 'Casual Wear';
-		} else {
+		} elseif ( stripos( $raw_cat, 'shirt' ) !== false ) {
+			$cat = 'Shirts';
 			$subcat = 'Casual Shirts';
 			$collection = 'Linen Collection';
+		} elseif ( stripos( $raw_cat, 'jeans' ) !== false ) {
+			$cat = 'Jeans';
+			$subcat = 'Cargo Jeans';
+			$collection = 'Denim Club';
+		} elseif ( stripos( $raw_cat, 'trouser' ) !== false || stripos( $raw_cat, 'pant' ) !== false ) {
+			$cat = 'Trouser';
+			$subcat = 'Linen Pants';
+			$collection = 'Cotton Basics';
+		} else {
+			$cat = ucwords( strtolower( $raw_cat ) );
 		}
-	} elseif ( preg_match( '/\b(jeans|denim)\b/i', $raw_title ) ) {
-		$cat = 'Jeans';
-		$subcat = 'Cargo Jeans';
-		$collection = 'Denim Club';
-	} elseif ( preg_match( '/\b(trouser|pants|trousers)\b/i', $raw_title ) ) {
-		$cat = 'Trouser';
-		$subcat = 'Linen Pants';
-		$collection = 'Cotton Basics';
+	}
+
+	// Fallback to title keywords if column mappings are empty
+	if ( 'Uncategorized' === $cat ) {
+		if ( preg_match( '/\b(shirt|shirts|tshirt|t-shirt)\b/i', $raw_title ) ) {
+			$cat = 'Shirts';
+			$subcat = 'Casual Shirts';
+		}
 	}
 	
 	// Size detection
@@ -1000,7 +1012,9 @@ function ame_bazaar_render_raintech_import_page() {
 				$product_code = $data['Product Code'] ?? ($data['Item Code'] ?? '');
 				$barcode = $data['Barcode'] ?? '';
 				$mrp = $data['MRP'] ?? 0;
-				$price = $data['Retail Sale Price'] ?? ($data['Selling Price'] ?? 0);
+				$price = $data['Retail Price'] ?? $data['Retail Sale Price'] ?? $data['Selling Price'] ?? 0;
+				$raw_dept = $data['Category'] ?? '';
+				$raw_cat = $data['Sub Category / Brand'] ?? '';
 
 				if ( empty( $raw_title ) ) {
 					$errors++;
@@ -1021,7 +1035,7 @@ function ame_bazaar_render_raintech_import_page() {
 				}
 
 				// Detect Attributes
-				$ai_data = ame_bazaar_detect_raintech_attributes( $raw_title, $mrp, $price, $barcode, $product_code );
+				$ai_data = ame_bazaar_detect_raintech_attributes( $raw_title, $mrp, $price, $barcode, $product_code, $raw_dept, $raw_cat );
 
 				// Check Image mapping
 				global $wpdb;
@@ -1309,7 +1323,9 @@ function ame_bazaar_api_run_import_verification() {
 			$product_code = $data['Product Code'] ?? ($data['Item Code'] ?? '');
 			$barcode = $data['Barcode'] ?? '';
 			$mrp = $data['MRP'] ?? 0;
-			$price = $data['Retail Sale Price'] ?? ($data['Selling Price'] ?? 0);
+			$price = $data['Retail Price'] ?? $data['Retail Sale Price'] ?? $data['Selling Price'] ?? 0;
+			$raw_dept = $data['Category'] ?? '';
+			$raw_cat = $data['Sub Category / Brand'] ?? '';
 
 			if ( empty( $raw_title ) ) {
 				$errors++;
@@ -1330,7 +1346,7 @@ function ame_bazaar_api_run_import_verification() {
 			}
 
 			// Detect Attributes & Create Category
-			$ai_data = ame_bazaar_detect_raintech_attributes( $raw_title, $mrp, $price, $barcode, $product_code );
+			$ai_data = ame_bazaar_detect_raintech_attributes( $raw_title, $mrp, $price, $barcode, $product_code, $raw_dept, $raw_cat );
 			
 			// Auto create category hierarchy
 			$cat_id = ame_bazaar_get_or_create_import_category(
