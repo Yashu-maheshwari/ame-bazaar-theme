@@ -1149,6 +1149,42 @@ function ame_bazaar_render_raintech_import_page() {
 }
 
 function ame_bazaar_render_product_queue_page() {
+	$msg = '';
+	
+	// Handle bulk publish action
+	if ( isset( $_POST['ame_publish_all_ready'] ) && check_admin_referer( 'ame_publish_ready_action', 'ame_publish_nonce' ) ) {
+		$drafts = get_posts( array(
+			'post_type'   => 'product',
+			'post_status' => 'draft',
+			'numberposts' => -1,
+		) );
+		$published_count = 0;
+		foreach ( $drafts as $d ) {
+			$ai = get_post_meta( $d->ID, '_ame_ai_generated_data', true );
+			$score = isset( $ai['overall_score'] ) ? intval( $ai['overall_score'] ) : 0;
+			if ( $score > 90 ) {
+				// Resolve category term object assignments on publish trigger
+				if ( $ai ) {
+					$cat_id = ame_bazaar_get_or_create_import_category(
+						$ai['department'],
+						$ai['category'],
+						$ai['subcategory'],
+						$ai['collection']
+					);
+					if ( $cat_id ) {
+						wp_set_object_terms( $d->ID, $cat_id, 'product_cat' );
+					}
+				}
+				wp_update_post( array(
+					'ID'          => $d->ID,
+					'post_status' => 'publish',
+				) );
+				$published_count++;
+			}
+		}
+		$msg = sprintf( "Successfully published %d products with quality score > 90%%!", $published_count );
+	}
+
 	// Handle approve/reject actions
 	if ( isset( $_GET['action'] ) && isset( $_GET['post'] ) ) {
 		$post_id = intval( $_GET['post'] );
@@ -1170,10 +1206,10 @@ function ame_bazaar_render_product_queue_page() {
 				'ID'          => $post_id,
 				'post_status' => 'publish',
 			) );
-			echo '<div class="notice notice-success is-dismissible" style="margin-block:15px; padding:10px;"><p>Product successfully approved and published!</p></div>';
+			$msg = "Product successfully approved and published!";
 		} elseif ( 'reject' === $_GET['action'] ) {
 			wp_delete_post( $post_id, true );
-			echo '<div class="notice notice-warning is-dismissible" style="margin-block:15px; padding:10px;"><p>Product rejected and deleted.</p></div>';
+			$msg = "Product rejected and deleted.";
 		}
 	}
 
@@ -1186,6 +1222,17 @@ function ame_bazaar_render_product_queue_page() {
 	<div class="wrap" style="background:#f8fafc; padding:20px; border-radius:8px;">
 		<h1 style="color:#002347; font-weight:800; margin-bottom:5px;">📋 AI Review Queue</h1>
 		<p class="description">Approve clean AI-generated listings or reject entries from raw Raintech import logs.</p>
+
+		<?php if ( $msg ) : ?>
+			<div class="notice notice-info is-dismissible" style="margin-block:15px; padding:10px;"><p><?php echo esc_html( $msg ); ?></p></div>
+		<?php endif; ?>
+
+		<div style="margin-block: 20px;">
+			<form method="post">
+				<?php wp_nonce_field( 'ame_publish_ready_action', 'ame_publish_nonce' ); ?>
+				<button type="submit" name="ame_publish_all_ready" class="button button-primary button-large" style="background:#0f766e; border-color:#0f766e; font-weight:bold;">⚡ Publish All Ready Products (>90% Score)</button>
+			</form>
+		</div>
 
 		<div style="display:flex; flex-direction:column; gap:20px; margin-top:20px;">
 			<?php if ( empty( $draft_products ) ) : ?>
