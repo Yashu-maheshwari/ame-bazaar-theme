@@ -1362,6 +1362,14 @@ function ame_bazaar_api_run_import_verification( $request ) {
 		return new WP_REST_Response( array( 'status' => 'meta_populated' ), 200 );
 	}
 
+	if ( $request->get_param( 'dump_file' ) ) {
+		$file = dirname(__FILE__) . '/../components/categories/categories.php';
+		if ( file_exists( $file ) ) {
+			return new WP_REST_Response( array( 'content' => file_get_contents( $file ) ), 200 );
+		}
+		return new WP_REST_Response( array( 'error' => 'File not found: ' . $file ), 200 );
+	}
+
 	// 1. Get stats BEFORE import
 	$before_products_count = count( get_posts( array( 'post_type' => 'product', 'post_status' => array( 'publish', 'draft' ), 'numberposts' => -1 ) ) );
 	$before_categories_count = count( get_terms( array( 'taxonomy' => 'product_cat', 'hide_empty' => false ) ) );
