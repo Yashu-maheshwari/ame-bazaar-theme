@@ -64,6 +64,8 @@ do_action( 'woocommerce_before_main_content' );
 		if ( is_product_category() ) {
 			$current_term = get_queried_object();
 			if ( $current_term && ! is_wp_error( $current_term ) ) {
+				// Will be populated after get_terms below
+			
 				$subcategories = get_terms( array(
 					'taxonomy'   => 'product_cat',
 					'parent'     => $current_term->term_id,
