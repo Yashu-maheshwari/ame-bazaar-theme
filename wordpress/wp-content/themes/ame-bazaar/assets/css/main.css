@@ -1,4 +1,4 @@
-﻿/*
+/*
  * AME Bazaar Main Stylesheet
  * Contains design system tokens and component styling.
  */
@@ -6161,10 +6161,9 @@
 }
 
 /* ==========================================================================
-   LIVING FASHION HERO — AME BAZAAR
-   "One Family. Every Season."
-   Engine: Three.js WebGL displacement morph + GSAP editorial
-   GPU-safe: opacity + transform only. Breathing via GLSL uniform.
+   CINEMATIC FLAGSHIP HERO — AME BAZAAR
+   Collection Crossfade + Camera Parallax + GSAP
+   GPU-safe: opacity + transform only. No filter animations.
    ========================================================================== */
 
 /* ── 1. Section Container ── */
@@ -6180,55 +6179,72 @@
 	background-color: #05091a;
 }
 
-/* ── 2. WebGL Canvas — fullscreen, managed by Three.js ── */
-.ame-hero__gl-canvas {
+/* ── 2. Canvas: fullbleed image layer ── */
+.ame-hero__canvas {
 	position: absolute;
 	inset: 0;
 	z-index: 1;
-	width: 100% !important;
-	height: 100% !important;
-	display: block;
 }
 
-/* ── SEO image: accessible to crawlers, invisible in viewport ── */
-.ame-hero__seo-img {
+/* Slide stack */
+.ame-hero__slides {
 	position: absolute;
-	width: 1px;
-	height: 1px;
-	opacity: 0;
-	pointer-events: none;
-	z-index: 0;
+	inset: -8%; /* Extra room for parallax without revealing edges */
+	z-index: 1;
 }
 
-/* Premium brand void (no images uploaded yet) */
-.ame-hero--void {
+.ame-hero__slide {
+	position: absolute;
+	inset: 0;
+	opacity: 0;
+	will-change: opacity;
+}
+
+.ame-hero__slide.is-active {
+	opacity: 1;
+}
+
+.ame-hero__image {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	object-position: 62% center;
+	display: block;
+	will-change: transform;
+	user-select: none;
+}
+
+/* Premium brand void (no images uploaded) */
+.ame-hero--void .ame-hero__void {
+	position: absolute;
+	inset: 0;
 	background: radial-gradient(ellipse at 65% 40%, #0d1f42 0%, #05091a 70%);
 }
 
-/* ── 3. Cinematic depth overlay — legibility + vignette ── */
+/* ── 3. Cinematic overlay — depth + text legibility ── */
 .ame-hero__overlay {
 	position: absolute;
 	inset: 0;
 	z-index: 2;
 	pointer-events: none;
 	background:
-		/* Left-side text legibility gradient */
+		/* Left column legibility */
 		linear-gradient(
 			100deg,
-			rgba(3, 7, 18, 0.80) 0%,
-			rgba(3, 7, 18, 0.45) 36%,
-			rgba(3, 7, 18, 0.0)  60%
+			rgba(3, 7, 18, 0.78) 0%,
+			rgba(3, 7, 18, 0.42) 35%,
+			rgba(3, 7, 18, 0.0)  58%
 		),
 		/* Bottom vignette */
 		linear-gradient(
 			180deg,
-			rgba(3, 7, 18, 0.18) 0%,
-			transparent           28%,
-			rgba(3, 7, 18, 0.52) 100%
+			rgba(3, 7, 18, 0.15) 0%,
+			transparent           30%,
+			rgba(3, 7, 18, 0.48) 100%
 		);
 }
 
-/* ── 4. Editorial composition layer ── */
+/* ── 4. Editorial layer ── */
 .ame-hero__editorial {
 	position: relative;
 	z-index: 10;
@@ -6238,7 +6254,7 @@
 	display: flex;
 	flex-direction: column;
 	align-items: flex-start;
-	opacity: 0; /* GSAP animates in */
+	opacity: 0; /* GSAP animates to 1 */
 }
 
 /* ── 5. Eyebrow label ── */
@@ -6258,6 +6274,7 @@
 	color: rgba(212, 175, 55, 0.92);
 	text-transform: uppercase;
 	white-space: nowrap;
+	transition: opacity 0.35s ease; /* smooth label swap */
 }
 
 .ame-hero__eyebrow-rule {
@@ -6276,6 +6293,7 @@
 	letter-spacing: -0.015em;
 	margin: 0 0 1.4rem;
 	padding: 0;
+	/* Warm gradient: white → antique white — reads as lit from above */
 	background: linear-gradient(
 		162deg,
 		#ffffff 0%,
@@ -6285,6 +6303,7 @@
 	-webkit-background-clip: text;
 	-webkit-text-fill-color: transparent;
 	background-clip: text;
+	/* Layered shadow for perceived 3D depth — NOT animation, static */
 	filter:
 		drop-shadow(0 5px 18px rgba(0, 0, 0, 0.22))
 		drop-shadow(0 1px 3px  rgba(0, 0, 0, 0.35));
@@ -6302,10 +6321,10 @@
 .ame-hero__title-l2--italic {
 	font-style: italic;
 	font-weight: 300;
-	padding-left: 2rem;
+	padding-left: 2rem; /* Editorial offset */
 }
 
-/* ── 7. Subtitle / Season tagline ── */
+/* ── 7. Subtitle ── */
 .ame-hero__sub {
 	font-family: 'Inter', sans-serif;
 	font-size: clamp(0.78rem, 1.1vw, 0.9rem);
@@ -6327,6 +6346,7 @@
 	opacity: 0; /* GSAP */
 }
 
+/* Base button */
 .ame-hero-btn {
 	font-family: 'Inter', sans-serif;
 	font-size: 11.5px;
@@ -6339,17 +6359,17 @@
 	gap: 0.55rem;
 	padding: 0.9rem 2.1rem;
 	border-radius: 2px;
-	transition:
-		transform   0.4s cubic-bezier(0.16, 1, 0.3, 1),
-		box-shadow  0.4s cubic-bezier(0.16, 1, 0.3, 1),
-		background  0.4s ease,
-		border-color 0.4s ease;
+	transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+	            box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+	            background 0.4s ease,
+	            border-color 0.4s ease;
 	position: relative;
 	overflow: hidden;
 }
 
+/* Glass (primary) */
 .ame-hero-btn--glass {
-	background: rgba(255, 255, 255, 0.10);
+	background: rgba(255, 255, 255, 0.1);
 	backdrop-filter: blur(16px) saturate(140%);
 	-webkit-backdrop-filter: blur(16px) saturate(140%);
 	color: #ffffff;
@@ -6360,21 +6380,22 @@
 }
 
 .ame-hero-btn--glass:hover {
-	background: rgba(255, 255, 255, 0.20);
-	border-color: rgba(255, 255, 255, 0.40);
+	background: rgba(255, 255, 255, 0.2);
+	border-color: rgba(255, 255, 255, 0.4);
 	box-shadow:
 		0 8px 28px rgba(0, 0, 0, 0.22),
 		inset 0 1px 0 rgba(255, 255, 255, 0.28);
 	transform: translateY(-2px);
 }
 
+/* Navy (secondary) */
 .ame-hero-btn--navy {
 	background: linear-gradient(135deg, #001a35 0%, #002b5e 100%);
 	color: rgba(255, 255, 255, 0.88);
 	border: 1px solid rgba(255, 255, 255, 0.06);
 	box-shadow:
 		0 5px 18px rgba(0, 35, 71, 0.45),
-		inset 0 1px 0 rgba(255, 255, 255, 0.10);
+		inset 0 1px 0 rgba(255, 255, 255, 0.1);
 }
 
 .ame-hero-btn--navy:hover {
@@ -6395,52 +6416,42 @@
 	transform: translateX(4px);
 }
 
-/* ── 9. Progress Bar indicator (replaces dots) ── */
-.ame-hero__progress {
+/* ── 9. Slide Indicator Dots ── */
+.ame-hero__dots {
 	display: flex;
-	align-items: center;
-	gap: 1rem;
-	margin-top: 2.6rem;
+	gap: 0.5rem;
+	margin-top: 2.8rem;
 }
 
-.ame-hero__progress-track {
-	width: 120px;
-	height: 1px;
-	background: rgba(255, 255, 255, 0.18);
-	position: relative;
-	overflow: hidden;
+.ame-hero__dot {
+	width: 6px;
+	height: 6px;
+	border-radius: 50%;
+	border: none;
+	background: rgba(255, 255, 255, 0.3);
+	cursor: pointer;
+	padding: 0;
+	transition: background 0.4s ease, transform 0.4s ease, width 0.4s ease;
+	border-radius: 3px;
 }
 
-.ame-hero__progress-fill {
-	position: absolute;
-	inset: 0;
-	background: rgba(212, 175, 55, 0.85);
-	transform: scaleX(0);
-	transform-origin: left center;
-	will-change: transform;
+.ame-hero__dot.is-active {
+	background: rgba(212, 175, 55, 0.9);
+	width: 20px; /* Pill shape on active */
+	transform: none;
 }
 
-.ame-hero__progress-count {
-	font-family: 'Inter', sans-serif;
-	font-size: 9px;
-	font-weight: 400;
-	letter-spacing: 0.22em;
-	color: rgba(255, 255, 255, 0.32);
-	text-transform: uppercase;
+.ame-hero__dot:hover:not(.is-active) {
+	background: rgba(255, 255, 255, 0.6);
 }
 
 /* ── 10. Scroll Cue ── */
 .ame-hero__scroll-cue {
-	margin-top: 2.8rem;
+	margin-top: 3rem;
 	width: 1px;
 	height: 52px;
 	background: linear-gradient(180deg, rgba(212, 175, 55, 0.7) 0%, transparent 100%);
 	animation: heroCueScroll 2.2s ease-in-out infinite;
-}
-
-.ame-hero__scroll-line {
-	width: 100%;
-	height: 100%;
 }
 
 @keyframes heroCueScroll {
@@ -6468,14 +6479,22 @@
 		min-height: 90svh;
 	}
 
+	.ame-hero__slides {
+		inset: -5%;
+	}
+
+	.ame-hero__image {
+		object-position: 70% center;
+	}
+
 	.ame-hero__overlay {
 		background:
 			linear-gradient(
 				180deg,
 				rgba(3, 7, 18, 0.25)  0%,
-				rgba(3, 7, 18, 0.0)   28%,
-				rgba(3, 7, 18, 0.68)  72%,
-				rgba(3, 7, 18, 0.90) 100%
+				rgba(3, 7, 18, 0.0)   30%,
+				rgba(3, 7, 18, 0.65)  72%,
+				rgba(3, 7, 18, 0.88) 100%
 			);
 	}
 
@@ -6503,16 +6522,14 @@
 		gap: 0.9rem;
 	}
 
-	.ame-hero__progress-track {
-		width: 80px;
+	.ame-hero__dots {
+		margin-top: 1.8rem;
 	}
 
 	.ame-hero__scroll-cue {
-		display: none;
+		display: none; /* Not needed on mobile */
 	}
 }
-
-
 /* ==========================================================================
    PHASE 15 - Step 3: Homepage Spacing & Layout Polish
    ========================================================================== */
