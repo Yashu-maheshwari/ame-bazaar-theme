@@ -673,6 +673,399 @@
 }
 
 /* ==========================================================================
+   CINEMATIC LIVING HERO — AME Bazaar Flagship
+   Luminance Veil Technique + Micro-Motion + Editorial Layout
+   Technology: GSAP opacity/transform only. Zero WebGL, zero canvas.
+   ========================================================================== */
+
+/* ── Section shell ── */
+.ame-hero {
+	position: relative;
+	width: 100%;
+	height: 100svh;
+	min-height: 560px;
+	max-height: 1000px;
+	background: #03070f;
+	overflow: hidden;
+	display: flex;
+	align-items: stretch;
+	isolation: isolate;
+}
+
+.ame-hero--void {
+	background: linear-gradient(160deg, #03070f 0%, #05091a 60%, #08122a 100%);
+}
+
+/* ── Stage: absolute container for all image/atmosphere layers ── */
+.ame-hero__stage {
+	position: absolute;
+	inset: 0;
+	will-change: transform;
+}
+
+/* ── Image stack ── */
+.ame-hero__slides {
+	position: absolute;
+	inset: 0;
+}
+
+.ame-hero__slide {
+	position: absolute;
+	inset: 0;
+	opacity: 0;
+}
+
+.ame-hero__slide.is-active {
+	opacity: 1;
+}
+
+.ame-hero__picture {
+	display: block;
+	width: 100%;
+	height: 100%;
+}
+
+.ame-hero__image {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	object-position: center 20%;
+	display: block;
+	will-change: transform, opacity;
+	transform-origin: 55% 50%;
+	user-select: none;
+	-webkit-user-drag: none;
+}
+
+/* ── Branded void fallback ── */
+.ame-hero__void {
+	position: absolute;
+	inset: 0;
+	background: linear-gradient(160deg, #03070f 0%, #05091a 60%, #08122a 100%);
+}
+
+/* ── Luminance veil — warm sunlight burst masks wardrobe swap ── */
+.ame-hero__veil {
+	position: absolute;
+	inset: 0;
+	background: radial-gradient(
+		ellipse 90% 75% at 58% 35%,
+		rgba(255, 248, 225, 0.92) 0%,
+		rgba(255, 240, 200, 0.45) 40%,
+		rgba(255, 230, 160, 0.08) 65%,
+		transparent 80%
+	);
+	opacity: 0;
+	pointer-events: none;
+	mix-blend-mode: screen;
+	will-change: opacity;
+	z-index: 3;
+}
+
+/* ── Light shimmer — perpetual warm sunbeam drift ── */
+.ame-hero__shimmer {
+	position: absolute;
+	inset: 0;
+	background: radial-gradient(
+		ellipse 55% 40% at 72% 28%,
+		rgba(255, 230, 140, 0.28) 0%,
+		rgba(255, 220, 100, 0.06) 45%,
+		transparent 65%
+	);
+	opacity: 0;
+	pointer-events: none;
+	mix-blend-mode: soft-light;
+	will-change: opacity, transform;
+	z-index: 2;
+}
+
+/* ── Bokeh particle container ── */
+.ame-hero__bokeh {
+	position: absolute;
+	inset: 0;
+	pointer-events: none;
+	z-index: 2;
+	overflow: hidden;
+}
+
+/* ── Gradient scrim overlay — left legibility + bottom vignette ── */
+.ame-hero__overlay {
+	position: absolute;
+	inset: 0;
+	pointer-events: none;
+	z-index: 4;
+	background:
+		linear-gradient(
+			90deg,
+			rgba(3, 7, 18, 0.88) 0%,
+			rgba(3, 7, 18, 0.70) 30%,
+			rgba(3, 7, 18, 0.25) 52%,
+			transparent 68%
+		),
+		linear-gradient(
+			to top,
+			rgba(3, 7, 18, 0.55) 0%,
+			transparent 35%
+		);
+}
+
+/* Mobile: full bottom scrim, minimal side gradient */
+@media (max-width: 767px) {
+	.ame-hero__overlay {
+		background:
+			linear-gradient(
+				to top,
+				rgba(3, 7, 18, 0.92) 0%,
+				rgba(3, 7, 18, 0.72) 40%,
+				rgba(3, 7, 18, 0.15) 70%,
+				transparent 100%
+			);
+	}
+}
+
+/* ── Editorial panel ── */
+.ame-hero__editorial {
+	position: relative;
+	z-index: 10;
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-end;
+	padding: 0 1.5rem 3.5rem;
+	width: 100%;
+	opacity: 0;
+	will-change: transform, opacity;
+}
+
+@media (min-width: 768px) {
+	.ame-hero__editorial {
+		justify-content: center;
+		padding: 0 3rem;
+		max-width: 52%;
+	}
+}
+
+@media (min-width: 1200px) {
+	.ame-hero__editorial {
+		padding: 0 5vw;
+		max-width: 46%;
+	}
+}
+
+/* ── Eyebrow collection label ── */
+.ame-hero__eyebrow {
+	display: flex;
+	align-items: center;
+	gap: 0.75rem;
+	margin-bottom: 1.4rem;
+}
+
+.ame-hero__eyebrow-rule {
+	display: block;
+	height: 1px;
+	width: 28px;
+	background: var(--ame-color-gold);
+	flex-shrink: 0;
+	opacity: 0.85;
+}
+
+.ame-hero__eyebrow-text {
+	font-family: 'Inter', sans-serif;
+	font-size: 10.5px;
+	font-weight: 500;
+	letter-spacing: 0.24em;
+	text-transform: uppercase;
+	color: var(--ame-color-gold);
+	white-space: nowrap;
+}
+
+/* ── Main headline ── */
+.ame-hero__headline {
+	margin: 0 0 1.1rem;
+	display: flex;
+	flex-direction: column;
+	gap: 0.05em;
+}
+
+.ame-hero__hl1 {
+	font-family: 'Playfair Display', serif;
+	font-size: clamp(2.6rem, 5.5vw, 5rem);
+	font-weight: 400;
+	color: #ffffff;
+	line-height: 1.05;
+	letter-spacing: -0.02em;
+	display: block;
+}
+
+.ame-hero__hl2 {
+	font-family: 'Playfair Display', serif;
+	font-size: clamp(3rem, 6vw, 5.6rem);
+	font-weight: 300;
+	font-style: italic;
+	color: rgba(255, 248, 235, 0.92);
+	line-height: 1.05;
+	letter-spacing: -0.025em;
+	display: block;
+	padding-left: 0.08em;
+}
+
+/* ── Subline ── */
+.ame-hero__sub {
+	font-family: 'Inter', sans-serif;
+	font-size: clamp(0.85rem, 1.4vw, 1rem);
+	font-weight: 300;
+	color: rgba(255, 255, 255, 0.58);
+	line-height: 1.65;
+	letter-spacing: 0.025em;
+	margin: 0 0 2.2rem;
+	max-width: 36ch;
+}
+
+/* ── Action buttons container ── */
+.ame-hero__actions {
+	display: flex;
+	flex-direction: column;
+	gap: 0.9rem;
+	margin-bottom: 2rem;
+}
+
+@media (min-width: 480px) {
+	.ame-hero__actions {
+		flex-direction: row;
+		flex-wrap: wrap;
+	}
+}
+
+
+.ame-hero-btn {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.6rem;
+	padding: 0.9rem 1.8rem;
+	font-family: 'Inter', sans-serif;
+	font-size: 11.5px;
+	font-weight: 500;
+	letter-spacing: 0.09em;
+	text-transform: uppercase;
+	text-decoration: none;
+	transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+	cursor: pointer;
+	white-space: nowrap;
+	position: relative;
+	overflow: hidden;
+}
+
+/* Frosted glass primary */
+.ame-hero-btn--glass {
+	background: rgba(255, 255, 255, 0.10);
+	border: 1px solid rgba(255, 255, 255, 0.28);
+	color: #ffffff;
+	backdrop-filter: blur(10px);
+	-webkit-backdrop-filter: blur(10px);
+	box-shadow: 0 4px 24px rgba(0, 0, 0, 0.15), inset 0 1px 0 rgba(255,255,255,0.15);
+}
+
+.ame-hero-btn--glass:hover {
+	background: rgba(255, 255, 255, 0.18);
+	border-color: rgba(255, 255, 255, 0.45);
+	transform: translateY(-2px);
+	box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255,255,255,0.2);
+	color: #ffffff;
+}
+
+.ame-hero-btn--glass:active {
+	transform: translateY(0);
+}
+
+.ame-hero-btn__arrow {
+	transition: transform 0.3s ease;
+	flex-shrink: 0;
+}
+
+.ame-hero-btn--glass:hover .ame-hero-btn__arrow {
+	transform: translateX(4px);
+}
+
+/* Navy secondary */
+.ame-hero-btn--navy {
+	background: linear-gradient(135deg, #001835 0%, #002b5e 100%);
+	border: 1px solid rgba(255, 255, 255, 0.12);
+	color: rgba(255, 255, 255, 0.88);
+	box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25), inset 0 1px 0 rgba(255,255,255,0.1);
+}
+
+.ame-hero-btn--navy:hover {
+	background: linear-gradient(135deg, #002b5e 0%, #003a80 100%);
+	border-color: rgba(255, 255, 255, 0.2);
+	transform: translateY(-2px);
+	box-shadow: 0 8px 28px rgba(0, 0, 0, 0.32), inset 0 1px 0 rgba(255,255,255,0.15);
+	color: #ffffff;
+}
+
+.ame-hero-btn--navy:active {
+	transform: translateY(0);
+}
+
+/* ── Progress bar ── */
+.ame-hero__progress-wrap {
+	display: flex;
+	align-items: center;
+	gap: 1rem;
+	margin-bottom: 2rem;
+}
+
+.ame-hero__progress-track {
+	flex: 1;
+	height: 1px;
+	background: rgba(255, 255, 255, 0.15);
+	position: relative;
+	overflow: hidden;
+	max-width: 120px;
+}
+
+.ame-hero__progress-fill {
+	position: absolute;
+	inset: 0;
+	background: linear-gradient(90deg, var(--ame-color-gold), rgba(212, 175, 55, 0.6));
+	transform-origin: left center;
+	transform: scaleX(0);
+}
+
+.ame-hero__counter {
+	font-family: 'Inter', sans-serif;
+	font-size: 10px;
+	font-weight: 400;
+	letter-spacing: 0.12em;
+	color: rgba(255, 255, 255, 0.35);
+	white-space: nowrap;
+}
+
+/* ── Scroll cue ── */
+.ame-hero__scroll-cue {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	opacity: 0;
+}
+
+.ame-hero__scroll-line {
+	width: 1px;
+	height: 44px;
+	background: linear-gradient(to bottom, var(--ame-color-gold), transparent);
+	transform-origin: top center;
+}
+
+/* ── Reduced motion ── */
+@media (prefers-reduced-motion: reduce) {
+	.ame-hero__image,
+	.ame-hero__shimmer,
+	.ame-hero__veil,
+	.ame-hero__scroll-line {
+		transition: none !important;
+		animation: none !important;
+	}
+}
+
+/* ==========================================================================
    SHOP BY CATEGORY COMPONENT STYLES
    ========================================================================== */
 .ame-categories-section {
