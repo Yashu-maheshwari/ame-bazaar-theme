@@ -46,8 +46,15 @@ function ame_bazaar_enqueue_assets() {
 		ame_bazaar_asset_version( 'assets/css/main.css' )
 	);
 
-	// GSAP for cinematic hero animations — loaded only where needed (homepage)
+	// Hero cinematic engine — Three.js (WebGL morph) + GSAP — front page only
 	if ( is_front_page() || is_home() ) {
+		wp_enqueue_script(
+			'threejs',
+			'https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js',
+			array(),
+			'r134',
+			true
+		);
 		wp_enqueue_script(
 			'gsap',
 			'https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js',
