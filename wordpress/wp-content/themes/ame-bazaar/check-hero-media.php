@@ -1,6 +1,7 @@
 <?php
-// Load WordPress bootstrap
-require_once 'C:/Users/user/.gemini/antigravity/scratch/ame-bazaar-git/wordpress/wp-load.php';
+if ( ! defined( 'ABSPATH' ) ) {
+	require_once dirname( dirname( dirname( __DIR__ ) ) ) . '/wp-load.php';
+}
 
 $options = array(
 	'ame_bazaar_media_hero_desktop',
