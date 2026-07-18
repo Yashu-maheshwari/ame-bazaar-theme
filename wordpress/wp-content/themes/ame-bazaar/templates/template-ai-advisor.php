@@ -339,7 +339,7 @@ window.ameSendAdvisorMessage = function() {
 		relatedCatUrl = "<?php echo esc_url( home_url( '/product-category/womens-wear/' ) ); ?>";
 	} else if (matchedCategory === 'kids') {
 		relatedCatName = "Kids Wear Collection";
-		relatedCatUrl = "<?php echo esc_url( home_url( '/product-category/boy-wear/' ) ); ?>";
+		relatedCatUrl = "<?php echo esc_url( home_url( '/product-category/kids-wear/' ) ); ?>";
 	} else if (matchedCategory === 'tailoring') {
 		relatedCatName = "In-Store Tailoring & Alteration";
 		relatedCatUrl = "<?php echo esc_url( home_url( '/tailoring-near-me/' ) ); ?>";
