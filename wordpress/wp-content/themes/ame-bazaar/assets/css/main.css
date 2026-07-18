@@ -57,7 +57,7 @@
 }
 
 /* ==========================================================================
-   PREMIUM FLAGSHIP HEADER — AME BAZAAR
+   PREMIUM FLAGSHIP HEADER â€” AME BAZAAR
    ========================================================================== */
 
 .ame-header-luxury-wrapper {
@@ -673,12 +673,12 @@
 }
 
 /* ==========================================================================
-   CINEMATIC LIVING HERO — AME Bazaar Flagship
+   CINEMATIC LIVING HERO â€” AME Bazaar Flagship
    Luminance Veil Technique + Micro-Motion + Editorial Layout
    Technology: GSAP opacity/transform only. Zero WebGL, zero canvas.
    ========================================================================== */
 
-/* ── Section shell ── */
+/* â”€â”€ Section shell â”€â”€ */
 .ame-hero {
 	position: relative;
 	width: 100%;
@@ -696,14 +696,14 @@
 	background: linear-gradient(160deg, #03070f 0%, #05091a 60%, #08122a 100%);
 }
 
-/* ── Stage: absolute container for all image/atmosphere layers ── */
+/* â”€â”€ Stage: absolute container for all image/atmosphere layers â”€â”€ */
 .ame-hero__stage {
 	position: absolute;
 	inset: 0;
 	will-change: transform;
 }
 
-/* ── Image stack ── */
+/* â”€â”€ Image stack â”€â”€ */
 .ame-hero__slides {
 	position: absolute;
 	inset: 0;
@@ -737,14 +737,14 @@
 	-webkit-user-drag: none;
 }
 
-/* ── Branded void fallback ── */
+/* â”€â”€ Branded void fallback â”€â”€ */
 .ame-hero__void {
 	position: absolute;
 	inset: 0;
 	background: linear-gradient(160deg, #03070f 0%, #05091a 60%, #08122a 100%);
 }
 
-/* ── Luminance veil — warm sunlight burst masks wardrobe swap ── */
+/* â”€â”€ Luminance veil â€” warm sunlight burst masks wardrobe swap â”€â”€ */
 .ame-hero__veil {
 	position: absolute;
 	inset: 0;
@@ -762,7 +762,7 @@
 	z-index: 3;
 }
 
-/* ── Light shimmer — perpetual warm sunbeam drift ── */
+/* â”€â”€ Light shimmer â€” perpetual warm sunbeam drift â”€â”€ */
 .ame-hero__shimmer {
 	position: absolute;
 	inset: 0;
@@ -779,7 +779,7 @@
 	z-index: 2;
 }
 
-/* ── Bokeh particle container ── */
+/* â”€â”€ Bokeh particle container â”€â”€ */
 .ame-hero__bokeh {
 	position: absolute;
 	inset: 0;
@@ -788,7 +788,7 @@
 	overflow: hidden;
 }
 
-/* ── Gradient scrim overlay — left legibility + bottom vignette ── */
+/* â”€â”€ Gradient scrim overlay â€” left legibility + bottom vignette â”€â”€ */
 .ame-hero__overlay {
 	position: absolute;
 	inset: 0;
@@ -823,7 +823,7 @@
 	}
 }
 
-/* ── Editorial panel ── */
+/* â”€â”€ Editorial panel â”€â”€ */
 .ame-hero__editorial {
 	position: relative;
 	z-index: 10;
@@ -851,7 +851,7 @@
 	}
 }
 
-/* ── Eyebrow collection label ── */
+/* â”€â”€ Eyebrow collection label â”€â”€ */
 .ame-hero__eyebrow {
 	display: flex;
 	align-items: center;
@@ -878,7 +878,7 @@
 	white-space: nowrap;
 }
 
-/* ── Main headline ── */
+/* â”€â”€ Main headline â”€â”€ */
 .ame-hero__headline {
 	margin: 0 0 1.1rem;
 	display: flex;
@@ -908,7 +908,7 @@
 	padding-left: 0.08em;
 }
 
-/* ── Subline ── */
+/* â”€â”€ Subline â”€â”€ */
 .ame-hero__sub {
 	font-family: 'Inter', sans-serif;
 	font-size: clamp(0.85rem, 1.4vw, 1rem);
@@ -920,7 +920,7 @@
 	max-width: 36ch;
 }
 
-/* ── Action buttons container ── */
+/* â”€â”€ Action buttons container â”€â”€ */
 .ame-hero__actions {
 	display: flex;
 	flex-direction: column;
@@ -1005,7 +1005,7 @@
 	transform: translateY(0);
 }
 
-/* ── Progress bar ── */
+/* â”€â”€ Progress bar â”€â”€ */
 .ame-hero__progress-wrap {
 	display: flex;
 	align-items: center;
@@ -1039,7 +1039,7 @@
 	white-space: nowrap;
 }
 
-/* ── Scroll cue ── */
+/* â”€â”€ Scroll cue â”€â”€ */
 .ame-hero__scroll-cue {
 	display: flex;
 	flex-direction: column;
@@ -1054,7 +1054,7 @@
 	transform-origin: top center;
 }
 
-/* ── Reduced motion ── */
+/* â”€â”€ Reduced motion â”€â”€ */
 @media (prefers-reduced-motion: reduce) {
 	.ame-hero__image,
 	.ame-hero__shimmer,
@@ -3249,7 +3249,7 @@
    TRUST BAR SECTION
    ========================================================================== */
 /* ==========================================================================
-   ENGINEERING TICKET #004 — PREMIUM LOCAL TRUST GRID & AI AUTHORITY ROW
+   ENGINEERING TICKET #004 â€” PREMIUM LOCAL TRUST GRID & AI AUTHORITY ROW
    ========================================================================== */
 
 .ame-trust-section {
@@ -6554,12 +6554,12 @@
 }
 
 /* ==========================================================================
-   CINEMATIC FLAGSHIP HERO — AME BAZAAR
+   CINEMATIC FLAGSHIP HERO â€” AME BAZAAR
    Collection Crossfade + Camera Parallax + GSAP
    GPU-safe: opacity + transform only. No filter animations.
    ========================================================================== */
 
-/* ── 1. Section Container ── */
+/* â”€â”€ 1. Section Container â”€â”€ */
 .ame-hero {
 	position: relative;
 	width: 100%;
@@ -6572,7 +6572,7 @@
 	background-color: #05091a;
 }
 
-/* ── 2. Canvas: fullbleed image layer ── */
+/* â”€â”€ 2. Canvas: fullbleed image layer â”€â”€ */
 .ame-hero__canvas {
 	position: absolute;
 	inset: 0;
@@ -6614,7 +6614,7 @@
 	background: radial-gradient(ellipse at 65% 40%, #0d1f42 0%, #05091a 70%);
 }
 
-/* ── 3. Cinematic overlay — depth + text legibility ── */
+/* â”€â”€ 3. Cinematic overlay â€” depth + text legibility â”€â”€ */
 .ame-hero__overlay {
 	position: absolute;
 	inset: 0;
@@ -6637,7 +6637,7 @@
 		);
 }
 
-/* ── 4. Editorial layer ── */
+/* â”€â”€ 4. Editorial layer â”€â”€ */
 .ame-hero__editorial {
 	position: relative;
 	z-index: 10;
@@ -6650,7 +6650,7 @@
 	opacity: 0; /* GSAP animates to 1 */
 }
 
-/* ── 5. Eyebrow label ── */
+/* â”€â”€ 5. Eyebrow label â”€â”€ */
 .ame-hero__eyebrow {
 	display: flex;
 	align-items: center;
@@ -6678,7 +6678,7 @@
 	flex-shrink: 0;
 }
 
-/* ── 6. Hero Title — Playfair Display, perceived-3D gradient ── */
+/* â”€â”€ 6. Hero Title â€” Playfair Display, perceived-3D gradient â”€â”€ */
 .ame-hero__title {
 	font-family: 'Playfair Display', serif;
 	font-size: clamp(3.8rem, 7.2vw, 6.8rem);
@@ -6686,7 +6686,7 @@
 	letter-spacing: -0.015em;
 	margin: 0 0 1.4rem;
 	padding: 0;
-	/* Warm gradient: white → antique white — reads as lit from above */
+	/* Warm gradient: white â†’ antique white â€” reads as lit from above */
 	background: linear-gradient(
 		162deg,
 		#ffffff 0%,
@@ -6696,7 +6696,7 @@
 	-webkit-background-clip: text;
 	-webkit-text-fill-color: transparent;
 	background-clip: text;
-	/* Layered shadow for perceived 3D depth — NOT animation, static */
+	/* Layered shadow for perceived 3D depth â€” NOT animation, static */
 	filter:
 		drop-shadow(0 5px 18px rgba(0, 0, 0, 0.22))
 		drop-shadow(0 1px 3px  rgba(0, 0, 0, 0.35));
@@ -6717,7 +6717,7 @@
 	padding-left: 2rem; /* Editorial offset */
 }
 
-/* ── 7. Subtitle ── */
+/* â”€â”€ 7. Subtitle â”€â”€ */
 .ame-hero__sub {
 	font-family: 'Inter', sans-serif;
 	font-size: clamp(0.78rem, 1.1vw, 0.9rem);
@@ -6730,7 +6730,7 @@
 	opacity: 0; /* GSAP */
 }
 
-/* ── 8. Action Buttons ── */
+/* â”€â”€ 8. Action Buttons â”€â”€ */
 .ame-hero__actions {
 	display: flex;
 	gap: 1.1rem;
@@ -6809,7 +6809,7 @@
 	transform: translateX(4px);
 }
 
-/* ── 9. Slide Indicator Dots ── */
+/* â”€â”€ 9. Slide Indicator Dots â”€â”€ */
 .ame-hero__dots {
 	display: flex;
 	gap: 0.5rem;
@@ -6838,7 +6838,7 @@
 	background: rgba(255, 255, 255, 0.6);
 }
 
-/* ── 10. Scroll Cue ── */
+/* â”€â”€ 10. Scroll Cue â”€â”€ */
 .ame-hero__scroll-cue {
 	margin-top: 3rem;
 	width: 1px;
@@ -6853,7 +6853,7 @@
 	100% { transform: scaleY(0); transform-origin: bottom; opacity: 0; }
 }
 
-/* ── 11. Tablet ── */
+/* â”€â”€ 11. Tablet â”€â”€ */
 @media (max-width: 1024px) {
 	.ame-hero__title {
 		font-size: clamp(3rem, 7vw, 5rem);
@@ -6864,7 +6864,7 @@
 	}
 }
 
-/* ── 12. Mobile ── */
+/* â”€â”€ 12. Mobile â”€â”€ */
 @media (max-width: 767px) {
 	.ame-hero {
 		align-items: flex-end;
@@ -8080,7 +8080,7 @@ form.checkout {
 
 
 /* ==========================================================================
-   ENGINEERING TICKET #003 — READABILITY, TYPOGRAPHY & BUTTON POLISH
+   ENGINEERING TICKET #003 â€” READABILITY, TYPOGRAPHY & BUTTON POLISH
    ========================================================================== */
 
 /* Navigation Logo Icon */
@@ -8290,4 +8290,1037 @@ form.checkout {
 
 
 
+
+
+/* ==========================================================================
+   HOMEPAGE SECTIONS — LUXURY DESIGN SYSTEM
+   AME Bazaar Flagship Homepage — All Sections Polish
+   ========================================================================== */
+
+/* ── Shared Section Tokens ── */
+.ame-section-eyebrow {
+	display: block;
+	font-family: 'Inter', sans-serif;
+	font-size: 10.5px;
+	font-weight: 500;
+	letter-spacing: 0.26em;
+	text-transform: uppercase;
+	color: var(--ame-color-gold-dark);
+	margin-bottom: 0.9rem;
+}
+
+.ame-section-title {
+	font-family: 'Playfair Display', serif;
+	font-size: clamp(1.9rem, 3.5vw, 2.9rem);
+	font-weight: 400;
+	color: var(--ame-color-navy);
+	line-height: 1.15;
+	letter-spacing: -0.02em;
+	margin: 0 0 0.9rem;
+}
+
+.ame-section-sub {
+	font-family: 'Inter', sans-serif;
+	font-size: 1rem;
+	font-weight: 300;
+	color: var(--ame-color-slate);
+	line-height: 1.65;
+	max-width: 52ch;
+	margin: 0;
+}
+
+/* ── Shared Section Buttons ── */
+.ame-section-btn {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.6rem;
+	padding: 0.85rem 1.7rem;
+	font-family: 'Inter', sans-serif;
+	font-size: 11.5px;
+	font-weight: 500;
+	letter-spacing: 0.09em;
+	text-transform: uppercase;
+	text-decoration: none;
+	transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+	white-space: nowrap;
+	cursor: pointer;
+	border: none;
+}
+
+.ame-section-btn--primary {
+	background: linear-gradient(135deg, var(--ame-color-navy) 0%, #003a80 100%);
+	color: #ffffff;
+	box-shadow: 0 4px 20px rgba(0, 35, 71, 0.22), inset 0 1px 0 rgba(255,255,255,0.1);
+}
+
+.ame-section-btn--primary:hover {
+	background: linear-gradient(135deg, #002060 0%, #004499 100%);
+	transform: translateY(-2px);
+	box-shadow: 0 8px 28px rgba(0, 35, 71, 0.3);
+	color: #ffffff;
+}
+
+.ame-section-btn--primary:hover svg {
+	transform: translateX(4px);
+}
+
+.ame-section-btn--primary svg {
+	transition: transform 0.3s ease;
+}
+
+.ame-section-btn--outline {
+	background: transparent;
+	border: 1.5px solid var(--ame-color-navy);
+	color: var(--ame-color-navy);
+}
+
+.ame-section-btn--outline:hover {
+	background: var(--ame-color-navy);
+	color: #ffffff;
+	transform: translateY(-1px);
+}
+
+.ame-section-btn--whatsapp {
+	background: #128C7E;
+	color: #ffffff;
+	box-shadow: 0 4px 16px rgba(18, 140, 126, 0.25);
+}
+
+.ame-section-btn--whatsapp:hover {
+	background: #075E54;
+	transform: translateY(-2px);
+	color: #ffffff;
+}
+
+/* ── Trust Bar (post-hero) ── */
+.ame-trust-section {
+	padding-block: 1.5rem;
+	background: var(--ame-color-navy);
+	border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+
+.ame-trust-grid {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	gap: 0;
+}
+
+.ame-trust-card {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	text-align: center;
+	padding: 1.25rem 2rem;
+	gap: 0.4rem;
+	flex: 1 1 160px;
+	min-width: 140px;
+	max-width: 220px;
+	text-decoration: none;
+	border-right: 1px solid rgba(255,255,255,0.1);
+	transition: background 0.25s ease;
+}
+
+.ame-trust-card:last-child {
+	border-right: none;
+}
+
+.ame-trust-card:hover {
+	background: rgba(255,255,255,0.05);
+}
+
+.ame-trust-card-icon-wrapper {
+	color: var(--ame-color-gold);
+}
+
+.ame-trust-card-title {
+	font-family: 'Playfair Display', serif;
+	font-size: 1.3rem;
+	font-weight: 600;
+	color: #ffffff;
+	margin: 0;
+	line-height: 1.1;
+}
+
+.ame-trust-card-label {
+	font-family: 'Inter', sans-serif;
+	font-size: 10px;
+	font-weight: 400;
+	letter-spacing: 0.14em;
+	text-transform: uppercase;
+	color: rgba(255,255,255,0.5);
+	margin: 0;
+}
+
+/* ── Shop by Category ── */
+.ame-categories-section {
+	padding-block: clamp(4rem, 7vw, 6rem);
+	background: var(--ame-color-white);
+}
+
+.ame-categories-header {
+	text-align: center;
+	margin-bottom: 3.5rem;
+}
+
+.ame-categories-section-title {
+	font-family: 'Playfair Display', serif;
+	font-size: clamp(1.9rem, 3.5vw, 2.9rem);
+	font-weight: 400;
+	color: var(--ame-color-navy);
+	margin: 0 0 0.7rem;
+	letter-spacing: -0.02em;
+}
+
+.ame-categories-section-subtitle {
+	font-size: 0.85rem;
+	font-weight: 400;
+	color: var(--ame-color-slate);
+	letter-spacing: 0.06em;
+	text-transform: uppercase;
+	margin: 0;
+}
+
+.ame-categories-grid {
+	display: grid;
+	grid-template-columns: repeat(2, 1fr);
+	gap: 1.25rem;
+}
+
+@media (min-width: 768px) {
+	.ame-categories-grid {
+		grid-template-columns: repeat(3, 1fr);
+	}
+}
+
+@media (min-width: 1200px) {
+	.ame-categories-grid {
+		grid-template-columns: repeat(6, 1fr);
+		gap: 1rem;
+	}
+}
+
+.ame-category-card {
+	display: flex;
+	flex-direction: column;
+	background: var(--ame-color-white);
+	border: 1px solid var(--ame-color-border);
+	overflow: hidden;
+	transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s ease;
+}
+
+.ame-category-card:hover {
+	transform: translateY(-5px);
+	box-shadow: 0 16px 40px rgba(0, 35, 71, 0.1);
+}
+
+.ame-category-card-visual-link {
+	display: block;
+	overflow: hidden;
+	aspect-ratio: 3 / 4;
+	background: var(--ame-color-cream);
+	position: relative;
+}
+
+.ame-category-img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.ame-category-card:hover .ame-category-img {
+	transform: scale(1.07);
+}
+
+.ame-category-card-content {
+	padding: 1rem;
+}
+
+.ame-category-card-title {
+	font-family: 'Playfair Display', serif;
+	font-size: 0.95rem;
+	font-weight: 500;
+	margin: 0 0 0.35rem;
+}
+
+.ame-category-title-link {
+	color: var(--ame-color-navy);
+	text-decoration: none;
+}
+
+.ame-category-title-link:hover {
+	color: var(--ame-color-gold-dark);
+}
+
+.ame-category-card-desc {
+	font-size: 0.78rem;
+	line-height: 1.5;
+	color: var(--ame-color-slate);
+	margin: 0 0 0.8rem;
+}
+
+.ame-category-card-btn {
+	font-family: 'Inter', sans-serif;
+	font-size: 10px;
+	font-weight: 500;
+	letter-spacing: 0.1em;
+	text-transform: uppercase;
+	color: var(--ame-color-navy);
+	text-decoration: none;
+	display: inline-flex;
+	align-items: center;
+	gap: 0.35rem;
+	transition: gap 0.25s ease;
+}
+
+.ame-category-card:hover .ame-category-card-btn {
+	gap: 0.6rem;
+	color: var(--ame-color-gold-dark);
+}
+
+/* ── Fashion Advisor Section ── */
+.ame-advisor-section {
+	padding-block: clamp(4.5rem, 8vw, 7rem);
+	background: var(--ame-color-navy);
+	position: relative;
+	overflow: hidden;
+}
+
+.ame-advisor-section::before {
+	content: '';
+	position: absolute;
+	top: 0; left: 0; right: 0; bottom: 0;
+	background: radial-gradient(ellipse 70% 80% at 90% 50%, rgba(212, 175, 55, 0.06) 0%, transparent 60%);
+	pointer-events: none;
+}
+
+.ame-advisor-inner {
+	max-width: 1280px;
+	margin: 0 auto;
+	padding-inline: clamp(1.5rem, 4vw, 4rem);
+	display: grid;
+	grid-template-columns: 1fr;
+	gap: 3rem;
+	align-items: center;
+}
+
+@media (min-width: 900px) {
+	.ame-advisor-inner {
+		grid-template-columns: 1fr 1fr;
+		gap: 5rem;
+	}
+}
+
+.ame-advisor-eyebrow {
+	display: block;
+	font-family: 'Inter', sans-serif;
+	font-size: 10.5px;
+	font-weight: 500;
+	letter-spacing: 0.26em;
+	text-transform: uppercase;
+	color: var(--ame-color-gold);
+	margin-bottom: 0.9rem;
+}
+
+.ame-advisor-headline {
+	font-family: 'Playfair Display', serif;
+	font-size: clamp(2rem, 4vw, 3.2rem);
+	font-weight: 400;
+	color: #ffffff;
+	line-height: 1.1;
+	letter-spacing: -0.02em;
+	margin: 0 0 1.25rem;
+}
+
+.ame-advisor-headline em {
+	font-style: italic;
+	color: rgba(255, 248, 235, 0.88);
+}
+
+.ame-advisor-body {
+	font-family: 'Inter', sans-serif;
+	font-size: 1rem;
+	font-weight: 300;
+	color: rgba(255, 255, 255, 0.60);
+	line-height: 1.7;
+	margin: 0 0 2rem;
+	max-width: 44ch;
+}
+
+.ame-advisor-chips {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.6rem;
+	margin-bottom: 2.2rem;
+}
+
+.ame-advisor-chip {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.4rem;
+	padding: 0.4rem 0.9rem;
+	border: 1px solid rgba(255, 255, 255, 0.15);
+	background: rgba(255, 255, 255, 0.06);
+	color: rgba(255, 255, 255, 0.70);
+	font-family: 'Inter', sans-serif;
+	font-size: 11.5px;
+	font-weight: 400;
+	text-decoration: none;
+	transition: all 0.25s ease;
+}
+
+.ame-advisor-chip:hover {
+	border-color: var(--ame-color-gold);
+	color: var(--ame-color-gold);
+	background: rgba(212, 175, 55, 0.08);
+}
+
+.ame-advisor-chip-icon {
+	font-size: 8px;
+	color: var(--ame-color-gold);
+	opacity: 0.7;
+}
+
+.ame-advisor-actions {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 1rem;
+}
+
+/* Chat card visual */
+.ame-advisor-visual {
+	display: flex;
+	justify-content: center;
+}
+
+.ame-advisor-card {
+	width: 100%;
+	max-width: 380px;
+	background: rgba(255, 255, 255, 0.05);
+	border: 1px solid rgba(255, 255, 255, 0.12);
+	backdrop-filter: blur(16px);
+	-webkit-backdrop-filter: blur(16px);
+	overflow: hidden;
+}
+
+.ame-advisor-card-header {
+	padding: 1.25rem 1.5rem;
+	display: flex;
+	align-items: center;
+	gap: 0.9rem;
+	border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+
+.ame-advisor-card-avatar {
+	width: 38px;
+	height: 38px;
+	border-radius: 50%;
+	background: linear-gradient(135deg, var(--ame-color-gold), rgba(212,175,55,0.6));
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	color: var(--ame-color-navy);
+	flex-shrink: 0;
+}
+
+.ame-advisor-card-meta {
+	flex: 1;
+}
+
+.ame-advisor-card-meta strong {
+	display: block;
+	font-family: 'Inter', sans-serif;
+	font-size: 0.875rem;
+	font-weight: 600;
+	color: #ffffff;
+}
+
+.ame-advisor-card-meta span {
+	font-family: 'Inter', sans-serif;
+	font-size: 0.75rem;
+	color: rgba(255,255,255,0.5);
+}
+
+.ame-advisor-card-dot {
+	width: 8px;
+	height: 8px;
+	border-radius: 50%;
+	background: #22c55e;
+	box-shadow: 0 0 6px rgba(34,197,94,0.6);
+	animation: pulse-dot 2s infinite;
+}
+
+@keyframes pulse-dot {
+	0%, 100% { opacity: 1; }
+	50% { opacity: 0.5; }
+}
+
+.ame-advisor-chat {
+	padding: 1.25rem 1.5rem;
+	display: flex;
+	flex-direction: column;
+	gap: 0.75rem;
+}
+
+.ame-chat-bubble {
+	padding: 0.7rem 1rem;
+	font-family: 'Inter', sans-serif;
+	font-size: 0.85rem;
+	line-height: 1.55;
+	max-width: 85%;
+}
+
+.ame-chat-bubble--bot {
+	background: rgba(255,255,255,0.08);
+	color: rgba(255,255,255,0.85);
+	border-radius: 0 10px 10px 10px;
+	align-self: flex-start;
+}
+
+.ame-chat-bubble--user {
+	background: var(--ame-color-gold);
+	color: var(--ame-color-navy);
+	font-weight: 500;
+	border-radius: 10px 10px 0 10px;
+	align-self: flex-end;
+}
+
+.ame-chat-suggestions {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.4rem;
+}
+
+.ame-chat-suggest-pill {
+	padding: 0.3rem 0.7rem;
+	border: 1px solid rgba(212,175,55,0.35);
+	background: rgba(212,175,55,0.08);
+	color: var(--ame-color-gold);
+	font-family: 'Inter', sans-serif;
+	font-size: 11px;
+	cursor: pointer;
+}
+
+.ame-chat-bubble--typing {
+	display: flex;
+	align-items: center;
+	gap: 4px;
+	padding: 0.7rem 1rem;
+}
+
+.ame-typing-dot {
+	width: 6px;
+	height: 6px;
+	border-radius: 50%;
+	background: rgba(255,255,255,0.4);
+	animation: typing-bounce 1.2s infinite;
+}
+
+.ame-typing-dot:nth-child(2) { animation-delay: 0.2s; }
+.ame-typing-dot:nth-child(3) { animation-delay: 0.4s; }
+
+@keyframes typing-bounce {
+	0%, 60%, 100% { transform: translateY(0); opacity: 0.4; }
+	30% { transform: translateY(-5px); opacity: 1; }
+}
+
+.ame-advisor-card-footer {
+	padding: 1rem 1.5rem;
+	border-top: 1px solid rgba(255,255,255,0.08);
+}
+
+.ame-advisor-input-mock {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 0.6rem 0.8rem;
+	background: rgba(255,255,255,0.05);
+	border: 1px solid rgba(255,255,255,0.1);
+	cursor: text;
+}
+
+.ame-advisor-input-mock span {
+	font-family: 'Inter', sans-serif;
+	font-size: 12px;
+	color: rgba(255,255,255,0.3);
+}
+
+.ame-advisor-input-mock svg {
+	color: var(--ame-color-gold);
+	opacity: 0.7;
+	flex-shrink: 0;
+}
+
+/* ── FAQ Section ── */
+.ame-faq-section {
+	padding-block: clamp(4rem, 7vw, 6rem);
+	background: var(--ame-color-cream);
+}
+
+.ame-faq-header {
+	text-align: center;
+	margin-bottom: 3.5rem;
+}
+
+.ame-faq-header .ame-section-sub {
+	margin: 0 auto;
+}
+
+.ame-faq-grid {
+	display: grid;
+	grid-template-columns: 1fr;
+	gap: 0;
+	border: 1px solid var(--ame-color-border);
+	background: var(--ame-color-white);
+}
+
+@media (min-width: 768px) {
+	.ame-faq-grid {
+		grid-template-columns: 1fr 1fr;
+	}
+}
+
+.ame-faq-item {
+	border-bottom: 1px solid var(--ame-color-border);
+}
+
+@media (min-width: 768px) {
+	.ame-faq-item:nth-child(odd) {
+		border-right: 1px solid var(--ame-color-border);
+	}
+}
+
+.ame-faq-item:last-child,
+.ame-faq-item:nth-last-child(2):nth-child(odd) {
+	border-bottom: none;
+}
+
+.ame-faq-question {
+	width: 100%;
+	display: flex;
+	align-items: flex-start;
+	justify-content: space-between;
+	gap: 1rem;
+	padding: 1.4rem 1.6rem;
+	background: none;
+	border: none;
+	cursor: pointer;
+	text-align: left;
+	transition: background 0.2s ease;
+}
+
+.ame-faq-question:hover {
+	background: var(--ame-color-cream);
+}
+
+.ame-faq-question-text {
+	font-family: 'Inter', sans-serif;
+	font-size: 0.92rem;
+	font-weight: 500;
+	color: var(--ame-color-navy);
+	line-height: 1.5;
+}
+
+.ame-faq-icon {
+	color: var(--ame-color-gold-dark);
+	flex-shrink: 0;
+	margin-top: 2px;
+	transition: transform 0.3s ease;
+}
+
+.ame-faq-question.is-open .ame-faq-icon {
+	transform: rotate(180deg);
+}
+
+.ame-faq-question.is-open .ame-faq-question-text {
+	color: var(--ame-color-gold-dark);
+}
+
+.ame-faq-answer {
+	padding: 0 1.6rem 1.4rem;
+}
+
+.ame-faq-answer p {
+	font-family: 'Inter', sans-serif;
+	font-size: 0.88rem;
+	line-height: 1.7;
+	color: var(--ame-color-slate);
+	margin: 0;
+}
+
+.ame-faq-footer {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 1.2rem;
+	margin-top: 3rem;
+	text-align: center;
+}
+
+.ame-faq-footer-text {
+	font-family: 'Inter', sans-serif;
+	font-size: 0.9rem;
+	color: var(--ame-color-slate);
+	margin: 0;
+}
+
+/* ── Tailoring Section (upgrade inline styles) ── */
+.ame-tailoring-service-section {
+	padding-block: clamp(4rem, 7vw, 6rem);
+	background: var(--ame-color-cream);
+}
+
+/* ── Visit Store Section ── */
+.ame-visit-store-section {
+	padding-block: clamp(4rem, 7vw, 6rem);
+	background: var(--ame-color-white);
+	border-top: 1px solid var(--ame-color-border);
+}
+
+.ame-visit-store-grid {
+	display: grid;
+	grid-template-columns: 1fr;
+	gap: 3rem;
+}
+
+@media (min-width: 900px) {
+	.ame-visit-store-grid {
+		grid-template-columns: 1fr 1fr;
+		gap: 4rem;
+	}
+}
+
+.ame-visit-store-heading {
+	font-family: 'Playfair Display', serif;
+	font-size: clamp(1.9rem, 3.5vw, 2.9rem);
+	font-weight: 400;
+	color: var(--ame-color-navy);
+	margin: 0 0 1.2rem;
+	letter-spacing: -0.02em;
+}
+
+.ame-visit-store-intro {
+	font-size: 0.95rem;
+	color: var(--ame-color-slate);
+	line-height: 1.65;
+	margin: 0 0 1.5rem;
+}
+
+.ame-visit-info-list {
+	display: flex;
+	flex-direction: column;
+	gap: 1.2rem;
+}
+
+.ame-visit-info-item {
+	display: flex;
+	align-items: flex-start;
+	gap: 1rem;
+}
+
+.ame-visit-info-icon-wrap {
+	width: 40px;
+	height: 40px;
+	border-radius: 50%;
+	background: var(--ame-color-cream);
+	border: 1px solid var(--ame-color-border);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	color: var(--ame-color-gold-dark);
+	flex-shrink: 0;
+}
+
+.ame-visit-info-label {
+	display: block;
+	font-size: 10px;
+	font-weight: 600;
+	letter-spacing: 0.1em;
+	text-transform: uppercase;
+	color: var(--ame-color-slate);
+	margin-bottom: 0.2rem;
+}
+
+.ame-visit-info-val {
+	font-size: 0.9rem;
+	font-weight: 500;
+	color: var(--ame-color-navy);
+	font-style: normal;
+}
+
+.ame-visit-ctas {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.8rem;
+}
+
+.ame-map-container {
+	width: 100%;
+	height: 100%;
+	min-height: 380px;
+	overflow: hidden;
+	border: 1px solid var(--ame-color-border);
+}
+
+.ame-map-container iframe {
+	width: 100%;
+	height: 100%;
+	min-height: 380px;
+	display: block;
+	border: 0;
+}
+
+/* ── Showroom Gallery (Instagram section) ── */
+.ame-instagram-section {
+	padding-block: clamp(4rem, 7vw, 6rem);
+	background: var(--ame-color-white);
+}
+
+.ame-insta-card {
+	position: relative;
+	overflow: hidden;
+	aspect-ratio: 1 / 1;
+	cursor: pointer;
+}
+
+.ame-insta-card:hover .ame-gallery-img {
+	transform: scale(1.07);
+}
+
+.ame-insta-card:hover .ame-insta-hover-overlay {
+	opacity: 1 !important;
+}
+
+/* ── WhatsApp / Newsletter CTA ── */
+.ame-whatsapp-cta-section {
+	padding-block: clamp(3.5rem, 6vw, 5rem);
+	background: var(--ame-color-navy);
+	text-align: center;
+}
+
+/* ── Why AME Bazaar Section ── */
+.ame-why-choose-section {
+	padding-block: clamp(4rem, 7vw, 6rem);
+	background: var(--ame-color-cream);
+}
+
+.ame-why-card {
+	background: var(--ame-color-white);
+	border: 1px solid var(--ame-color-border);
+	padding: 2.2rem 1.8rem;
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s ease;
+}
+
+.ame-why-card:hover {
+	transform: translateY(-5px);
+	box-shadow: 0 16px 40px rgba(0, 35, 71, 0.08);
+}
+
+.ame-why-card-icon-container {
+	width: 48px;
+	height: 48px;
+	border-radius: 50%;
+	background: rgba(0, 35, 71, 0.06);
+	color: var(--ame-color-navy);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	margin-bottom: 1.4rem;
+	transition: background 0.3s ease, color 0.3s ease;
+}
+
+.ame-why-card:hover .ame-why-card-icon-container {
+	background: var(--ame-color-navy);
+	color: var(--ame-color-gold);
+}
+
+.ame-why-card-title {
+	font-family: 'Playfair Display', serif;
+	font-size: 1.05rem;
+	font-weight: 500;
+	color: var(--ame-color-navy);
+	margin: 0 0 0.8rem;
+}
+
+.ame-why-card-desc {
+	font-size: 0.85rem;
+	line-height: 1.65;
+	color: var(--ame-color-slate);
+	margin: 0;
+}
+
+/* ── Luxury container ── */
+.ame-bazaar-container {
+	width: 100%;
+	max-width: 1280px;
+	margin: 0 auto;
+	padding-inline: clamp(1.25rem, 4vw, 3rem);
+}
+
+/* ── Featured Collections / Products ── */
+.ame-featured-section {
+	padding-block: clamp(4rem, 7vw, 6rem);
+	background: var(--ame-color-white);
+}
+
+.ame-featured-header {
+	display: flex;
+	align-items: flex-end;
+	justify-content: space-between;
+	flex-wrap: wrap;
+	gap: 1.5rem;
+	margin-bottom: 3rem;
+}
+
+.ame-featured-section-title {
+	font-family: 'Playfair Display', serif;
+	font-size: clamp(1.9rem, 3.5vw, 2.9rem);
+	font-weight: 400;
+	color: var(--ame-color-navy);
+	margin: 0 0 0.4rem;
+	letter-spacing: -0.02em;
+}
+
+.ame-featured-section-subtitle {
+	font-size: 0.9rem;
+	color: var(--ame-color-slate);
+	margin: 0;
+}
+
+.ame-products-grid {
+	display: grid;
+	grid-template-columns: repeat(2, 1fr);
+	gap: 1.25rem;
+}
+
+@media (min-width: 768px) {
+	.ame-products-grid {
+		grid-template-columns: repeat(4, 1fr);
+	}
+}
+
+.ame-product-card {
+	display: flex;
+	flex-direction: column;
+	border: 1px solid var(--ame-color-border);
+	overflow: hidden;
+	transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s ease;
+}
+
+.ame-product-card:hover {
+	transform: translateY(-4px);
+	box-shadow: 0 12px 32px rgba(0, 35, 71, 0.08);
+}
+
+.ame-product-visual-wrap {
+	position: relative;
+	aspect-ratio: 3 / 4;
+	overflow: hidden;
+	background: var(--ame-color-cream);
+}
+
+.ame-product-img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.ame-product-card:hover .ame-product-img {
+	transform: scale(1.05);
+}
+
+.ame-product-hover-actions {
+	position: absolute;
+	bottom: 0.75rem;
+	right: 0.75rem;
+	display: flex;
+	flex-direction: column;
+	gap: 0.4rem;
+	opacity: 0;
+	transform: translateY(8px);
+	transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.ame-product-card:hover .ame-product-hover-actions {
+	opacity: 1;
+	transform: translateY(0);
+}
+
+.ame-product-action-btn {
+	width: 36px;
+	height: 36px;
+	background: #ffffff;
+	border: 1px solid var(--ame-color-border);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	color: var(--ame-color-navy);
+	transition: background 0.25s ease, color 0.25s ease;
+	cursor: pointer;
+	text-decoration: none;
+}
+
+.ame-product-action-btn:hover {
+	background: var(--ame-color-navy);
+	color: #ffffff;
+}
+
+.ame-product-info {
+	padding: 1rem 1rem 1.2rem;
+}
+
+.ame-product-title {
+	font-family: 'Inter', sans-serif;
+	font-size: 0.9rem;
+	font-weight: 500;
+	margin: 0 0 0.4rem;
+}
+
+.ame-product-title a {
+	color: var(--ame-color-navy);
+	text-decoration: none;
+}
+
+.ame-product-title a:hover {
+	color: var(--ame-color-gold-dark);
+}
+
+.ame-product-price {
+	font-family: 'Inter', sans-serif;
+	font-size: 0.92rem;
+	font-weight: 600;
+	color: var(--ame-color-navy);
+}
+
+/* WooCommerce price override */
+.ame-product-price .woocommerce-Price-amount {
+	color: inherit;
+}
+
+/* ── Reviews Section ── */
+.ame-reviews-section {
+	padding-block: clamp(4rem, 7vw, 6rem);
+	background: var(--ame-color-white);
+}
+
+/* ── Blog Preview ── */
+.ame-blog-preview-section {
+	padding-block: clamp(4rem, 7vw, 6rem);
+	background: var(--ame-color-cream);
+}
+
+/* ── Luxury common section header block ── */
+.ame-section-header-center {
+	text-align: center;
+	margin-bottom: 3.5rem;
+}
+
+.ame-section-header-center .ame-section-sub {
+	margin: 0.75rem auto 0;
+}
 

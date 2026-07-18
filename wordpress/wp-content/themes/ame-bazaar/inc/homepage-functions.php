@@ -39,6 +39,12 @@ function ame_bazaar_render_tailoring_service() {
 }
 add_action( 'ame_bazaar_homepage', 'ame_bazaar_render_tailoring_service', 28 );
 
+// 4.8 Fashion Advisor
+function ame_bazaar_render_fashion_advisor() {
+	get_template_part( 'components/homepage/fashion-advisor' );
+}
+add_action( 'ame_bazaar_homepage', 'ame_bazaar_render_fashion_advisor', 33 );
+
 // 5. Why AME Bazaar
 function ame_bazaar_render_why_choose_us() {
 	get_template_part( 'components/why-choose-us/why-choose-us' );
@@ -50,6 +56,12 @@ function ame_bazaar_render_reviews() {
 	get_template_part( 'components/reviews/reviews' );
 }
 add_action( 'ame_bazaar_homepage', 'ame_bazaar_render_reviews', 35 );
+
+// 6.5 FAQ Section
+function ame_bazaar_render_faq() {
+	get_template_part( 'components/homepage/faq' );
+}
+add_action( 'ame_bazaar_homepage', 'ame_bazaar_render_faq', 38 );
 
 // 7. Visit Our Store
 function ame_bazaar_render_visit_store() {
