@@ -66,6 +66,29 @@ $slides = array_values( array_filter( $collection_data, function( $s ) {
 	return $s['desktop_id'] > 0 || $s['video_id'] > 0;
 } ) );
 
+// Graceful fallback if no slides are set in the database
+if ( empty( $slides ) ) {
+	$slides = array(
+		array(
+			'desktop_id'       => 0,
+			'mobile_id'        => 0,
+			'video_id'         => 0,
+			'video_mobile_id'  => 0,
+			'poster_id'        => 0,
+			'desktop_url'      => ame_bazaar_asset_uri( 'assets/images/hero-placeholder.jpg' ),
+			'mobile_url'       => ame_bazaar_asset_uri( 'assets/images/hero-placeholder.jpg' ),
+			'video_url'        => '',
+			'video_mobile_url' => '',
+			'poster_url'       => ame_bazaar_asset_uri( 'assets/images/hero-placeholder.jpg' ),
+			'season'           => 'summer',
+			'label'            => __( 'Summer Collection', 'ame-bazaar' ),
+			'headline_l1'      => __( 'Dress The', 'ame-bazaar' ),
+			'headline_l2'      => __( 'Moment.', 'ame-bazaar' ),
+			'subline'          => __( 'Premium fashion for every occasion — Men, Women & Kids', 'ame-bazaar' ),
+		)
+	);
+}
+
 $has_images  = ! empty( $slides );
 $slide_count = count( $slides );
 
@@ -74,13 +97,7 @@ $shop_url = home_url( '/shop/' );
 $maps_url = ame_bazaar_get_business_setting( 'maps_url', 'https://maps.google.com/?q=AME+Bazaar+Kirari+Delhi' );
 
 // First slide data (for initial server-rendered text)
-$first = $has_images ? $slides[0] : array(
-	'label'       => __( 'Premium Fashion', 'ame-bazaar' ),
-	'headline_l1' => __( 'Dress The', 'ame-bazaar' ),
-	'headline_l2' => __( 'Moment.', 'ame-bazaar' ),
-	'subline'     => __( 'Premium fashion for every occasion — Men, Women & Kids', 'ame-bazaar' ),
-	'season'      => '',
-);
+$first = $slides[0];
 ?>
 
 <section
@@ -96,15 +113,15 @@ $first = $has_images ? $slides[0] : array(
 		<?php if ( $has_images ) : ?>
 		<div class="ame-hero__slides" id="ame-hero-slides">
 			<?php foreach ( $slides as $i => $slide ) :
-				$desktop_url = wp_get_attachment_image_url( $slide['desktop_id'], 'full' );
-				$mobile_url  = $slide['mobile_id'] > 0
+				$desktop_url = isset( $slide['desktop_url'] ) ? $slide['desktop_url'] : wp_get_attachment_image_url( $slide['desktop_id'], 'full' );
+				$mobile_url  = isset( $slide['mobile_url'] ) ? $slide['mobile_url'] : ( $slide['mobile_id'] > 0
 					? wp_get_attachment_image_url( $slide['mobile_id'], 'full' )
-					: $desktop_url;
+					: $desktop_url );
 				
-				$video_url = $slide['video_id'] > 0 ? wp_get_attachment_url( $slide['video_id'] ) : '';
-				$video_mobile_url = $slide['video_mobile_id'] > 0 ? wp_get_attachment_url( $slide['video_mobile_id'] ) : $video_url;
+				$video_url = isset( $slide['video_url'] ) ? $slide['video_url'] : ( $slide['video_id'] > 0 ? wp_get_attachment_url( $slide['video_id'] ) : '' );
+				$video_mobile_url = isset( $slide['video_mobile_url'] ) ? $slide['video_mobile_url'] : ( $slide['video_mobile_id'] > 0 ? wp_get_attachment_url( $slide['video_mobile_id'] ) : $video_url );
 				
-				$poster_url = $slide['poster_id'] > 0 ? wp_get_attachment_image_url( $slide['poster_id'], 'full' ) : $desktop_url;
+				$poster_url = isset( $slide['poster_url'] ) ? $slide['poster_url'] : ( $slide['poster_id'] > 0 ? wp_get_attachment_image_url( $slide['poster_id'], 'full' ) : $desktop_url );
 
 				$is_first    = ( 0 === $i );
 				$loading     = $is_first ? 'eager' : 'lazy';

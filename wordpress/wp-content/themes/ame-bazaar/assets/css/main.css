@@ -9564,3 +9564,23 @@ form.checkout {
 	margin-top: 0.75rem;
 	background: rgba(255,255,255,0.7);
 }
+
+/* ── Homepage Gap Elimination Reset ── */
+.home #primary.ame-bazaar-home {
+	margin-top: 0 !important;
+	margin-bottom: 0 !important;
+	padding-top: 0 !important;
+	padding-bottom: 0 !important;
+}
+.home .site-content {
+	padding-top: 0 !important;
+	padding-bottom: 0 !important;
+	margin-top: 0 !important;
+	margin-bottom: 0 !important;
+}
+.home .site-content > .ast-container {
+	max-width: 100% !important;
+	padding: 0 !important;
+	margin: 0 !important;
+}
+
