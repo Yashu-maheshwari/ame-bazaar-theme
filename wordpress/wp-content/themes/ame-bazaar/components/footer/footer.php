@@ -47,9 +47,9 @@ if ( ! $cat_women_url || '#' === $cat_women_url ) {
 	if ( is_wp_error( $cat_women_url ) ) { $cat_women_url = home_url( '/product-category/womens-wear/' ); }
 }
 if ( ! $cat_kids_url || '#' === $cat_kids_url ) {
-	$term = get_term_by( 'slug', 'boy-wear', 'product_cat' ) ?: get_term_by( 'slug', 'kids-wear', 'product_cat' );
-	$cat_kids_url = ( $term && ! is_wp_error( $term ) ) ? get_term_link( $term ) : home_url( '/product-category/boy-wear/' );
-	if ( is_wp_error( $cat_kids_url ) ) { $cat_kids_url = home_url( '/product-category/boy-wear/' ); }
+	$term = get_term_by( 'slug', 'kids-wear', 'product_cat' ) ?: get_term_by( 'slug', 'kids', 'product_cat' );
+	$cat_kids_url = ( $term && ! is_wp_error( $term ) ) ? get_term_link( $term ) : home_url( '/product-category/kids-wear/' );
+	if ( is_wp_error( $cat_kids_url ) ) { $cat_kids_url = home_url( '/product-category/kids-wear/' ); }
 }
 if ( ! $cat_sarees_url || '#' === $cat_sarees_url ) {
 	$term = get_term_by( 'slug', 'sarees', 'product_cat' );
@@ -68,8 +68,8 @@ foreach ( array( 'cat_men_url', 'cat_women_url', 'cat_kids_url', 'cat_sarees_url
 		if ( strpos( $$var, '/category/' ) !== false ) {
 			$$var = str_replace( '/category/', '/product-category/', $$var );
 		}
-		if ( strpos( $$var, '/product-category/kids/' ) !== false || strpos( $$var, '/product-category/kids-wear/' ) !== false ) {
-			$$var = home_url( '/product-category/boy-wear/' );
+		if ( strpos( $$var, '/product-category/kids/' ) !== false || strpos( $$var, '/product-category/boy-wear/' ) !== false ) {
+			$$var = home_url( '/product-category/kids-wear/' );
 		}
 		if ( strpos( $$var, '/product-category/sarees/' ) !== false ) {
 			$$var = home_url( '/product-category/womens-wear/' );
