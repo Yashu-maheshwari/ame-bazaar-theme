@@ -38,3 +38,37 @@ require_once AME_BAZAAR_PATH . '/components/local-entity/google-rating-widget.ph
 require_once AME_BAZAAR_PATH . '/components/local-entity/trust-block.php';
 require_once AME_BAZAAR_PATH . '/components/local-entity/customer-highlights.php';
 require_once AME_BAZAAR_PATH . '/components/local-entity/popular-review-keywords.php';
+
+/**
+ * Dynamic link overrides for legacy/broken menu links stored in database.
+ */
+function ame_bazaar_filter_menu_links( $atts, $item, $args, $depth ) {
+	if ( isset( $atts['href'] ) ) {
+		if ( strpos( $atts['href'], '/product-category/boy-wear/' ) !== false ) {
+			$atts['href'] = str_replace( '/product-category/boy-wear/', '/product-category/kids-wear/', $atts['href'] );
+		}
+		if ( strpos( $atts['href'], '/faqs/' ) !== false ) {
+			$atts['href'] = str_replace( '/faqs/', '/faq/', $atts['href'] );
+		}
+	}
+	return $atts;
+}
+add_filter( 'nav_menu_link_attributes', 'ame_bazaar_filter_menu_links', 99, 4 );
+
+function ame_bazaar_filter_nav_menu_items( $items ) {
+	if ( ! empty( $items ) && is_array( $items ) ) {
+		foreach ( $items as $item ) {
+			if ( isset( $item->url ) ) {
+				if ( strpos( $item->url, '/product-category/boy-wear/' ) !== false ) {
+					$item->url = str_replace( '/product-category/boy-wear/', '/product-category/kids-wear/', $item->url );
+				}
+				if ( strpos( $item->url, '/faqs/' ) !== false ) {
+					$item->url = str_replace( '/faqs/', '/faq/', $item->url );
+				}
+			}
+		}
+	}
+	return $items;
+}
+add_filter( 'wp_get_nav_menu_items', 'ame_bazaar_filter_nav_menu_items', 99 );
+

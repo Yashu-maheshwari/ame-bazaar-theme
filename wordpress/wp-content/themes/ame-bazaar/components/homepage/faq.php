@@ -54,7 +54,7 @@ $homepage_faqs = array(
 	),
 );
 
-$faqs_page_url = home_url( '/faqs/' );
+$faqs_page_url = home_url( '/faq/' );
 ?>
 
 <section class="ame-faq-section" aria-labelledby="ame-faq-title">
