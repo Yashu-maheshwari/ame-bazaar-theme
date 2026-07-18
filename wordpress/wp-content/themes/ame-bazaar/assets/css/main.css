@@ -9324,3 +9324,243 @@ form.checkout {
 	margin: 0.75rem auto 0;
 }
 
+
+/* ==========================================================================
+   PHASE 6 — LUXURY POLISH (Global Upgrades)
+   ========================================================================== */
+
+/* ── Trust bar full-width on mobile ── */
+@media (max-width: 767px) {
+	.ame-trust-grid {
+		gap: 0;
+	}
+	.ame-trust-card {
+		flex: 1 1 50%;
+		max-width: 50%;
+		border-bottom: 1px solid rgba(255,255,255,0.08);
+	}
+}
+
+/* ── Trust card text hierarchy ── */
+.ame-trust-card-title {
+	font-family: 'Playfair Display', serif;
+	font-size: 1rem;
+	font-weight: 600;
+	color: #ffffff;
+	margin: 0;
+	line-height: 1.2;
+}
+
+.ame-trust-card-desc,
+.ame-trust-card-label {
+	font-family: 'Inter', sans-serif;
+	font-size: 10.5px;
+	font-weight: 400;
+	letter-spacing: 0.06em;
+	color: rgba(255, 255, 255, 0.48);
+	margin: 0;
+}
+
+/* ── Section transitions on scroll (GSAP targets) ── */
+.ame-categories-section,
+.ame-featured-section,
+.ame-advisor-section,
+.ame-faq-section,
+.ame-reviews-section,
+.ame-visit-store-section {
+	will-change: auto;
+}
+
+/* ── Luxury grid system ── */
+.ame-grid {
+	display: grid;
+}
+
+.ame-grid-2 {
+	grid-template-columns: 1fr;
+}
+
+@media (min-width: 768px) {
+	.ame-grid-2 {
+		grid-template-columns: 1fr 1fr;
+	}
+}
+
+.ame-grid-3 {
+	grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+}
+
+/* ── Luxury buttons (global ame-bazaar-btn ── */
+.ame-bazaar-btn {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	gap: 0.5rem;
+	padding: 0.82rem 1.65rem;
+	font-family: 'Inter', sans-serif;
+	font-size: 11.5px;
+	font-weight: 500;
+	letter-spacing: 0.09em;
+	text-transform: uppercase;
+	text-decoration: none;
+	transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+	cursor: pointer;
+	border: 1.5px solid transparent;
+}
+
+.ame-bazaar-btn--primary {
+	background: var(--ame-color-navy);
+	border-color: var(--ame-color-navy);
+	color: #ffffff;
+	box-shadow: 0 4px 16px rgba(0, 35, 71, 0.2);
+}
+
+.ame-bazaar-btn--primary:hover {
+	background: #002b5e;
+	border-color: #002b5e;
+	transform: translateY(-2px);
+	box-shadow: 0 8px 24px rgba(0, 35, 71, 0.28);
+	color: #ffffff;
+}
+
+.ame-bazaar-btn--secondary {
+	background: transparent;
+	border-color: var(--ame-color-navy);
+	color: var(--ame-color-navy);
+}
+
+.ame-bazaar-btn--secondary:hover {
+	background: var(--ame-color-navy);
+	color: #ffffff;
+	transform: translateY(-1px);
+}
+
+/* ── Luxury icon sizing ── */
+.ame-icon {
+	width: 18px;
+	height: 18px;
+	flex-shrink: 0;
+}
+
+.ame-icon-btn {
+	width: 16px;
+	height: 16px;
+	flex-shrink: 0;
+}
+
+/* ── Shared heading styles ── */
+.ame-h2 {
+	font-family: 'Playfair Display', serif;
+	font-size: clamp(1.7rem, 3.5vw, 2.6rem);
+	font-weight: 400;
+	color: var(--ame-color-navy);
+	letter-spacing: -0.02em;
+	line-height: 1.2;
+	margin: 0;
+}
+
+.ame-body {
+	font-family: 'Inter', sans-serif;
+	font-size: 0.95rem;
+	line-height: 1.65;
+	color: var(--ame-color-slate);
+	margin: 0;
+}
+
+.ame-sg-label {
+	font-family: 'Inter', sans-serif;
+	font-size: 10.5px;
+	font-weight: 500;
+	letter-spacing: 0.24em;
+	text-transform: uppercase;
+}
+
+/* ── Luxury primary button variants ── */
+.ame-btn-primary {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.5rem;
+	padding: 0.82rem 1.65rem;
+	background: var(--ame-color-navy);
+	color: #ffffff;
+	font-family: 'Inter', sans-serif;
+	font-size: 11.5px;
+	font-weight: 500;
+	letter-spacing: 0.09em;
+	text-transform: uppercase;
+	text-decoration: none;
+	border: 1.5px solid var(--ame-color-navy);
+	transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+	cursor: pointer;
+}
+
+.ame-btn-primary:hover {
+	background: #002b5e;
+	transform: translateY(-2px);
+	color: #ffffff;
+}
+
+.ame-btn-secondary {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.5rem;
+	padding: 0.82rem 1.65rem;
+	background: transparent;
+	color: var(--ame-color-navy);
+	font-family: 'Inter', sans-serif;
+	font-size: 11.5px;
+	font-weight: 500;
+	letter-spacing: 0.09em;
+	text-transform: uppercase;
+	text-decoration: none;
+	border: 1.5px solid var(--ame-color-navy);
+	transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+	cursor: pointer;
+}
+
+.ame-btn-secondary:hover {
+	background: var(--ame-color-navy);
+	color: #ffffff;
+	transform: translateY(-1px);
+}
+
+/* ── Responsive global container ── */
+.ame-bazaar-container {
+	width: 100%;
+	max-width: 1280px;
+	margin-inline: auto;
+	padding-inline: clamp(1.25rem, 4vw, 3rem);
+}
+
+/* ── Placeholder image blocks ── */
+.ame-category-img-placeholder {
+	width: 100%;
+	height: 100%;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	padding: 2rem;
+	background: linear-gradient(145deg, var(--ame-color-cream) 0%, var(--ame-color-border) 100%);
+	text-align: center;
+}
+
+.ame-placeholder-logo-text {
+	font-family: 'Playfair Display', serif;
+	font-size: 1rem;
+	font-weight: 600;
+	color: rgba(0, 35, 71, 0.2);
+	letter-spacing: -0.01em;
+}
+
+.ame-placeholder-tag {
+	font-size: 10px;
+	font-weight: 600;
+	color: var(--ame-color-slate);
+	letter-spacing: 0.1em;
+	text-transform: uppercase;
+	border: 1px solid var(--ame-color-slate);
+	padding: 0.3rem 0.6rem;
+	margin-top: 0.75rem;
+	background: rgba(255,255,255,0.7);
+}

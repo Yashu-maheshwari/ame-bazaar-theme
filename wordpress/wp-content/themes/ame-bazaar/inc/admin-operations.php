@@ -1373,12 +1373,21 @@ function ame_bazaar_render_homepage_media_page() {
 		'ame_bazaar_media_white_logo'         => __( 'White Logo', 'ame-bazaar' ),
 		'ame_bazaar_media_sticky_logo'        => __( 'Sticky Header Logo', 'ame-bazaar' ),
 		'ame_bazaar_media_favicon'            => __( 'Favicon', 'ame-bazaar' ),
-		'ame_bazaar_media_hero_desktop'        => __( 'Hero Desktop — Summer Collection', 'ame-bazaar' ),
-		'ame_bazaar_media_hero_mobile'         => __( 'Hero Mobile — Summer Collection', 'ame-bazaar' ),
-		'ame_bazaar_media_hero_festive'        => __( 'Hero Desktop — Festive Collection', 'ame-bazaar' ),
-		'ame_bazaar_media_hero_festive_mobile' => __( 'Hero Mobile — Festive Collection', 'ame-bazaar' ),
-		'ame_bazaar_media_hero_winter'         => __( 'Hero Desktop — Winter Collection', 'ame-bazaar' ),
-		'ame_bazaar_media_hero_winter_mobile'  => __( 'Hero Mobile — Winter Collection', 'ame-bazaar' ),
+		'ame_bazaar_media_hero_desktop'        => __( 'Hero Desktop Image — Summer Collection', 'ame-bazaar' ),
+		'ame_bazaar_media_hero_mobile'         => __( 'Hero Mobile Image — Summer Collection', 'ame-bazaar' ),
+		'ame_bazaar_media_hero_summer_video'  => __( 'Hero Desktop Video — Summer Collection', 'ame-bazaar' ),
+		'ame_bazaar_media_hero_summer_video_mobile' => __( 'Hero Mobile Video — Summer Collection', 'ame-bazaar' ),
+		'ame_bazaar_media_hero_summer_poster'  => __( 'Hero Video Poster — Summer Collection', 'ame-bazaar' ),
+		'ame_bazaar_media_hero_festive'        => __( 'Hero Desktop Image — Festive Collection', 'ame-bazaar' ),
+		'ame_bazaar_media_hero_festive_mobile' => __( 'Hero Mobile Image — Festive Collection', 'ame-bazaar' ),
+		'ame_bazaar_media_hero_festive_video'  => __( 'Hero Desktop Video — Festive Collection', 'ame-bazaar' ),
+		'ame_bazaar_media_hero_festive_video_mobile' => __( 'Hero Mobile Video — Festive Collection', 'ame-bazaar' ),
+		'ame_bazaar_media_hero_festive_poster'  => __( 'Hero Video Poster — Festive Collection', 'ame-bazaar' ),
+		'ame_bazaar_media_hero_winter'         => __( 'Hero Desktop Image — Winter Collection', 'ame-bazaar' ),
+		'ame_bazaar_media_hero_winter_mobile'  => __( 'Hero Mobile Image — Winter Collection', 'ame-bazaar' ),
+		'ame_bazaar_media_hero_winter_video'   => __( 'Hero Desktop Video — Winter Collection', 'ame-bazaar' ),
+		'ame_bazaar_media_hero_winter_video_mobile' => __( 'Hero Mobile Video — Winter Collection', 'ame-bazaar' ),
+		'ame_bazaar_media_hero_winter_poster'  => __( 'Hero Video Poster — Winter Collection', 'ame-bazaar' ),
 		'ame_bazaar_media_men'                => __( "Men's Wear Banner", 'ame-bazaar' ),
 		'ame_bazaar_media_women'              => __( "Women's Wear Banner", 'ame-bazaar' ),
 		'ame_bazaar_media_kids'               => __( "Kids Wear Banner", 'ame-bazaar' ),
@@ -1442,12 +1451,21 @@ function ame_bazaar_render_homepage_media_page() {
 				<tbody>
 					<?php 
 					$specs_map = array(
-						'ame_bazaar_media_hero_desktop'        => array( 'res' => '1920x900', 'used' => 'Hero Slide 1 (Summer) — Desktop' ),
-						'ame_bazaar_media_hero_mobile'         => array( 'res' => '768x1200', 'used' => 'Hero Slide 1 (Summer) — Mobile' ),
-						'ame_bazaar_media_hero_festive'        => array( 'res' => '1920x900', 'used' => 'Hero Slide 2 (Festive) — Desktop' ),
-						'ame_bazaar_media_hero_festive_mobile' => array( 'res' => '768x1200', 'used' => 'Hero Slide 2 (Festive) — Mobile' ),
-						'ame_bazaar_media_hero_winter'         => array( 'res' => '1920x900', 'used' => 'Hero Slide 3 (Winter) — Desktop' ),
-						'ame_bazaar_media_hero_winter_mobile'  => array( 'res' => '768x1200', 'used' => 'Hero Slide 3 (Winter) — Mobile' ),
+						'ame_bazaar_media_hero_desktop'        => array( 'res' => '1920x900 WebP', 'used' => 'Hero Summer — Desktop Still' ),
+						'ame_bazaar_media_hero_mobile'         => array( 'res' => '768x1200 WebP', 'used' => 'Hero Summer — Mobile Still' ),
+						'ame_bazaar_media_hero_summer_video'  => array( 'res' => 'WebM / MP4 (3-5MB)', 'used' => 'Hero Summer — Desktop Video' ),
+						'ame_bazaar_media_hero_summer_video_mobile' => array( 'res' => 'WebM / MP4 (2-3MB)', 'used' => 'Hero Summer — Mobile Video' ),
+						'ame_bazaar_media_hero_summer_poster'  => array( 'res' => '1920x900 WebP', 'used' => 'Hero Summer — Video Loading Poster' ),
+						'ame_bazaar_media_hero_festive'        => array( 'res' => '1920x900 WebP', 'used' => 'Hero Festive — Desktop Still' ),
+						'ame_bazaar_media_hero_festive_mobile' => array( 'res' => '768x1200 WebP', 'used' => 'Hero Festive — Mobile Still' ),
+						'ame_bazaar_media_hero_festive_video'  => array( 'res' => 'WebM / MP4 (3-5MB)', 'used' => 'Hero Festive — Desktop Video' ),
+						'ame_bazaar_media_hero_festive_video_mobile' => array( 'res' => 'WebM / MP4 (2-3MB)', 'used' => 'Hero Festive — Mobile Video' ),
+						'ame_bazaar_media_hero_festive_poster'  => array( 'res' => '1920x900 WebP', 'used' => 'Hero Festive — Video Loading Poster' ),
+						'ame_bazaar_media_hero_winter'         => array( 'res' => '1920x900 WebP', 'used' => 'Hero Winter — Desktop Still' ),
+						'ame_bazaar_media_hero_winter_mobile'  => array( 'res' => '768x1200 WebP', 'used' => 'Hero Winter — Mobile Still' ),
+						'ame_bazaar_media_hero_winter_video'   => array( 'res' => 'WebM / MP4 (3-5MB)', 'used' => 'Hero Winter — Desktop Video' ),
+						'ame_bazaar_media_hero_winter_video_mobile' => array( 'res' => 'WebM / MP4 (2-3MB)', 'used' => 'Hero Winter — Mobile Video' ),
+						'ame_bazaar_media_hero_winter_poster'  => array( 'res' => '1920x900 WebP', 'used' => 'Hero Winter — Video Loading Poster' ),
 						'ame_bazaar_media_men'          => array( 'res' => '800x1200', 'used' => 'Homepage Category & Men\'s Banner' ),
 						'ame_bazaar_media_women'        => array( 'res' => '800x1200', 'used' => 'Homepage Category & Women\'s Banner' ),
 						'ame_bazaar_media_kids'         => array( 'res' => '800x1200', 'used' => 'Homepage Category & Kids Banner' ),
@@ -1465,10 +1483,17 @@ function ame_bazaar_render_homepage_media_page() {
 							$preview_url = wp_get_attachment_url( $current_val );
 							$meta = wp_get_attachment_metadata( $current_val );
 							if ( $preview_url ) {
-								$preview_html = '<img src="' . esc_url( $preview_url ) . '" style="max-width:180px;max-height:100px;border:1px solid #ccc;border-radius:4px;" />';
+								$is_video = wp_attachment_is( 'video', $current_val ) || preg_match( '/\.(mp4|webm|ogg|mov)$/i', $preview_url );
+								if ( $is_video ) {
+									$preview_html = '<video src="' . esc_url( $preview_url ) . '" style="max-width:180px;max-height:100px;border:1px solid #ccc;border-radius:4px;" muted controls></video>';
+								} else {
+									$preview_html = '<img src="' . esc_url( $preview_url ) . '" style="max-width:180px;max-height:100px;border:1px solid #ccc;border-radius:4px;" />';
+								}
 							}
 							if ( ! empty( $meta['width'] ) && ! empty( $meta['height'] ) ) {
 								$img_size_html = $meta['width'] . ' &times; ' . $meta['height'] . ' px';
+							} elseif ( ! empty( $meta['filesize'] ) ) {
+								$img_size_html = size_format( $meta['filesize'] );
 							}
 						}
 						
@@ -1563,13 +1588,17 @@ function ame_bazaar_render_homepage_media_page() {
 			var custom_uploader = wp.media({
 				title: 'Select Media for AME Bazaar',
 				button: {
-					text: 'Use Selected Image'
+					text: 'Use Selected Media'
 				},
 				multiple: false
 			}).on('select', function() {
 				var attachment = custom_uploader.state().get('selection').first().toJSON();
 				$('#' + fieldId).val(attachment.id);
-				$('#preview-' + fieldId).html('<img src="' + attachment.url + '" style="max-width:150px;max-height:150px;margin-top:10px;border:1px solid #ccc;padding:5px;display:block;" />');
+				if (attachment.type === 'video') {
+					$('#preview-' + fieldId).html('<video src="' + attachment.url + '" style="max-width:180px;max-height:100px;margin-top:10px;border:1px solid #ccc;padding:5px;display:block;" muted controls></video>');
+				} else {
+					$('#preview-' + fieldId).html('<img src="' + attachment.url + '" style="max-width:180px;max-height:100px;margin-top:10px;border:1px solid #ccc;padding:5px;display:block;" />');
+				}
 			}).open();
 		});
 
@@ -1578,7 +1607,7 @@ function ame_bazaar_render_homepage_media_page() {
 			var button = $(this);
 			var fieldId = button.data('field');
 			$('#' + fieldId).val('');
-			$('#preview-' + fieldId).html('<p style="color:#666;font-style:italic;margin: 5px 0 0 0;">No image selected.</p>');
+			$('#preview-' + fieldId).html('<div style="width:180px;height:80px;background:#f1f5f9;border:1px dashed #cbd5e1;display:flex;align-items:center;justify-content:center;color:#64748b;font-size:12px;">No Media Selected</div>');
 		});
 	});
 	</script>

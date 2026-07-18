@@ -24,37 +24,46 @@ if ( ! defined( 'ABSPATH' ) ) {
 // ── Per-collection data ───────────────────────────────────────────────────────
 $collection_data = array(
 	array(
-		'desktop_id'  => (int) get_option( 'ame_bazaar_media_hero_desktop' ),
-		'mobile_id'   => (int) get_option( 'ame_bazaar_media_hero_mobile' ),
-		'season'      => 'summer',
-		'label'       => __( 'Summer Collection', 'ame-bazaar' ),
-		'headline_l1' => __( 'Dress The', 'ame-bazaar' ),
-		'headline_l2' => __( 'Moment.', 'ame-bazaar' ),
-		'subline'     => __( 'Light fabrics for warm days — breathable, graceful, alive.', 'ame-bazaar' ),
+		'desktop_id'       => (int) get_option( 'ame_bazaar_media_hero_desktop' ),
+		'mobile_id'        => (int) get_option( 'ame_bazaar_media_hero_mobile' ),
+		'video_id'         => (int) get_option( 'ame_bazaar_media_hero_summer_video' ),
+		'video_mobile_id'  => (int) get_option( 'ame_bazaar_media_hero_summer_video_mobile' ),
+		'poster_id'        => (int) get_option( 'ame_bazaar_media_hero_summer_poster' ),
+		'season'           => 'summer',
+		'label'            => __( 'Summer Collection', 'ame-bazaar' ),
+		'headline_l1'      => __( 'Dress The', 'ame-bazaar' ),
+		'headline_l2'      => __( 'Moment.', 'ame-bazaar' ),
+		'subline'          => __( 'Light fabrics for warm days — breathable, graceful, alive.', 'ame-bazaar' ),
 	),
 	array(
-		'desktop_id'  => (int) get_option( 'ame_bazaar_media_hero_festive' ),
-		'mobile_id'   => (int) get_option( 'ame_bazaar_media_hero_festive_mobile' ),
-		'season'      => 'festive',
-		'label'       => __( 'Festive Collection', 'ame-bazaar' ),
-		'headline_l1' => __( 'Celebrate', 'ame-bazaar' ),
-		'headline_l2' => __( 'Every Thread.', 'ame-bazaar' ),
-		'subline'     => __( 'Curated festive wear for the moments that truly matter.', 'ame-bazaar' ),
+		'desktop_id'       => (int) get_option( 'ame_bazaar_media_hero_festive' ),
+		'mobile_id'        => (int) get_option( 'ame_bazaar_media_hero_festive_mobile' ),
+		'video_id'         => (int) get_option( 'ame_bazaar_media_hero_festive_video' ),
+		'video_mobile_id'  => (int) get_option( 'ame_bazaar_media_hero_festive_video_mobile' ),
+		'poster_id'        => (int) get_option( 'ame_bazaar_media_hero_festive_poster' ),
+		'season'           => 'festive',
+		'label'            => __( 'Festive Collection', 'ame-bazaar' ),
+		'headline_l1'      => __( 'Celebrate', 'ame-bazaar' ),
+		'headline_l2'      => __( 'Every Thread.', 'ame-bazaar' ),
+		'subline'          => __( 'Curated festive wear for the moments that truly matter.', 'ame-bazaar' ),
 	),
 	array(
-		'desktop_id'  => (int) get_option( 'ame_bazaar_media_hero_winter' ),
-		'mobile_id'   => (int) get_option( 'ame_bazaar_media_hero_winter_mobile' ),
-		'season'      => 'winter',
-		'label'       => __( 'Winter Collection', 'ame-bazaar' ),
-		'headline_l1' => __( 'Heritage', 'ame-bazaar' ),
-		'headline_l2' => __( 'Warmth.', 'ame-bazaar' ),
-		'subline'     => __( 'Kashmiri refinement and wool craftsmanship for every occasion.', 'ame-bazaar' ),
+		'desktop_id'       => (int) get_option( 'ame_bazaar_media_hero_winter' ),
+		'mobile_id'        => (int) get_option( 'ame_bazaar_media_hero_winter_mobile' ),
+		'video_id'         => (int) get_option( 'ame_bazaar_media_hero_winter_video' ),
+		'video_mobile_id'  => (int) get_option( 'ame_bazaar_media_hero_winter_video_mobile' ),
+		'poster_id'        => (int) get_option( 'ame_bazaar_media_hero_winter_poster' ),
+		'season'           => 'winter',
+		'label'            => __( 'Winter Collection', 'ame-bazaar' ),
+		'headline_l1'      => __( 'Heritage', 'ame-bazaar' ),
+		'headline_l2'      => __( 'Warmth.', 'ame-bazaar' ),
+		'subline'          => __( 'Kashmiri refinement and wool craftsmanship for every occasion.', 'ame-bazaar' ),
 	),
 );
 
-// Filter: keep only slides with a desktop image set
+// Filter: keep only slides with a desktop image OR a video set
 $slides = array_values( array_filter( $collection_data, function( $s ) {
-	return $s['desktop_id'] > 0;
+	return $s['desktop_id'] > 0 || $s['video_id'] > 0;
 } ) );
 
 $has_images  = ! empty( $slides );
@@ -91,6 +100,12 @@ $first = $has_images ? $slides[0] : array(
 				$mobile_url  = $slide['mobile_id'] > 0
 					? wp_get_attachment_image_url( $slide['mobile_id'], 'full' )
 					: $desktop_url;
+				
+				$video_url = $slide['video_id'] > 0 ? wp_get_attachment_url( $slide['video_id'] ) : '';
+				$video_mobile_url = $slide['video_mobile_id'] > 0 ? wp_get_attachment_url( $slide['video_mobile_id'] ) : $video_url;
+				
+				$poster_url = $slide['poster_id'] > 0 ? wp_get_attachment_image_url( $slide['poster_id'], 'full' ) : $desktop_url;
+
 				$is_first    = ( 0 === $i );
 				$loading     = $is_first ? 'eager' : 'lazy';
 				$fetch_pri   = $is_first ? ' fetchpriority="high"' : '';
@@ -101,20 +116,38 @@ $first = $has_images ? $slides[0] : array(
 				data-season="<?php echo esc_attr( $slide['season'] ); ?>"
 				aria-hidden="<?php echo $is_first ? 'false' : 'true'; ?>"
 			>
-				<picture class="ame-hero__picture">
-					<?php if ( $mobile_url && $mobile_url !== $desktop_url ) : ?>
-					<source media="(max-width:767px)" srcset="<?php echo esc_url( $mobile_url ); ?>">
-					<?php endif; ?>
-					<img
-						class="ame-hero__image"
-						src="<?php echo esc_url( $desktop_url ); ?>"
-						alt="<?php echo esc_attr( $slide['label'] ) . ' — ' . esc_attr__( 'AME Bazaar Premium Family Fashion', 'ame-bazaar' ); ?>"
-						loading="<?php echo $loading; ?>"
-						<?php echo $fetch_pri; ?>
-						decoding="async"
+				<?php if ( $video_url ) : ?>
+					<video
+						class="ame-hero__video"
+						autoplay
+						muted
+						loop
+						playsinline
+						preload="metadata"
+						poster="<?php echo esc_url( $poster_url ); ?>"
 						draggable="false"
 					>
-				</picture>
+						<?php if ( $video_mobile_url && $video_mobile_url !== $video_url ) : ?>
+						<source src="<?php echo esc_url( $video_mobile_url ); ?>" type="video/mp4" media="(max-width: 767px)">
+						<?php endif; ?>
+						<source src="<?php echo esc_url( $video_url ); ?>" type="video/mp4">
+					</video>
+				<?php elseif ( $desktop_url || $poster_url ) : ?>
+					<picture class="ame-hero__picture">
+						<?php if ( $mobile_url && $mobile_url !== $desktop_url ) : ?>
+						<source media="(max-width:767px)" srcset="<?php echo esc_url( $mobile_url ); ?>">
+						<?php endif; ?>
+						<img
+							class="ame-hero__image"
+							src="<?php echo esc_url( $desktop_url ?: $poster_url ); ?>"
+							alt="<?php echo esc_attr( $slide['label'] ) . ' — ' . esc_attr__( 'AME Bazaar Premium Family Fashion', 'ame-bazaar' ); ?>"
+							loading="<?php echo $loading; ?>"
+							<?php echo $fetch_pri; ?>
+							decoding="async"
+							draggable="false"
+						>
+					</picture>
+				<?php endif; ?>
 			</div>
 			<?php endforeach; ?>
 		</div><!-- /.ame-hero__slides -->
@@ -296,7 +329,7 @@ window.AME_HERO = {
 	if ( shimmer ) gsap.set( shimmer, { opacity: 0 } );
 
 	/* Ken-Burns initial state: first image starts zoomed in */
-	var firstImg = slides[0] ? slides[0].querySelector('.ame-hero__image') : null;
+	var firstImg = slides[0] ? slides[0].querySelector('.ame-hero__image, .ame-hero__video') : null;
 	if ( firstImg ) gsap.set( firstImg, { scale: 1.06, transformOrigin: '55% 50%' } );
 
 	/* ══════════════════════════════════════════════
@@ -491,7 +524,7 @@ window.AME_HERO = {
 
 		var prevSlide = slides[ current ];
 		var nextSlide = slides[ next ];
-		var nextImg   = nextSlide ? nextSlide.querySelector('.ame-hero__image') : null;
+		var nextImg   = nextSlide ? nextSlide.querySelector('.ame-hero__image, .ame-hero__video') : null;
 		var nextCol   = cols[ next ] || {};
 
 		/* ── Veil rises: warm sunlight floods the room ── */
@@ -586,7 +619,7 @@ window.AME_HERO = {
 	window.addEventListener( 'scroll', function () {
 		var sy = window.pageYOffset;
 		if ( sy > window.innerHeight ) return;
-		var activeImg = slides[ current ] ? slides[ current ].querySelector('.ame-hero__image') : null;
+		var activeImg = slides[ current ] ? slides[ current].querySelector('.ame-hero__image, .ame-hero__video') : null;
 		if ( activeImg ) {
 			gsap.to( activeImg, {
 				y: sy * 0.25,
