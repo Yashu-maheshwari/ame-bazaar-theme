@@ -34,6 +34,26 @@ foreach ( $options as $opt ) {
 	}
 }
 
+echo "\n=== ALL MEDIA ATTACHMENTS ===\n";
+$query = new WP_Query( array(
+	'post_type'      => 'attachment',
+	'post_status'    => 'inherit',
+	'posts_per_page' => 100,
+) );
+if ( $query->have_posts() ) {
+	while ( $query->have_posts() ) {
+		$query->the_post();
+		$id = get_the_ID();
+		$slug = get_post_field( 'post_name', $id );
+		$mime = get_post_mime_type( $id );
+		$url = wp_get_attachment_url( $id );
+		echo "ID: $id | Slug: $slug | Mime: $mime | URL: $url\n";
+	}
+	wp_reset_postdata();
+} else {
+	echo "No attachments found!\n";
+}
+
 // Check how many slides are resolved in php
 $collection_data = array(
 	array(
