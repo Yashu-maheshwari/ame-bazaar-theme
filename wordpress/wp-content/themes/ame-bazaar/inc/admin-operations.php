@@ -1369,38 +1369,29 @@ function ame_bazaar_render_homepage_media_page() {
 	ame_bazaar_auto_assign_media_mappings();
 
 	$fields = array(
-		'ame_bazaar_media_primary_logo'       => __( 'Primary Logo', 'ame-bazaar' ),
-		'ame_bazaar_media_white_logo'         => __( 'White Logo', 'ame-bazaar' ),
-		'ame_bazaar_media_sticky_logo'        => __( 'Sticky Header Logo', 'ame-bazaar' ),
-		'ame_bazaar_media_favicon'            => __( 'Favicon', 'ame-bazaar' ),
-		'ame_bazaar_media_hero_desktop'        => __( 'Hero Desktop Image — Summer Collection', 'ame-bazaar' ),
-		'ame_bazaar_media_hero_mobile'         => __( 'Hero Mobile Image — Summer Collection', 'ame-bazaar' ),
-		'ame_bazaar_media_hero_summer_video'  => __( 'Hero Desktop Video — Summer Collection', 'ame-bazaar' ),
-		'ame_bazaar_media_hero_summer_video_mobile' => __( 'Hero Mobile Video — Summer Collection', 'ame-bazaar' ),
-		'ame_bazaar_media_hero_summer_poster'  => __( 'Hero Video Poster — Summer Collection', 'ame-bazaar' ),
-		'ame_bazaar_media_hero_festive'        => __( 'Hero Desktop Image — Festive Collection', 'ame-bazaar' ),
-		'ame_bazaar_media_hero_festive_mobile' => __( 'Hero Mobile Image — Festive Collection', 'ame-bazaar' ),
-		'ame_bazaar_media_hero_festive_video'  => __( 'Hero Desktop Video — Festive Collection', 'ame-bazaar' ),
-		'ame_bazaar_media_hero_festive_video_mobile' => __( 'Hero Mobile Video — Festive Collection', 'ame-bazaar' ),
-		'ame_bazaar_media_hero_festive_poster'  => __( 'Hero Video Poster — Festive Collection', 'ame-bazaar' ),
-		'ame_bazaar_media_hero_winter'         => __( 'Hero Desktop Image — Winter Collection', 'ame-bazaar' ),
-		'ame_bazaar_media_hero_winter_mobile'  => __( 'Hero Mobile Image — Winter Collection', 'ame-bazaar' ),
-		'ame_bazaar_media_hero_winter_video'   => __( 'Hero Desktop Video — Winter Collection', 'ame-bazaar' ),
-		'ame_bazaar_media_hero_winter_video_mobile' => __( 'Hero Mobile Video — Winter Collection', 'ame-bazaar' ),
-		'ame_bazaar_media_hero_winter_poster'  => __( 'Hero Video Poster — Winter Collection', 'ame-bazaar' ),
-		'ame_bazaar_media_men'                => __( "Men's Wear Banner", 'ame-bazaar' ),
-		'ame_bazaar_media_women'              => __( "Women's Wear Banner", 'ame-bazaar' ),
-		'ame_bazaar_media_kids'               => __( "Kids Wear Banner", 'ame-bazaar' ),
-		'ame_bazaar_media_accessories'        => __( 'Accessories Banner', 'ame-bazaar' ),
-		'ame_bazaar_media_footwear'           => __( 'Footwear Banner', 'ame-bazaar' ),
-		'ame_bazaar_media_tailoring'          => __( 'Tailoring Section Image', 'ame-bazaar' ),
-		'ame_bazaar_media_visit_store'        => __( 'Visit Store Banner', 'ame-bazaar' ),
-		'ame_bazaar_media_about'              => __( 'About AME Bazaar Image', 'ame-bazaar' ),
-		'ame_bazaar_media_google_reviews'     => __( 'Google Reviews Banner', 'ame-bazaar' ),
-		'ame_bazaar_media_instagram'          => __( 'Instagram Cover Image', 'ame-bazaar' ),
-		'ame_bazaar_media_footer_bg'          => __( 'Footer Background', 'ame-bazaar' ),
-		'ame_bazaar_media_empty_state'        => __( 'Empty State Image', 'ame-bazaar' ),
-		'ame_bazaar_media_404_illustration'   => __( '404 Illustration', 'ame-bazaar' ),
+		'ame_bazaar_media_primary_logo'             => __( 'Primary Logo', 'ame-bazaar' ),
+		'ame_bazaar_media_white_logo'               => __( 'White Logo', 'ame-bazaar' ),
+		'ame_bazaar_media_sticky_logo'              => __( 'Sticky Header Logo', 'ame-bazaar' ),
+		'ame_bazaar_media_favicon'                  => __( 'Favicon', 'ame-bazaar' ),
+		'ame_bazaar_media_hero_desktop_video_webm' => __( 'Desktop Hero Video (WebM)', 'ame-bazaar' ),
+		'ame_bazaar_media_hero_desktop_video_mp4'  => __( 'Desktop Hero Video (MP4)', 'ame-bazaar' ),
+		'ame_bazaar_media_hero_mobile_video_webm'  => __( 'Mobile Hero Video (WebM)', 'ame-bazaar' ),
+		'ame_bazaar_media_hero_mobile_video_mp4'   => __( 'Mobile Hero Video (MP4)', 'ame-bazaar' ),
+		'ame_bazaar_media_hero_poster'             => __( 'Hero Video Poster Image', 'ame-bazaar' ),
+		'ame_bazaar_media_hero_fallback'           => __( 'Hero Fallback Static Image', 'ame-bazaar' ),
+		'ame_bazaar_media_men'                      => __( "Men's Wear Banner", 'ame-bazaar' ),
+		'ame_bazaar_media_women'                    => __( "Women's Wear Banner", 'ame-bazaar' ),
+		'ame_bazaar_media_kids'                     => __( "Kids Wear Banner", 'ame-bazaar' ),
+		'ame_bazaar_media_accessories'              => __( 'Accessories Banner', 'ame-bazaar' ),
+		'ame_bazaar_media_footwear'                 => __( 'Footwear Banner', 'ame-bazaar' ),
+		'ame_bazaar_media_tailoring'                => __( 'Tailoring Section Image', 'ame-bazaar' ),
+		'ame_bazaar_media_visit_store'              => __( 'Visit Store Banner', 'ame-bazaar' ),
+		'ame_bazaar_media_about'                    => __( 'About AME Bazaar Image', 'ame-bazaar' ),
+		'ame_bazaar_media_google_reviews'           => __( 'Google Reviews Banner', 'ame-bazaar' ),
+		'ame_bazaar_media_instagram'                => __( 'Instagram Cover Image', 'ame-bazaar' ),
+		'ame_bazaar_media_footer_bg'                => __( 'Footer Background', 'ame-bazaar' ),
+		'ame_bazaar_media_empty_state'              => __( 'Empty State Image', 'ame-bazaar' ),
+		'ame_bazaar_media_404_illustration'         => __( '404 Illustration', 'ame-bazaar' ),
 	);
 
 	// Handle saving
@@ -1429,7 +1420,26 @@ function ame_bazaar_render_homepage_media_page() {
 				}
 			}
 		}
-		echo '<div class="notice notice-success is-dismissible"><p>' . esc_html__( 'Homepage Media Mapping successfully saved and synced to WooCommerce category meta.', 'ame-bazaar' ) . '</p></div>';
+
+		// Save Text Settings
+		$text_fields = array(
+			'ame_bazaar_hero_label',
+			'ame_bazaar_hero_headline',
+			'ame_bazaar_hero_subheading',
+			'ame_bazaar_hero_primary_btn_text',
+			'ame_bazaar_hero_secondary_btn_text',
+		);
+		foreach ( $text_fields as $tf ) {
+			if ( isset( $_POST[ $tf ] ) ) {
+				if ( 'ame_bazaar_hero_subheading' === $tf ) {
+					update_option( $tf, sanitize_textarea_field( wp_unslash( $_POST[ $tf ] ) ) );
+				} else {
+					update_option( $tf, sanitize_text_field( wp_unslash( $_POST[ $tf ] ) ) );
+				}
+			}
+		}
+
+		echo '<div class="notice notice-success is-dismissible"><p>' . esc_html__( 'Homepage Settings successfully saved.', 'ame-bazaar' ) . '</p></div>';
 	}
 	?>
 	<div class="wrap">
@@ -1451,27 +1461,22 @@ function ame_bazaar_render_homepage_media_page() {
 				<tbody>
 					<?php 
 					$specs_map = array(
-						'ame_bazaar_media_hero_desktop'        => array( 'res' => '1920x900 WebP', 'used' => 'Hero Summer — Desktop Still' ),
-						'ame_bazaar_media_hero_mobile'         => array( 'res' => '768x1200 WebP', 'used' => 'Hero Summer — Mobile Still' ),
-						'ame_bazaar_media_hero_summer_video'  => array( 'res' => 'WebM / MP4 (3-5MB)', 'used' => 'Hero Summer — Desktop Video' ),
-						'ame_bazaar_media_hero_summer_video_mobile' => array( 'res' => 'WebM / MP4 (2-3MB)', 'used' => 'Hero Summer — Mobile Video' ),
-						'ame_bazaar_media_hero_summer_poster'  => array( 'res' => '1920x900 WebP', 'used' => 'Hero Summer — Video Loading Poster' ),
-						'ame_bazaar_media_hero_festive'        => array( 'res' => '1920x900 WebP', 'used' => 'Hero Festive — Desktop Still' ),
-						'ame_bazaar_media_hero_festive_mobile' => array( 'res' => '768x1200 WebP', 'used' => 'Hero Festive — Mobile Still' ),
-						'ame_bazaar_media_hero_festive_video'  => array( 'res' => 'WebM / MP4 (3-5MB)', 'used' => 'Hero Festive — Desktop Video' ),
-						'ame_bazaar_media_hero_festive_video_mobile' => array( 'res' => 'WebM / MP4 (2-3MB)', 'used' => 'Hero Festive — Mobile Video' ),
-						'ame_bazaar_media_hero_festive_poster'  => array( 'res' => '1920x900 WebP', 'used' => 'Hero Festive — Video Loading Poster' ),
-						'ame_bazaar_media_hero_winter'         => array( 'res' => '1920x900 WebP', 'used' => 'Hero Winter — Desktop Still' ),
-						'ame_bazaar_media_hero_winter_mobile'  => array( 'res' => '768x1200 WebP', 'used' => 'Hero Winter — Mobile Still' ),
-						'ame_bazaar_media_hero_winter_video'   => array( 'res' => 'WebM / MP4 (3-5MB)', 'used' => 'Hero Winter — Desktop Video' ),
-						'ame_bazaar_media_hero_winter_video_mobile' => array( 'res' => 'WebM / MP4 (2-3MB)', 'used' => 'Hero Winter — Mobile Video' ),
-						'ame_bazaar_media_hero_winter_poster'  => array( 'res' => '1920x900 WebP', 'used' => 'Hero Winter — Video Loading Poster' ),
-						'ame_bazaar_media_men'          => array( 'res' => '800x1200', 'used' => 'Homepage Category & Men\'s Banner' ),
-						'ame_bazaar_media_women'        => array( 'res' => '800x1200', 'used' => 'Homepage Category & Women\'s Banner' ),
-						'ame_bazaar_media_kids'         => array( 'res' => '800x1200', 'used' => 'Homepage Category & Kids Banner' ),
-						'ame_bazaar_media_accessories'  => array( 'res' => '800x1200', 'used' => 'Homepage Category & Accessories Banner' ),
-						'ame_bazaar_media_footwear'     => array( 'res' => '800x1200', 'used' => 'Homepage Category & Footwear Banner' ),
-						'ame_bazaar_media_tailoring'    => array( 'res' => '800x1200', 'used' => 'Homepage Category & Tailoring Banner' ),
+						'ame_bazaar_media_primary_logo'             => array( 'res' => 'Vector / PNG', 'used' => 'Header Site Branding' ),
+						'ame_bazaar_media_white_logo'               => array( 'res' => 'Vector / PNG', 'used' => 'Overlay Header Page' ),
+						'ame_bazaar_media_sticky_logo'              => array( 'res' => 'Vector / PNG', 'used' => 'Sticky Header Branding' ),
+						'ame_bazaar_media_favicon'                  => array( 'res' => '32x32 PNG / ICO', 'used' => 'Browser Icon Tab' ),
+						'ame_bazaar_media_hero_desktop_video_webm' => array( 'res' => 'WebM (Max 5MB)', 'used' => 'Desktop Hero Video (WebM)' ),
+						'ame_bazaar_media_hero_desktop_video_mp4'  => array( 'res' => 'MP4 (Max 5MB)', 'used' => 'Desktop Hero Video (MP4)' ),
+						'ame_bazaar_media_hero_mobile_video_webm'  => array( 'res' => 'WebM (Max 3MB)', 'used' => 'Mobile Hero Video (WebM)' ),
+						'ame_bazaar_media_hero_mobile_video_mp4'   => array( 'res' => 'MP4 (Max 3MB)', 'used' => 'Mobile Hero Video (MP4)' ),
+						'ame_bazaar_media_hero_poster'             => array( 'res' => '1920x900 WebP', 'used' => 'Hero Video Loading Poster' ),
+						'ame_bazaar_media_hero_fallback'           => array( 'res' => '1920x900 WebP', 'used' => 'Hero Fallback Static Image' ),
+						'ame_bazaar_media_men'                      => array( 'res' => '800x1200', 'used' => 'Homepage Category & Men\'s Banner' ),
+						'ame_bazaar_media_women'                    => array( 'res' => '800x1200', 'used' => 'Homepage Category & Women\'s Banner' ),
+						'ame_bazaar_media_kids'                     => array( 'res' => '800x1200', 'used' => 'Homepage Category & Kids Banner' ),
+						'ame_bazaar_media_accessories'              => array( 'res' => '800x1200', 'used' => 'Homepage Category & Accessories Banner' ),
+						'ame_bazaar_media_footwear'                 => array( 'res' => '800x1200', 'used' => 'Homepage Category & Footwear Banner' ),
+						'ame_bazaar_media_tailoring'                => array( 'res' => '800x1200', 'used' => 'Homepage Category & Tailoring Banner' ),
 					);
 
 					foreach ( $fields as $field_key => $field_label ) : 
@@ -1529,8 +1534,49 @@ function ame_bazaar_render_homepage_media_page() {
 					<?php endforeach; ?>
 				</tbody>
 			</table>
+
+			<div style="margin-top: 30px; padding: 20px; background: #ffffff; border: 1px solid #e2e8f0; border-radius: 8px;">
+				<h2 style="margin-top: 0; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 1px solid #e2e8f0; color: #1e293b;"><?php esc_html_e( 'Hero Content Texts & Buttons', 'ame-bazaar' ); ?></h2>
+				<table class="form-table" role="presentation">
+					<tr>
+						<th scope="row" style="width: 25%;"><label for="ame_bazaar_hero_label"><strong><?php esc_html_e( 'Collection Label', 'ame-bazaar' ); ?></strong></label></th>
+						<td>
+							<input type="text" id="ame_bazaar_hero_label" name="ame_bazaar_hero_label" value="<?php echo esc_attr( get_option( 'ame_bazaar_hero_label', 'Summer Collection' ) ); ?>" class="regular-text" />
+							<p class="description"><?php esc_html_e( 'The small eyebrow label above the headline.', 'ame-bazaar' ); ?></p>
+						</td>
+					</tr>
+					<tr>
+						<th scope="row"><label for="ame_bazaar_hero_headline"><strong><?php esc_html_e( 'Headline', 'ame-bazaar' ); ?></strong></label></th>
+						<td>
+							<input type="text" id="ame_bazaar_hero_headline" name="ame_bazaar_hero_headline" value="<?php echo esc_attr( get_option( 'ame_bazaar_hero_headline', 'Dress The Moment.' ) ); ?>" class="regular-text" />
+							<p class="description"><?php esc_html_e( 'Use a dot (.) or styling for emphasis.', 'ame-bazaar' ); ?></p>
+						</td>
+					</tr>
+					<tr>
+						<th scope="row"><label for="ame_bazaar_hero_subheading"><strong><?php esc_html_e( 'Sub Heading', 'ame-bazaar' ); ?></strong></label></th>
+						<td>
+							<textarea id="ame_bazaar_hero_subheading" name="ame_bazaar_hero_subheading" rows="3" class="large-text" style="width: 100%; max-width: 500px;"><?php echo esc_textarea( get_option( 'ame_bazaar_hero_subheading', 'Breathable linen, light coordinates, and effortless styles for the Delhi summer.' ) ); ?></textarea>
+							<p class="description"><?php esc_html_e( 'The descriptive text paragraph below the headline.', 'ame-bazaar' ); ?></p>
+						</td>
+					</tr>
+					<tr>
+						<th scope="row"><label for="ame_bazaar_hero_primary_btn_text"><strong><?php esc_html_e( 'Primary Button Text', 'ame-bazaar' ); ?></strong></label></th>
+						<td>
+							<input type="text" id="ame_bazaar_hero_primary_btn_text" name="ame_bazaar_hero_primary_btn_text" value="<?php echo esc_attr( get_option( 'ame_bazaar_hero_primary_btn_text', 'Shop Collection' ) ); ?>" class="regular-text" />
+							<p class="description"><?php esc_html_e( 'Label for the primary CTA button.', 'ame-bazaar' ); ?></p>
+						</td>
+					</tr>
+					<tr>
+						<th scope="row"><label for="ame_bazaar_hero_secondary_btn_text"><strong><?php esc_html_e( 'Secondary Button Text', 'ame-bazaar' ); ?></strong></label></th>
+						<td>
+							<input type="text" id="ame_bazaar_hero_secondary_btn_text" name="ame_bazaar_hero_secondary_btn_text" value="<?php echo esc_attr( get_option( 'ame_bazaar_hero_secondary_btn_text', 'Visit Store' ) ); ?>" class="regular-text" />
+							<p class="description"><?php esc_html_e( 'Label for the secondary CTA button.', 'ame-bazaar' ); ?></p>
+						</td>
+					</tr>
+				</table>
+			</div>
 			
-			<?php submit_button( __( 'Save Media Mappings', 'ame-bazaar' ), 'primary', 'ame_homepage_media_submit' ); ?>
+			<?php submit_button( __( 'Save Homepage Settings', 'ame-bazaar' ), 'primary', 'ame_homepage_media_submit' ); ?>
 		</form>
 
 		<hr style="margin-top: 40px; margin-bottom: 20px;" />

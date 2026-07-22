@@ -1,17 +1,15 @@
 <?php
 /**
- * Cinematic Living Hero — Wardrobe Transformation Edition
+ * Cinematic Living Hero — Dynamic Hero Video Edition
  *
  * Architecture:
- *   - Three image layers stacked absolutely (summer / festive / winter)
- *   - GSAP luminance veil disguises image swap as sunlight shifting
- *   - Micro-motion: Ken-Burns, depth breathe, light shimmer, bokeh particles
- *   - Mouse parallax on editorial panel only (desktop)
- *   - Per-collection headlines that swap on transition
- *   - Progress bar + scroll cue
+ *   - Video container supporting Desktop/Mobile WebM and MP4 formats.
+ *   - Full fallback priority (Video -> Poster -> Fallback -> Placeholder).
+ *   - Text overlay with high-contrast legibility support.
+ *   - Atmospheric micro-motions (Depth breathe, light shimmer, bokeh, parallax, scroll cue).
  *
  * Media Manager is the ONLY source of truth.
- * Falls back gracefully if images are missing.
+ * Falls back gracefully if media is missing.
  * PHP 5.6+ compatible. UTF-8 without BOM.
  *
  * @package Ame_Bazaar
@@ -21,159 +19,100 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-// ── Per-collection data ───────────────────────────────────────────────────────
-$collection_data = array(
-	array(
-		'desktop_id'       => (int) get_option( 'ame_bazaar_media_hero_desktop' ),
-		'mobile_id'        => (int) get_option( 'ame_bazaar_media_hero_mobile' ),
-		'video_id'         => (int) get_option( 'ame_bazaar_media_hero_summer_video' ),
-		'video_mobile_id'  => (int) get_option( 'ame_bazaar_media_hero_summer_video_mobile' ),
-		'poster_id'        => (int) get_option( 'ame_bazaar_media_hero_summer_poster' ),
-		'season'           => 'summer',
-		'label'            => __( 'Summer Collection', 'ame-bazaar' ),
-		'headline_l1'      => __( 'Dress The', 'ame-bazaar' ),
-		'headline_l2'      => __( 'Moment.', 'ame-bazaar' ),
-		'subline'          => __( 'Light fabrics for warm days — breathable, graceful, alive.', 'ame-bazaar' ),
-	),
-	array(
-		'desktop_id'       => (int) get_option( 'ame_bazaar_media_hero_festive' ),
-		'mobile_id'        => (int) get_option( 'ame_bazaar_media_hero_festive_mobile' ),
-		'video_id'         => (int) get_option( 'ame_bazaar_media_hero_festive_video' ),
-		'video_mobile_id'  => (int) get_option( 'ame_bazaar_media_hero_festive_video_mobile' ),
-		'poster_id'        => (int) get_option( 'ame_bazaar_media_hero_festive_poster' ),
-		'season'           => 'festive',
-		'label'            => __( 'Festive Collection', 'ame-bazaar' ),
-		'headline_l1'      => __( 'Celebrate', 'ame-bazaar' ),
-		'headline_l2'      => __( 'Every Thread.', 'ame-bazaar' ),
-		'subline'          => __( 'Curated festive wear for the moments that truly matter.', 'ame-bazaar' ),
-	),
-	array(
-		'desktop_id'       => (int) get_option( 'ame_bazaar_media_hero_winter' ),
-		'mobile_id'        => (int) get_option( 'ame_bazaar_media_hero_winter_mobile' ),
-		'video_id'         => (int) get_option( 'ame_bazaar_media_hero_winter_video' ),
-		'video_mobile_id'  => (int) get_option( 'ame_bazaar_media_hero_winter_video_mobile' ),
-		'poster_id'        => (int) get_option( 'ame_bazaar_media_hero_winter_poster' ),
-		'season'           => 'winter',
-		'label'            => __( 'Winter Collection', 'ame-bazaar' ),
-		'headline_l1'      => __( 'Heritage', 'ame-bazaar' ),
-		'headline_l2'      => __( 'Warmth.', 'ame-bazaar' ),
-		'subline'          => __( 'Kashmiri refinement and wool craftsmanship for every occasion.', 'ame-bazaar' ),
-	),
-);
+// Fetch Admin configured values
+$label         = get_option( 'ame_bazaar_hero_label', __( 'Summer Collection', 'ame-bazaar' ) );
+$headline      = get_option( 'ame_bazaar_hero_headline', __( 'Dress The Moment.', 'ame-bazaar' ) );
+$subheading    = get_option( 'ame_bazaar_hero_subheading', __( 'Breathable linen, light coordinates, and effortless styles for the Delhi summer.', 'ame-bazaar' ) );
+$primary_btn   = get_option( 'ame_bazaar_hero_primary_btn_text', __( 'Shop Collection', 'ame-bazaar' ) );
+$secondary_btn = get_option( 'ame_bazaar_hero_secondary_btn_text', __( 'Visit Store', 'ame-bazaar' ) );
 
-// Filter: keep only slides with a desktop image OR a video set
-$slides = array_values( array_filter( $collection_data, function( $s ) {
-	return $s['desktop_id'] > 0 || $s['video_id'] > 0;
-} ) );
+// Fetch media files (IDs to URLs)
+$desktop_webm = wp_get_attachment_url( get_option( 'ame_bazaar_media_hero_desktop_video_webm' ) );
+$desktop_mp4  = wp_get_attachment_url( get_option( 'ame_bazaar_media_hero_desktop_video_mp4' ) );
+$mobile_webm  = wp_get_attachment_url( get_option( 'ame_bazaar_media_hero_mobile_video_webm' ) );
+$mobile_mp4   = wp_get_attachment_url( get_option( 'ame_bazaar_media_hero_mobile_video_mp4' ) );
+$poster       = wp_get_attachment_image_url( get_option( 'ame_bazaar_media_hero_poster' ), 'full' );
+$fallback     = wp_get_attachment_image_url( get_option( 'ame_bazaar_media_hero_fallback' ), 'full' );
 
-// Graceful fallback if no slides are set in the database
-if ( empty( $slides ) ) {
-	$slides = array(
-		array(
-			'desktop_id'       => 0,
-			'mobile_id'        => 0,
-			'video_id'         => 0,
-			'video_mobile_id'  => 0,
-			'poster_id'        => 0,
-			'desktop_url'      => ame_bazaar_asset_uri( 'assets/images/hero-placeholder.jpg' ),
-			'mobile_url'       => ame_bazaar_asset_uri( 'assets/images/hero-placeholder.jpg' ),
-			'video_url'        => '',
-			'video_mobile_url' => '',
-			'poster_url'       => ame_bazaar_asset_uri( 'assets/images/hero-placeholder.jpg' ),
-			'season'           => 'summer',
-			'label'            => __( 'Summer Collection', 'ame-bazaar' ),
-			'headline_l1'      => __( 'Dress The', 'ame-bazaar' ),
-			'headline_l2'      => __( 'Moment.', 'ame-bazaar' ),
-			'subline'          => __( 'Premium fashion for every occasion — Men, Women & Kids', 'ame-bazaar' ),
-		)
-	);
+$ultimate_fallback = ame_bazaar_asset_uri( 'assets/images/hero-placeholder.jpg' );
+
+// Resolve fallback values
+if ( ! $poster ) {
+	$poster = $ultimate_fallback;
+}
+if ( ! $fallback ) {
+	$fallback = $ultimate_fallback;
 }
 
-$has_images  = ! empty( $slides );
-$slide_count = count( $slides );
+$has_video = $desktop_webm || $desktop_mp4 || $mobile_webm || $mobile_mp4;
 
-// Business URLs — always from settings, never hardcoded
+// Split headline at the last word to preserve the dual-line styling
+$words = explode( ' ', $headline );
+if ( count( $words ) > 1 ) {
+	$last_word = array_pop( $words );
+	$headline_l1 = implode( ' ', $words );
+	$headline_l2 = $last_word;
+} else {
+	$headline_l1 = $headline;
+	$headline_l2 = '';
+}
+
+// Business URLs
 $shop_url = home_url( '/shop/' );
 $maps_url = ame_bazaar_get_business_setting( 'maps_url', 'https://maps.google.com/?q=AME+Bazaar+Kirari+Delhi' );
-
-// First slide data (for initial server-rendered text)
-$first = $slides[0];
 ?>
 
 <section
-	class="ame-hero<?php echo $has_images ? '' : ' ame-hero--void'; ?>"
+	class="ame-hero"
 	id="ame-hero"
 	aria-label="<?php esc_attr_e( 'AME Bazaar Fashion Campaign', 'ame-bazaar' ); ?>"
-	data-slide-count="<?php echo $slide_count; ?>"
+	data-slide-count="1"
 >
 
-	<!-- ═══ IMAGE STACK ═══ -->
+	<!-- ═══ IMAGE / VIDEO STACK ═══ -->
 	<div class="ame-hero__stage" id="ame-hero-stage" aria-hidden="true">
 
-		<?php if ( $has_images ) : ?>
 		<div class="ame-hero__slides" id="ame-hero-slides">
-			<?php foreach ( $slides as $i => $slide ) :
-				$desktop_url = isset( $slide['desktop_url'] ) ? $slide['desktop_url'] : wp_get_attachment_image_url( $slide['desktop_id'], 'full' );
-				$mobile_url  = isset( $slide['mobile_url'] ) ? $slide['mobile_url'] : ( $slide['mobile_id'] > 0
-					? wp_get_attachment_image_url( $slide['mobile_id'], 'full' )
-					: $desktop_url );
-				
-				$video_url = isset( $slide['video_url'] ) ? $slide['video_url'] : ( $slide['video_id'] > 0 ? wp_get_attachment_url( $slide['video_id'] ) : '' );
-				$video_mobile_url = isset( $slide['video_mobile_url'] ) ? $slide['video_mobile_url'] : ( $slide['video_mobile_id'] > 0 ? wp_get_attachment_url( $slide['video_mobile_id'] ) : $video_url );
-				
-				$poster_url = isset( $slide['poster_url'] ) ? $slide['poster_url'] : ( $slide['poster_id'] > 0 ? wp_get_attachment_image_url( $slide['poster_id'], 'full' ) : $desktop_url );
-
-				$is_first    = ( 0 === $i );
-				$loading     = $is_first ? 'eager' : 'lazy';
-				$fetch_pri   = $is_first ? ' fetchpriority="high"' : '';
-			?>
-			<div
-				class="ame-hero__slide<?php echo $is_first ? ' is-active' : ''; ?>"
-				data-slide="<?php echo $i; ?>"
-				data-season="<?php echo esc_attr( $slide['season'] ); ?>"
-				aria-hidden="<?php echo $is_first ? 'false' : 'true'; ?>"
-			>
-				<?php if ( $video_url ) : ?>
+			<div class="ame-hero__slide is-active" data-slide="0" aria-hidden="false">
+				<?php if ( $has_video ) : ?>
 					<video
 						class="ame-hero__video"
 						autoplay
 						muted
 						loop
 						playsinline
-						preload="metadata"
-						poster="<?php echo esc_url( $poster_url ); ?>"
+						preload="auto"
+						poster="<?php echo esc_url( $poster ); ?>"
 						draggable="false"
 					>
-						<?php if ( $video_mobile_url && $video_mobile_url !== $video_url ) : ?>
-						<source src="<?php echo esc_url( $video_mobile_url ); ?>" type="video/mp4" media="(max-width: 767px)">
+						<?php if ( $mobile_webm ) : ?>
+							<source src="<?php echo esc_url( $mobile_webm ); ?>" type="video/webm" media="(max-width: 767px)">
 						<?php endif; ?>
-						<source src="<?php echo esc_url( $video_url ); ?>" type="video/mp4">
+						<?php if ( $mobile_mp4 ) : ?>
+							<source src="<?php echo esc_url( $mobile_mp4 ); ?>" type="video/mp4" media="(max-width: 767px)">
+						<?php endif; ?>
+						<?php if ( $desktop_webm ) : ?>
+							<source src="<?php echo esc_url( $desktop_webm ); ?>" type="video/webm">
+						<?php endif; ?>
+						<?php if ( $desktop_mp4 ) : ?>
+							<source src="<?php echo esc_url( $desktop_mp4 ); ?>" type="video/mp4">
+						<?php endif; ?>
 					</video>
-				<?php elseif ( $desktop_url || $poster_url ) : ?>
+				<?php else : ?>
 					<picture class="ame-hero__picture">
-						<?php if ( $mobile_url && $mobile_url !== $desktop_url ) : ?>
-						<source media="(max-width:767px)" srcset="<?php echo esc_url( $mobile_url ); ?>">
-						<?php endif; ?>
 						<img
 							class="ame-hero__image"
-							src="<?php echo esc_url( $desktop_url ?: $poster_url ); ?>"
-							alt="<?php echo esc_attr( $slide['label'] ) . ' — ' . esc_attr__( 'AME Bazaar Premium Family Fashion', 'ame-bazaar' ); ?>"
-							loading="<?php echo $loading; ?>"
-							<?php echo $fetch_pri; ?>
+							src="<?php echo esc_url( $fallback ); ?>"
+							alt="<?php echo esc_attr( $headline ) . ' — ' . esc_attr__( 'AME Bazaar Premium Family Fashion', 'ame-bazaar' ); ?>"
+							loading="eager"
+							fetchpriority="high"
 							decoding="async"
 							draggable="false"
 						>
 					</picture>
 				<?php endif; ?>
 			</div>
-			<?php endforeach; ?>
-		</div><!-- /.ame-hero__slides -->
-		<?php else : ?>
-		<div class="ame-hero__void"></div>
-		<?php endif; ?>
-
-		<!-- Luminance veil — disguises wardrobe swap as sunlight shift -->
-		<div class="ame-hero__veil" id="ame-hero-veil" aria-hidden="true"></div>
+		</div>
 
 		<!-- Light shimmer — perpetual atmospheric drift -->
 		<div class="ame-hero__shimmer" id="ame-hero-shimmer" aria-hidden="true"></div>
@@ -193,51 +132,45 @@ $first = $slides[0];
 		<div class="ame-hero__eyebrow" id="ame-hero-eyebrow" aria-live="polite">
 			<span class="ame-hero__eyebrow-rule" aria-hidden="true"></span>
 			<span class="ame-hero__eyebrow-text" id="ame-hero-label">
-				<?php echo esc_html( $first['label'] ); ?>
+				<?php echo esc_html( $label ); ?>
 			</span>
 			<span class="ame-hero__eyebrow-rule" aria-hidden="true"></span>
 		</div>
 
-		<!-- Main headline (changes per collection) -->
+		<!-- Main headline -->
 		<h1 class="ame-hero__headline" id="ame-hero-headline">
-			<span class="ame-hero__hl1" id="ame-hero-hl1"><?php echo esc_html( $first['headline_l1'] ); ?></span>
-			<em class="ame-hero__hl2" id="ame-hero-hl2"><?php echo esc_html( $first['headline_l2'] ); ?></em>
+			<span class="ame-hero__hl1" id="ame-hero-hl1"><?php echo esc_html( $headline_l1 ); ?></span>
+			<?php if ( $headline_l2 ) : ?>
+				<em class="ame-hero__hl2" id="ame-hero-hl2"><?php echo esc_html( $headline_l2 ); ?></em>
+			<?php endif; ?>
 		</h1>
 
-		<!-- Subline (changes per collection) -->
+		<!-- Subline -->
 		<p class="ame-hero__sub" id="ame-hero-sub">
-			<?php echo esc_html( $first['subline'] ); ?>
+			<?php echo esc_html( $subheading ); ?>
 		</p>
 
 		<!-- CTAs -->
 		<div class="ame-hero__actions" id="ame-hero-actions">
-			<a href="<?php echo esc_url( $shop_url ); ?>"
-				class="ame-hero-btn ame-hero-btn--glass"
-				id="ame-hero-btn-shop">
-				<span class="ame-hero-btn__text"><?php esc_html_e( 'Shop Collection', 'ame-bazaar' ); ?></span>
-				<svg class="ame-hero-btn__arrow" width="14" height="10" viewBox="0 0 14 10" fill="none" aria-hidden="true">
-					<path d="M1 5h12M8 1l5 4-5 4" stroke="currentColor" stroke-width="1.4" stroke-linecap="square"/>
-				</svg>
-			</a>
-			<a href="<?php echo esc_url( $maps_url ); ?>"
-				target="_blank" rel="noopener noreferrer"
-				class="ame-hero-btn ame-hero-btn--navy"
-				id="ame-hero-btn-store">
-				<span class="ame-hero-btn__text"><?php esc_html_e( 'Visit Store', 'ame-bazaar' ); ?></span>
-			</a>
+			<?php if ( $primary_btn ) : ?>
+				<a href="<?php echo esc_url( $shop_url ); ?>"
+					class="ame-hero-btn ame-hero-btn--glass"
+					id="ame-hero-btn-shop">
+					<span class="ame-hero-btn__text"><?php echo esc_html( $primary_btn ); ?></span>
+					<svg class="ame-hero-btn__arrow" width="14" height="10" viewBox="0 0 14 10" fill="none" aria-hidden="true">
+						<path d="M1 5h12M8 1l5 4-5 4" stroke="currentColor" stroke-width="1.4" stroke-linecap="square"/>
+					</svg>
+				</a>
+			<?php endif; ?>
+			<?php if ( $secondary_btn ) : ?>
+				<a href="<?php echo esc_url( $maps_url ); ?>"
+					target="_blank" rel="noopener noreferrer"
+					class="ame-hero-btn ame-hero-btn--navy"
+					id="ame-hero-btn-store">
+					<span class="ame-hero-btn__text"><?php echo esc_html( $secondary_btn ); ?></span>
+				</a>
+			<?php endif; ?>
 		</div>
-
-		<!-- Progress bar + counter (hidden if single slide) -->
-		<?php if ( $slide_count > 1 ) : ?>
-		<div class="ame-hero__progress-wrap" id="ame-hero-progress-wrap">
-			<div class="ame-hero__progress-track" aria-hidden="true">
-				<div class="ame-hero__progress-fill" id="ame-hero-progress-fill"></div>
-			</div>
-			<span class="ame-hero__counter" id="ame-hero-counter" aria-live="polite">
-				01&thinsp;/&thinsp;<?php echo str_pad( $slide_count, 2, '0', STR_PAD_LEFT ); ?>
-			</span>
-		</div>
-		<?php endif; ?>
 
 		<!-- Scroll cue -->
 		<div class="ame-hero__scroll-cue" aria-hidden="true">
@@ -248,42 +181,10 @@ $first = $slides[0];
 
 </section><!-- /#ame-hero -->
 
-<?php
-// ── Pass collection data to JS ─────────────────────────────────────────────
-$js_collections = array();
-foreach ( $slides as $i => $s ) {
-	$js_collections[] = array(
-		'index'      => $i,
-		'season'     => $s['season'],
-		'label'      => $s['label'],
-		'headline_l1'=> $s['headline_l1'],
-		'headline_l2'=> $s['headline_l2'],
-		'subline'    => $s['subline'],
-	);
-}
-?>
-<script id="ame-hero-data">
-/* AME Hero config — server-generated, never hardcoded */
-window.AME_HERO = {
-	collections:   <?php echo wp_json_encode( $js_collections ); ?>,
-	slideCount:    <?php echo $slide_count; ?>,
-	holdDuration:  10,   /* seconds per slide — longer = more cinematic */
-	veilDuration:  0.9,  /* seconds for luminance veil rise */
-	veilPeak:      1.1,  /* seconds veil hold at peak before recede */
-	veilRecede:    1.2,  /* seconds veil fade out */
-	kenBurnsDur:   13,   /* seconds for Ken-Burns zoom cycle */
-	parallaxDepth: 14,   /* px max for mouse parallax on editorial */
-	shopUrl:       <?php echo wp_json_encode( esc_url( $shop_url ) ); ?>,
-};
-</script>
-
 <script id="ame-hero-engine">
 /* =============================================================================
-   AME Bazaar — Cinematic Living Hero Engine
+   AME Bazaar — Cinematic Living Hero Engine (Dynamic Hero Video Edition)
    Technology: GSAP 3 — opacity + transform ONLY (zero WebGL, zero canvas)
-   Technique:  Luminance veil disguises image swap as sunlight shifting
-   Micro-motion: Ken-Burns, depth breathe, light shimmer, bokeh, parallax
-   PHP safety: inline script, no require, no external deps beyond GSAP CDN
 ============================================================================= */
 (function () {
 	'use strict';
@@ -295,59 +196,33 @@ window.AME_HERO = {
 		return;
 	}
 
-	var cfg   = window.AME_HERO || {};
-	var cols  = cfg.collections  || [];
-	var total = cfg.slideCount   || 0;
-	var hold  = cfg.holdDuration || 10;
-	var vRise = cfg.veilDuration || 0.9;
-	var vPeak = cfg.veilPeak     || 1.1;
-	var vFade = cfg.veilRecede   || 1.2;
-	var kbDur = cfg.kenBurnsDur  || 13;
-	var pxD   = cfg.parallaxDepth|| 14;
-
 	/* ── DOM references ── */
 	var hero      = document.getElementById('ame-hero');
 	var stage     = document.getElementById('ame-hero-stage');
 	var editorial = document.getElementById('ame-hero-editorial');
-	var slides    = document.querySelectorAll('.ame-hero__slide');
-	var veil      = document.getElementById('ame-hero-veil');
+	var slide     = document.querySelector('.ame-hero__slide');
 	var shimmer   = document.getElementById('ame-hero-shimmer');
 	var bokehWrap = document.getElementById('ame-hero-bokeh');
 	var eyebrow   = document.getElementById('ame-hero-eyebrow');
-	var labelEl   = document.getElementById('ame-hero-label');
 	var hl1       = document.getElementById('ame-hero-hl1');
 	var hl2       = document.getElementById('ame-hero-hl2');
 	var subEl     = document.getElementById('ame-hero-sub');
 	var actions   = document.getElementById('ame-hero-actions');
-	var progFill  = document.getElementById('ame-hero-progress-fill');
-	var counter   = document.getElementById('ame-hero-counter');
-	var progWrap  = document.getElementById('ame-hero-progress-wrap');
 	var scrollCue = document.querySelector('.ame-hero__scroll-cue');
 
 	if ( !hero || !editorial ) return;
 
-	/* ── State ── */
-	var current   = 0;
-	var loopTimer = null;
-	var progTween = null;
-
-	/* ── Utility: pad number ── */
-	function pad( n ) {
-		return n < 10 ? '0' + n : '' + n;
-	}
+	var imgEl = slide ? slide.querySelector('.ame-hero__image, .ame-hero__video') : null;
 
 	/* ══════════════════════════════════════════════
 	   1. INITIAL STATES
 	══════════════════════════════════════════════ */
 	gsap.set( editorial, { opacity: 0 } );
-	gsap.set( slides, { opacity: 0 } );
-	if ( slides[0] ) gsap.set( slides[0], { opacity: 1 } );
-	if ( veil ) gsap.set( veil, { opacity: 0 } );
+	if ( slide ) gsap.set( slide, { opacity: 1 } );
 	if ( shimmer ) gsap.set( shimmer, { opacity: 0 } );
 
-	/* Ken-Burns initial state: first image starts zoomed in */
-	var firstImg = slides[0] ? slides[0].querySelector('.ame-hero__image, .ame-hero__video') : null;
-	if ( firstImg ) gsap.set( firstImg, { scale: 1.06, transformOrigin: '55% 50%' } );
+	/* Ken-Burns initial state */
+	if ( imgEl ) gsap.set( imgEl, { scale: 1.06, transformOrigin: '55% 50%' } );
 
 	/* ══════════════════════════════════════════════
 	   2. ENTRANCE ANIMATION
@@ -363,12 +238,17 @@ window.AME_HERO = {
 			{ opacity: 0, y: 40, skewX: -2 },
 			{ opacity: 1, y: 0, skewX: 0, duration: 1.1, ease: 'power3.out' },
 			'-=0.4'
-		)
-		.fromTo( hl2,
+		);
+
+	if ( hl2 ) {
+		entranceTL.fromTo( hl2,
 			{ opacity: 0, y: 50, skewX: -2 },
 			{ opacity: 1, y: 0, skewX: 0, duration: 1.1, ease: 'power3.out' },
 			'-=0.75'
-		)
+		);
+	}
+
+	entranceTL
 		.fromTo( subEl,
 			{ opacity: 0, y: 22 },
 			{ opacity: 1, y: 0, duration: 0.85, ease: 'power2.out' },
@@ -380,14 +260,6 @@ window.AME_HERO = {
 			'-=0.45'
 		);
 
-	if ( progWrap ) {
-		entranceTL.fromTo( progWrap,
-			{ opacity: 0 },
-			{ opacity: 1, duration: 0.6, ease: 'power1.out' },
-			'-=0.3'
-		);
-	}
-
 	if ( scrollCue ) {
 		gsap.fromTo( scrollCue,
 			{ opacity: 0 },
@@ -396,19 +268,17 @@ window.AME_HERO = {
 	}
 
 	/* ══════════════════════════════════════════════
-	   3. KEN-BURNS — first slide starts immediately
+	   3. KEN-BURNS
 	══════════════════════════════════════════════ */
-	function startKenBurns( imgEl ) {
-		if ( !imgEl ) return;
+	if ( imgEl ) {
 		gsap.fromTo( imgEl,
 			{ scale: 1.06, transformOrigin: '55% 50%' },
-			{ scale: 1.0,  duration: kbDur, ease: 'power1.out' }
+			{ scale: 1.0,  duration: 13, ease: 'power1.out' }
 		);
 	}
-	if ( firstImg ) startKenBurns( firstImg );
 
 	/* ══════════════════════════════════════════════
-	   4. DEPTH BREATHE — perpetual subtle scale pulse
+	   4. DEPTH BREATHE
 	══════════════════════════════════════════════ */
 	if ( stage ) {
 		gsap.to( stage, {
@@ -422,7 +292,7 @@ window.AME_HERO = {
 	}
 
 	/* ══════════════════════════════════════════════
-	   5. LIGHT SHIMMER — warm sunbeam drift
+	   5. LIGHT SHIMMER
 	══════════════════════════════════════════════ */
 	if ( shimmer ) {
 		gsap.to( shimmer, { opacity: 0.07, duration: 1.5, ease: 'power1.out', delay: 0.5 } );
@@ -438,7 +308,7 @@ window.AME_HERO = {
 	}
 
 	/* ══════════════════════════════════════════════
-	   6. BOKEH PARTICLES — floating dust motes
+	   6. BOKEH PARTICLES
 	══════════════════════════════════════════════ */
 	(function () {
 		if ( !bokehWrap ) return;
@@ -446,7 +316,7 @@ window.AME_HERO = {
 		for ( var p = 0; p < N; p++ ) {
 			var dot = document.createElement('span');
 			dot.className = 'ame-hero__particle';
-			var sz = Math.random() * 3 + 2; /* 2–5px */
+			var sz = Math.random() * 3 + 2;
 			dot.style.cssText = [
 				'position:absolute',
 				'border-radius:50%',
@@ -484,127 +354,12 @@ window.AME_HERO = {
 	})();
 
 	/* ══════════════════════════════════════════════
-	   7. PROGRESS BAR
-	══════════════════════════════════════════════ */
-	function startProgress() {
-		if ( !progFill || total <= 1 ) return;
-		if ( progTween ) progTween.kill();
-		gsap.set( progFill, { scaleX: 0, transformOrigin: 'left center' } );
-		progTween = gsap.to( progFill, {
-			scaleX: 1,
-			duration: hold,
-			ease: 'none'
-		} );
-	}
-
-	/* ══════════════════════════════════════════════
-	   8. UPDATE TEXT (label, headline, subline)
-	══════════════════════════════════════════════ */
-	function swapText( colData ) {
-		/* Fade out */
-		var outTL = gsap.timeline();
-		outTL
-			.to( labelEl, { opacity: 0, y: -7, duration: 0.3, ease: 'power2.in' }, 0 )
-			.to( hl1,     { opacity: 0, y: -12, duration: 0.35, ease: 'power2.in' }, 0.05 )
-			.to( hl2,     { opacity: 0, y: -14, duration: 0.35, ease: 'power2.in' }, 0.1 )
-			.to( subEl,   { opacity: 0, y: -8, duration: 0.3, ease: 'power2.in' }, 0.05 )
-			.call( function () {
-				/* Update DOM while invisible */
-				if ( labelEl ) labelEl.textContent = colData.label;
-				if ( hl1 )     hl1.textContent     = colData.headline_l1;
-				if ( hl2 )     hl2.textContent      = colData.headline_l2;
-				if ( subEl )   subEl.textContent    = colData.subline;
-			} )
-			/* Fade in */
-			.fromTo( labelEl, { opacity: 0, y: 7 },  { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out' } )
-			.fromTo( hl1,     { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.6, ease: 'power3.out' }, '-=0.35' )
-			.fromTo( hl2,     { opacity: 0, y: 18 }, { opacity: 1, y: 0, duration: 0.6, ease: 'power3.out' }, '-=0.45' )
-			.fromTo( subEl,   { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out' }, '-=0.35' );
-	}
-
-	/* ══════════════════════════════════════════════
-	   9. UPDATE COUNTER
-	══════════════════════════════════════════════ */
-	function updateCounter( idx ) {
-		if ( counter ) {
-			counter.textContent = pad( idx + 1 ) + '\u202f/\u202f' + pad( total );
-		}
-	}
-
-	/* ══════════════════════════════════════════════
-	   10. LUMINANCE VEIL TRANSITION (the wardrobe magic)
-	══════════════════════════════════════════════ */
-	function goToSlide( next ) {
-		if ( total <= 1 ) return;
-		next = ( ( next % total ) + total ) % total;
-		if ( next === current ) return;
-
-		var prevSlide = slides[ current ];
-		var nextSlide = slides[ next ];
-		var nextImg   = nextSlide ? nextSlide.querySelector('.ame-hero__image, .ame-hero__video') : null;
-		var nextCol   = cols[ next ] || {};
-
-		/* ── Veil rises: warm sunlight floods the room ── */
-		var veilTL = gsap.timeline();
-		veilTL
-			/* Veil rise */
-			.to( veil, { opacity: 0.82, duration: vRise, ease: 'power3.in' }, 0 )
-			/* At 55% of rise: silently swap the image underneath */
-			.call( function () {
-				/* Prepare incoming */
-				gsap.set( nextSlide, { opacity: 1 } );
-				if ( nextImg ) gsap.set( nextImg, { scale: 1.06, transformOrigin: '55% 50%' } );
-				/* Hide outgoing */
-				gsap.set( prevSlide, { opacity: 0 } );
-				/* Update aria */
-				if ( prevSlide ) prevSlide.setAttribute( 'aria-hidden', 'true' );
-				if ( nextSlide ) nextSlide.setAttribute( 'aria-hidden', 'false' );
-				/* Swap text while veil covers everything */
-				swapText( nextCol );
-				/* Update counter */
-				updateCounter( next );
-			}, null, vRise * 0.55 )
-			/* Veil peak hold */
-			.to( {}, { duration: vPeak - vRise * 0.55 } )
-			/* Veil recedes: light pulls back, new collection revealed */
-			.to( veil, { opacity: 0, duration: vFade, ease: 'power2.out' } )
-			/* Ken-Burns on incoming image starts */
-			.call( function () {
-				startKenBurns( nextImg );
-			}, null, '-=' + vFade );
-
-		/* Update state */
-		current = next;
-
-		/* Restart progress */
-		startProgress();
-	}
-
-	/* ══════════════════════════════════════════════
-	   11. AUTO-ADVANCE LOOP
-	══════════════════════════════════════════════ */
-	function scheduleNext() {
-		clearTimeout( loopTimer );
-		if ( total > 1 ) {
-			loopTimer = setTimeout( function () {
-				goToSlide( current + 1 );
-				scheduleNext();
-			}, hold * 1000 );
-		}
-	}
-
-	/* Start loop after entrance completes */
-	entranceTL.call( function () {
-		startProgress();
-		scheduleNext();
-	} );
-
-	/* ══════════════════════════════════════════════
-	   12. MOUSE PARALLAX — editorial panel only
+	   7. MOUSE PARALLAX — editorial panel only
 	══════════════════════════════════════════════ */
 	if ( window.innerWidth > 900 && hero ) {
 		var rafId = null;
 		var mx = 0, my = 0;
+		var pxD = 14;
 
 		function applyParallax() {
 			gsap.to( editorial, {
@@ -631,12 +386,12 @@ window.AME_HERO = {
 	}
 
 	/* ══════════════════════════════════════════════
-	   13. SCROLL PARALLAX — subtle image depth
+	   8. SCROLL PARALLAX
 	══════════════════════════════════════════════ */
 	window.addEventListener( 'scroll', function () {
 		var sy = window.pageYOffset;
 		if ( sy > window.innerHeight ) return;
-		var activeImg = slides[ current ] ? slides[ current].querySelector('.ame-hero__image, .ame-hero__video') : null;
+		var activeImg = slide ? slide.querySelector('.ame-hero__image, .ame-hero__video') : null;
 		if ( activeImg ) {
 			gsap.to( activeImg, {
 				y: sy * 0.25,
@@ -648,7 +403,7 @@ window.AME_HERO = {
 	}, { passive: true } );
 
 	/* ══════════════════════════════════════════════
-	   14. SCROLL CUE — subtle bounce loop
+	   9. SCROLL CUE
 	══════════════════════════════════════════════ */
 	if ( scrollCue ) {
 		gsap.to( scrollCue.querySelector('.ame-hero__scroll-line'), {
