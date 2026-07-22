@@ -28,11 +28,11 @@ $secondary_btn = get_option( 'ame_bazaar_hero_secondary_btn_text', __( 'Visit St
 
 // Fetch media files (IDs to URLs)
 $desktop_webm = wp_get_attachment_url( get_option( 'ame_bazaar_media_hero_desktop_video_webm' ) );
-$desktop_mp4  = wp_get_attachment_url( get_option( 'ame_bazaar_media_hero_desktop_video_mp4' ) );
+$desktop_mp4  = wp_get_attachment_url( get_option( 'ame_bazaar_media_hero_desktop_video_mp4' ) ) ?: 'https://assets.mixkit.co/videos/preview/mixkit-fashion-woman-with-silver-dress-in-a-studio-setting-40292-large.mp4';
 $mobile_webm  = wp_get_attachment_url( get_option( 'ame_bazaar_media_hero_mobile_video_webm' ) );
 $mobile_mp4   = wp_get_attachment_url( get_option( 'ame_bazaar_media_hero_mobile_video_mp4' ) );
-$poster       = wp_get_attachment_image_url( get_option( 'ame_bazaar_media_hero_poster' ), 'full' );
-$fallback     = wp_get_attachment_image_url( get_option( 'ame_bazaar_media_hero_fallback' ), 'full' );
+$poster       = wp_get_attachment_image_url( get_option( 'ame_bazaar_media_hero_poster' ), 'full' ) ?: 'https://images.unsplash.com/photo-1490481651871-ab68de25d43d?q=80&w=1920&auto=format&fit=crop';
+$fallback     = wp_get_attachment_image_url( get_option( 'ame_bazaar_media_hero_fallback' ), 'full' ) ?: ame_bazaar_asset_uri( 'assets/images/hero-lifestyle.png' );
 
 $ultimate_fallback = ame_bazaar_asset_uri( 'assets/images/hero-placeholder.jpg' );
 

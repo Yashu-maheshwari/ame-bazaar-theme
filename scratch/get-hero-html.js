@@ -1,46 +1,47 @@
 const { chromium } = require('playwright');
 
-async function run() {
-  const browser = await chromium.launch({ headless: true });
-  const context = await browser.newContext();
-  const page = await context.newPage();
-  
-  console.log("Navigating to https://amebazaar.in...");
-  await page.goto('https://amebazaar.in/', { waitUntil: 'networkidle' });
-  
-  console.log("Locating element parent path...");
-  const path = await page.evaluate(() => {
-    const el = Array.from(document.querySelectorAll('a')).find(a => (a.getAttribute('href') || '').includes('boy-wear'));
-    if (!el) return "Element NOT found!";
-    
-    // Build selector path
-    const pathParts = [];
-    let current = el;
-    while (current && current.nodeType === Node.ELEMENT_NODE) {
-      let selector = current.nodeName.toLowerCase();
-      if (current.id) {
-        selector += '#' + current.id;
-        pathParts.unshift(selector);
-        break;
-      } else if (current.className) {
-        selector += '.' + Array.from(current.classList).join('.');
-      }
-      pathParts.unshift(selector);
-      current = current.parentNode;
-    }
-    return {
-      path: pathParts.join(' > '),
-      outerHtml: el.outerHTML,
-      surroundHtml: el.parentElement ? el.parentElement.outerHTML.substring(0, 1000) : ''
-    };
-  });
-  
-  console.log("=== ELEMENT RESOLUTION ===");
-  console.log(JSON.stringify(path, null, 2));
-  
-  await browser.close();
-}
+(async () => {
+	const browser = await chromium.launch({ headless: true });
+	const page = await browser.newPage();
+	
+	page.on('pageerror', exception => {
+		console.log(`Console Error: ${exception.message}`);
+	});
+	
+	page.on('console', msg => {
+		if (msg.type() === 'error') {
+			console.log(`Console Log Error: ${msg.text()}`);
+		}
+	});
 
-run().catch(err => {
-  console.error(err);
-});
+	console.log('Navigating to https://amebazaar.in...');
+	try {
+		await page.goto('https://amebazaar.in', { waitUntil: 'networkidle', timeout: 30000 });
+		console.log('Navigation successful!');
+		
+		const heroExists = await page.locator('#ame-hero').count() > 0;
+		if (heroExists) {
+			const heroHTML = await page.locator('#ame-hero').innerHTML();
+			console.log('--- Hero HTML ---');
+			console.log(heroHTML);
+			console.log('-----------------');
+			
+			const isVideoPresent = await page.locator('#ame-hero video').count() > 0;
+			if (isVideoPresent) {
+				const isPaused = await page.locator('#ame-hero video').evaluate(el => el.paused);
+				const src = await page.locator('#ame-hero video').evaluate(el => el.src);
+				const currentSrc = await page.locator('#ame-hero video').evaluate(el => el.currentSrc);
+				console.log(`Video element found. Src: ${src}, CurrentSrc: ${currentSrc}`);
+				console.log(`Is video paused? ${isPaused}`);
+			} else {
+				console.log('No video tag found inside #ame-hero.');
+			}
+		} else {
+			console.log('Element #ame-hero not found on page.');
+		}
+	} catch (e) {
+		console.error('Error during browser check:', e);
+	}
+
+	await browser.close();
+})();
