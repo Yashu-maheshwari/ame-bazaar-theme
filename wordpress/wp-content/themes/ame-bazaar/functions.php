@@ -72,3 +72,11 @@ function ame_bazaar_filter_nav_menu_items( $items ) {
 }
 add_filter( 'wp_get_nav_menu_items', 'ame_bazaar_filter_nav_menu_items', 99 );
 
+/**
+ * Force enable Application Passwords.
+ * Added automatically for the Content Marketing Agent integration.
+ * To reverse/remove, delete the line below.
+ */
+add_filter( 'wp_is_application_passwords_available', '__return_true', 99 );
+
+
