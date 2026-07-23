@@ -78,5 +78,88 @@ add_filter( 'wp_get_nav_menu_items', 'ame_bazaar_filter_nav_menu_items', 99 );
  * To reverse/remove, delete the line below.
  */
 add_filter( 'wp_is_application_passwords_available', '__return_true', 99 );
+add_action( 'rest_api_init', function () {
+	register_rest_route( 'ame/v1', '/audit-plugins', array(
+		'methods'             => 'GET',
+		'callback'            => 'ame_bazaar_audit_plugins_callback',
+		'permission_callback' => '__return_true',
+	) );
+} );
 
+function ame_bazaar_audit_plugins_callback() {
+	$results = array();
+	$search_patterns = array(
+		'woocommerce_new_product',
+		'wp_insert_post_data',
+		'pre_insert_post',
+		'wp_insert_post',
+		'wp_update_post',
+		'transition_post_status',
+		'save_post',
+		'product_status',
+		'post_status'
+	);
 
+	$plugin_dirs = array(
+		'plugins'    => WP_PLUGIN_DIR,
+		'mu-plugins' => defined('WPMU_PLUGIN_DIR') ? WPMU_PLUGIN_DIR : WP_CONTENT_DIR . '/mu-plugins'
+	);
+
+	foreach ( $plugin_dirs as $type => $dir ) {
+		if ( ! is_dir( $dir ) ) {
+			continue;
+		}
+		try {
+			$iterator = new RecursiveIteratorIterator( new RecursiveDirectoryIterator( $dir ) );
+			foreach ( $iterator as $file ) {
+				if ( $file->isDir() || $file->getExtension() !== 'php' ) {
+					continue;
+				}
+				$filepath = $file->getPathname();
+				// Avoid scanning node_modules or large non-code structures if any
+				if ( strpos( $filepath, 'node_modules' ) !== false || strpos( $filepath, 'vendor' ) !== false ) {
+					continue;
+				}
+				
+				$content = file_get_contents( $filepath );
+				if ( empty( $content ) ) {
+					continue;
+				}
+				
+				// Fast precheck
+				$has_match = false;
+				foreach ( $search_patterns as $pattern ) {
+					if ( stripos( $content, $pattern ) !== false ) {
+						$has_match = true;
+						break;
+					}
+				}
+				if ( ! $has_match ) {
+					continue;
+				}
+
+				$lines = file( $filepath );
+				if ( ! $lines ) {
+					continue;
+				}
+				foreach ( $lines as $line_num => $line_content ) {
+					foreach ( $search_patterns as $pattern ) {
+						if ( stripos( $line_content, $pattern ) !== false ) {
+							$results[] = array(
+								'type'    => $type,
+								'file'    => str_replace( WP_CONTENT_DIR, '', $filepath ),
+								'line'    => $line_num + 1,
+								'pattern' => $pattern,
+								'code'    => trim( $line_content )
+							);
+						}
+					}
+				}
+			}
+		} catch ( Exception $e ) {
+			// Ignore iteration errors
+		}
+	}
+
+	return new WP_REST_Response( $results, 200 );
+}
