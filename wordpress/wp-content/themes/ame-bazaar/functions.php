@@ -138,5 +138,7 @@ function ame_bazaar_filter_nav_menu_items( $items ) {
 	}
 	return $items;
 }
+
 add_filter( 'wp_get_nav_menu_items', 'ame_bazaar_filter_nav_menu_items', 99 );
 
+// deploy trigger comment
