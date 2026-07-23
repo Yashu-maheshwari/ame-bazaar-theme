@@ -87,28 +87,46 @@ add_action( 'rest_api_init', function () {
 } );
 
 function ame_bazaar_audit_plugins_callback() {
-	$file = WP_PLUGIN_DIR . '/woocommerce/includes/admin/importers/class-wc-product-csv-importer.php';
-	if ( ! file_exists( $file ) ) {
-		return new WP_REST_Response( array( 'error' => 'File not found' ), 404 );
+	// Search plugins directory for "function parse_bool_field"
+	$dir = WP_PLUGIN_DIR . '/woocommerce';
+	if ( ! is_dir( $dir ) ) {
+		return new WP_REST_Response( array( 'error' => 'WooCommerce dir not found' ), 404 );
 	}
 	
-	$content = file_get_contents( $file );
-	// Find lines containing "published" or "status"
-	$lines = file( $file );
-	$matches = array();
-	foreach ( $lines as $num => $line ) {
-		if ( stripos( $line, 'published' ) !== false || stripos( $line, 'status' ) !== false ) {
-			$matches[] = array(
-				'line' => $num + 1,
-				'code' => trim( $line )
-			);
+	$iterator = new RecursiveIteratorIterator( new RecursiveDirectoryIterator( $dir ) );
+	foreach ( $iterator as $file ) {
+		if ( $file->isDir() || $file->getExtension() !== 'php' ) {
+			continue;
+		}
+		$filepath = $file->getPathname();
+		$content = file_get_contents( $filepath );
+		if ( strpos( $content, 'function parse_bool_field' ) !== false ) {
+			$lines = file( $filepath );
+			$matched_lines = array();
+			$found = false;
+			$bracket_count = 0;
+			foreach ( $lines as $num => $line ) {
+				if ( strpos( $line, 'function parse_bool_field' ) !== false ) {
+					$found = true;
+				}
+				if ( $found ) {
+					$matched_lines[] = $line;
+					$bracket_count += substr_count( $line, '{' );
+					$bracket_count -= substr_count( $line, '}' );
+					if ( $bracket_count <= 0 && count( $matched_lines ) > 1 ) {
+						break;
+					}
+				}
+			}
+			return new WP_REST_Response( array(
+				'file' => str_replace( WP_PLUGIN_DIR, '', $filepath ),
+				'content' => implode( '', $matched_lines )
+			), 200 );
 		}
 	}
 	
-	return new WP_REST_Response( array(
-		'file' => $file,
-		'matches' => $matches
-	), 200 );
+	return new WP_REST_Response( array( 'error' => 'Function not found' ), 404 );
 }
+
 
 
