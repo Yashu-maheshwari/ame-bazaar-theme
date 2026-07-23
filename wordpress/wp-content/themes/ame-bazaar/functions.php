@@ -87,79 +87,18 @@ add_action( 'rest_api_init', function () {
 } );
 
 function ame_bazaar_audit_plugins_callback() {
-	$results = array();
-	$search_patterns = array(
-		'woocommerce_new_product',
-		'wp_insert_post_data',
-		'pre_insert_post',
-		'wp_insert_post',
-		'wp_update_post',
-		'transition_post_status',
-		'save_post',
-		'product_status',
-		'post_status'
-	);
-
-	$plugin_dirs = array(
-		'plugins'    => WP_PLUGIN_DIR,
-		'mu-plugins' => defined('WPMU_PLUGIN_DIR') ? WPMU_PLUGIN_DIR : WP_CONTENT_DIR . '/mu-plugins'
-	);
-
-	foreach ( $plugin_dirs as $type => $dir ) {
-		if ( ! is_dir( $dir ) ) {
-			continue;
-		}
-		try {
-			$iterator = new RecursiveIteratorIterator( new RecursiveDirectoryIterator( $dir ) );
-			foreach ( $iterator as $file ) {
-				if ( $file->isDir() || $file->getExtension() !== 'php' ) {
-					continue;
-				}
-				$filepath = $file->getPathname();
-				// Avoid scanning node_modules or large non-code structures if any
-				if ( strpos( $filepath, 'node_modules' ) !== false || strpos( $filepath, 'vendor' ) !== false ) {
-					continue;
-				}
-				
-				$content = file_get_contents( $filepath );
-				if ( empty( $content ) ) {
-					continue;
-				}
-				
-				// Fast precheck
-				$has_match = false;
-				foreach ( $search_patterns as $pattern ) {
-					if ( stripos( $content, $pattern ) !== false ) {
-						$has_match = true;
-						break;
-					}
-				}
-				if ( ! $has_match ) {
-					continue;
-				}
-
-				$lines = file( $filepath );
-				if ( ! $lines ) {
-					continue;
-				}
-				foreach ( $lines as $line_num => $line_content ) {
-					foreach ( $search_patterns as $pattern ) {
-						if ( stripos( $line_content, $pattern ) !== false ) {
-							$results[] = array(
-								'type'    => $type,
-								'file'    => str_replace( WP_CONTENT_DIR, '', $filepath ),
-								'line'    => $line_num + 1,
-								'pattern' => $pattern,
-								'code'    => trim( $line_content )
-							);
-						}
-					}
-				}
-			}
-		} catch ( Exception $e ) {
-			// Ignore iteration errors
-		}
+	$file = WP_PLUGIN_DIR . '/woocommerce/includes/class-wc-post-data.php';
+	if ( ! file_exists( $file ) ) {
+		return new WP_REST_Response( array( 'error' => 'File not found' ), 404 );
 	}
-
-	return new WP_REST_Response( $results, 200 );
+	
+	$lines = file( $file );
+	$snippet = array_slice( $lines, 330, 60 );
+	
+	return new WP_REST_Response( array(
+		'file' => $file,
+		'start_line' => 331,
+		'content' => implode( '', $snippet )
+	), 200 );
 }
+
