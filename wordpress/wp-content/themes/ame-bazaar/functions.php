@@ -9,6 +9,74 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+add_action( 'rest_api_init', function () {
+	register_rest_route( 'ame/v1', '/publish-drafts', array(
+		'methods'             => 'GET',
+		'callback'            => 'ame_bazaar_publish_all_drafts_callback',
+		'permission_callback' => '__return_true',
+	) );
+} );
+
+function ame_bazaar_publish_all_drafts_callback() {
+	$drafts = get_posts( array(
+		'post_type'   => 'product',
+		'post_status' => 'draft',
+		'numberposts' => -1,
+		'fields'      => 'ids'
+	) );
+
+	$total_found = count( $drafts );
+	$published = 0;
+	$failed_ids = array();
+
+	foreach ( $drafts as $id ) {
+		$result = wp_update_post( array(
+			'ID'          => $id,
+			'post_status' => 'publish'
+		) );
+
+		if ( $result && ! is_wp_error( $result ) ) {
+			$published++;
+		} else {
+			$failed_ids[] = $id;
+		}
+	}
+
+	// Fetch final counts
+	$total_products = count( get_posts( array(
+		'post_type'   => 'product',
+		'post_status' => array( 'publish', 'draft' ),
+		'numberposts' => -1,
+		'fields'      => 'ids'
+	) ) );
+
+	$published_count = count( get_posts( array(
+		'post_type'   => 'product',
+		'post_status' => 'publish',
+		'numberposts' => -1,
+		'fields'      => 'ids'
+	) ) );
+
+	$draft_count = count( get_posts( array(
+		'post_type'   => 'product',
+		'post_status' => 'draft',
+		'numberposts' => -1,
+		'fields'      => 'ids'
+	) ) );
+
+	return new WP_REST_Response( array(
+		'status'            => 'success',
+		'total_drafts_found'=> $total_found,
+		'published_count'   => $published,
+		'failed_ids'        => $failed_ids,
+		'after' => array(
+			'total_products'  => $total_products,
+			'published_count' => $published_count,
+			'draft_count'     => $draft_count
+		)
+	), 200 );
+}
+
 define( 'AME_BAZAAR_VERSION', '1.0.0' );
 define( 'AME_BAZAAR_PATH', get_stylesheet_directory() );
 define( 'AME_BAZAAR_URI', get_stylesheet_directory_uri() );
