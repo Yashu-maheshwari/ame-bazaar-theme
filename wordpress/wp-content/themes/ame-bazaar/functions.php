@@ -87,18 +87,28 @@ add_action( 'rest_api_init', function () {
 } );
 
 function ame_bazaar_audit_plugins_callback() {
-	$file = WP_PLUGIN_DIR . '/woocommerce/includes/class-wc-post-data.php';
+	$file = WP_PLUGIN_DIR . '/woocommerce/includes/admin/importers/class-wc-product-csv-importer.php';
 	if ( ! file_exists( $file ) ) {
 		return new WP_REST_Response( array( 'error' => 'File not found' ), 404 );
 	}
 	
+	$content = file_get_contents( $file );
+	// Find lines containing "published" or "status"
 	$lines = file( $file );
-	$snippet = array_slice( $lines, 330, 60 );
+	$matches = array();
+	foreach ( $lines as $num => $line ) {
+		if ( stripos( $line, 'published' ) !== false || stripos( $line, 'status' ) !== false ) {
+			$matches[] = array(
+				'line' => $num + 1,
+				'code' => trim( $line )
+			);
+		}
+	}
 	
 	return new WP_REST_Response( array(
 		'file' => $file,
-		'start_line' => 331,
-		'content' => implode( '', $snippet )
+		'matches' => $matches
 	), 200 );
 }
+
 
