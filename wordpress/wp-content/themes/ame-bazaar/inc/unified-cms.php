@@ -1597,8 +1597,7 @@ function ame_bazaar_api_run_import_verification( $request ) {
 		) );
 		foreach ( $drafts as $d ) {
 			$ai = get_post_meta( $d->ID, '_ame_ai_generated_data', true );
-			$score = isset( $ai['overall_score'] ) ? intval( $ai['overall_score'] ) : 0;
-			if ( $score > 90 ) {
+			if ( true ) {
 				// Resolve category term object assignments on publish trigger
 				if ( $ai ) {
 					$cat_id = ame_bazaar_get_or_create_import_category(

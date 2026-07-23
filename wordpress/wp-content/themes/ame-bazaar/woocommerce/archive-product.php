@@ -68,8 +68,31 @@ do_action( 'woocommerce_before_main_content' );
 				
 				<div class="ame-category-meta-stats" style="background: var(--ame-color-white, #fff); padding: 0.5rem 1rem; border-radius: 40px; border: 1px solid var(--ame-color-border, #dbe2ea); font-size: 0.85rem; font-weight: 700; color: var(--ame-color-navy);">
 					<?php 
-					global $wp_query;
-					$count = $wp_query->found_posts;
+					if ( is_product_category() ) {
+						$current_term = get_queried_object();
+						$count = 0;
+						if ( $current_term && ! is_wp_error( $current_term ) ) {
+							$term_ids = get_term_children( $current_term->term_id, 'product_cat' );
+							$term_ids[] = $current_term->term_id;
+							$count = count( get_posts( array(
+								'post_type'      => 'product',
+								'post_status'    => 'publish',
+								'numberposts'    => -1,
+								'tax_query'      => array(
+									array(
+										'taxonomy' => 'product_cat',
+										'field'    => 'term_id',
+										'terms'    => $term_ids,
+										'operator' => 'IN',
+									),
+								),
+								'fields'         => 'ids',
+							) ) );
+						}
+					} else {
+						global $wp_query;
+						$count = $wp_query->found_posts;
+					}
 					printf( _n( '%d Product', '%d Products', $count, 'ame-bazaar' ), $count );
 					?>
 				</div>
@@ -119,7 +142,22 @@ do_action( 'woocommerce_before_main_content' );
 							$image_url = wc_placeholder_img_src();
 						}
 						
-						$prod_count = $subcat->count;
+						$term_ids = get_term_children( $subcat_id, 'product_cat' );
+						$term_ids[] = $subcat_id;
+						$prod_count = count( get_posts( array(
+							'post_type'      => 'product',
+							'post_status'    => 'publish',
+							'numberposts'    => -1,
+							'tax_query'      => array(
+								array(
+									'taxonomy' => 'product_cat',
+									'field'    => 'term_id',
+									'terms'      => $term_ids,
+									'operator' => 'IN',
+								),
+							),
+							'fields'         => 'ids',
+						) ) );
 						$subcat_link = get_term_link( $subcat );
 						
 						// Fetch optional badges
@@ -397,11 +435,11 @@ do_action( 'woocommerce_before_main_content' );
 						<div style="border-top: 1px solid #e2e8f0; padding-top: 1.5rem;">
 							<h4 style="font-size: 0.85rem; font-weight: 800; color: var(--ame-color-navy); margin-top: 0; margin-bottom: 1rem; text-transform: uppercase; letter-spacing: 0.05em;">Explore Related Categories</h4>
 							<div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 0.5rem;">
-								<a href="<?php echo esc_url( home_url( '/category/mens-wear/' ) ); ?>" class="ame-ai-topic-chip" style="font-size: 0.8rem; padding: 0.4rem 1rem; border-radius: 40px; background: #f1f5f9; color: #334155; text-decoration: none; font-weight: 600;">Men's Wear</a>
-								<a href="<?php echo esc_url( home_url( '/category/womens-wear/' ) ); ?>" class="ame-ai-topic-chip" style="font-size: 0.8rem; padding: 0.4rem 1rem; border-radius: 40px; background: #f1f5f9; color: #334155; text-decoration: none; font-weight: 600;">Women's Wear</a>
-								<a href="<?php echo esc_url( home_url( '/category/boys-wear/' ) ); ?>" class="ame-ai-topic-chip" style="font-size: 0.8rem; padding: 0.4rem 1rem; border-radius: 40px; background: #f1f5f9; color: #334155; text-decoration: none; font-weight: 600;">Boys Wear</a>
-								<a href="<?php echo esc_url( home_url( '/category/girls-wear/' ) ); ?>" class="ame-ai-topic-chip" style="font-size: 0.8rem; padding: 0.4rem 1rem; border-radius: 40px; background: #f1f5f9; color: #334155; text-decoration: none; font-weight: 600;">Girls Wear</a>
-								<a href="<?php echo esc_url( home_url( '/category/sarees/' ) ); ?>" class="ame-ai-topic-chip" style="font-size: 0.8rem; padding: 0.4rem 1rem; border-radius: 40px; background: #f1f5f9; color: #334155; text-decoration: none; font-weight: 600;">Sarees</a>
+								<a href="<?php echo esc_url( home_url( '/product-category/men/' ) ); ?>" class="ame-ai-topic-chip" style="font-size: 0.8rem; padding: 0.4rem 1rem; border-radius: 40px; background: #f1f5f9; color: #334155; text-decoration: none; font-weight: 600;">Men's Wear</a>
+								<a href="<?php echo esc_url( home_url( '/product-category/women/' ) ); ?>" class="ame-ai-topic-chip" style="font-size: 0.8rem; padding: 0.4rem 1rem; border-radius: 40px; background: #f1f5f9; color: #334155; text-decoration: none; font-weight: 600;">Women's Wear</a>
+								<a href="<?php echo esc_url( home_url( '/product-category/kids/boys/' ) ); ?>" class="ame-ai-topic-chip" style="font-size: 0.8rem; padding: 0.4rem 1rem; border-radius: 40px; background: #f1f5f9; color: #334155; text-decoration: none; font-weight: 600;">Boys Wear</a>
+								<a href="<?php echo esc_url( home_url( '/product-category/kids/girls/' ) ); ?>" class="ame-ai-topic-chip" style="font-size: 0.8rem; padding: 0.4rem 1rem; border-radius: 40px; background: #f1f5f9; color: #334155; text-decoration: none; font-weight: 600;">Girls Wear</a>
+								<a href="<?php echo esc_url( home_url( '/product-category/sarees/' ) ); ?>" class="ame-ai-topic-chip" style="font-size: 0.8rem; padding: 0.4rem 1rem; border-radius: 40px; background: #f1f5f9; color: #334155; text-decoration: none; font-weight: 600;">Sarees</a>
 							</div>
 						</div>
 					</div>
