@@ -52,6 +52,9 @@ if ( ! empty( $custom_about_url ) ) {
 					<p style="font-size: 1.05rem; line-height: 1.7; color: #475569; margin-bottom: 2rem;">
 						<?php echo esc_html( $story_content ); ?>
 					</p>
+					<p style="font-size: 0.95rem; line-height: 1.7; color: #475569; margin-bottom: 2rem;">
+						<a href="<?php echo esc_url( home_url( '/our-store-in-kirari/' ) ); ?>" style="color: var(--ame-color-navy); text-decoration: underline; font-weight: 600;"><?php esc_html_e( 'Visit Our Kirari Showroom', 'ame-bazaar' ); ?></a>
+					</p>
 					
 					<div class="ame-usp-box" style="background-color: var(--ame-color-cream); border-left: 5px solid var(--ame-color-gold); padding: 1.25rem 1.5rem; border-radius: var(--ame-radius-sm);">
 						<h4 style="margin: 0 0 0.5rem; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--ame-color-navy); font-weight: bold;"><?php esc_html_e( 'Our Brand Promise', 'ame-bazaar' ); ?></h4>

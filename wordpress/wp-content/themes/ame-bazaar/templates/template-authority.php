@@ -183,6 +183,28 @@ $all_faqs = ame_bazaar_get_knowledge_base_faqs();
 			</span>
 			<h1 class="entry-title" style="font-size: clamp(2rem, 4.5vw, 3rem); font-weight: 800; margin: 0 0 1rem; letter-spacing: -0.01em;"><?php echo esc_html( $data['headline'] ); ?></h1>
 			<p style="max-width: 700px; margin-inline: auto; font-size: 1.1rem; opacity: 0.9; line-height: 1.6;"><?php echo esc_html( $data['intro'] ); ?></p>
+			<p style="max-width: 700px; margin-inline: auto; font-size: 0.95rem; opacity: 0.95; line-height: 1.6; margin-top: 1rem;">
+				<?php
+				$internal_links = array(
+					'family-clothing-store' => array( 'url' => home_url( '/family-clothing-store/' ), 'text' => __( 'Family Wear Showroom in Kirari', 'ame-bazaar' ) ),
+					'affordable-fashion-store' => array( 'url' => home_url( '/affordable-fashion-store/' ), 'text' => __( 'Affordable Fashion Store', 'ame-bazaar' ) ),
+					'best-kids-wear-shop' => array( 'url' => home_url( '/best-kids-wear-shop/' ), 'text' => __( 'Best Kids Wear Shop', 'ame-bazaar' ) ),
+					'tailoring-near-me' => array( 'url' => home_url( '/tailoring-near-me/' ), 'text' => __( 'Tailoring Near Me', 'ame-bazaar' ) ),
+					'wedding-shopping-in-kirari' => array( 'url' => home_url( '/wedding-shopping-in-kirari/' ), 'text' => __( 'Wedding Shopping in Kirari', 'ame-bazaar' ) ),
+					'winter-wear-guide' => array( 'url' => home_url( '/winter-wear-guide/' ), 'text' => __( 'Winter Wear Guide', 'ame-bazaar' ) ),
+					'fabric-guide' => array( 'url' => home_url( '/fabric-guide/' ), 'text' => __( 'Fabric and Materials Guide', 'ame-bazaar' ) ),
+					'jeans-fitting-guide' => array( 'url' => home_url( '/jeans-fitting-guide/' ), 'text' => __( 'Jeans Fitting Guide', 'ame-bazaar' ) ),
+					'shirt-fitting-guide' => array( 'url' => home_url( '/shirt-fitting-guide/' ), 'text' => __( 'Shirt Fitting Guide', 'ame-bazaar' ) ),
+					'clothing-care-guide' => array( 'url' => home_url( '/clothing-care-guide/' ), 'text' => __( 'Clothing Wash and Care Guide', 'ame-bazaar' ) ),
+					'festival-shopping-guide' => array( 'url' => home_url( '/festival-shopping-guide/' ), 'text' => __( 'Festival Shopping Guide', 'ame-bazaar' ) ),
+					'best-clothing-store-in-kirari' => array( 'url' => home_url( '/our-store-in-kirari/' ), 'text' => __( 'Our Store in Kirari', 'ame-bazaar' ) ),
+				);
+				$link = isset( $internal_links[ $current_slug ] ) ? $internal_links[ $current_slug ] : null;
+				if ( $link ) :
+					?>
+					<a href="<?php echo esc_url( $link['url'] ); ?>" style="color: var(--ame-color-navy); text-decoration: underline; font-weight: 600;"><?php echo esc_html( $link['text'] ); ?></a>
+				<?php endif; ?>
+			</p>
 		</div>
 	</header>
 

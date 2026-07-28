@@ -48,6 +48,9 @@ $maps_embed_url = 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3498.42
 			</span>
 			<h1 class="entry-title" style="font-size: clamp(2.25rem, 5vw, 3.5rem); font-weight: 800; margin: 0 0 1rem; letter-spacing: -0.02em;"><?php esc_html_e( 'Contact Our Store', 'ame-bazaar' ); ?></h1>
 			<p style="max-width: 650px; margin-inline: auto; font-size: 1.15rem; opacity: 0.9; line-height: 1.6;"><?php esc_html_e( 'Get directions, check timings, call our coordinators, or request custom tailoring quotes.', 'ame-bazaar' ); ?></p>
+			<p style="max-width: 650px; margin-inline: auto; font-size: 0.95rem; opacity: 0.95; line-height: 1.6; margin-top: 1rem;">
+				<a href="<?php echo esc_url( home_url( '/our-store-in-kirari/' ) ); ?>" style="color: #fff; text-decoration: underline; font-weight: 600;"><?php esc_html_e( 'AME Bazaar Kirari Store', 'ame-bazaar' ); ?></a>
+			</p>
 		</div>
 	</header>
 

@@ -501,13 +501,48 @@ get_header();
 							),
 							array(
 								'id'    => 'int-link-about',
-								'label' => __( 'About Us', 'ame-bazaar' ),
-								'url'   => home_url( '/about/' ),
+								'label' => __( 'About AME Bazaar', 'ame-bazaar' ),
+								'url'   => home_url( '/about-ame-bazaar/' ),
 							),
 							array(
 								'id'    => 'int-link-contact',
-								'label' => __( 'Contact', 'ame-bazaar' ),
+								'label' => __( 'Contact Us', 'ame-bazaar' ),
 								'url'   => home_url( '/contact/' ),
+							),
+							array(
+								'id'    => 'int-link-family',
+								'label' => __( 'Family Clothing Store', 'ame-bazaar' ),
+								'url'   => home_url( '/family-clothing-store/' ),
+							),
+							array(
+								'id'    => 'int-link-affordable',
+								'label' => __( 'Affordable Fashion Store', 'ame-bazaar' ),
+								'url'   => home_url( '/affordable-fashion-store/' ),
+							),
+							array(
+								'id'    => 'int-link-kids',
+								'label' => __( 'Best Kids Wear Shop', 'ame-bazaar' ),
+								'url'   => home_url( '/best-kids-wear-shop/' ),
+							),
+							array(
+								'id'    => 'int-link-tailoring',
+								'label' => __( 'Tailoring Near Me', 'ame-bazaar' ),
+								'url'   => home_url( '/tailoring-near-me/' ),
+							),
+							array(
+								'id'    => 'int-link-wedding',
+								'label' => __( 'Wedding Shopping in Kirari', 'ame-bazaar' ),
+								'url'   => home_url( '/wedding-shopping-in-kirari/' ),
+							),
+							array(
+								'id'    => 'int-link-winter',
+								'label' => __( 'Winter Wear Guide', 'ame-bazaar' ),
+								'url'   => home_url( '/winter-wear-guide/' ),
+							),
+							array(
+								'id'    => 'int-link-home-store',
+								'label' => __( 'Visit Our Kirari Showroom', 'ame-bazaar' ),
+								'url'   => home_url( '/our-store-in-kirari/' ),
 							),
 							array(
 								'id'    => 'int-link-mens',
