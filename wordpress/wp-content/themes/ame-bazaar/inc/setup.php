@@ -151,6 +151,10 @@ function ame_bazaar_create_authority_and_ai_pages() {
 			'title'    => 'Best Clothing Store in Kirari',
 			'template' => 'templates/template-authority.php',
 		),
+		'our-store-in-kirari' => array(
+			'title'    => 'Our Store in Kirari',
+			'template' => 'templates/template-our-store-kirari.php',
+		),
 		'best-mens-wear-shop' => array(
 			'title'    => 'Best Men\'s Wear Shop',
 			'template' => 'templates/template-authority.php',
