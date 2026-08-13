@@ -54,6 +54,13 @@ function ame_bazaar_enqueue_assets() {
 			array( 'ame-bazaar-main' ),
 			ame_bazaar_asset_version( 'assets/css/premium-homepage.css' )
 		);
+
+		wp_enqueue_style(
+			'ame-bazaar-premium-homepage-final',
+			ame_bazaar_asset_uri( 'assets/css/premium-homepage-final.css' ),
+			array( 'ame-bazaar-premium-homepage' ),
+			ame_bazaar_asset_version( 'assets/css/premium-homepage-final.css' )
+		);
 	}
 
 	// GSAP for cinematic hero animations — loaded only where needed (homepage)
