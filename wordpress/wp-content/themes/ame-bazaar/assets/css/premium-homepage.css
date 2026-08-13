@@ -1,0 +1,627 @@
+/*
+ * AME Bazaar — Premium Homepage UI Layer
+ * Purpose: visual/UX refinement without changing homepage content, data or PHP architecture.
+ * Performance: CSS-only depth/micro-interactions; no WebGL, no heavy JS.
+ */
+
+:root {
+  --ame-premium-navy: #002347;
+  --ame-premium-navy-deep: #00182f;
+  --ame-premium-gold: #f59e0b;
+  --ame-premium-cream: #fbfaf7;
+  --ame-premium-ink: #10233b;
+  --ame-premium-muted: #64748b;
+  --ame-premium-line: rgba(0,35,71,.10);
+  --ame-premium-shadow: 0 18px 55px rgba(0,35,71,.10);
+  --ame-premium-shadow-hover: 0 24px 70px rgba(0,35,71,.16);
+}
+
+/* ---------- Global homepage rhythm ---------- */
+.ame-bazaar-home {
+  background: #fff;
+  overflow: clip;
+}
+
+.ame-bazaar-home section {
+  position: relative;
+}
+
+.ame-bazaar-home .ame-bazaar-container {
+  width: min(1180px, calc(100% - 40px));
+  margin-inline: auto;
+}
+
+.ame-bazaar-home h2,
+.ame-bazaar-home h3,
+.ame-bazaar-home h4 {
+  text-wrap: balance;
+}
+
+/* ---------- Consistent premium buttons ---------- */
+.ame-bazaar-home .ame-bazaar-btn,
+.ame-bazaar-home .ame-hero-btn,
+.ame-bazaar-home a.wp-element-button,
+.ame-bazaar-home .button {
+  min-height: 46px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: .55rem;
+  padding: .78rem 1.2rem;
+  border-radius: 10px;
+  border: 1px solid transparent;
+  font-family: 'Inter', sans-serif;
+  font-size: .82rem;
+  font-weight: 650;
+  letter-spacing: .01em;
+  line-height: 1.1;
+  text-decoration: none;
+  cursor: pointer;
+  transition: transform .22s ease, box-shadow .22s ease, background-color .22s ease, color .22s ease, border-color .22s ease;
+}
+
+.ame-bazaar-home .ame-bazaar-btn:hover,
+.ame-bazaar-home .ame-hero-btn:hover,
+.ame-bazaar-home a.wp-element-button:hover,
+.ame-bazaar-home .button:hover {
+  transform: translateY(-2px);
+}
+
+.ame-bazaar-home .ame-bazaar-btn:active,
+.ame-bazaar-home .ame-hero-btn:active,
+.ame-bazaar-home .button:active {
+  transform: translateY(0);
+}
+
+.ame-bazaar-home .ame-bazaar-btn--primary,
+.ame-bazaar-home .ame-hero-btn--navy {
+  color: #fff !important;
+  background: var(--ame-premium-navy) !important;
+  border-color: var(--ame-premium-navy) !important;
+  box-shadow: 0 10px 24px rgba(0,35,71,.18);
+}
+
+.ame-bazaar-home .ame-bazaar-btn--primary:hover,
+.ame-bazaar-home .ame-hero-btn--navy:hover {
+  background: #003565 !important;
+  box-shadow: 0 14px 32px rgba(0,35,71,.24);
+}
+
+.ame-bazaar-home .ame-bazaar-btn--secondary,
+.ame-bazaar-home .ame-hero-btn--glass {
+  color: var(--ame-premium-navy) !important;
+  background: rgba(255,255,255,.96) !important;
+  border-color: rgba(0,35,71,.20) !important;
+  box-shadow: 0 8px 22px rgba(0,35,71,.10);
+}
+
+.ame-bazaar-home .ame-bazaar-btn--secondary:hover,
+.ame-bazaar-home .ame-hero-btn--glass:hover {
+  color: var(--ame-premium-navy) !important;
+  border-color: var(--ame-premium-gold) !important;
+  box-shadow: 0 12px 30px rgba(0,35,71,.14);
+}
+
+/* ---------- Hero: keep the existing video architecture, improve readability ---------- */
+.ame-hero {
+  min-height: clamp(620px, 78vh, 820px);
+  background: var(--ame-premium-navy-deep);
+  isolation: isolate;
+}
+
+.ame-hero__stage,
+.ame-hero__slides,
+.ame-hero__slide,
+.ame-hero__video,
+.ame-hero__picture,
+.ame-hero__image {
+  width: 100%;
+  height: 100%;
+}
+
+.ame-hero__stage {
+  position: absolute !important;
+  inset: 0;
+  overflow: hidden;
+}
+
+.ame-hero__video,
+.ame-hero__image {
+  object-fit: cover;
+  object-position: center;
+}
+
+.ame-hero__overlay {
+  background:
+    linear-gradient(90deg, rgba(0,18,37,.82) 0%, rgba(0,35,71,.48) 38%, rgba(0,35,71,.10) 72%, rgba(0,0,0,.12) 100%),
+    linear-gradient(0deg, rgba(0,18,37,.34) 0%, transparent 35%);
+}
+
+.ame-hero__editorial {
+  position: relative;
+  z-index: 5;
+  width: min(1180px, calc(100% - 40px));
+  min-height: clamp(620px, 78vh, 820px);
+  margin-inline: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  padding: clamp(90px, 12vh, 140px) 0 90px;
+}
+
+.ame-hero__eyebrow {
+  color: var(--ame-premium-gold) !important;
+  font-size: .76rem;
+  font-weight: 700;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+}
+
+.ame-hero__eyebrow-rule {
+  background: var(--ame-premium-gold) !important;
+}
+
+.ame-hero__headline {
+  max-width: 760px;
+  margin: 18px 0 18px !important;
+  color: #fff !important;
+  font-family: 'Playfair Display', serif !important;
+  font-size: clamp(3rem, 6.5vw, 6.2rem) !important;
+  font-weight: 500 !important;
+  line-height: .94 !important;
+  letter-spacing: -.035em !important;
+  text-shadow: 0 5px 28px rgba(0,0,0,.22);
+}
+
+.ame-hero__hl2 {
+  color: #fff !important;
+}
+
+.ame-hero__sub {
+  max-width: 560px;
+  margin: 0 0 28px !important;
+  color: rgba(255,255,255,.92) !important;
+  font-size: clamp(1rem, 1.5vw, 1.18rem) !important;
+  line-height: 1.65 !important;
+  text-shadow: 0 2px 14px rgba(0,0,0,.28);
+}
+
+.ame-hero__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.ame-hero__scroll-cue {
+  opacity: .85;
+}
+
+/* ---------- Trust bar ---------- */
+.ame-trust-bar,
+.ame-trust-section {
+  position: relative;
+  z-index: 8;
+  background: rgba(255,255,255,.98);
+  border-bottom: 1px solid var(--ame-premium-line);
+  box-shadow: 0 12px 35px rgba(0,35,71,.06);
+}
+
+.ame-trust-bar > .ame-bazaar-container,
+.ame-trust-section > .ame-bazaar-container {
+  padding-block: 18px;
+}
+
+/* ---------- Section headers ---------- */
+.ame-categories-section,
+.ame-featured-collections,
+.ame-tailoring-service,
+.ame-fashion-advisor,
+.ame-why-choose-us,
+.ame-reviews-section,
+.ame-faq-section,
+.ame-visit-store-section,
+.ame-about-business-section,
+.ame-blog-preview-section,
+.ame-instagram-gallery-section,
+.ame-whatsapp-cta-section {
+  padding-block: clamp(70px, 8vw, 112px);
+}
+
+.ame-categories-header,
+.ame-about-business-header {
+  max-width: 760px;
+  margin: 0 auto 42px;
+  text-align: center;
+}
+
+.ame-categories-section-title,
+.ame-about-title,
+.ame-featured-title,
+.ame-visit-store-title,
+.ame-fashion-advisor-title {
+  color: var(--ame-premium-navy) !important;
+  font-family: 'Playfair Display', serif !important;
+  font-weight: 600 !important;
+  letter-spacing: -.025em;
+}
+
+.ame-categories-section-title {
+  font-size: clamp(2rem, 4vw, 3.2rem) !important;
+  margin-bottom: 10px !important;
+}
+
+.ame-categories-section-subtitle,
+.ame-about-subtitle {
+  color: var(--ame-premium-muted) !important;
+  font-size: 1rem !important;
+  line-height: 1.7 !important;
+}
+
+/* ---------- Categories: existing dynamic categories remain intact ---------- */
+.ame-categories-section {
+  background: linear-gradient(180deg, #fff 0%, var(--ame-premium-cream) 100%);
+}
+
+.ame-categories-grid {
+  display: grid !important;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 18px !important;
+}
+
+.ame-category-card {
+  position: relative;
+  overflow: hidden;
+  min-width: 0;
+  background: #fff !important;
+  border: 1px solid rgba(0,35,71,.08) !important;
+  border-radius: 16px !important;
+  box-shadow: 0 10px 35px rgba(0,35,71,.08) !important;
+  transform: translateZ(0);
+  transition: transform .28s ease, box-shadow .28s ease, border-color .28s ease;
+}
+
+.ame-category-card:hover {
+  transform: translateY(-7px);
+  border-color: rgba(245,158,11,.35) !important;
+  box-shadow: var(--ame-premium-shadow-hover) !important;
+}
+
+.ame-category-card-visual,
+.ame-category-card-visual-link {
+  display: block;
+}
+
+.ame-category-card-visual {
+  position: relative;
+  aspect-ratio: 4 / 4.7;
+  overflow: hidden;
+  background: #eef1f4;
+}
+
+.ame-category-card-visual::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, transparent 55%, rgba(0,35,71,.48) 100%);
+  pointer-events: none;
+}
+
+.ame-category-img {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+  transition: transform .55s cubic-bezier(.2,.7,.2,1);
+}
+
+.ame-category-card:hover .ame-category-img {
+  transform: scale(1.045);
+}
+
+.ame-category-card-content {
+  padding: 18px !important;
+}
+
+.ame-category-card-title {
+  margin: 0 0 7px !important;
+  font-family: 'Playfair Display', serif !important;
+  font-size: 1.25rem !important;
+  line-height: 1.2 !important;
+}
+
+.ame-category-title-link {
+  color: var(--ame-premium-navy) !important;
+  text-decoration: none !important;
+}
+
+.ame-category-card-desc {
+  min-height: 42px;
+  margin: 0 0 14px !important;
+  color: var(--ame-premium-muted) !important;
+  font-size: .83rem !important;
+  line-height: 1.5 !important;
+}
+
+.ame-category-card-btn {
+  width: 100%;
+}
+
+/* ---------- Featured products ---------- */
+.ame-featured-collections {
+  background: #fff;
+}
+
+.ame-featured-collections .ame-product-card,
+.ame-featured-collections .product,
+.ame-featured-collections .ame-featured-card {
+  border: 1px solid rgba(0,35,71,.08) !important;
+  border-radius: 14px !important;
+  overflow: hidden;
+  background: #fff;
+  box-shadow: 0 8px 30px rgba(0,35,71,.07);
+  transition: transform .25s ease, box-shadow .25s ease;
+}
+
+.ame-featured-collections .ame-product-card:hover,
+.ame-featured-collections .product:hover,
+.ame-featured-collections .ame-featured-card:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--ame-premium-shadow-hover);
+}
+
+/* ---------- Tailoring: strong signature section ---------- */
+.ame-tailoring-service {
+  background: var(--ame-premium-navy) !important;
+  color: #fff;
+  overflow: hidden;
+}
+
+.ame-tailoring-service::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: linear-gradient(rgba(255,255,255,.045) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.045) 1px, transparent 1px);
+  background-size: 34px 34px;
+  mask-image: linear-gradient(90deg, #000 0%, transparent 85%);
+  pointer-events: none;
+}
+
+.ame-tailoring-service h2,
+.ame-tailoring-service h3,
+.ame-tailoring-service p,
+.ame-tailoring-service li {
+  position: relative;
+}
+
+.ame-tailoring-service img {
+  border-radius: 14px !important;
+  box-shadow: 0 25px 70px rgba(0,0,0,.28) !important;
+}
+
+.ame-tailoring-service .ame-bazaar-btn--primary {
+  background: var(--ame-premium-gold) !important;
+  border-color: var(--ame-premium-gold) !important;
+  color: #172033 !important;
+  box-shadow: 0 12px 30px rgba(245,158,11,.20);
+}
+
+/* ---------- AI Stylist ---------- */
+.ame-fashion-advisor {
+  background: linear-gradient(180deg, #fff 0%, #f8fafc 100%);
+}
+
+.ame-fashion-advisor .ame-advisor-card,
+.ame-fashion-advisor .ame-ai-advisor-box,
+.ame-fashion-advisor .ame-fashion-advisor-card {
+  border: 1px solid rgba(0,35,71,.10) !important;
+  border-radius: 18px !important;
+  background: rgba(255,255,255,.96) !important;
+  box-shadow: var(--ame-premium-shadow) !important;
+}
+
+/* ---------- About: fix contrast bug + elevate presentation ---------- */
+.ame-about-business-section {
+  background: var(--ame-premium-navy) !important;
+  color: #fff !important;
+  border-top: 1px solid rgba(245,158,11,.35);
+  border-bottom: 1px solid rgba(245,158,11,.35);
+}
+
+.ame-about-business-section .ame-about-title,
+.ame-about-business-section .ame-about-story-headline,
+.ame-about-business-section .ame-about-faq-headline {
+  color: #fff !important;
+}
+
+.ame-about-business-section .ame-about-subtitle,
+.ame-about-business-section .ame-about-story-para,
+.ame-about-business-section .ame-faq-answer,
+.ame-about-business-section .ame-faq-question {
+  color: rgba(255,255,255,.88) !important;
+}
+
+.ame-about-business-section .ame-about-business-layout {
+  gap: clamp(28px, 5vw, 70px) !important;
+}
+
+.ame-about-business-section .ame-pillar-box {
+  padding: 18px !important;
+  border: 1px solid rgba(255,255,255,.12) !important;
+  border-radius: 12px !important;
+  background: rgba(255,255,255,.035) !important;
+}
+
+.ame-about-business-section .ame-pillar-box h4,
+.ame-about-business-section .ame-usp-box h4 {
+  color: var(--ame-premium-gold) !important;
+}
+
+.ame-about-business-section .ame-pillar-box p,
+.ame-about-business-section .ame-usp-box p {
+  color: rgba(255,255,255,.82) !important;
+}
+
+.ame-about-business-section .ame-usp-box {
+  background: rgba(255,255,255,.06) !important;
+  border-left-color: var(--ame-premium-gold) !important;
+}
+
+.ame-about-business-section .ame-about-banner-wrapper {
+  box-shadow: 0 22px 55px rgba(0,0,0,.24) !important;
+}
+
+.ame-about-business-section .ame-about-badge {
+  color: #fff !important;
+  border-color: rgba(255,255,255,.18) !important;
+  background: rgba(255,255,255,.05) !important;
+}
+
+/* ---------- Store / location ---------- */
+.ame-visit-store-section {
+  background: var(--ame-premium-cream) !important;
+}
+
+.ame-visit-store-section img {
+  border-radius: 14px !important;
+  box-shadow: 0 18px 50px rgba(0,35,71,.12) !important;
+}
+
+/* ---------- Reviews / FAQ ---------- */
+.ame-reviews-section .ame-review-card,
+.ame-reviews-section .review-card,
+.ame-faq-section .ame-faq-item,
+.ame-faq-section .faq-item {
+  border: 1px solid rgba(0,35,71,.09) !important;
+  border-radius: 14px !important;
+  background: #fff !important;
+  box-shadow: 0 8px 30px rgba(0,35,71,.06);
+}
+
+/* ---------- Blog / Instagram ---------- */
+.ame-blog-preview-section,
+.ame-instagram-gallery-section {
+  background: #fff;
+}
+
+.ame-blog-preview-section img,
+.ame-instagram-gallery-section img {
+  border-radius: 14px;
+}
+
+/* ---------- WhatsApp CTA ---------- */
+.ame-whatsapp-cta-section {
+  background: linear-gradient(135deg, #f8fafc 0%, #fff 100%);
+}
+
+/* ---------- Reduce motion for accessibility ---------- */
+@media (prefers-reduced-motion: reduce) {
+  .ame-bazaar-home *,
+  .ame-bazaar-home *::before,
+  .ame-bazaar-home *::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ---------- Tablet ---------- */
+@media (max-width: 1023px) {
+  .ame-categories-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .ame-hero__editorial {
+    padding-top: 110px;
+  }
+}
+
+/* ---------- Mobile: fast, readable, thumb-friendly ---------- */
+@media (max-width: 767px) {
+  .ame-bazaar-home .ame-bazaar-container,
+  .ame-hero__editorial {
+    width: min(100% - 28px, 560px);
+  }
+
+  .ame-hero {
+    min-height: 680px;
+  }
+
+  .ame-hero__editorial {
+    min-height: 680px;
+    justify-content: flex-end;
+    padding: 100px 0 70px;
+  }
+
+  .ame-hero__overlay {
+    background:
+      linear-gradient(180deg, rgba(0,18,37,.12) 0%, rgba(0,18,37,.18) 35%, rgba(0,18,37,.84) 100%);
+  }
+
+  .ame-hero__headline {
+    font-size: clamp(2.75rem, 13vw, 4.2rem) !important;
+    max-width: 100%;
+  }
+
+  .ame-hero__sub {
+    font-size: .98rem !important;
+    max-width: 100%;
+  }
+
+  .ame-hero__actions {
+    width: 100%;
+  }
+
+  .ame-hero__actions .ame-hero-btn {
+    flex: 1 1 0;
+    min-width: 0;
+  }
+
+  .ame-categories-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 12px !important;
+  }
+
+  .ame-category-card-content {
+    padding: 13px !important;
+  }
+
+  .ame-category-card-title {
+    font-size: 1.05rem !important;
+  }
+
+  .ame-category-card-desc {
+    display: none;
+  }
+
+  .ame-category-card-btn {
+    min-height: 42px !important;
+    padding: .65rem .75rem !important;
+    font-size: .72rem !important;
+  }
+
+  .ame-categories-section,
+  .ame-featured-collections,
+  .ame-tailoring-service,
+  .ame-fashion-advisor,
+  .ame-why-choose-us,
+  .ame-reviews-section,
+  .ame-faq-section,
+  .ame-visit-store-section,
+  .ame-about-business-section,
+  .ame-blog-preview-section,
+  .ame-instagram-gallery-section,
+  .ame-whatsapp-cta-section {
+    padding-block: 64px;
+  }
+}
+
+@media (max-width: 420px) {
+  .ame-hero__actions {
+    flex-direction: column;
+  }
+
+  .ame-hero__actions .ame-hero-btn {
+    width: 100%;
+  }
+}
