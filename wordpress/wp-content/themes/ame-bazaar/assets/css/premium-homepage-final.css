@@ -1,1 +1,171 @@
-/* AME Bazaar premium homepage deployment marker — final UI layer intentionally empty. */
+/* AME Bazaar — Global Premium UI Layer
+ * Shared across homepage + inner pages.
+ * CSS-only refinement; preserves existing PHP, WooCommerce and content.
+ */
+
+:root {
+  --ame-global-navy: #002347;
+  --ame-global-navy-deep: #00182f;
+  --ame-global-blue-soft: #eef5fb;
+  --ame-global-gold: #f59e0b;
+}
+
+/* ================================================================
+   ALWAYS-VISIBLE PREMIUM HEADER
+   ================================================================ */
+.ame-header-luxury-wrapper {
+  position: fixed !important;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  z-index: 9998;
+  min-height: 88px;
+  box-sizing: border-box;
+  padding-block: 1.15rem !important;
+  background: rgba(255,255,255,.98) !important;
+  border-bottom: 1px solid rgba(0,35,71,.12) !important;
+  box-shadow: 0 8px 30px rgba(0,35,71,.08) !important;
+}
+
+.ame-bazaar-site-header { min-height: 88px; }
+
+body.admin-bar .ame-header-luxury-wrapper { top: 32px; }
+
+.ame-header-luxury-wrapper::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--ame-global-navy-deep), var(--ame-global-gold), var(--ame-global-navy-deep));
+}
+
+.ame-header-luxury-inner { min-height: 58px; }
+
+.ame-desktop-menu-luxury { gap: 2.25rem !important; }
+
+.ame-desktop-menu-luxury a {
+  font-size: 13px !important;
+  font-weight: 600 !important;
+  letter-spacing: .075em !important;
+  color: rgba(0,35,71,.72) !important;
+  padding: 7px 0 8px !important;
+}
+
+.ame-desktop-menu-luxury a:hover,
+.ame-desktop-menu-luxury .current-menu-item > a { color: var(--ame-global-navy) !important; }
+
+.ame-logo-img { max-height: 38px !important; }
+
+.ame-luxury-action-btn {
+  color: var(--ame-global-navy) !important;
+  opacity: .82 !important;
+}
+
+.ame-luxury-action-btn:hover {
+  color: var(--ame-global-gold) !important;
+  opacity: 1 !important;
+}
+
+.ame-luxury-pill-btn {
+  font-size: 12px !important;
+  padding: .72rem 1.5rem !important;
+}
+
+@media (max-width: 1023px) {
+  .ame-header-luxury-wrapper {
+    min-height: 72px;
+    padding-block: .8rem !important;
+  }
+  .ame-bazaar-site-header { min-height: 72px; }
+  .ame-header-luxury-inner { min-height: 48px; }
+  .ame-logo-img { max-height: 34px !important; }
+}
+
+@media (max-width: 782px) {
+  body.admin-bar .ame-header-luxury-wrapper { top: 46px; }
+}
+
+/* ================================================================
+   INNER-PAGE HERO / TEXT CONTRAST FIX
+   ================================================================ */
+body.page .entry-content > :is(section, div, .wp-block-group):first-child {
+  position: relative;
+  isolation: isolate;
+}
+
+/* AME Bazaar's custom page hero is the first content block. */
+body.page .entry-content > :is(section, div, .wp-block-group):first-child h1,
+body.page .entry-content > :is(section, div, .wp-block-group):first-child h2,
+body.page .entry-content > :is(section, div, .wp-block-group):first-child h3 {
+  color: #fff !important;
+  text-shadow: 0 3px 18px rgba(0,0,0,.28) !important;
+}
+
+body.page .entry-content > :is(section, div, .wp-block-group):first-child p {
+  color: rgba(255,255,255,.92) !important;
+}
+
+body.page .entry-content > :is(section, div, .wp-block-group):first-child :is(a, .button, .wp-element-button) {
+  color: var(--ame-global-navy) !important;
+  background: #fff !important;
+  border-color: rgba(255,255,255,.8) !important;
+}
+
+body.page .entry-content > :is(section, div, .wp-block-group):first-child :is(.eyebrow, .label, small) {
+  color: var(--ame-global-gold) !important;
+}
+
+/* ================================================================
+   BRAND-COLOR RHYTHM — subtle blue sections between white sections
+   ================================================================ */
+.ame-bazaar-home .ame-why-choose-us {
+  background: linear-gradient(180deg, #f5f9fd 0%, #eaf3fa 100%) !important;
+  border-top: 1px solid rgba(0,35,71,.06);
+  border-bottom: 1px solid rgba(0,35,71,.06);
+}
+
+.ame-bazaar-home .ame-reviews-section {
+  background: linear-gradient(180deg, #eef5fb 0%, #f8fbfd 100%) !important;
+}
+
+.ame-bazaar-home .ame-visit-store-section {
+  background: linear-gradient(180deg, #fff 0%, #f1f6fa 100%) !important;
+  border-top: 1px solid rgba(0,35,71,.07);
+}
+
+.ame-bazaar-home .ame-why-choose-us::before,
+.ame-bazaar-home .ame-reviews-section::before,
+.ame-bazaar-home .ame-visit-store-section::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: min(180px, 28vw);
+  height: 3px;
+  transform: translateX(-50%);
+  background: linear-gradient(90deg, transparent, var(--ame-global-gold), transparent);
+  opacity: .8;
+}
+
+/* ================================================================
+   HERO VIDEO — suppress poster flash during initial decode
+   ================================================================ */
+.ame-hero__video {
+  opacity: 0;
+  animation: ame-video-reveal .9s ease .22s forwards;
+}
+
+@keyframes ame-video-reveal {
+  to { opacity: 1; }
+}
+
+.ame-hero__stage { background: var(--ame-global-navy-deep) !important; }
+
+/* ================================================================
+   GENERAL READABILITY
+   ================================================================ */
+.ame-bazaar-home :is(h1,h2,h3,h4,h5,h6) { text-wrap: balance; }
+.ame-bazaar-home :is(a,button,.ame-bazaar-btn,.ame-hero-btn) { -webkit-tap-highlight-color: transparent; }
