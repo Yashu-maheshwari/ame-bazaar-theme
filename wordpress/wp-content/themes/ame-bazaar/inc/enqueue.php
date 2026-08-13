@@ -46,6 +46,16 @@ function ame_bazaar_enqueue_assets() {
 		ame_bazaar_asset_version( 'assets/css/main.css' )
 	);
 
+	// Premium homepage UI layer. CSS-only refinement; no backend/template replacement.
+	if ( is_front_page() || is_home() ) {
+		wp_enqueue_style(
+			'ame-bazaar-premium-homepage',
+			ame_bazaar_asset_uri( 'assets/css/premium-homepage.css' ),
+			array( 'ame-bazaar-main' ),
+			ame_bazaar_asset_version( 'assets/css/premium-homepage.css' )
+		);
+	}
+
 	// GSAP for cinematic hero animations — loaded only where needed (homepage)
 	if ( is_front_page() || is_home() ) {
 		wp_enqueue_script(
