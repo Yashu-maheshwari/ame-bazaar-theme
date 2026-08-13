@@ -46,20 +46,22 @@ function ame_bazaar_enqueue_assets() {
 		ame_bazaar_asset_version( 'assets/css/main.css' )
 	);
 
+	// Global premium UI layer: fixed navigation, inner-page contrast, visual rhythm.
+	// Loaded site-wide so the header and readability fixes apply consistently on every page.
+	wp_enqueue_style(
+		'ame-bazaar-premium-global',
+		ame_bazaar_asset_uri( 'assets/css/premium-homepage-final.css' ),
+		array( 'ame-bazaar-main' ),
+		ame_bazaar_asset_version( 'assets/css/premium-homepage-final.css' )
+	);
+
 	// Premium homepage UI layer. CSS-only refinement; no backend/template replacement.
 	if ( is_front_page() || is_home() ) {
 		wp_enqueue_style(
 			'ame-bazaar-premium-homepage',
 			ame_bazaar_asset_uri( 'assets/css/premium-homepage.css' ),
-			array( 'ame-bazaar-main' ),
+			array( 'ame-bazaar-premium-global' ),
 			ame_bazaar_asset_version( 'assets/css/premium-homepage.css' )
-		);
-
-		wp_enqueue_style(
-			'ame-bazaar-premium-homepage-final',
-			ame_bazaar_asset_uri( 'assets/css/premium-homepage-final.css' ),
-			array( 'ame-bazaar-premium-homepage' ),
-			ame_bazaar_asset_version( 'assets/css/premium-homepage-final.css' )
 		);
 	}
 
