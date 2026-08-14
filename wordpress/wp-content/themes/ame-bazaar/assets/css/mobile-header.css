@@ -134,19 +134,23 @@
         color: rgba(255, 255, 255, 0.9);
         width: 34px;
         height: 34px;
-        background: rgba(255, 255, 255, 0.03);
-        border: 1px solid rgba(255, 255, 255, 0.05);
-        border-radius: 50%; /* Premium circular touch target */
-        text-decoration: none;
+        background: rgba(255, 255, 255, 0.03) !important; /* Force reset */
+        border: 1px solid rgba(255, 255, 255, 0.05) !important; /* Force reset */
+        border-radius: 50% !important; /* Premium circular touch target */
+        text-decoration: none !important;
         transition: all 0.2s ease;
         position: relative;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        box-shadow: 0 2px 4px rgba(0,0,0,0.05) !important;
+        padding: 0 !important; /* Prevent theme button padding overrides */
+        margin: 0 !important;
+        outline: none !important;
+        flex-shrink: 0;
     }
 
     .ame-mobile-icon-btn:hover {
         color: var(--ame-color-gold, #d4af37);
-        border-color: rgba(212, 175, 55, 0.3);
-        background: rgba(255, 255, 255, 0.08);
+        border-color: rgba(212, 175, 55, 0.3) !important;
+        background: rgba(255, 255, 255, 0.08) !important;
     }
 
     .ame-mobile-icon-btn svg {
@@ -167,16 +171,26 @@
 
     /* Row 2: Navigation Rail */
     .ame-mobile-header-row-2 {
-        background: #001a36; /* Very dark navy surface */
-        border-top: 1px solid rgba(255, 255, 255, 0.04);
-        border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+        background: transparent; /* No background on the row itself */
         width: 100%;
+        padding: 0.25rem 0.75rem 0.75rem 0.75rem; /* Space around the rail */
+        display: flex;
+        justify-content: center;
+    }
+
+    .ame-mobile-nav-rail-container {
+        width: 100%;
+        max-width: 100%;
+        background: rgba(255, 255, 255, 0.06); /* Premium translucent surface */
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 30px; /* Premium pill/rounded shape */
         overflow-x: auto;
         -webkit-overflow-scrolling: touch;
         scrollbar-width: none; /* Firefox */
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
     }
 
-    .ame-mobile-header-row-2::-webkit-scrollbar {
+    .ame-mobile-nav-rail-container::-webkit-scrollbar {
         display: none; /* Safari/Chrome */
     }
 
@@ -184,10 +198,10 @@
         display: inline-flex;
         align-items: center;
         gap: 1.5rem;
-        padding: 0.7rem 1rem;
+        padding: 0.6rem 1.25rem; /* Inner padding inside the pill */
         margin: 0;
         list-style: none;
-        min-width: max-content;
+        min-width: max-content; /* Force single line, allow scrolling */
     }
 
     .ame-mobile-nav-rail li a {

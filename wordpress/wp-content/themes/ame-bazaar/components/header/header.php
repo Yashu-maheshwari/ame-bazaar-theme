@@ -171,9 +171,9 @@ $logo_id = get_option( 'ame_bazaar_media_primary_logo' ) ?: get_theme_mod( 'cust
 
 		<!-- Right: Icons -->
 		<div class="ame-mobile-header-right">
-			<button class="ame-mobile-icon-btn ame-search-toggle" aria-label="<?php esc_attr_e( 'Search', 'ame-bazaar' ); ?>">
+			<a href="#" class="ame-mobile-icon-btn ame-search-toggle" aria-label="<?php esc_attr_e( 'Search', 'ame-bazaar' ); ?>">
 				<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square"><circle cx="11" cy="11" r="7"></circle><line x1="21" y1="21" x2="16" y2="16"></line></svg>
-			</button>
+			</a>
 			<a href="<?php echo esc_url( $wishlist_url ); ?>" class="ame-mobile-icon-btn" aria-label="<?php esc_attr_e( 'Wishlist', 'ame-bazaar' ); ?>">
 				<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
 			</a>
@@ -191,14 +191,16 @@ $logo_id = get_option( 'ame_bazaar_media_primary_logo' ) ?: get_theme_mod( 'cust
 
 	<!-- Row 2: Navigation Rail -->
 	<div class="ame-mobile-header-row-2">
-		<ul class="ame-mobile-nav-rail">
-			<li><a href="<?php echo esc_url( home_url( '/' ) ); ?>"><?php esc_html_e( 'Home', 'ame-bazaar' ); ?></a></li>
-			<li><a href="<?php echo esc_url( home_url( '/about-ame-bazaar/' ) ); ?>"><?php esc_html_e( 'About', 'ame-bazaar' ); ?></a></li>
-			<li><a href="<?php echo esc_url( home_url( '/shop/' ) ); ?>"><?php esc_html_e( 'Shop', 'ame-bazaar' ); ?></a></li>
-			<li><a href="<?php echo esc_url( home_url( '/faq/' ) ); ?>"><?php esc_html_e( 'FAQ', 'ame-bazaar' ); ?></a></li>
-			<li><a href="<?php echo esc_url( home_url( '/fashion-advisor/' ) ); ?>"><?php esc_html_e( 'Fashion Advisor', 'ame-bazaar' ); ?></a></li>
-			<li><a href="<?php echo esc_url( home_url( '/contact/' ) ); ?>"><?php esc_html_e( 'Contact', 'ame-bazaar' ); ?></a></li>
-		</ul>
+		<div class="ame-mobile-nav-rail-container">
+			<ul class="ame-mobile-nav-rail">
+				<li><a href="<?php echo esc_url( home_url( '/' ) ); ?>"><?php esc_html_e( 'Home', 'ame-bazaar' ); ?></a></li>
+				<li><a href="<?php echo esc_url( home_url( '/about-ame-bazaar/' ) ); ?>"><?php esc_html_e( 'About', 'ame-bazaar' ); ?></a></li>
+				<li><a href="<?php echo esc_url( home_url( '/shop/' ) ); ?>"><?php esc_html_e( 'Shop', 'ame-bazaar' ); ?></a></li>
+				<li><a href="<?php echo esc_url( home_url( '/faq/' ) ); ?>"><?php esc_html_e( 'FAQ', 'ame-bazaar' ); ?></a></li>
+				<li><a href="<?php echo esc_url( home_url( '/fashion-advisor/' ) ); ?>"><?php esc_html_e( 'Fashion Advisor', 'ame-bazaar' ); ?></a></li>
+				<li><a href="<?php echo esc_url( home_url( '/contact/' ) ); ?>"><?php esc_html_e( 'Contact', 'ame-bazaar' ); ?></a></li>
+			</ul>
+		</div>
 	</div>
 </header>
 
