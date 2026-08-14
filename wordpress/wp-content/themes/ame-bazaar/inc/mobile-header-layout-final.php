@@ -20,8 +20,6 @@ add_action( 'wp_enqueue_scripts', function () {
         width: 100% !important;
         min-height: 102px !important;
     }
-
-    /* New left action zone: Call Now + Visit Store. */
     .ame-mobile-pill-zone {
         grid-column: 1 !important;
         grid-row: 1 !important;
@@ -47,8 +45,6 @@ add_action( 'wp_enqueue_scripts', function () {
         flex: 1 1 0 !important;
         max-width: 86px !important;
     }
-
-    /* Logo is genuinely centered in the viewport/header grid. */
     .ame-header-luxury-center {
         grid-column: 2 !important;
         grid-row: 1 !important;
@@ -72,8 +68,6 @@ add_action( 'wp_enqueue_scripts', function () {
         max-height: 42px !important;
         object-fit: contain !important;
     }
-
-    /* Existing right-side icons stay together; pills are moved out by JS. */
     .ame-header-luxury-right {
         grid-column: 3 !important;
         grid-row: 1 !important;
@@ -84,9 +78,7 @@ add_action( 'wp_enqueue_scripts', function () {
         min-width: 0 !important;
         white-space: nowrap !important;
     }
-    .ame-header-luxury-right .ame-luxury-pill-btn {
-        display: none !important;
-    }
+    .ame-header-luxury-right .ame-luxury-pill-btn { display: none !important; }
     .ame-header-luxury-right .ame-luxury-action-btn {
         flex: 0 0 auto !important;
         width: 30px !important;
@@ -97,12 +89,7 @@ add_action( 'wp_enqueue_scripts', function () {
         display: grid !important;
         place-items: center !important;
     }
-    .ame-header-luxury-right .ame-luxury-icon {
-        width: 15px !important;
-        height: 15px !important;
-    }
-
-    /* Navigation remains the clean second row. */
+    .ame-header-luxury-right .ame-luxury-icon { width: 15px !important; height: 15px !important; }
     .ame-header-luxury-left {
         grid-column: 1 / -1 !important;
         grid-row: 2 !important;
@@ -135,13 +122,10 @@ add_action( 'wp_enqueue_scripts', function () {
         white-space: nowrap !important;
     }
 }
-
 @media (max-width: 390px) {
-    .ame-header-luxury-wrapper {
-        padding-inline: 7px !important;
-    }
+    .ame-header-luxury-wrapper { padding-inline: 7px !important; }
     .ame-header-luxury-inner {
-        grid-template-columns: minmax(0,1fr) 48px minmax(0,1fr) !important;
+        grid-template-columns: minmax(0,1fr) 58px minmax(0,1fr) !important;
         column-gap: 3px !important;
     }
     .ame-mobile-pill-zone { gap: 3px !important; }
@@ -150,10 +134,7 @@ add_action( 'wp_enqueue_scripts', function () {
         font-size: 7.2px !important;
         max-width: 78px !important;
     }
-    .ame-logo-img {
-        max-width: 48px !important;
-        max-height: 39px !important;
-    }
+    .ame-logo-img { max-width: 54px !important; max-height: 42px !important; }
     .ame-header-luxury-right { gap: 2px !important; }
     .ame-header-luxury-right .ame-luxury-action-btn {
         width: 27px !important;
@@ -161,14 +142,8 @@ add_action( 'wp_enqueue_scripts', function () {
         min-width: 27px !important;
         min-height: 27px !important;
     }
-    .ame-header-luxury-right .ame-luxury-icon {
-        width: 14px !important;
-        height: 14px !important;
-    }
-    .ame-desktop-nav-luxury a {
-        font-size: 8px !important;
-        padding-inline: 8px !important;
-    }
+    .ame-header-luxury-right .ame-luxury-icon { width: 14px !important; height: 14px !important; }
+    .ame-desktop-nav-luxury a { font-size: 8px !important; padding-inline: 8px !important; }
 }
 CSS;
 
@@ -177,7 +152,6 @@ CSS;
     wp_add_inline_style( 'ame-bazaar-mobile-header-layout-final', $css );
 }, 1200 );
 
-/* Move the existing Call/Visit buttons into the left zone without changing desktop markup. */
 add_action( 'wp_footer', function () {
     ?>
     <script>
@@ -189,25 +163,19 @@ add_action( 'wp_footer', function () {
             var center = inner && inner.querySelector('.ame-header-luxury-center');
             if (!inner || !right || !center) return;
             if (inner.querySelector('.ame-mobile-pill-zone')) return;
-
             var pills = right.querySelectorAll('.ame-luxury-pill-btn');
             if (!pills.length) return;
-
             var zone = document.createElement('div');
             zone.className = 'ame-mobile-pill-zone';
             pills.forEach(function (pill) { zone.appendChild(pill); });
             inner.insertBefore(zone, center);
         }
-
         function run() {
             arrangeAmeMobileHeader();
             setTimeout(arrangeAmeMobileHeader, 100);
         }
-        if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', run);
-        } else {
-            run();
-        }
+        if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', run);
+        else run();
         window.addEventListener('resize', arrangeAmeMobileHeader, { passive: true });
     })();
     </script>
