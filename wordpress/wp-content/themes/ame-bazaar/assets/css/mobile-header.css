@@ -1,0 +1,235 @@
+/* ==========================================================================
+   MOBILE HEADER - PREMIUM REDESIGN (Ticket #035)
+   ========================================================================== */
+
+/* Utility to completely hide mobile header on desktop */
+@media (min-width: 1024px) {
+    .hide-on-desktop {
+        display: none !important;
+    }
+}
+
+/* Utility to completely hide desktop header on mobile */
+@media (max-width: 1023px) {
+    .hide-on-mobile {
+        display: none !important;
+    }
+}
+
+/* --------------------------------------------------------------------------
+   Mobile Premium Header Architecture (Max Width 1023px)
+   -------------------------------------------------------------------------- */
+@media (max-width: 1023px) {
+    
+    body {
+        /* Ensure no horizontal scroll */
+        overflow-x: hidden !important;
+    }
+
+    .ame-mobile-header-premium {
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+        background: var(--ame-color-primary, #002347);
+        /* Subtle glow around the center logo */
+        background-image: radial-gradient(circle at 50% 0%, rgba(0, 77, 153, 0.4) 0%, transparent 60%);
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+        border-bottom: 1px solid rgba(212, 175, 55, 0.2); /* Subtle gold accent line */
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+    }
+
+    /* Row 1: 3-Zone Layout */
+    .ame-mobile-header-row-1 {
+        display: grid;
+        grid-template-columns: 1fr auto 1fr;
+        align-items: center;
+        padding: 0.5rem 0.75rem;
+        min-height: 70px; /* Base height to give logo plate room */
+        gap: 0.5rem;
+    }
+
+    /* Left Zone: Call / Visit */
+    .ame-mobile-header-left {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        justify-content: flex-start;
+    }
+
+    .ame-mobile-cta {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        background: rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        border-radius: 4px;
+        color: #ffffff;
+        font-family: 'Inter', sans-serif;
+        font-size: 10px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        padding: 0.4rem 0.6rem;
+        text-decoration: none;
+        transition: all 0.2s ease;
+        white-space: nowrap;
+    }
+
+    .ame-mobile-cta:hover {
+        background: var(--ame-color-gold, #d4af37);
+        color: #ffffff;
+        border-color: var(--ame-color-gold, #d4af37);
+    }
+
+    .ame-mobile-cta svg {
+        width: 14px;
+        height: 14px;
+        margin-right: 4px;
+    }
+
+    /* Center Zone: The Logo Plate */
+    .ame-mobile-header-center {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .ame-mobile-logo-plate {
+        background: #ffffff;
+        border-radius: 6px;
+        padding: 0.5rem 1rem;
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15), 0 2px 4px rgba(0, 0, 0, 0.1);
+        border: 1px solid rgba(212, 175, 55, 0.3);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        /* Pull it up slightly for elevation */
+        transform: translateY(4px);
+        z-index: 10;
+        transition: transform 0.2s ease;
+    }
+
+    .ame-mobile-logo-plate img {
+        height: 32px;
+        width: auto;
+        object-fit: contain;
+    }
+
+    /* Right Zone: Icons */
+    .ame-mobile-header-right {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        gap: 0.5rem;
+    }
+
+    .ame-mobile-icon-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        color: #ffffff;
+        width: 32px;
+        height: 32px;
+        text-decoration: none;
+        transition: color 0.2s ease;
+        position: relative;
+    }
+
+    .ame-mobile-icon-btn:hover {
+        color: var(--ame-color-gold, #d4af37);
+    }
+
+    .ame-mobile-icon-btn svg {
+        width: 20px;
+        height: 20px;
+    }
+
+    .ame-mobile-cart-badge {
+        position: absolute;
+        top: 2px;
+        right: 2px;
+        background: var(--ame-color-gold, #d4af37);
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+    }
+
+    /* Row 2: Navigation Rail */
+    .ame-mobile-header-row-2 {
+        background: rgba(255, 255, 255, 0.03);
+        border-top: 1px solid rgba(255, 255, 255, 0.05);
+        width: 100%;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none; /* Firefox */
+    }
+
+    .ame-mobile-header-row-2::-webkit-scrollbar {
+        display: none; /* Safari/Chrome */
+    }
+
+    .ame-mobile-nav-rail {
+        display: inline-flex;
+        align-items: center;
+        gap: 1.2rem;
+        padding: 0.6rem 1rem;
+        margin: 0;
+        list-style: none;
+        min-width: max-content;
+    }
+
+    .ame-mobile-nav-rail li a {
+        font-family: 'Inter', sans-serif;
+        font-size: 11px;
+        font-weight: 600;
+        color: rgba(255, 255, 255, 0.85);
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        text-decoration: none;
+        white-space: nowrap;
+        transition: color 0.2s ease;
+    }
+
+    .ame-mobile-nav-rail li a:hover {
+        color: var(--ame-color-gold, #d4af37);
+    }
+
+    /* --------------------------------------------------------------------------
+       Hero Transition (Mobile Only)
+       -------------------------------------------------------------------------- */
+    .ame-hero-video-section, .ame-hero-section {
+        position: relative;
+    }
+    
+    /* Clean gradient overlay bridging header and hero */
+    .ame-hero-video-section::before, .ame-hero-section::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 80px;
+        background: linear-gradient(to bottom, var(--ame-color-primary, #002347) 0%, transparent 100%);
+        z-index: 10;
+        pointer-events: none;
+    }
+
+    /* Prevent clipping on extremely small devices */
+    @media (max-width: 375px) {
+        .ame-mobile-cta span.label {
+            display: none; /* Hide text, keep icons on very small screens to avoid overlap */
+        }
+        .ame-mobile-cta {
+            padding: 0.4rem;
+        }
+        .ame-mobile-cta svg {
+            margin-right: 0;
+        }
+        .ame-mobile-header-row-1 {
+            gap: 0.25rem;
+            padding: 0.5rem;
+        }
+    }
+}

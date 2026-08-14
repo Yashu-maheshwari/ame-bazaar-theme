@@ -65,6 +65,12 @@ function ame_bazaar_enqueue_assets() {
 		);
 	}
 
+	wp_enqueue_style(
+		'ame-bazaar-mobile-header',
+		ame_bazaar_asset_uri( 'assets/css/mobile-header.css' ),
+		array( 'ame-bazaar-main' ),
+		ame_bazaar_asset_version( 'assets/css/mobile-header.css' )
+	);
 	// GSAP for cinematic hero animations — loaded only where needed (homepage)
 	if ( is_front_page() || is_home() ) {
 		wp_enqueue_script(
