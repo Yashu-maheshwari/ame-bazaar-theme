@@ -97,6 +97,7 @@ require_once AME_BAZAAR_PATH . '/inc/class-ai-advisor.php';
 require_once AME_BAZAAR_PATH . '/inc/faq-data.php';
 require_once AME_BAZAAR_PATH . '/inc/final-ui-fixes.php';
 require_once AME_BAZAAR_PATH . '/inc/mobile-whatsapp-final-fix.php';
+require_once AME_BAZAAR_PATH . '/inc/mobile-header-layout-final.php';
 require_once AME_BAZAAR_PATH . '/components/local-entity/trust-cards.php';
 require_once AME_BAZAAR_PATH . '/components/local-entity/review-card.php';
 require_once AME_BAZAAR_PATH . '/components/local-entity/review-summary.php';
