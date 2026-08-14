@@ -42,7 +42,6 @@ function ame_bazaar_publish_all_drafts_callback() {
 		}
 	}
 
-	// Fetch final counts
 	$total_products = count( get_posts( array(
 		'post_type'   => 'product',
 		'post_status' => array( 'publish', 'draft' ),
@@ -65,11 +64,11 @@ function ame_bazaar_publish_all_drafts_callback() {
 	) ) );
 
 	return new WP_REST_Response( array(
-		'status'            => 'success',
-		'total_drafts_found'=> $total_found,
-		'published_count'   => $published,
-		'failed_ids'        => $failed_ids,
-		'after' => array(
+		'status'             => 'success',
+		'total_drafts_found' => $total_found,
+		'published_count'    => $published,
+		'failed_ids'         => $failed_ids,
+		'after'              => array(
 			'total_products'  => $total_products,
 			'published_count' => $published_count,
 			'draft_count'     => $draft_count
@@ -96,6 +95,7 @@ require_once AME_BAZAAR_PATH . '/inc/admin-operations.php';
 require_once AME_BAZAAR_PATH . '/inc/unified-cms.php';
 require_once AME_BAZAAR_PATH . '/inc/class-ai-advisor.php';
 require_once AME_BAZAAR_PATH . '/inc/faq-data.php';
+require_once AME_BAZAAR_PATH . '/inc/final-ui-fixes.php';
 require_once AME_BAZAAR_PATH . '/components/local-entity/trust-cards.php';
 require_once AME_BAZAAR_PATH . '/components/local-entity/review-card.php';
 require_once AME_BAZAAR_PATH . '/components/local-entity/review-summary.php';
