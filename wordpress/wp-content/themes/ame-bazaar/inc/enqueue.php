@@ -71,6 +71,16 @@ function ame_bazaar_enqueue_assets() {
 		array( 'ame-bazaar-main' ),
 		ame_bazaar_asset_version( 'assets/css/mobile-header.css' )
 	);
+
+	// Mobile header interaction bridge: search + wishlist controls.
+	wp_enqueue_script(
+		'ame-bazaar-mobile-header-interactions',
+		ame_bazaar_asset_uri( 'assets/js/mobile-header-interactions.js' ),
+		array( 'ame-bazaar-global' ),
+		ame_bazaar_asset_version( 'assets/js/mobile-header-interactions.js' ),
+		true
+	);
+
 	// GSAP for cinematic hero animations — loaded only where needed (homepage)
 	if ( is_front_page() || is_home() ) {
 		wp_enqueue_script(
