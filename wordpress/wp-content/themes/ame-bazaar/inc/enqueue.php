@@ -72,15 +72,6 @@ function ame_bazaar_enqueue_assets() {
 		ame_bazaar_asset_version( 'assets/css/mobile-header.css' )
 	);
 
-	// Mobile header interaction bridge: search + wishlist controls.
-	wp_enqueue_script(
-		'ame-bazaar-mobile-header-interactions',
-		ame_bazaar_asset_uri( 'assets/js/mobile-header-interactions.js' ),
-		array( 'ame-bazaar-global' ),
-		ame_bazaar_asset_version( 'assets/js/mobile-header-interactions.js' ),
-		true
-	);
-
 	// GSAP for cinematic hero animations — loaded only where needed (homepage)
 	if ( is_front_page() || is_home() ) {
 		wp_enqueue_script(
@@ -107,6 +98,16 @@ function ame_bazaar_enqueue_assets() {
 			'ajaxurl' => admin_url( 'admin-ajax.php' ),
 			'nonce'   => wp_create_nonce( 'ame_bazaar_search_nonce' ),
 		)
+	);
+
+	// Independent mobile interaction bridge. It intentionally has no dependency
+	// on global.js so the header controls still work if another script fails.
+	wp_enqueue_script(
+		'ame-bazaar-mobile-header-interactions',
+		ame_bazaar_asset_uri( 'assets/js/mobile-header-interactions.js' ),
+		array(),
+		ame_bazaar_asset_version( 'assets/js/mobile-header-interactions.js' ),
+		true
 	);
 
 	if ( is_singular() && comments_open() && get_option( 'thread_comments' ) ) {
