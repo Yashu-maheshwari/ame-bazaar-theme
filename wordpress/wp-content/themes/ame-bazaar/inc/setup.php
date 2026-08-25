@@ -101,7 +101,7 @@ function ame_bazaar_render_opengraph_meta_in_head() {
 	<meta name="twitter:title" content="<?php echo esc_attr( wp_get_document_title() ); ?>" />
 	<?php
 }
-add_action( 'wp_head', 'ame_bazaar_render_opengraph_meta_in_head' );
+// add_action( 'wp_head', 'ame_bazaar_render_opengraph_meta_in_head' ); // Commented out to prevent duplicate OpenGraph tags (handled by inc/seo.php)
 
 
 /**

@@ -147,3 +147,46 @@ function ame_bazaar_optimize_homepage_title( $title_parts ) {
 	return $title_parts;
 }
 add_filter( 'document_title_parts', 'ame_bazaar_optimize_homepage_title', 10 );
+
+/**
+ * Register post meta keys for the SEO agent REST API access.
+ */
+function ame_bazaar_register_seo_meta() {
+	$post_types = array( 'post', 'page', 'product' );
+	foreach ( $post_types as $type ) {
+		register_post_meta( $type, '_ame_seo_title', array(
+			'show_in_rest'  => true,
+			'single'        => true,
+			'type'          => 'string',
+			'auth_callback' => function() {
+				return current_user_can( 'edit_posts' );
+			},
+		) );
+		register_post_meta( $type, '_ame_seo_desc', array(
+			'show_in_rest'  => true,
+			'single'        => true,
+			'type'          => 'string',
+			'auth_callback' => function() {
+				return current_user_can( 'edit_posts' );
+			},
+		) );
+		register_post_meta( $type, '_ame_canonical_url', array(
+			'show_in_rest'  => true,
+			'single'        => true,
+			'type'          => 'string',
+			'auth_callback' => function() {
+				return current_user_can( 'edit_posts' );
+			},
+		) );
+		register_post_meta( $type, '_ame_og_image', array(
+			'show_in_rest'  => true,
+			'single'        => true,
+			'type'          => 'string',
+			'auth_callback' => function() {
+				return current_user_can( 'edit_posts' );
+			},
+		) );
+	}
+}
+add_action( 'init', 'ame_bazaar_register_seo_meta' );
+
