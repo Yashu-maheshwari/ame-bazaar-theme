@@ -96,16 +96,19 @@ async function run() {
     const uniqueLinks = [...new Set(rawLinks)].filter(l => l && l.startsWith(TARGET_URL));
 
     console.log(`Checking ${uniqueLinks.length} internal links...`);
+    const browserHeaders = {
+      'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36'
+    };
     for (const link of uniqueLinks) {
       try {
-        const res = await axios.head(link, { timeout: 5000, validateStatus: () => true });
+        const res = await axios.head(link, { headers: browserHeaders, timeout: 5000, validateStatus: () => true });
         if (res.status >= 400) {
           report.brokenLinks.push({ url: link, status: res.status });
         }
       } catch (err) {
         // Fallback to GET on HEAD failure
         try {
-          const resGet = await axios.get(link, { timeout: 5000, validateStatus: () => true });
+          const resGet = await axios.get(link, { headers: browserHeaders, timeout: 5000, validateStatus: () => true });
           if (resGet.status >= 400) {
             report.brokenLinks.push({ url: link, status: resGet.status });
           }
