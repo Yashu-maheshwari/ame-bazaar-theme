@@ -96,7 +96,15 @@ $logo_id = get_option( 'ame_bazaar_media_primary_logo' ) ?: get_theme_mod( 'cust
 			</button>
 
 			<!-- Wishlist -->
-			<?php $wishlist_url = function_exists( 'YITH_WCWL' ) ? YITH_WCWL()->get_wishlist_url() : '#'; ?>
+			<?php 
+			$wishlist_url = home_url( '/my-account/' );
+			if ( function_exists( 'YITH_WCWL' ) ) {
+				$raw_url = YITH_WCWL()->get_wishlist_url();
+				if ( get_page_by_path( 'wishlist' ) ) {
+					$wishlist_url = $raw_url;
+				}
+			}
+			?>
 			<a href="<?php echo esc_url( $wishlist_url ); ?>" class="ame-luxury-action-btn" aria-label="<?php esc_attr_e( 'Wishlist', 'ame-bazaar' ); ?>">
 				<svg class="ame-luxury-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="square" aria-hidden="true">
 					<path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
