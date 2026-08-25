@@ -80,8 +80,11 @@ $categories = array(
 				
 				// Enforce strict business order requested for Phase 1 completion
 				$order_map = array(
+					'men'              => 1,
 					'mens-wear'        => 1,
+					'women'            => 2,
 					'womens-wear'      => 2,
+					'kids'             => 3,
 					'kids-wear'        => 3,
 					'footwear'         => 4,
 					'accessories'      => 5,
@@ -124,7 +127,7 @@ $categories = array(
 					}
 					
 					// Hide categories without products
-					if ( $total_products === 0 && ! in_array( $key, array( 'mens-wear', 'womens-wear', 'kids-wear', 'accessories', 'footwear' ) ) ) {
+					if ( $total_products === 0 && ! in_array( $key, array( 'men', 'mens-wear', 'women', 'womens-wear', 'kids', 'kids-wear', 'accessories', 'footwear' ) ) ) {
 						continue;
 					}
 					

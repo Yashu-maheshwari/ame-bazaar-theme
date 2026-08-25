@@ -236,22 +236,22 @@ function ame_bazaar_get_clothing_store_schema() {
 			array(
 				'@type' => 'OfferCatalog',
 				'name'  => 'Men\'s Wear Collection',
-				'url'   => home_url( '/category/mens-wear/' ),
+				'url'   => home_url( '/product-category/men/' ),
 			),
 			array(
 				'@type' => 'OfferCatalog',
 				'name'  => 'Women\'s Wear Collection',
-				'url'   => home_url( '/category/womens-wear/' ),
+				'url'   => home_url( '/product-category/women/' ),
 			),
 			array(
 				'@type' => 'OfferCatalog',
 				'name'  => 'Kids\' Wear Collection',
-				'url'   => home_url( '/category/kids-wear/' ),
+				'url'   => home_url( '/product-category/kids/' ),
 			),
 			array(
 				'@type' => 'OfferCatalog',
 				'name'  => 'Accessories Collection',
-				'url'   => home_url( '/category/accessories/' ),
+				'url'   => home_url( '/product-category/accessories/' ),
 			),
 			array(
 				'@type' => 'OfferCatalog',

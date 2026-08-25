@@ -433,10 +433,10 @@ do_action( 'woocommerce_before_main_content' );
 						<div style="border-top: 1px solid #e2e8f0; padding-top: 1.5rem;">
 							<h4 style="font-size: 0.85rem; font-weight: 800; color: var(--ame-color-navy); margin-top: 0; margin-bottom: 1rem; text-transform: uppercase; letter-spacing: 0.05em;">Explore Related Categories</h4>
 							<div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 0.5rem;">
-								<a href="<?php echo esc_url( home_url( '/product-category/mens-wear/' ) ); ?>" class="ame-ai-topic-chip" style="font-size: 0.8rem; padding: 0.4rem 1rem; border-radius: 40px; background: #f1f5f9; color: #334155; text-decoration: none; font-weight: 600;">Men's Wear</a>
-								<a href="<?php echo esc_url( home_url( '/product-category/womens-wear/' ) ); ?>" class="ame-ai-topic-chip" style="font-size: 0.8rem; padding: 0.4rem 1rem; border-radius: 40px; background: #f1f5f9; color: #334155; text-decoration: none; font-weight: 600;">Women's Wear</a>
-								<a href="<?php echo esc_url( home_url( '/product-category/kids-wear/' ) ); ?>" class="ame-ai-topic-chip" style="font-size: 0.8rem; padding: 0.4rem 1rem; border-radius: 40px; background: #f1f5f9; color: #334155; text-decoration: none; font-weight: 600;">Kids Wear</a>
-								<a href="<?php echo esc_url( home_url( '/product-category/sarees/' ) ); ?>" class="ame-ai-topic-chip" style="font-size: 0.8rem; padding: 0.4rem 1rem; border-radius: 40px; background: #f1f5f9; color: #334155; text-decoration: none; font-weight: 600;">Sarees</a>
+								<a href="<?php echo esc_url( home_url( '/product-category/men/' ) ); ?>" class="ame-ai-topic-chip" style="font-size: 0.8rem; padding: 0.4rem 1rem; border-radius: 40px; background: #f1f5f9; color: #334155; text-decoration: none; font-weight: 600;">Men's Wear</a>
+								<a href="<?php echo esc_url( home_url( '/product-category/women/' ) ); ?>" class="ame-ai-topic-chip" style="font-size: 0.8rem; padding: 0.4rem 1rem; border-radius: 40px; background: #f1f5f9; color: #334155; text-decoration: none; font-weight: 600;">Women's Wear</a>
+								<a href="<?php echo esc_url( home_url( '/product-category/kids/' ) ); ?>" class="ame-ai-topic-chip" style="font-size: 0.8rem; padding: 0.4rem 1rem; border-radius: 40px; background: #f1f5f9; color: #334155; text-decoration: none; font-weight: 600;">Kids Wear</a>
+								<a href="<?php echo esc_url( home_url( '/product-category/women/' ) ); ?>" class="ame-ai-topic-chip" style="font-size: 0.8rem; padding: 0.4rem 1rem; border-radius: 40px; background: #f1f5f9; color: #334155; text-decoration: none; font-weight: 600;">Women's Wear</a>
 							</div>
 						</div>
 					</div>

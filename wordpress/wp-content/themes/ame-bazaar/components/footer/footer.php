@@ -35,26 +35,27 @@ $cat_kids_url  = get_theme_mod( 'ame_bazaar_cat_kids_url' );
 $cat_sarees_url = get_theme_mod( 'ame_bazaar_cat_sarees_url' );
 $cat_acc_url   = get_theme_mod( 'ame_bazaar_cat_accessories_url' );
 
+
 // Resolve defaults if # or empty
 if ( ! $cat_men_url || '#' === $cat_men_url ) {
-	$term = get_term_by( 'slug', 'mens-wear', 'product_cat' ) ?: get_term_by( 'slug', 'men', 'product_cat' );
-	$cat_men_url = ( $term && ! is_wp_error( $term ) ) ? get_term_link( $term ) : home_url( '/product-category/mens-wear/' );
-	if ( is_wp_error( $cat_men_url ) ) { $cat_men_url = home_url( '/product-category/mens-wear/' ); }
+	$term = get_term_by( 'slug', 'men', 'product_cat' ) ?: get_term_by( 'slug', 'mens-wear', 'product_cat' );
+	$cat_men_url = ( $term && ! is_wp_error( $term ) ) ? get_term_link( $term ) : home_url( '/product-category/men/' );
+	if ( is_wp_error( $cat_men_url ) ) { $cat_men_url = home_url( '/product-category/men/' ); }
 }
 if ( ! $cat_women_url || '#' === $cat_women_url ) {
-	$term = get_term_by( 'slug', 'womens-wear', 'product_cat' ) ?: get_term_by( 'slug', 'women', 'product_cat' );
-	$cat_women_url = ( $term && ! is_wp_error( $term ) ) ? get_term_link( $term ) : home_url( '/product-category/womens-wear/' );
-	if ( is_wp_error( $cat_women_url ) ) { $cat_women_url = home_url( '/product-category/womens-wear/' ); }
+	$term = get_term_by( 'slug', 'women', 'product_cat' ) ?: get_term_by( 'slug', 'womens-wear', 'product_cat' );
+	$cat_women_url = ( $term && ! is_wp_error( $term ) ) ? get_term_link( $term ) : home_url( '/product-category/women/' );
+	if ( is_wp_error( $cat_women_url ) ) { $cat_women_url = home_url( '/product-category/women/' ); }
 }
 if ( ! $cat_kids_url || '#' === $cat_kids_url ) {
-	$term = get_term_by( 'slug', 'kids-wear', 'product_cat' ) ?: get_term_by( 'slug', 'kids', 'product_cat' );
-	$cat_kids_url = ( $term && ! is_wp_error( $term ) ) ? get_term_link( $term ) : home_url( '/product-category/kids-wear/' );
-	if ( is_wp_error( $cat_kids_url ) ) { $cat_kids_url = home_url( '/product-category/kids-wear/' ); }
+	$term = get_term_by( 'slug', 'kids', 'product_cat' ) ?: get_term_by( 'slug', 'kids-wear', 'product_cat' );
+	$cat_kids_url = ( $term && ! is_wp_error( $term ) ) ? get_term_link( $term ) : home_url( '/product-category/kids/' );
+	if ( is_wp_error( $cat_kids_url ) ) { $cat_kids_url = home_url( '/product-category/kids/' ); }
 }
 if ( ! $cat_sarees_url || '#' === $cat_sarees_url ) {
 	$term = get_term_by( 'slug', 'sarees', 'product_cat' );
-	$cat_sarees_url = ( $term && ! is_wp_error( $term ) ) ? get_term_link( $term ) : home_url( '/product-category/womens-wear/' );
-	if ( is_wp_error( $cat_sarees_url ) ) { $cat_sarees_url = home_url( '/product-category/womens-wear/' ); }
+	$cat_sarees_url = ( $term && ! is_wp_error( $term ) ) ? get_term_link( $term ) : home_url( '/product-category/women/' );
+	if ( is_wp_error( $cat_sarees_url ) ) { $cat_sarees_url = home_url( '/product-category/women/' ); }
 }
 if ( ! $cat_acc_url || '#' === $cat_acc_url ) {
 	$term = get_term_by( 'slug', 'accessories', 'product_cat' );
@@ -68,11 +69,14 @@ foreach ( array( 'cat_men_url', 'cat_women_url', 'cat_kids_url', 'cat_sarees_url
 		if ( strpos( $$var, '/category/' ) !== false ) {
 			$$var = str_replace( '/category/', '/product-category/', $$var );
 		}
-		if ( strpos( $$var, '/product-category/kids/' ) !== false || strpos( $$var, '/product-category/boy-wear/' ) !== false ) {
-			$$var = home_url( '/product-category/kids-wear/' );
+		if ( strpos( $$var, '/product-category/kids-wear/' ) !== false || strpos( $$var, '/product-category/boy-wear/' ) !== false ) {
+			$$var = home_url( '/product-category/kids/' );
 		}
-		if ( strpos( $$var, '/product-category/sarees/' ) !== false ) {
-			$$var = home_url( '/product-category/womens-wear/' );
+		if ( strpos( $$var, '/product-category/womens-wear/' ) !== false || strpos( $$var, '/product-category/sarees/' ) !== false ) {
+			$$var = home_url( '/product-category/women/' );
+		}
+		if ( strpos( $$var, '/product-category/mens-wear/' ) !== false ) {
+			$$var = home_url( '/product-category/men/' );
 		}
 		if ( strpos( $$var, '/product-category/tailoring/' ) !== false ) {
 			$$var = home_url( '/tailoring-near-me/' );

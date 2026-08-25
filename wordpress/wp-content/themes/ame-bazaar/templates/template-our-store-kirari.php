@@ -144,21 +144,21 @@ $collections = array(
 		'icon'  => '👔',
 		'label' => __( "Men's Wear", 'ame-bazaar' ),
 		'desc'  => __( 'Kurtas, shirts, trousers, sherwanis, ethnic sets, and formal occasion wear. Quality fabrics and classic tailoring for every man.', 'ame-bazaar' ),
-		'url'   => home_url( '/product-category/mens-wear/' ),
+		'url'   => home_url( '/product-category/men/' ),
 	),
 	array(
 		'id'    => 'womens-wear',
 		'icon'  => '👗',
 		'label' => __( "Women's Wear", 'ame-bazaar' ),
 		'desc'  => __( 'Sarees, salwar suits, lehengas, kurtis, ethnic tops, and everyday essentials. A curated range for every occasion and every age.', 'ame-bazaar' ),
-		'url'   => home_url( '/product-category/womens-wear/' ),
+		'url'   => home_url( '/product-category/women/' ),
 	),
 	array(
 		'id'    => 'kids-wear',
 		'icon'  => '🧒',
 		'label' => __( "Kids' Wear", 'ame-bazaar' ),
 		'desc'  => __( 'Comfortable, durable, and colourful clothing for toddlers, girls, and boys. Ethnic wear for festivals, casual wear for every day.', 'ame-bazaar' ),
-		'url'   => home_url( '/product-category/kids-wear/' ),
+		'url'   => home_url( '/product-category/kids/' ),
 	),
 	array(
 		'id'    => 'seasonal-collections',
@@ -547,17 +547,17 @@ get_header();
 							array(
 								'id'    => 'int-link-mens',
 								'label' => __( "Men's Collection", 'ame-bazaar' ),
-								'url'   => home_url( '/product-category/mens-wear/' ),
+								'url'   => home_url( '/product-category/men/' ),
 							),
 							array(
 								'id'    => 'int-link-womens',
 								'label' => __( "Women's Collection", 'ame-bazaar' ),
-								'url'   => home_url( '/product-category/womens-wear/' ),
+								'url'   => home_url( '/product-category/women/' ),
 							),
 							array(
 								'id'    => 'int-link-kids',
 								'label' => __( "Kids' Collection", 'ame-bazaar' ),
-								'url'   => home_url( '/product-category/kids-wear/' ),
+								'url'   => home_url( '/product-category/kids/' ),
 							),
 							array(
 								'id'    => 'int-link-tailoring',

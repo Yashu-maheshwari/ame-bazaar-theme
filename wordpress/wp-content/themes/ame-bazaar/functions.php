@@ -114,8 +114,14 @@ require_once AME_BAZAAR_PATH . '/components/local-entity/popular-review-keywords
  */
 function ame_bazaar_filter_menu_links( $atts, $item, $args, $depth ) {
 	if ( isset( $atts['href'] ) ) {
-		if ( strpos( $atts['href'], '/product-category/boy-wear/' ) !== false ) {
-			$atts['href'] = str_replace( '/product-category/boy-wear/', '/product-category/kids-wear/', $atts['href'] );
+		if ( strpos( $atts['href'], '/product-category/boy-wear/' ) !== false || strpos( $atts['href'], '/product-category/kids-wear/' ) !== false ) {
+			$atts['href'] = str_replace( array( '/product-category/boy-wear/', '/product-category/kids-wear/' ), '/product-category/kids/', $atts['href'] );
+		}
+		if ( strpos( $atts['href'], '/product-category/womens-wear/' ) !== false ) {
+			$atts['href'] = str_replace( '/product-category/womens-wear/', '/product-category/women/', $atts['href'] );
+		}
+		if ( strpos( $atts['href'], '/product-category/mens-wear/' ) !== false ) {
+			$atts['href'] = str_replace( '/product-category/mens-wear/', '/product-category/men/', $atts['href'] );
 		}
 		if ( strpos( $atts['href'], '/faqs/' ) !== false ) {
 			$atts['href'] = str_replace( '/faqs/', '/faq/', $atts['href'] );
@@ -129,8 +135,14 @@ function ame_bazaar_filter_nav_menu_items( $items ) {
 	if ( ! empty( $items ) && is_array( $items ) ) {
 		foreach ( $items as $item ) {
 			if ( isset( $item->url ) ) {
-				if ( strpos( $item->url, '/product-category/boy-wear/' ) !== false ) {
-					$item->url = str_replace( '/product-category/boy-wear/', '/product-category/kids-wear/', $item->url );
+				if ( strpos( $item->url, '/product-category/boy-wear/' ) !== false || strpos( $item->url, '/product-category/kids-wear/' ) !== false ) {
+					$item->url = str_replace( array( '/product-category/boy-wear/', '/product-category/kids-wear/' ), '/product-category/kids/', $item->url );
+				}
+				if ( strpos( $item->url, '/product-category/womens-wear/' ) !== false ) {
+					$item->url = str_replace( '/product-category/womens-wear/', '/product-category/women/', $item->url );
+				}
+				if ( strpos( $item->url, '/product-category/mens-wear/' ) !== false ) {
+					$item->url = str_replace( '/product-category/mens-wear/', '/product-category/men/', $item->url );
 				}
 				if ( strpos( $item->url, '/faqs/' ) !== false ) {
 					$item->url = str_replace( '/faqs/', '/faq/', $item->url );
