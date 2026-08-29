@@ -1,7 +1,7 @@
 /**
  * AME Bazaar Virtual Try-On (VTO) Modal & Fitting Engine.
  * Manages customer portrait uploads, camera capture, asynchronous IDM-VTON
- * job polling, split comparison slider, and high-definition result viewing.
+ * job streaming, split comparison slider, and high-definition result viewing.
  */
 (function ($) {
   'use strict';
@@ -11,10 +11,9 @@
     personImage: null,
     garmentImage: null,
     selectedCategory: 'upper_body',
-    currentJobId: null,
-    pollTimer: null,
     sliderPos: 50,
     isDraggingSlider: false,
+    activeAbortController: null,
 
     init: function () {
       this.modalRoot = document.getElementById('ame-vto-modal-root');
@@ -224,9 +223,9 @@
     },
 
     closeModal: function () {
-      if (this.pollTimer) {
-        clearInterval(this.pollTimer);
-        this.pollTimer = null;
+      if (this.activeAbortController) {
+        this.activeAbortController.abort();
+        this.activeAbortController = null;
       }
       $(this.modalRoot).removeClass('active').attr('aria-hidden', 'true');
       $('body').removeClass('ame-vto-modal-open');
@@ -303,14 +302,13 @@
         return;
       }
 
-      // Open camera stream in a video element or trigger system camera capture
+      // Open camera stream in a video element
       var video = document.createElement('video');
       video.setAttribute('playsinline', '');
       video.setAttribute('autoplay', '');
 
       navigator.mediaDevices.getUserMedia({ video: { facingMode: 'user' } })
         .then(function (stream) {
-          // Modal for camera snapshot
           var overlay = $('<div class="ame-vto-camera-overlay"><div class="ame-vto-camera-box"><div class="ame-vto-camera-view"></div><div class="ame-vto-camera-controls"><button type="button" class="ame-vto-snap-btn">📸 Snap Photo</button><button type="button" class="ame-vto-cancel-cam-btn">Cancel</button></div></div></div>');
           $('body').append(overlay);
           overlay.find('.ame-vto-camera-view').append(video);
@@ -340,7 +338,6 @@
           });
         })
         .catch(function () {
-          // Fallback to standard input
           $('#ame-vto-file-input').trigger('click');
         });
     },
@@ -350,7 +347,23 @@
       $('#ame-vto-error-banner').show();
     },
 
-    startFittingJob: function () {
+    dataUriToBlob: function (dataUri) {
+      var byteString = atob(dataUri.split(',')[1]);
+      var mimeString = dataUri.split(',')[0].split(':')[1].split(';')[0];
+      var ab = new ArrayBuffer(byteString.length);
+      var ia = new Uint8Array(ab);
+      for (var i = 0; i < byteString.length; i++) {
+        ia[i] = byteString.charCodeAt(i);
+      }
+      return new Blob([ab], { type: mimeString });
+    },
+
+    urlToBlob: async function (url) {
+      var res = await fetch(url, { mode: 'cors' });
+      return await res.blob();
+    },
+
+    startFittingJob: async function () {
       var self = this;
       if (!self.personImage) {
         self.showError('Please upload or snap a photo of yourself first.');
@@ -364,99 +377,135 @@
       $('#ame-vto-error-banner').hide();
       self.showScreen('loading');
       $('#ame-vto-progress-fill').css('width', '15%');
-      $('#ame-vto-loading-stage').text('Submitting tensors to IDM-VTON neural fitting pipeline...');
+      $('#ame-vto-loading-stage').text('Encoding portrait and garment tensors...');
 
-      var restUrl = (typeof ameBazaarVTO !== 'undefined' && ameBazaarVTO.restUrl) ? ameBazaarVTO.restUrl : '/wp-json/ame/v1/';
-      var nonce = (typeof ameBazaarVTO !== 'undefined' && ameBazaarVTO.nonce) ? ameBazaarVTO.nonce : '';
-      var productId = (typeof ameBazaarVTO !== 'undefined' && ameBazaarVTO.productId) ? ameBazaarVTO.productId : 0;
+      self.activeAbortController = new AbortController();
+      var signal = self.activeAbortController.signal;
 
-      $.ajax({
-        url: restUrl + 'try-on',
-        method: 'POST',
-        headers: {
-          'X-WP-Nonce': nonce
-        },
-        contentType: 'application/json',
-        data: JSON.stringify({
-          person_image: self.personImage,
-          garment_image: self.garmentImage,
-          category: self.selectedCategory,
-          product_id: productId
-        }),
-        success: function (response) {
-          if (response && response.job_id) {
-            self.currentJobId = response.job_id;
-            self.pollJobStatus(response.job_id);
-          } else {
-            self.showScreen('setup');
-            self.showError(response.message || 'Server is busy, try again.');
-          }
-        },
-        error: function (xhr) {
-          self.showScreen('setup');
-          var errJson = xhr.responseJSON;
-          var msg = (errJson && errJson.message) ? errJson.message : 'Server is busy, try again.';
-          self.showError(msg);
+      try {
+        // Step 1: Prepare Blobs
+        var personBlob = self.dataUriToBlob(self.personImage);
+        var garmentBlob;
+        if (self.garmentImage.startsWith('data:')) {
+          garmentBlob = self.dataUriToBlob(self.garmentImage);
+        } else {
+          garmentBlob = await self.urlToBlob(self.garmentImage);
         }
-      });
-    },
 
-    pollJobStatus: function (jobId) {
-      var self = this;
-      var restUrl = (typeof ameBazaarVTO !== 'undefined' && ameBazaarVTO.restUrl) ? ameBazaarVTO.restUrl : '/wp-json/ame/v1/';
-      var pollAttempts = 0;
-      var maxPolls = 25; // 50 seconds max
+        // Step 2: Upload files to Gradio space /upload
+        $('#ame-vto-progress-fill').css('width', '30%');
+        $('#ame-vto-loading-stage').text('Submitting to IDM-VTON neural cluster...');
 
-      if (self.pollTimer) {
-        clearInterval(self.pollTimer);
-      }
+        var uploadForm = new FormData();
+        uploadForm.append('files', personBlob, 'person.jpg');
+        uploadForm.append('files', garmentBlob, 'garment.jpg');
 
-      self.pollTimer = setInterval(function () {
-        pollAttempts++;
-        var progressPct = Math.min(92, 20 + (pollAttempts * 3.5));
-        $('#ame-vto-progress-fill').css('width', progressPct + '%');
-
-        $.ajax({
-          url: restUrl + 'try-on/' + encodeURIComponent(jobId),
-          method: 'GET',
-          success: function (job) {
-            if (!job) return;
-
-            if (job.stage) {
-              $('#ame-vto-loading-stage').text(job.stage);
-            }
-
-            if (job.status === 'completed' && job.result_url) {
-              clearInterval(self.pollTimer);
-              self.pollTimer = null;
-              $('#ame-vto-progress-fill').css('width', '100%');
-              setTimeout(function () {
-                self.displayResult(job.result_url);
-              }, 400);
-            } else if (job.status === 'error') {
-              clearInterval(self.pollTimer);
-              self.pollTimer = null;
-              self.showScreen('setup');
-              self.showError(job.message || 'Server is busy, try again.');
-            }
-          },
-          error: function () {
-            if (pollAttempts >= maxPolls) {
-              clearInterval(self.pollTimer);
-              self.pollTimer = null;
-              self.showScreen('setup');
-              self.showError('Server is busy, try again.');
-            }
-          }
+        var uploadRes = await fetch('https://yisol-idm-vton.hf.space/upload', {
+          method: 'POST',
+          body: uploadForm,
+          signal: signal
         });
 
-        if (pollAttempts >= maxPolls) {
-          clearInterval(self.pollTimer);
-          self.pollTimer = null;
-          self.showScreen('setup');
-          self.showError('Server is busy, try again.');
+        if (!uploadRes.ok) {
+          throw new Error('Server is busy, try again.');
         }
-      }, 2000);
+
+        var uploadedPaths = await uploadRes.json();
+        var personPath = uploadedPaths[0];
+        var garmentPath = uploadedPaths[1];
+
+        // Step 3: Queue join
+        $('#ame-vto-progress-fill').css('width', '45%');
+        $('#ame-vto-loading-stage').text('Queueing neural try-on warp...');
+
+        var sessionHash = Math.random().toString(36).substring(2);
+        var promptDesc = 'Fit and warp this ' + self.selectedCategory.replace('_', ' ') + ' garment cleanly onto the human model torso and pose.';
+
+        var joinPayload = {
+          data: [
+            { background: { path: personPath }, layers: [], composite: null },
+            { path: garmentPath },
+            promptDesc,
+            true,
+            false,
+            20,
+            42
+          ],
+          event_data: null,
+          fn_index: 2,
+          trigger_id: 25,
+          session_hash: sessionHash
+        };
+
+        var joinRes = await fetch('https://yisol-idm-vton.hf.space/queue/join', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(joinPayload),
+          signal: signal
+        });
+
+        if (!joinRes.ok) {
+          throw new Error('Server is busy, try again.');
+        }
+
+        // Step 4: Stream SSE
+        $('#ame-vto-progress-fill').css('width', '60%');
+        $('#ame-vto-loading-stage').text('Synthesizing photorealistic fabric drape...');
+
+        var streamRes = await fetch('https://yisol-idm-vton.hf.space/queue/data?session_hash=' + sessionHash, { signal: signal });
+        var reader = streamRes.body.getReader();
+        var decoder = new TextDecoder();
+        var generatedUrl = null;
+
+        while (true) {
+          var chunk = await reader.read();
+          if (chunk.done) break;
+          var text = decoder.decode(chunk.value, { stream: true });
+          var lines = text.split('\n');
+
+          for (var i = 0; i < lines.length; i++) {
+            var line = lines[i];
+            if (line.startsWith('data:')) {
+              var raw = line.replace(/^data:\s*/, '').trim();
+              if (!raw) continue;
+              try {
+                var eventData = JSON.parse(raw);
+                if (eventData.msg === 'process_starts') {
+                  $('#ame-vto-progress-fill').css('width', '75%');
+                  $('#ame-vto-loading-stage').text('Generating tailored runway fit...');
+                } else if (eventData.msg === 'process_completed') {
+                  $('#ame-vto-progress-fill').css('width', '100%');
+                  if (eventData.output && eventData.output.data && eventData.output.data[0]) {
+                    var outItem = eventData.output.data[0];
+                    generatedUrl = outItem.url || (outItem.image && outItem.image.url) || (typeof outItem === 'string' ? outItem : null);
+                  }
+                  break;
+                } else if (eventData.msg === 'error' || eventData.success === false) {
+                  throw new Error('Server is busy, try again.');
+                }
+              } catch (parseErr) {
+                // Ignore parse errors on heartbeats
+              }
+            }
+          }
+
+          if (generatedUrl) break;
+        }
+
+        if (generatedUrl) {
+          setTimeout(function () {
+            self.displayResult(generatedUrl);
+          }, 300);
+        } else {
+          throw new Error('Server is busy, try again.');
+        }
+      } catch (err) {
+        if (err.name === 'AbortError') return;
+        self.showScreen('setup');
+        self.showError(err.message || 'Server is busy, try again.');
+      } finally {
+        self.activeAbortController = null;
+      }
     },
 
     displayResult: function (resultUrl) {
