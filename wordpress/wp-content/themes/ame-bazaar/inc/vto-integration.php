@@ -318,7 +318,7 @@ function ame_bazaar_vto_execute_hf_tryon( $person_image, $garment_image, $catego
  * 2. Enqueue VTO Assets on Single Product Pages.
  */
 function ame_bazaar_enqueue_vto_assets() {
-	if ( ! is_product() ) {
+	if ( ! function_exists( 'is_product' ) || ! is_product() ) {
 		return;
 	}
 
@@ -338,21 +338,35 @@ function ame_bazaar_enqueue_vto_assets() {
 	);
 
 	global $product;
-	$product_id = $product ? $product->get_id() : 0;
-	$garment_url = '';
+	$post_id = get_the_ID();
+	if ( ! $product || ! is_a( $product, 'WC_Product' ) ) {
+		$product = function_exists( 'wc_get_product' ) ? wc_get_product( $post_id ) : null;
+	}
 
-	if ( $product ) {
+	$product_id = ( $product && is_a( $product, 'WC_Product' ) ) ? $product->get_id() : $post_id;
+	$garment_url = '';
+	$product_name = '';
+
+	if ( $product && is_a( $product, 'WC_Product' ) ) {
+		$product_name = $product->get_name();
 		$image_id = $product->get_image_id();
 		if ( $image_id ) {
 			$garment_url = wp_get_attachment_image_url( $image_id, 'large' );
 		}
 	}
 
+	if ( empty( $garment_url ) && $post_id ) {
+		$thumbnail_id = get_post_thumbnail_id( $post_id );
+		if ( $thumbnail_id ) {
+			$garment_url = wp_get_attachment_image_url( $thumbnail_id, 'large' );
+		}
+	}
+
 	// Auto-detect garment category based on product categories
 	$detected_category = 'upper_body';
-	if ( $product ) {
+	if ( $product_id ) {
 		$terms = wp_get_post_terms( $product_id, 'product_cat', array( 'fields' => 'names' ) );
-		$terms_str = strtolower( implode( ' ', (array) $terms ) . ' ' . $product->get_name() );
+		$terms_str = strtolower( implode( ' ', (array) $terms ) . ' ' . $product_name );
 
 		if ( strpos( $terms_str, 'saree' ) !== false || strpos( $terms_str, 'dress' ) !== false || strpos( $terms_str, 'suit' ) !== false || strpos( $terms_str, 'kurti' ) !== false || strpos( $terms_str, 'gown' ) !== false ) {
 			$detected_category = 'dresses';
@@ -368,7 +382,7 @@ function ame_bazaar_enqueue_vto_assets() {
 			'restUrl'          => esc_url_raw( rest_url( 'ame/v1/' ) ),
 			'nonce'            => wp_create_nonce( 'wp_rest' ),
 			'productId'        => $product_id,
-			'productTitle'     => $product ? $product->get_name() : '',
+			'productTitle'     => $product_name ? $product_name : get_the_title( $post_id ),
 			'defaultGarment'   => $garment_url,
 			'detectedCategory' => $detected_category,
 			'i18n'             => array(
@@ -395,7 +409,12 @@ function ame_bazaar_render_try_on_button() {
 	}
 
 	global $product;
-	if ( ! $product ) {
+	$post_id = get_the_ID();
+	if ( ! $product || ! is_a( $product, 'WC_Product' ) ) {
+		$product = function_exists( 'wc_get_product' ) ? wc_get_product( $post_id ) : null;
+	}
+
+	if ( ! $product || ! is_a( $product, 'WC_Product' ) ) {
 		return;
 	}
 
