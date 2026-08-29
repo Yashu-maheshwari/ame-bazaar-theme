@@ -95,6 +95,7 @@ require_once AME_BAZAAR_PATH . '/inc/admin-operations.php';
 require_once AME_BAZAAR_PATH . '/inc/unified-cms.php';
 require_once AME_BAZAAR_PATH . '/inc/class-ai-advisor.php';
 require_once AME_BAZAAR_PATH . '/inc/faq-data.php';
+require_once AME_BAZAAR_PATH . '/inc/vto-integration.php';
 require_once AME_BAZAAR_PATH . '/inc/final-ui-fixes.php';
 require_once AME_BAZAAR_PATH . '/inc/mobile-whatsapp-final-fix.php';
 require_once AME_BAZAAR_PATH . '/inc/mobile-header-layout-final.php';
