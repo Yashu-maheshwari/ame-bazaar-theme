@@ -96,6 +96,7 @@ require_once AME_BAZAAR_PATH . '/inc/admin-operations.php';
 require_once AME_BAZAAR_PATH . '/inc/unified-cms.php';
 require_once AME_BAZAAR_PATH . '/inc/class-ai-advisor.php';
 require_once AME_BAZAAR_PATH . '/inc/faq-data.php';
+require_once AME_BAZAAR_PATH . '/inc/vto-integration.php';
 require_once AME_BAZAAR_PATH . '/components/local-entity/trust-cards.php';
 require_once AME_BAZAAR_PATH . '/components/local-entity/review-card.php';
 require_once AME_BAZAAR_PATH . '/components/local-entity/review-summary.php';
