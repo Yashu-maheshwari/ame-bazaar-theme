@@ -1,0 +1,81 @@
+name: Deploy VTO Feature Test to Hostinger
+
+on:
+  push:
+    branches:
+      - feature/virtual-try-on
+  workflow_dispatch:
+
+jobs:
+  deploy-vto:
+    name: Targeted VTO Deployment
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup SSH
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+        run: |
+          mkdir -p ~/.ssh
+          printf "%b\n" "$SSH_PRIVATE_KEY" | tr -d '\r' > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          echo "SSH setup completed."
+
+      - name: Create Remote Backup of functions.php
+        run: |
+          echo "Creating backup of current live functions.php on Hostinger..."
+          ssh -p ${{ secrets.PORT }} -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null ${{ secrets.USERNAME }}@${{ secrets.HOST }} \
+            "cp domains/amebazaar.in/public_html/wp-content/themes/ame-bazaar/functions.php domains/amebazaar.in/public_html/wp-content/themes/ame-bazaar/functions.php.bak_pre_vto"
+          
+          echo "Verifying backup file existence..."
+          ssh -p ${{ secrets.PORT }} -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null ${{ secrets.USERNAME }}@${{ secrets.HOST }} \
+            "test -f domains/amebazaar.in/public_html/wp-content/themes/ame-bazaar/functions.php.bak_pre_vto && echo 'Backup confirmed!'"
+
+      - name: Targeted Copy of VTO Files Only
+        run: |
+          echo "Deploying only the 4 VTO files to Hostinger without delete flag..."
+          
+          # 1. functions.php
+          scp -P ${{ secrets.PORT }} -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null \
+            wordpress/wp-content/themes/ame-bazaar/functions.php \
+            ${{ secrets.USERNAME }}@${{ secrets.HOST }}:domains/amebazaar.in/public_html/wp-content/themes/ame-bazaar/functions.php
+
+          # 2. inc/vto-integration.php
+          scp -P ${{ secrets.PORT }} -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null \
+            wordpress/wp-content/themes/ame-bazaar/inc/vto-integration.php \
+            ${{ secrets.USERNAME }}@${{ secrets.HOST }}:domains/amebazaar.in/public_html/wp-content/themes/ame-bazaar/inc/vto-integration.php
+
+          # 3. assets/js/vto-modal.js
+          scp -P ${{ secrets.PORT }} -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null \
+            wordpress/wp-content/themes/ame-bazaar/assets/js/vto-modal.js \
+            ${{ secrets.USERNAME }}@${{ secrets.HOST }}:domains/amebazaar.in/public_html/wp-content/themes/ame-bazaar/assets/js/vto-modal.js
+
+          # 4. assets/css/vto-modal.css
+          scp -P ${{ secrets.PORT }} -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null \
+            wordpress/wp-content/themes/ame-bazaar/assets/css/vto-modal.css \
+            ${{ secrets.USERNAME }}@${{ secrets.HOST }}:domains/amebazaar.in/public_html/wp-content/themes/ame-bazaar/assets/css/vto-modal.css
+
+          echo "Targeted VTO file deployment complete!"
+
+      - name: Flush Remote OPCache & LiteSpeed Cache
+        run: |
+          echo "Copying OPCache flusher to web root..."
+          ssh -p ${{ secrets.PORT }} -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null ${{ secrets.USERNAME }}@${{ secrets.HOST }} \
+            "cp domains/amebazaar.in/public_html/wp-content/themes/ame-bazaar/clear-cache.php domains/amebazaar.in/public_html/clear-cache.php"
+          
+          echo "Triggering OPCache flush..."
+          curl -X POST -sL "https://amebazaar.in/clear-cache.php?token=7fa2e10db708b8b9487c69ea230768b6"
+          
+          echo "Removing OPCache flusher from web root..."
+          ssh -p ${{ secrets.PORT }} -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null ${{ secrets.USERNAME }}@${{ secrets.HOST }} \
+            "rm domains/amebazaar.in/public_html/clear-cache.php"
+
+      - name: Live Health Check
+        run: |
+          echo "Verifying live endpoints..."
+          curl -s -o /dev/null -w "Homepage: %{http_code}\n" https://amebazaar.in/
+          curl -s -o /dev/null -w "Product Page: %{http_code}\n" https://amebazaar.in/product/om-fashion-kurti-set-1775/
+          curl -s -o /dev/null -w "REST API: %{http_code}\n" https://amebazaar.in/wp-json/
