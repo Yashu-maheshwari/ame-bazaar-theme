@@ -14,11 +14,50 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * 1. Register REST API Endpoints for VTO.
  */
+function ame_bazaar_vto_permission_check( WP_REST_Request $request ) {
+	$nonce = $request->get_header( 'x_wp_nonce' );
+	if ( empty( $nonce ) ) {
+		$nonce = $request->get_param( '_wpnonce' );
+	}
+
+	if ( empty( $nonce ) || ! wp_verify_nonce( $nonce, 'wp_rest' ) ) {
+		return new WP_Error(
+			'rest_forbidden',
+			__( 'Invalid or missing security nonce.', 'ame-bazaar' ),
+			array( 'status' => 403 )
+		);
+	}
+
+	return true;
+}
+
+/**
+ * Safely resolves client IP respecting Cloudflare / Hostinger edge headers.
+ *
+ * @return string
+ */
+function ame_bazaar_vto_get_client_ip() {
+	if ( ! empty( $_SERVER['HTTP_CF_CONNECTING_IP'] ) && filter_var( $_SERVER['HTTP_CF_CONNECTING_IP'], FILTER_VALIDATE_IP ) ) {
+		return $_SERVER['HTTP_CF_CONNECTING_IP'];
+	}
+	if ( ! empty( $_SERVER['HTTP_X_FORWARDED_FOR'] ) ) {
+		$forwarded = explode( ',', $_SERVER['HTTP_X_FORWARDED_FOR'] );
+		$first_ip  = trim( $forwarded[0] );
+		if ( filter_var( $first_ip, FILTER_VALIDATE_IP ) ) {
+			return $first_ip;
+		}
+	}
+	if ( ! empty( $_SERVER['REMOTE_ADDR'] ) && filter_var( $_SERVER['REMOTE_ADDR'], FILTER_VALIDATE_IP ) ) {
+		return $_SERVER['REMOTE_ADDR'];
+	}
+	return '127.0.0.1';
+}
+
 function ame_bazaar_register_vto_routes() {
 	register_rest_route( 'ame/v1', '/try-on', array(
 		'methods'             => 'POST',
 		'callback'            => 'ame_bazaar_vto_submit_job_callback',
-		'permission_callback' => '__return_true',
+		'permission_callback' => 'ame_bazaar_vto_permission_check',
 		'args'                => array(
 			'person_image'  => array(
 				'required'          => true,
@@ -47,7 +86,7 @@ function ame_bazaar_register_vto_routes() {
 	register_rest_route( 'ame/v1', '/try-on/(?P<job_id>[a-zA-Z0-9_\-]+)', array(
 		'methods'             => 'GET',
 		'callback'            => 'ame_bazaar_vto_poll_job_callback',
-		'permission_callback' => '__return_true',
+		'permission_callback' => 'ame_bazaar_vto_permission_check',
 	) );
 }
 add_action( 'rest_api_init', 'ame_bazaar_register_vto_routes' );
@@ -106,6 +145,21 @@ function ame_bazaar_vto_validate_image_data( $data_uri ) {
  * Creates an asynchronous VTO job and dispatches the task.
  */
 function ame_bazaar_vto_submit_job_callback( WP_REST_Request $request ) {
+	// Rate Limiting: Max 5 VTO submissions per 3 minutes (180s) per IP
+	$client_ip = ame_bazaar_vto_get_client_ip();
+	$rate_key  = 'ame_vto_rate_' . md5( $client_ip . '_ame_vto_salt' );
+	$requests  = (int) get_transient( $rate_key );
+
+	if ( $requests >= 5 ) {
+		return new WP_REST_Response( array(
+			'status'  => 'error',
+			'code'    => 'rate_limited',
+			'message' => __( 'Too many try-on requests from this device. Please wait 3 minutes before trying again.', 'ame-bazaar' ),
+		), 429 );
+	}
+
+	set_transient( $rate_key, $requests + 1, 180 );
+
 	$person_image_raw  = $request->get_param( 'person_image' );
 	$garment_image_url = $request->get_param( 'garment_image' );
 	$category          = $request->get_param( 'category' );
