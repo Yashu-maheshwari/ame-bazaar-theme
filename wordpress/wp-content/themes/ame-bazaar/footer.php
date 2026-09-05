@@ -23,6 +23,10 @@ if ( $footer_bg_id ) {
 <footer id="colophon" class="site-footer ame-bazaar-site-footer" role="contentinfo"<?php echo $footer_bg_style; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>>
 	<div class="ame-bazaar-container">
 		<?php do_action( 'ame_bazaar_footer' ); ?>
+		<nav class="ame-bazaar-social-links" aria-label="Social media">
+			<a href="https://www.facebook.com/AMETTBAZAAR" target="_blank" rel="noopener noreferrer">Facebook</a>
+			<a href="https://www.instagram.com/ame_bazaar/" target="_blank" rel="noopener noreferrer">Instagram</a>
+		</nav>
 	</div>
 </footer>
 <?php do_action( 'ame_bazaar_after_footer' ); ?>
