@@ -69,6 +69,12 @@ function ame_bazaar_render_visit_store() {
 }
 add_action( 'ame_bazaar_homepage', 'ame_bazaar_render_visit_store', 40 );
 
+// 7.1 Exact Google Business Profile map
+function ame_bazaar_render_google_map() {
+	get_template_part( 'components/homepage/google-map' );
+}
+add_action( 'ame_bazaar_homepage', 'ame_bazaar_render_google_map', 41 );
+
 // 8. About AME Bazaar & Local Info
 function ame_bazaar_render_about_business() {
 	get_template_part( 'components/about-business/about-business' );
