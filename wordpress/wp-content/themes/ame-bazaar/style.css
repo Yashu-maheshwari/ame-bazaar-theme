@@ -123,6 +123,61 @@ button, input, select, textarea { font: inherit; }
 .ame-bazaar-btn:hover { transform: translateY(-1px); box-shadow: var(--ame-shadow-sm); }
 
 /* ==========================================================================
+   VISIBLE OFFICIAL SOCIAL LINKS
+   ========================================================================== */
+.ame-bazaar-social-links {
+	display: flex;
+	align-items: center;
+	gap: 0.75rem;
+	margin-top: 1.5rem;
+	padding-top: 1rem;
+	border-top: 1px solid rgba(255, 255, 255, 0.14);
+}
+
+.ame-bazaar-social-link {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.55rem;
+	min-height: 42px;
+	padding: 0.55rem 0.9rem;
+	border: 1px solid rgba(255, 255, 255, 0.24);
+	border-radius: 999px;
+	background: rgba(255, 255, 255, 0.06);
+	color: #ffffff !important;
+	font-size: 0.78rem;
+	font-weight: 700;
+	letter-spacing: 0.04em;
+	text-decoration: none !important;
+	transition: transform 180ms ease, background-color 180ms ease, border-color 180ms ease;
+}
+
+.ame-bazaar-social-link svg {
+	width: 20px;
+	height: 20px;
+	flex: 0 0 20px;
+	display: block;
+}
+
+.ame-bazaar-social-link:hover {
+	transform: translateY(-2px);
+	background: rgba(255, 255, 255, 0.14);
+	border-color: var(--ame-color-gold);
+	color: #ffffff !important;
+}
+
+@media (max-width: 480px) {
+	.ame-bazaar-social-links {
+		gap: 0.55rem;
+	}
+
+	.ame-bazaar-social-link {
+		min-height: 40px;
+		padding-inline: 0.75rem;
+		font-size: 0.72rem;
+	}
+}
+
+/* ==========================================================================
    TRUST BAR ENHANCEMENT
    ========================================================================== */
 .ame-trust-bar-section {
@@ -215,7 +270,6 @@ button, input, select, textarea { font: inherit; }
    WOCCOMMERCE SINGLE PRODUCT EXPERIENCE ENHANCEMENTS
    ========================================================================== */
 
-/* Single Product Grid and Layout Settings */
 @media (max-width: 768px) {
 	.ame-specs-guarantees-grid {
 		grid-template-columns: 1fr !important;
@@ -223,17 +277,14 @@ button, input, select, textarea { font: inherit; }
 	}
 }
 
-/* Specifications Table */
 .ame-specs-table td {
 	border-bottom: 1px solid var(--ame-color-border, #dbe2ea);
 }
 
-/* FAQs summary styles */
 .ame-faq-accordion-item[open] .ame-faq-arrow {
 	transform: rotate(180deg);
 }
 
-/* Mobile Sticky Purchase Bar */
 .ame-sticky-add-to-cart {
 	position: fixed;
 	bottom: 0;
@@ -307,7 +358,6 @@ button, input, select, textarea { font: inherit; }
 	letter-spacing: 0.02em;
 }
 
-/* Hide on desktop viewports */
 @media (min-width: 992px) {
 	.ame-sticky-add-to-cart {
 		display: none !important;
@@ -317,8 +367,6 @@ button, input, select, textarea { font: inherit; }
 /* ==========================================================================
    PREMIUM CSS UTILITY CLASSES
    ========================================================================== */
-
-/* Premium Card Container */
 .ame-card {
 	background: var(--ame-color-white, #ffffff);
 	border: 1px solid var(--ame-color-border, #dbe2ea);
@@ -327,12 +375,10 @@ button, input, select, textarea { font: inherit; }
 	transition: all var(--ame-transition);
 }
 
-/* Shadow elevation levels */
 .ame-elevated {
 	box-shadow: var(--ame-shadow-md, 0 10px 30px rgba(15,23,42,0.06));
 }
 
-/* Glassmorphism Surface effect */
 .ame-glass {
 	background: rgba(255, 255, 255, 0.7);
 	backdrop-filter: blur(12px) saturate(180%);
@@ -340,13 +386,11 @@ button, input, select, textarea { font: inherit; }
 	border: 1px solid rgba(255, 255, 255, 0.3);
 }
 
-/* Premium Gold border accents */
 .ame-premium {
 	border: 1px solid var(--ame-color-gold, #d4af37) !important;
 	background: linear-gradient(180deg, #ffffff 0%, #fdfdfa 100%);
 }
 
-/* Modern hover animation lift */
 .ame-hover-lift {
 	transition: transform var(--ame-transition), box-shadow var(--ame-transition), border-color var(--ame-transition);
 }
@@ -360,8 +404,6 @@ button, input, select, textarea { font: inherit; }
 /* ==========================================================================
    WOOCOMMERCE CATEGORY PAGES (PLP) & PRODUCT CARDS
    ========================================================================== */
-
-/* Hover Gallery Image swap */
 .ame-product-card-image-link:hover .ame-product-primary-image {
 	opacity: 0 !important;
 }
@@ -370,7 +412,6 @@ button, input, select, textarea { font: inherit; }
 	opacity: 1 !important;
 }
 
-/* Quick Actions visibility */
 .ame-product-card-image-wrap:hover .ame-product-card-quick-actions {
 	opacity: 1 !important;
 	transform: translateY(0) !important;
@@ -382,7 +423,6 @@ button, input, select, textarea { font: inherit; }
 	transition: all 0.25s ease;
 }
 
-/* Reusable Future-Ready 3D visual styles */
 .ame-hover-glow:hover {
 	box-shadow: 0 0 20px rgba(212, 175, 55, 0.4) !important;
 	border-color: var(--ame-color-gold) !important;
@@ -409,7 +449,6 @@ button, input, select, textarea { font: inherit; }
 	border-color: var(--ame-color-gold);
 }
 
-/* Category Grid Responsive Layout */
 @media (max-width: 991px) {
 	.ame-category-grid {
 		grid-template-columns: 1fr !important;
@@ -419,7 +458,6 @@ button, input, select, textarea { font: inherit; }
 	}
 }
 
-/* WhatsApp and Buy buttons hover rules */
 .ame-card-wa-btn:hover {
 	background: #128c7e !important;
 }
@@ -429,7 +467,6 @@ button, input, select, textarea { font: inherit; }
 	color: var(--ame-color-navy) !important;
 }
 
-/* Subcategory cards hover scale */
 .ame-category-card:hover .ame-category-image img {
 	transform: scale(1.05);
 }
@@ -437,4 +474,3 @@ button, input, select, textarea { font: inherit; }
 .ame-category-card:hover .ame-icon {
 	transform: translateX(3px);
 }
-
