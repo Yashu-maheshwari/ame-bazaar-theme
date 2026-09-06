@@ -53,7 +53,7 @@ if ( empty( $posts_list ) ) {
 				<?php endif; ?>
 			</div>
 			<div class="ame-blog-preview-header-right">
-				<a href="<?php echo esc_url( get_post_type_archive_link( 'post' ) ?: home_url( '/blog' ) ); ?>" class="ame-bazaar-btn ame-bazaar-btn--primary">
+				<a href="<?php echo esc_url( home_url( '/blog/' ) ); ?>" class="ame-bazaar-btn ame-bazaar-btn--primary">
 					<span><?php esc_html_e( 'View All Articles', 'ame-bazaar' ); ?></span>
 				</a>
 			</div>
