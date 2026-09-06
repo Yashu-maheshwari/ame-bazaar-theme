@@ -20,44 +20,126 @@ $feed_api_url  = rest_url( 'ame/v1/social-feed' );
 
 <section class="ame-social-feed-section" aria-labelledby="ame-social-feed-title" data-social-feed-api="<?php echo esc_url( $feed_api_url ); ?>">
 	<div class="ame-bazaar-container">
-		<div class="ame-social-feed-header">
-			<div class="ame-social-feed-live"><span></span> LIVE FROM AME BAZAAR</div>
-			<h2 id="ame-social-feed-title" class="ame-h2">What's New on Facebook &amp; Instagram</h2>
-			<p class="ame-body">Real posts from our official social pages — automatically refreshed with the latest arrivals, looks and showroom updates.</p>
+		<div class="ame-social-feed-unified-container">
+			<div class="ame-social-feed-header">
+				<div class="ame-social-feed-live"><span></span> LIVE FROM AME BAZAAR</div>
+				<h2 id="ame-social-feed-title" class="ame-h2">Follow AME Bazaar</h2>
+				<p class="ame-body">See our latest styles, arrivals and updates</p>
+			</div>
+
+			<div class="ame-social-feed-scroll-area">
+				<div class="ame-social-feed-columns">
+					
+					<article class="ame-social-feed-column facebook-column" data-social-card="facebook">
+						<header class="ame-social-feed-card-head">
+							<div class="ame-social-feed-brand"><div class="ame-social-feed-brand-icon facebook">f</div><div><strong data-profile-name>AME Bazaar</strong><small>Facebook</small></div></div>
+							<a class="ame-social-feed-follow facebook" href="<?php echo esc_url( $facebook_url ); ?>" target="_blank" rel="noopener noreferrer">Follow Page</a>
+						</header>
+						<div class="ame-social-feed-facebook-profile"><div class="ame-social-feed-facebook-cover"></div><div class="ame-social-feed-facebook-profile-row"><div class="ame-social-feed-profile-icon facebook">f</div><div><strong data-profile-title>AME Bazaar</strong><small data-profile-stats>Official Facebook Page</small></div></div></div>
+						<div class="ame-social-feed-posts" data-posts><div class="ame-social-feed-loading">Loading live Facebook posts…</div></div>
+					</article>
+
+					<div class="ame-social-feed-divider"></div>
+
+					<article class="ame-social-feed-column instagram-column" data-social-card="instagram">
+						<header class="ame-social-feed-card-head">
+							<div class="ame-social-feed-brand"><div class="ame-social-feed-brand-icon instagram">◎</div><div><strong data-profile-name>ame_bazaar</strong><small>Instagram</small></div></div>
+							<a class="ame-social-feed-follow instagram" href="<?php echo esc_url( $instagram_url ); ?>" target="_blank" rel="noopener noreferrer">Follow</a>
+						</header>
+						<div class="ame-social-feed-instagram-profile"><div class="ame-social-feed-profile-icon instagram">◎</div><div class="ame-social-feed-instagram-details"><strong data-profile-title>@ame_bazaar</strong><div class="ame-social-feed-instagram-stats"><span><b data-stat-posts>—</b> posts</span><span><b data-stat-followers>—</b> followers</span><span><b data-stat-following>—</b> following</span></div><p data-profile-bio>AME Bazaar · Family Garment Store</p></div></div>
+						<div class="ame-social-feed-posts ame-social-feed-instagram-grid" data-posts><div class="ame-social-feed-loading">Loading live Instagram posts…</div></div>
+					</article>
+
+				</div>
+			</div>
+
+			<div class="ame-social-feed-status" data-feed-status><span class="dot"></span> Live feed · checking for new posts every 5 minutes</div>
 		</div>
-
-		<div class="ame-social-feed-grid">
-			<article class="ame-social-feed-card" data-social-card="facebook">
-				<header class="ame-social-feed-card-head">
-					<div class="ame-social-feed-brand"><div class="ame-social-feed-brand-icon facebook">f</div><div><strong data-profile-name>AME Bazaar</strong><small>Facebook</small></div></div>
-					<a class="ame-social-feed-follow facebook" href="<?php echo esc_url( $facebook_url ); ?>" target="_blank" rel="noopener noreferrer">Follow Page</a>
-				</header>
-				<div class="ame-social-feed-facebook-profile"><div class="ame-social-feed-facebook-cover"></div><div class="ame-social-feed-facebook-profile-row"><div class="ame-social-feed-profile-icon facebook">f</div><div><strong data-profile-title>AME Bazaar</strong><small data-profile-stats>Official Facebook Page</small></div></div></div>
-			<div class="ame-social-feed-posts" data-posts><div class="ame-social-feed-loading">Loading live Facebook posts…</div></div>
-			</article>
-
-			<article class="ame-social-feed-card" data-social-card="instagram">
-				<header class="ame-social-feed-card-head">
-					<div class="ame-social-feed-brand"><div class="ame-social-feed-brand-icon instagram">◎</div><div><strong data-profile-name>ame_bazaar</strong><small>Instagram</small></div></div>
-					<a class="ame-social-feed-follow instagram" href="<?php echo esc_url( $instagram_url ); ?>" target="_blank" rel="noopener noreferrer">Follow</a>
-				</header>
-				<div class="ame-social-feed-instagram-profile"><div class="ame-social-feed-profile-icon instagram">◎</div><div class="ame-social-feed-instagram-details"><strong data-profile-title>@ame_bazaar</strong><div class="ame-social-feed-instagram-stats"><span><b data-stat-posts>—</b> posts</span><span><b data-stat-followers>—</b> followers</span><span><b data-stat-following>—</b> following</span></div><p data-profile-bio>AME Bazaar · Family Garment Store</p></div></div>
-				<div class="ame-social-feed-posts ame-social-feed-instagram-grid" data-posts><div class="ame-social-feed-loading">Loading live Instagram posts…</div></div>
-			</article>
-		</div>
-
-		<div class="ame-social-feed-status" data-feed-status><span class="dot"></span> Live feed · checking for new posts every 5 minutes</div>
 	</div>
 </section>
 
 <style>
 .ame-social-feed-section{padding:5rem 0;background:linear-gradient(180deg,#f7f8fb 0%,#fff 100%)}
-.ame-social-feed-header{max-width:800px;margin:0 auto 2.5rem;text-align:center}.ame-social-feed-live{display:inline-flex;align-items:center;gap:.45rem;margin-bottom:.55rem;font-size:.7rem;font-weight:900;letter-spacing:.16em;color:#b08a32}.ame-social-feed-live span,.ame-social-feed-status .dot{width:7px;height:7px;border-radius:50%;background:#16a34a;box-shadow:0 0 0 4px rgba(22,163,74,.1)}.ame-social-feed-header .ame-h2{margin-bottom:.6rem;color:var(--ame-color-navy);font-weight:850}.ame-social-feed-header .ame-body{max-width:700px;margin:auto;color:var(--ame-color-slate)}
-.ame-social-feed-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1.5rem;align-items:start}.ame-social-feed-card{min-width:0;overflow:hidden;background:#fff;border:1px solid rgba(15,23,42,.09);border-radius:20px;box-shadow:0 18px 50px rgba(15,23,42,.09)}.ame-social-feed-card-head{display:flex;align-items:center;justify-content:space-between;gap:1rem;padding:1rem 1.1rem;border-bottom:1px solid rgba(15,23,42,.07)}.ame-social-feed-brand{display:flex;align-items:center;gap:.7rem;min-width:0}.ame-social-feed-brand strong{display:block;color:#111827;font-size:.95rem}.ame-social-feed-brand small{display:block;margin-top:.15rem;color:#64748b;font-size:.72rem}.ame-social-feed-brand-icon,.ame-social-feed-profile-icon{display:grid;place-items:center;flex:0 0 42px;width:42px;height:42px;border-radius:12px;color:#fff;font-weight:900}.ame-social-feed-brand-icon.facebook,.ame-social-feed-profile-icon.facebook{background:#1877f2;font-family:Arial,sans-serif}.ame-social-feed-brand-icon{font-size:1.45rem}.ame-social-feed-brand-icon.instagram,.ame-social-feed-profile-icon.instagram{background:linear-gradient(135deg,#f58529,#dd2a7b 52%,#8134af 82%,#515bd4)}.ame-social-feed-brand-icon.instagram{font-size:1.55rem}.ame-social-feed-follow{display:inline-flex;align-items:center;justify-content:center;min-height:34px;padding:0 .85rem;border-radius:999px;text-decoration:none!important;font-size:.75rem;font-weight:850;white-space:nowrap}.ame-social-feed-follow.facebook{background:#1877f2;color:#fff!important}.ame-social-feed-follow.instagram{background:#111827;color:#fff!important}
-.ame-social-feed-facebook-cover{height:82px;background:linear-gradient(115deg,#1877f2 0%,#60a5fa 52%,#dbeafe 100%)}.ame-social-feed-facebook-profile-row{display:flex;align-items:center;gap:.8rem;margin-top:-25px;padding:0 1.1rem 1rem}.ame-social-feed-facebook-profile-row .ame-social-feed-profile-icon{border:4px solid #fff;border-radius:50%;box-shadow:0 4px 14px rgba(15,23,42,.15)}.ame-social-feed-facebook-profile-row strong{display:block;font-size:.95rem;color:#111827}.ame-social-feed-facebook-profile-row small{display:block;margin-top:.18rem;font-size:.72rem;color:#64748b}.ame-social-feed-instagram-profile{display:flex;align-items:center;gap:1rem;padding:1.05rem 1.1rem;border-bottom:1px solid rgba(15,23,42,.07)}.ame-social-feed-instagram-profile .ame-social-feed-profile-icon{border-radius:50%;font-size:1.8rem}.ame-social-feed-instagram-details{min-width:0}.ame-social-feed-instagram-details>strong{display:block;color:#111827;font-size:.98rem}.ame-social-feed-instagram-stats{display:flex;flex-wrap:wrap;gap:.75rem;margin-top:.32rem;color:#64748b;font-size:.7rem}.ame-social-feed-instagram-stats b{color:#111827}.ame-social-feed-instagram-details p{margin:.3rem 0 0;color:#475569;font-size:.72rem}
-.ame-social-feed-posts{min-height:300px}.ame-social-feed-post{border-bottom:1px solid rgba(15,23,42,.08)}.ame-social-feed-post:last-child{border-bottom:0}.ame-social-feed-post-copy{padding:.9rem 1rem .7rem;color:#334155;font-size:.8rem;line-height:1.5;white-space:pre-line}.ame-social-feed-post-image-wrap{overflow:hidden;background:#f1f5f9}.ame-social-feed-post-image{display:block;width:100%;max-height:430px;object-fit:cover}.ame-social-feed-post-meta{display:flex;justify-content:space-between;gap:.7rem;padding:.65rem 1rem .85rem;color:#64748b;font-size:.68rem}.ame-social-feed-post-meta a{color:#475569;text-decoration:none;font-weight:800}.ame-social-feed-instagram-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:3px;min-height:0}.ame-social-feed-instagram-tile{position:relative;display:block;aspect-ratio:1;overflow:hidden;background:#f1f5f9}.ame-social-feed-instagram-tile img{display:block;width:100%;height:100%;object-fit:cover;transition:transform .25s ease}.ame-social-feed-instagram-tile:hover img{transform:scale(1.04)}.ame-social-feed-instagram-tile:after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,transparent 60%,rgba(0,0,0,.28));pointer-events:none}.ame-social-feed-instagram-tile-label{position:absolute;z-index:1;left:.5rem;bottom:.4rem;color:#fff;font-size:.62rem;font-weight:800;text-shadow:0 1px 4px rgba(0,0,0,.45)}
-.ame-social-feed-loading,.ame-social-feed-empty,.ame-social-feed-error{display:grid;place-items:center;min-height:300px;padding:2rem;text-align:center;color:#64748b;font-size:.82rem;line-height:1.5}.ame-social-feed-empty a,.ame-social-feed-error a{color:#334155;font-weight:800}.ame-social-feed-instagram-grid .ame-social-feed-loading,.ame-social-feed-instagram-grid .ame-social-feed-empty,.ame-social-feed-instagram-grid .ame-social-feed-error{grid-column:1/-1}.ame-social-feed-status{display:flex;align-items:center;justify-content:center;gap:.5rem;min-height:1.2rem;margin-top:.8rem;color:#94a3b8;font-size:.7rem}
-@media(max-width:900px){.ame-social-feed-grid{grid-template-columns:1fr;max-width:680px;margin:auto}}@media(max-width:560px){.ame-social-feed-section{padding:4rem 0}.ame-social-feed-card-head{padding:.85rem}.ame-social-feed-brand-icon,.ame-social-feed-profile-icon{width:36px;height:36px;flex-basis:36px}.ame-social-feed-brand strong{font-size:.88rem}.ame-social-feed-follow{min-height:32px;padding-inline:.7rem;font-size:.7rem}}
+.ame-bazaar-container{max-width:1200px;margin:0 auto;padding:0 1rem}
+.ame-social-feed-unified-container{max-width:1080px;margin:0 auto;background:#fff;border:1px solid rgba(15,23,42,.08);border-radius:24px;box-shadow:0 20px 60px rgba(15,23,42,.08);overflow:hidden;display:flex;flex-direction:column}
+.ame-social-feed-header{padding:2.5rem 2rem 1.5rem;text-align:center;border-bottom:1px solid rgba(15,23,42,.05)}
+.ame-social-feed-live{display:inline-flex;align-items:center;gap:.45rem;margin-bottom:.7rem;font-size:.7rem;font-weight:900;letter-spacing:.16em;color:#b08a32}
+.ame-social-feed-live span,.ame-social-feed-status .dot{width:7px;height:7px;border-radius:50%;background:#16a34a;box-shadow:0 0 0 4px rgba(22,163,74,.1)}
+.ame-social-feed-header .ame-h2{margin:0 0 .5rem;color:#0f172a;font-size:1.8rem;font-weight:850}
+.ame-social-feed-header .ame-body{margin:0;color:#64748b;font-size:1rem}
+.ame-social-feed-scroll-area{max-height:720px;overflow-y:auto;overflow-x:hidden;scroll-behavior:smooth}
+.ame-social-feed-scroll-area::-webkit-scrollbar{width:8px}
+.ame-social-feed-scroll-area::-webkit-scrollbar-track{background:rgba(15,23,42,.02)}
+.ame-social-feed-scroll-area::-webkit-scrollbar-thumb{background:rgba(15,23,42,.15);border-radius:4px}
+.ame-social-feed-scroll-area::-webkit-scrollbar-thumb:hover{background:rgba(15,23,42,.25)}
+.ame-social-feed-columns{display:grid;grid-template-columns:1fr 1px 1fr;min-height:0}
+.ame-social-feed-divider{background:rgba(15,23,42,.05)}
+.ame-social-feed-column{min-width:0;display:flex;flex-direction:column}
+.ame-social-feed-card-head{display:flex;align-items:center;justify-content:space-between;gap:1rem;padding:1.2rem 1.5rem;position:sticky;top:0;background:rgba(255,255,255,.95);backdrop-filter:blur(8px);z-index:10;border-bottom:1px solid rgba(15,23,42,.05)}
+.ame-social-feed-brand{display:flex;align-items:center;gap:.7rem;min-width:0}
+.ame-social-feed-brand strong{display:block;color:#111827;font-size:1rem}
+.ame-social-feed-brand small{display:block;margin-top:.15rem;color:#64748b;font-size:.75rem}
+.ame-social-feed-brand-icon,.ame-social-feed-profile-icon{display:grid;place-items:center;flex:0 0 40px;width:40px;height:40px;border-radius:12px;color:#fff;font-weight:900}
+.ame-social-feed-brand-icon.facebook,.ame-social-feed-profile-icon.facebook{background:#1877f2;font-family:Arial,sans-serif;font-size:1.4rem}
+.ame-social-feed-brand-icon.instagram,.ame-social-feed-profile-icon.instagram{background:linear-gradient(135deg,#f58529,#dd2a7b 52%,#8134af 82%,#515bd4);font-size:1.5rem}
+.ame-social-feed-follow{display:inline-flex;align-items:center;justify-content:center;height:32px;padding:0 1rem;border-radius:999px;text-decoration:none!important;font-size:.75rem;font-weight:800;white-space:nowrap;transition:transform .2s, opacity .2s}
+.ame-social-feed-follow:hover{transform:translateY(-1px);opacity:.9}
+.ame-social-feed-follow.facebook{background:#1877f2;color:#fff!important}
+.ame-social-feed-follow.instagram{background:#111827;color:#fff!important}
+
+.ame-social-feed-facebook-profile{padding-bottom:1rem;border-bottom:1px solid rgba(15,23,42,.05)}
+.ame-social-feed-facebook-cover{height:90px;background:linear-gradient(115deg,#1877f2 0%,#60a5fa 52%,#dbeafe 100%)}
+.ame-social-feed-facebook-profile-row{display:flex;align-items:center;gap:1rem;margin-top:-20px;padding:0 1.5rem}
+.ame-social-feed-facebook-profile-row .ame-social-feed-profile-icon{border:3px solid #fff;border-radius:50%;box-shadow:0 4px 12px rgba(15,23,42,.12);width:50px;height:50px;flex:0 0 50px;font-size:1.6rem}
+.ame-social-feed-facebook-profile-row strong{display:block;font-size:1.1rem;color:#0f172a;font-weight:800}
+.ame-social-feed-facebook-profile-row small{display:block;margin-top:.15rem;font-size:.8rem;color:#64748b}
+
+.ame-social-feed-instagram-profile{display:flex;align-items:center;gap:1.2rem;padding:1.5rem;border-bottom:1px solid rgba(15,23,42,.05)}
+.ame-social-feed-instagram-profile .ame-social-feed-profile-icon{border-radius:50%;width:56px;height:56px;flex:0 0 56px;font-size:2rem}
+.ame-social-feed-instagram-details{min-width:0}
+.ame-social-feed-instagram-details>strong{display:block;color:#0f172a;font-size:1.1rem;font-weight:800}
+.ame-social-feed-instagram-stats{display:flex;flex-wrap:wrap;gap:1rem;margin-top:.4rem;color:#64748b;font-size:.8rem}
+.ame-social-feed-instagram-stats b{color:#0f172a;font-weight:700}
+.ame-social-feed-instagram-details p{margin:.5rem 0 0;color:#475569;font-size:.85rem}
+
+.ame-social-feed-posts{min-height:300px;padding:1rem 1.5rem}
+.ame-social-feed-post{margin-bottom:1.5rem;background:#fff;border:1px solid rgba(15,23,42,.06);border-radius:16px;overflow:hidden;box-shadow:0 4px 12px rgba(15,23,42,.03)}
+.ame-social-feed-post:last-child{margin-bottom:0}
+.ame-social-feed-post-copy{padding:1.2rem 1.2rem .8rem;color:#334155;font-size:.9rem;line-height:1.6;white-space:pre-line}
+.ame-social-feed-post-image-wrap{overflow:hidden;background:#f8fafc;border-top:1px solid rgba(15,23,42,.04)}
+.ame-social-feed-post-image{display:block;width:100%;max-height:500px;object-fit:cover}
+.ame-social-feed-post-meta{display:flex;justify-content:space-between;gap:1rem;padding:1rem 1.2rem;background:#f8fafc;border-top:1px solid rgba(15,23,42,.04);color:#64748b;font-size:.8rem}
+.ame-social-feed-post-meta a{color:#0f172a;text-decoration:none;font-weight:700}
+
+.ame-social-feed-instagram-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;padding:1.5rem;min-height:0}
+.ame-social-feed-instagram-tile{position:relative;display:block;aspect-ratio:1;overflow:hidden;background:#f1f5f9;border-radius:8px}
+.ame-social-feed-instagram-tile img{display:block;width:100%;height:100%;object-fit:cover;transition:transform .3s ease}
+.ame-social-feed-instagram-tile:hover img{transform:scale(1.05)}
+.ame-social-feed-instagram-tile:after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,transparent 60%,rgba(0,0,0,.28));pointer-events:none}
+.ame-social-feed-instagram-tile-label{position:absolute;z-index:1;left:.6rem;bottom:.6rem;color:#fff;font-size:.7rem;font-weight:800;text-shadow:0 1px 4px rgba(0,0,0,.5)}
+
+.ame-social-feed-loading,.ame-social-feed-empty,.ame-social-feed-error{display:grid;place-items:center;min-height:300px;padding:2rem;text-align:center;color:#64748b;font-size:.9rem;line-height:1.5}
+.ame-social-feed-empty a,.ame-social-feed-error a{color:#0f172a;font-weight:800}
+.ame-social-feed-instagram-grid .ame-social-feed-loading,.ame-social-feed-instagram-grid .ame-social-feed-empty,.ame-social-feed-instagram-grid .ame-social-feed-error{grid-column:1/-1}
+.ame-social-feed-status{display:flex;align-items:center;justify-content:center;gap:.5rem;padding:1rem;background:#f8fafc;border-top:1px solid rgba(15,23,42,.05);color:#64748b;font-size:.75rem}
+
+@media(max-width:900px){
+    .ame-social-feed-columns{grid-template-columns:1fr;grid-template-rows:auto auto}
+    .ame-social-feed-divider{height:1px;width:100%;background:rgba(15,23,42,.08);margin:0}
+    .ame-social-feed-scroll-area{max-height:80vh}
+}
+@media(max-width:560px){
+    .ame-social-feed-section{padding:3rem 0}
+    .ame-social-feed-header{padding:1.5rem 1rem 1rem}
+    .ame-social-feed-header .ame-h2{font-size:1.5rem}
+    .ame-social-feed-card-head{padding:1rem}
+    .ame-social-feed-facebook-profile-row{padding:0 1rem}
+    .ame-social-feed-instagram-profile{padding:1rem}
+    .ame-social-feed-posts{padding:1rem}
+    .ame-social-feed-instagram-grid{padding:1rem;gap:2px}
+    .ame-social-feed-instagram-tile{border-radius:4px}
+    .ame-social-feed-brand-icon,.ame-social-feed-profile-icon{width:32px;height:32px;flex-basis:32px;font-size:1.1rem!important}
+}
 </style>
 
 <script>
