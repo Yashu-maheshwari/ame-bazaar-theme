@@ -64,11 +64,13 @@ function ame_bazaar_enqueue_assets() {
 			ame_bazaar_asset_version( 'assets/css/premium-homepage.css' )
 		);
 
-		// Definitive category order: Men, Women, Kids, Accessories.
-		// Reset named grid areas so DOM order is controlled explicitly and remains stable.
-		wp_add_inline_style(
-			'ame-bazaar-premium-homepage',
-			'.ame-bazaar-home .ame-categories-grid{grid-template-areas:none!important}.ame-bazaar-home .ame-categories-grid .ame-category-card{grid-area:auto!important}.ame-bazaar-home .ame-categories-grid .ame-category-card:nth-child(1){order:4!important}.ame-bazaar-home .ame-categories-grid .ame-category-card:nth-child(2){order:3!important}.ame-bazaar-home .ame-categories-grid .ame-category-card:nth-child(3){order:1!important}.ame-bazaar-home .ame-categories-grid .ame-category-card:nth-child(4){order:2!important}'
+		// Source-driven category ordering. The rule targets the category slug emitted by categories.php,
+		// so it is independent of database return order or DOM child position.
+		wp_enqueue_style(
+			'ame-bazaar-homepage-category-order',
+			ame_bazaar_asset_uri( 'assets/css/homepage-category-order.css' ),
+			array( 'ame-bazaar-premium-homepage' ),
+			ame_bazaar_asset_version( 'assets/css/homepage-category-order.css' )
 		);
 	}
 
