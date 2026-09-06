@@ -72,6 +72,14 @@ function ame_bazaar_enqueue_assets() {
 			array( 'ame-bazaar-premium-homepage' ),
 			ame_bazaar_asset_version( 'assets/css/homepage-category-order.css' )
 		);
+
+		// Premium social-feed brand icons, scoped to the homepage social feed component.
+		wp_enqueue_style(
+			'ame-bazaar-social-feed-icons',
+			ame_bazaar_asset_uri( 'assets/css/social-feed-icons.css' ),
+			array( 'ame-bazaar-homepage-category-order' ),
+			ame_bazaar_asset_version( 'assets/css/social-feed-icons.css' )
+		);
 	}
 
 	wp_enqueue_style(
