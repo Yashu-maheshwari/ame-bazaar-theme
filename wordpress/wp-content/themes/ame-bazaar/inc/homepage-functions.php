@@ -87,6 +87,12 @@ function ame_bazaar_render_instagram_gallery() {
 }
 add_action( 'ame_bazaar_homepage', 'ame_bazaar_render_instagram_gallery', 52 );
 
+// 9.8 Live Facebook & Instagram Feed Section
+function ame_bazaar_render_social_media_feed() {
+	get_template_part( 'components/homepage/social-media-feed' );
+}
+add_action( 'ame_bazaar_homepage', 'ame_bazaar_render_social_media_feed', 54 );
+
 // 10. WhatsApp & Newsletter CTA Section
 function ame_bazaar_render_whatsapp_cta() {
 	get_template_part( 'components/homepage/whatsapp-cta' );
