@@ -57,6 +57,34 @@ $categories = array(
 ?>
 <!-- CATEGORIES COMPONENT LOADED -->
 <section class="ame-categories-section" id="categories" aria-labelledby="ame-categories-title">
+	<style>
+		/* Final category layout guard: component-level CSS so later styles cannot collapse the grid. */
+		.ame-bazaar-home #categories .ame-categories-grid {
+			display: grid !important;
+			grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+			grid-template-areas: none !important;
+			gap: 18px !important;
+			width: min(1200px, 100%) !important;
+			margin-inline: auto !important;
+		}
+		.ame-bazaar-home #categories .ame-category-card {
+			display: block !important;
+			visibility: visible !important;
+			opacity: 1 !important;
+			grid-area: auto !important;
+			position: relative !important;
+		}
+		.ame-bazaar-home #categories .ame-category-card:has([data-category-slug="men"],[data-category-slug="mens-wear"]) { order: 1 !important; }
+		.ame-bazaar-home #categories .ame-category-card:has([data-category-slug="women"],[data-category-slug="womens-wear"]) { order: 2 !important; }
+		.ame-bazaar-home #categories .ame-category-card:has([data-category-slug="kids"],[data-category-slug="kids-wear"]) { order: 3 !important; }
+		.ame-bazaar-home #categories .ame-category-card:has([data-category-slug="accessories"]) { order: 4 !important; }
+		@media (max-width: 1023px) {
+			.ame-bazaar-home #categories .ame-categories-grid { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; }
+		}
+		@media (max-width: 767px) {
+			.ame-bazaar-home #categories .ame-categories-grid { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; gap: 12px !important; }
+		}
+	</style>
 	<div class="ame-bazaar-container">
 		
 		<!-- Section Header -->
