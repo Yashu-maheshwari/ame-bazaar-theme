@@ -1,10 +1,11 @@
 /* AME Bazaar — Homepage category order */
 .ame-bazaar-home .ame-categories-grid{display:grid!important;grid-template-columns:repeat(4,minmax(0,1fr))!important;grid-template-areas:none!important;}
 .ame-bazaar-home .ame-category-card{grid-area:auto!important;}
-.ame-bazaar-home .ame-category-card:nth-child(1){order:4!important;}
-.ame-bazaar-home .ame-category-card:nth-child(2){order:3!important;}
-.ame-bazaar-home .ame-category-card:nth-child(3){order:1!important;}
-.ame-bazaar-home .ame-category-card:nth-child(4){order:2!important;}
+/* Source-driven order: use the category slug already emitted by categories.php. */
+.ame-bazaar-home .ame-category-card:has([data-category-slug="mens-wear"],[data-category-slug="men"]){order:1!important;}
+.ame-bazaar-home .ame-category-card:has([data-category-slug="womens-wear"],[data-category-slug="women"]){order:2!important;}
+.ame-bazaar-home .ame-category-card:has([data-category-slug="kids-wear"],[data-category-slug="kids"]){order:3!important;}
+.ame-bazaar-home .ame-category-card:has([data-category-slug="accessories"]){order:4!important;}
 @media(max-width:767px){
   .ame-bazaar-home .ame-categories-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important;grid-template-areas:none!important;}
 }
