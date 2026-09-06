@@ -167,6 +167,7 @@ $categories = array(
 						'class'   => 'ame-category-img',
 						'loading' => 'lazy',
 						'alt'     => esc_attr( sprintf( __( '%s - AME Bazaar Premium Collection', 'ame-bazaar' ), $label ) ),
+						'sizes'   => '(max-width: 767px) 50vw, (max-width: 1023px) 50vw, 25vw',
 					) );
 					?>
 					<!-- TERM <?php echo intval( $dept->term_id ); ?> -->
