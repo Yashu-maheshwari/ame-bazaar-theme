@@ -168,10 +168,15 @@ function ame_bazaar_defer_scripts( $tag, $handle, $src ) {
 		'ame-bazaar-global',
 		'ame-bazaar-mobile-header-interactions',
 		'ame-bazaar-footer-social-links',
-		'gsap'
+		'gsap',
+		'jquery',
+		'jquery-core',
+		'jquery-migrate'
 	);
 	if ( in_array( $handle, $defer_scripts, true ) ) {
-		return '<script src="' . esc_url( $src ) . '" defer="defer" id="' . esc_attr( $handle ) . '-js"></script>' . "\n";
+		if ( false === strpos( $tag, 'defer' ) ) {
+			return str_replace( ' src', ' defer="defer" src', $tag );
+		}
 	}
 	return $tag;
 }
@@ -202,3 +207,4 @@ function ame_bazaar_preload_lcp_image() {
 	}
 }
 add_action( 'wp_head', 'ame_bazaar_preload_lcp_image', 1 );
+
