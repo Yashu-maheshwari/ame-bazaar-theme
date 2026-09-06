@@ -55,6 +55,14 @@ function ame_bazaar_enqueue_assets() {
 		ame_bazaar_asset_version( 'assets/css/premium-homepage-final.css' )
 	);
 
+	// Footer social brand styling is site-wide because the footer appears on every page.
+	wp_enqueue_style(
+		'ame-bazaar-footer-social',
+		ame_bazaar_asset_uri( 'assets/css/footer-social.css' ),
+		array( 'ame-bazaar-premium-global' ),
+		ame_bazaar_asset_version( 'assets/css/footer-social.css' )
+	);
+
 	// Premium homepage UI layer. CSS-only refinement; no backend/template replacement.
 	if ( is_front_page() || is_home() ) {
 		wp_enqueue_style(
@@ -124,6 +132,15 @@ function ame_bazaar_enqueue_assets() {
 		ame_bazaar_asset_uri( 'assets/js/mobile-header-interactions.js' ),
 		array(),
 		ame_bazaar_asset_version( 'assets/js/mobile-header-interactions.js' ),
+		true
+	);
+
+	// Working footer social links: official Facebook/Instagram plus Threads and YouTube.
+	wp_enqueue_script(
+		'ame-bazaar-footer-social-links',
+		ame_bazaar_asset_uri( 'assets/js/footer-social-links.js' ),
+		array(),
+		ame_bazaar_asset_version( 'assets/js/footer-social-links.js' ),
 		true
 	);
 
