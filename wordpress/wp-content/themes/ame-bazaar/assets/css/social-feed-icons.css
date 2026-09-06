@@ -1,0 +1,149 @@
+.ame-social-feed-brand-icon,
+.ame-social-feed-profile-icon {
+	position: relative;
+	isolation: isolate;
+	overflow: hidden;
+	border-radius: 50% !important;
+	border: 1px solid rgba(255,255,255,.7);
+	box-shadow: 0 8px 22px rgba(15,23,42,.16), inset 0 1px 0 rgba(255,255,255,.45);
+	transition: transform .25s ease, box-shadow .25s ease;
+}
+
+.ame-social-feed-brand-icon::before,
+.ame-social-feed-profile-icon::before {
+	content: '';
+	position: absolute;
+	inset: 2px;
+	border-radius: inherit;
+	border: 1px solid rgba(255,255,255,.28);
+	pointer-events: none;
+}
+
+.ame-social-feed-brand-icon::after,
+.ame-social-feed-profile-icon::after {
+	content: '';
+	position: absolute;
+	inset: 0;
+	background: linear-gradient(135deg, rgba(255,255,255,.28), transparent 42%, rgba(0,0,0,.12));
+	pointer-events: none;
+}
+
+.ame-social-feed-brand-icon:hover,
+.ame-social-feed-profile-icon:hover {
+	transform: translateY(-2px) scale(1.04);
+	box-shadow: 0 11px 28px rgba(15,23,42,.22), inset 0 1px 0 rgba(255,255,255,.5);
+}
+
+.ame-social-feed-brand-icon.facebook,
+.ame-social-feed-profile-icon.facebook {
+	background: radial-gradient(circle at 30% 18%, #60a5fa 0, #1877f2 46%, #0b4fa8 100%) !important;
+	font-size: 0 !important;
+}
+
+.ame-social-feed-brand-icon.facebook::before,
+.ame-social-feed-profile-icon.facebook::before {
+	content: 'f';
+	position: absolute;
+	inset: auto;
+	left: 50%;
+	top: 50%;
+	transform: translate(-50%, -43%);
+	width: auto;
+	height: auto;
+	border: 0;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 28px;
+	font-weight: 900;
+	line-height: 1;
+	color: #fff;
+	z-index: 2;
+	text-shadow: 0 2px 5px rgba(0,0,0,.18);
+}
+
+.ame-social-feed-profile-icon.facebook::before {
+	font-size: 31px;
+}
+
+.ame-social-feed-brand-icon.instagram,
+.ame-social-feed-profile-icon.instagram {
+	background: radial-gradient(circle at 28% 18%, #ffd66b 0, #f58529 24%, #dd2a7b 55%, #8134af 78%, #515bd4 100%) !important;
+	font-size: 0 !important;
+}
+
+.ame-social-feed-brand-icon.instagram::before,
+.ame-social-feed-profile-icon.instagram::before {
+	content: '';
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	width: 20px;
+	height: 20px;
+	transform: translate(-50%, -50%);
+	border: 2px solid #fff;
+	border-radius: 6px;
+	box-sizing: border-box;
+	z-index: 2;
+}
+
+.ame-social-feed-brand-icon.instagram::after,
+.ame-social-feed-profile-icon.instagram::after {
+	content: '';
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	width: 7px;
+	height: 7px;
+	transform: translate(-50%, -50%);
+	border: 2px solid #fff;
+	border-radius: 50%;
+	background: transparent;
+	box-shadow: 7px -7px 0 -5px #fff;
+	z-index: 3;
+}
+
+.ame-social-feed-profile-icon.instagram::before {
+	width: 25px;
+	height: 25px;
+	border-radius: 7px;
+}
+
+.ame-social-feed-profile-icon.instagram::after {
+	width: 9px;
+	height: 9px;
+	box-shadow: 8px -8px 0 -6px #fff;
+}
+
+.ame-social-feed-card-head .ame-social-feed-brand-icon {
+	flex-basis: 46px;
+	width: 46px;
+	height: 46px;
+}
+
+.ame-social-feed-card-head .ame-social-feed-brand-icon.facebook::before {
+	font-size: 30px;
+}
+
+.ame-social-feed-card-head .ame-social-feed-brand-icon.instagram::before {
+	width: 22px;
+	height: 22px;
+}
+
+.ame-social-feed-card-head .ame-social-feed-brand-icon.instagram::after {
+	width: 8px;
+	height: 8px;
+	box-shadow: 8px -8px 0 -6px #fff;
+}
+
+.ame-social-feed-facebook-profile-row .ame-social-feed-profile-icon.facebook,
+.ame-social-feed-instagram-profile .ame-social-feed-profile-icon.instagram {
+	box-shadow: 0 8px 20px rgba(15,23,42,.2), inset 0 1px 0 rgba(255,255,255,.5);
+}
+
+@media (max-width: 560px) {
+	.ame-social-feed-card-head .ame-social-feed-brand-icon {
+		flex-basis: 40px;
+		width: 40px;
+		height: 40px;
+	}
+	.ame-social-feed-card-head .ame-social-feed-brand-icon.facebook::before { font-size: 27px; }
+}
