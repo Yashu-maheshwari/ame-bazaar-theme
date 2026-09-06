@@ -12,32 +12,34 @@ if ( ! defined( 'ABSPATH' ) ) {
 $section_title = get_theme_mod( 'ame_bazaar_featured_title', 'Featured Collections' );
 $section_subtitle = get_theme_mod( 'ame_bazaar_featured_subtitle', 'Handpicked fashion arrivals selected for Delhi families' );
 
-// WooCommerce products query placeholder
-$products = array();
-
-if ( class_exists( 'WooCommerce' ) ) {
-	// Query recent products
-	$args = array(
-		'post_type'      => 'product',
-		'posts_per_page' => 4,
-		'status'         => 'publish',
-	);
-	$loop = new WP_Query( $args );
-	if ( $loop->have_posts() ) {
-		while ( $loop->have_posts() ) {
-			$loop->the_post();
-			global $product;
-			$products[] = array(
-				'id'         => get_the_ID(),
-				'title'      => get_the_title(),
-				'price_html' => $product->get_price_html(),
-				'img_url'    => get_the_post_thumbnail_url( get_the_ID(), 'medium' ),
-				'link'       => get_permalink(),
-				'add_to_cart_url' => esc_url( $product->add_to_cart_url() ),
-			);
+$products = get_transient( 'ame_bazaar_featured_products' );
+if ( false === $products ) {
+	$products = array();
+	if ( class_exists( 'WooCommerce' ) ) {
+		// Query recent products
+		$args = array(
+			'post_type'      => 'product',
+			'posts_per_page' => 4,
+			'status'         => 'publish',
+		);
+		$loop = new WP_Query( $args );
+		if ( $loop->have_posts() ) {
+			while ( $loop->have_posts() ) {
+				$loop->the_post();
+				global $product;
+				$products[] = array(
+					'id'         => get_the_ID(),
+					'title'      => get_the_title(),
+					'price_html' => $product->get_price_html(),
+					'img_url'    => get_the_post_thumbnail_url( get_the_ID(), 'medium' ),
+					'link'       => get_permalink(),
+					'add_to_cart_url' => esc_url( $product->add_to_cart_url() ),
+				);
+			}
+			wp_reset_postdata();
 		}
-		wp_reset_postdata();
 	}
+	set_transient( 'ame_bazaar_featured_products', $products, HOUR_IN_SECONDS );
 }
 
 // Return early and hide section if no products exist
