@@ -208,3 +208,15 @@ function ame_bazaar_preload_lcp_image() {
 }
 add_action( 'wp_head', 'ame_bazaar_preload_lcp_image', 1 );
 
+/**
+ * Performance Optimization: Asynchronous Google Fonts.
+ */
+function ame_bazaar_async_google_fonts() {
+	echo '<link rel="preconnect" href="https://fonts.googleapis.com">' . "\n";
+	echo '<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>' . "\n";
+	echo '<link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" as="style" onload="this.onload=null;this.rel=\'stylesheet\'">' . "\n";
+	echo '<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap"></noscript>' . "\n";
+}
+add_action( 'wp_head', 'ame_bazaar_async_google_fonts', 2 );
+
+
