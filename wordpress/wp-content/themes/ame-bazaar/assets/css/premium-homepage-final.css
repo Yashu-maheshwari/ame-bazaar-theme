@@ -1,58 +1,209 @@
-/* AME Bazaar — Global Premium UI Layer */
-:root{--ame-global-navy:#002347;--ame-global-navy-deep:#00182f;--ame-global-blue-soft:#eef5fb;--ame-global-gold:#f59e0b}
-.ame-header-luxury-wrapper{position:fixed!important;top:0;left:0;right:0;width:100%;z-index:9998;min-height:88px;box-sizing:border-box;padding-block:1.15rem!important;background:rgba(255,255,255,.98)!important;border-bottom:1px solid rgba(0,35,71,.12)!important;box-shadow:0 8px 30px rgba(0,35,71,.08)!important}.ame-bazaar-site-header{min-height:88px}body.admin-bar .ame-header-luxury-wrapper{top:32px}.ame-header-luxury-wrapper:before{content:'';position:absolute;left:0;right:0;top:0;height:3px;background:linear-gradient(90deg,var(--ame-global-navy-deep),var(--ame-global-gold),var(--ame-global-navy-deep))}.ame-header-luxury-inner{min-height:58px;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr)!important;gap:1.25rem!important}.ame-header-luxury-left{min-width:0!important;gap:1rem!important}.ame-desktop-nav-luxury{min-width:0!important}.ame-desktop-menu-luxury{gap:1.35rem!important;align-items:center!important;white-space:nowrap!important}.ame-desktop-menu-luxury a{font-size:13.5px!important;font-weight:700!important;letter-spacing:.055em!important;color:rgba(0,35,71,.82)!important;padding:8px 0!important}.ame-desktop-menu-luxury a:hover,.ame-desktop-menu-luxury .current-menu-item>a{color:var(--ame-global-navy)!important}.ame-desktop-menu-luxury a:after{height:2px!important;background:linear-gradient(90deg,var(--ame-global-navy),var(--ame-global-gold))!important}.ame-logo-img{max-height:38px!important}.ame-luxury-action-btn{color:var(--ame-global-navy)!important;opacity:.82!important}.ame-luxury-action-btn:hover{color:var(--ame-global-gold)!important;opacity:1!important}.ame-header-luxury-right{gap:.85rem!important}.ame-luxury-pill-btn{font-size:12px!important;padding:.72rem 1.5rem!important;font-weight:700!important;letter-spacing:.06em!important}
-@media(max-width:1023px){.ame-header-luxury-wrapper{min-height:72px;padding-block:.8rem!important}.ame-bazaar-site-header{min-height:72px}.ame-header-luxury-inner{min-height:48px}.ame-logo-img{max-height:34px!important}}@media(max-width:782px){body.admin-bar .ame-header-luxury-wrapper{top:46px}}
-body.page .entry-content>:is(section,div,.wp-block-group):first-child{position:relative;isolation:isolate}body.page .entry-content>:is(section,div,.wp-block-group):first-child h1,body.page .entry-content>:is(section,div,.wp-block-group):first-child h2,body.page .entry-content>:is(section,div,.wp-block-group):first-child h3{color:#fff!important;text-shadow:0 3px 18px rgba(0,0,0,.28)!important}body.page .entry-content>:is(section,div,.wp-block-group):first-child p{color:rgba(255,255,255,.92)!important}body.page .entry-content>:is(section,div,.wp-block-group):first-child :is(a,.button,.wp-element-button){color:var(--ame-global-navy)!important;background:#fff!important;border-color:rgba(255,255,255,.8)!important}body.page .entry-content>:is(section,div,.wp-block-group):first-child :is(.eyebrow,.label,small){color:var(--ame-global-gold)!important}
-.ame-bazaar-home .ame-why-choose-us{background:linear-gradient(180deg,#f5f9fd 0%,#eaf3fa 100%)!important;border-top:1px solid rgba(0,35,71,.06);border-bottom:1px solid rgba(0,35,71,.06)}.ame-bazaar-home .ame-reviews-section{background:linear-gradient(180deg,#eef5fb 0%,#f8fbfd 100%)!important}.ame-bazaar-home .ame-visit-store-section{background:#f8f7f4!important;border-top:1px solid rgba(0,35,71,.07)}.ame-bazaar-home .ame-why-choose-us:before,.ame-bazaar-home .ame-reviews-section:before,.ame-bazaar-home .ame-visit-store-section:before{content:'';position:absolute;top:0;left:50%;width:min(180px,28vw);height:3px;transform:translateX(-50%);background:linear-gradient(90deg,transparent,var(--ame-global-gold),transparent);opacity:.8}
-.ame-hero__video{opacity:0;animation:ame-video-reveal .9s ease .22s forwards}.ame-hero__stage{background:var(--ame-global-navy-deep)!important}@keyframes ame-video-reveal{to{opacity:1}}
-/* Stitch refinement */
-.ame-bazaar-home .ame-categories-section{position:relative!important;background:linear-gradient(135deg,#00182f 0%,#002347 52%,#06345d 100%)!important;padding-block:clamp(58px,7vw,92px)!important;overflow:hidden!important}.ame-bazaar-home .ame-categories-section:before{content:'';position:absolute;inset:0;pointer-events:none;background:radial-gradient(circle at 10% 15%,rgba(245,158,11,.12),transparent 32%),radial-gradient(circle at 90% 85%,rgba(255,255,255,.08),transparent 34%)}.ame-bazaar-home .ame-categories-header,.ame-bazaar-home .ame-categories-grid{position:relative;z-index:1}.ame-bazaar-home .ame-categories-section-title{color:#fff!important;font-size:clamp(2.25rem,4vw,3.45rem)!important;font-weight:600!important}.ame-bazaar-home .ame-categories-section-subtitle{color:rgba(255,255,255,.76)!important;font-weight:500!important;letter-spacing:.08em!important}.ame-bazaar-home .ame-categories-grid{width:min(900px,100%);margin-inline:auto!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;grid-template-areas:'men women' 'kids accessories'!important;gap:18px!important}.ame-bazaar-home .ame-category-card:nth-child(1){grid-area:accessories}.ame-bazaar-home .ame-category-card:nth-child(2){grid-area:kids}.ame-bazaar-home .ame-category-card:nth-child(3){grid-area:men}.ame-bazaar-home .ame-category-card:nth-child(4){grid-area:women}.ame-bazaar-home .ame-category-card{min-height:0!important;border:1px solid rgba(255,255,255,.16)!important;border-radius:18px!important;background:#fff!important;box-shadow:0 16px 45px rgba(0,0,0,.2)!important}.ame-bazaar-home .ame-category-card-visual{aspect-ratio:16/10!important}.ame-bazaar-home .ame-category-card-content{padding:15px 17px 17px!important}.ame-bazaar-home .ame-category-card-title{font-size:1.18rem!important;font-weight:700!important}.ame-bazaar-home .ame-category-card-desc{display:none!important}.ame-bazaar-home .ame-category-card-btn{min-height:40px!important;padding:.62rem 1rem!important;font-size:.76rem!important}
-.ame-bazaar-home .ame-about-business-section{background:linear-gradient(135deg,#00182f 0%,#002347 55%,#07365e 100%)!important;position:relative!important;overflow:hidden!important;padding-block:clamp(64px,8vw,105px)!important}.ame-bazaar-home .ame-about-business-section:before{content:'';position:absolute;inset:0;pointer-events:none;background:radial-gradient(circle at 82% 20%,rgba(245,158,11,.1),transparent 30%)}.ame-bazaar-home .ame-about-business-layout,.ame-bazaar-home .ame-about-business-header{position:relative;z-index:1}.ame-bazaar-home .ame-about-business-layout{gap:clamp(28px,5vw,70px)!important}.ame-bazaar-home .ame-about-story-col,.ame-bazaar-home .ame-about-faq-col{background:rgba(255,255,255,.045)!important;border:1px solid rgba(255,255,255,.12)!important;border-radius:18px!important;padding:clamp(20px,3vw,32px)!important;backdrop-filter:blur(8px)}.ame-bazaar-home .ame-about-banner-wrapper{border-radius:14px!important;box-shadow:0 20px 50px rgba(0,0,0,.25)!important}.ame-bazaar-home .ame-about-banner-img{width:100%!important;display:block!important}
-.ame-bazaar-home .ame-visit-store-section{position:relative!important;background:#f8f7f4!important;padding-block:clamp(64px,8vw,100px)!important}.ame-bazaar-home .ame-visit-store-grid{grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr)!important;gap:clamp(28px,5vw,64px)!important;align-items:center!important}.ame-bazaar-home .ame-visit-store-heading{font-family:'Playfair Display',serif!important;color:#002347!important;font-size:clamp(2.2rem,4vw,3.2rem)!important;font-weight:600!important}.ame-bazaar-home .ame-visit-store-intro{font-size:1rem!important;line-height:1.7!important;color:#526173!important}.ame-bazaar-home .ame-visit-store-banner-wrapper{margin:0 0 1.6rem!important;border-radius:16px!important;overflow:hidden!important;box-shadow:0 18px 48px rgba(0,35,71,.15)!important}.ame-bazaar-home .ame-visit-store-banner-img{width:100%!important;aspect-ratio:16/9!important;object-fit:cover!important;display:block!important}.ame-bazaar-home .ame-map-container{border-radius:16px!important;overflow:hidden!important;box-shadow:0 18px 48px rgba(0,35,71,.13)!important;border:1px solid rgba(0,35,71,.08)!important}
-.ame-bazaar-home .ame-tailoring-service-section{position:relative!important;background:#fff!important;padding-block:clamp(64px,8vw,100px)!important}.ame-bazaar-home .ame-tailoring-visual-col .ame-tailoring-img{width:100%!important;max-width:560px!important;aspect-ratio:4/3!important;object-fit:cover!important;border-radius:18px!important;box-shadow:0 24px 65px rgba(0,35,71,.18)!important}.ame-bazaar-home .ame-tailoring-content-col .ame-h2{font-family:'Playfair Display',serif!important;color:#002347!important;font-size:clamp(2rem,3.6vw,3rem)!important;font-weight:600!important}
-/* Header navigation — distinctive premium button treatment */
-.ame-desktop-menu-luxury{gap:.7rem!important;padding:5px!important;border:1px solid rgba(0,35,71,.08);border-radius:999px;background:rgba(248,250,252,.78);box-shadow:0 5px 18px rgba(0,35,71,.06);backdrop-filter:blur(10px);box-sizing:border-box;overflow:hidden!important}
-.ame-desktop-menu-luxury li{display:flex!important;align-items:center!important;min-width:0!important}.ame-desktop-menu-luxury a{position:relative!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;min-height:34px!important;padding:7px 14px!important;border-radius:999px!important;font-size:12px!important;font-weight:800!important;letter-spacing:.07em!important;color:#002347!important;text-decoration:none!important;transition:transform .25s ease,background .25s ease,color .25s ease,box-shadow .25s ease!important;overflow:hidden!important;flex-shrink:0!important}.ame-desktop-menu-luxury a:before{content:'';position:absolute;inset:0;transform:translateX(-115%);background:linear-gradient(110deg,transparent 25%,rgba(255,255,255,.5) 50%,transparent 75%);transition:transform .55s ease;pointer-events:none}.ame-desktop-menu-luxury a:after{content:''!important;position:absolute!important;left:12px!important;right:12px!important;bottom:4px!important;width:auto!important;height:2px!important;border-radius:99px!important;background:var(--ame-global-gold)!important;opacity:0!important;transition:opacity .25s ease!important}.ame-desktop-menu-luxury a:hover,.ame-desktop-menu-luxury .current-menu-item>a{background:#002347!important;color:#fff!important;transform:translateY(-1px)!important;box-shadow:0 7px 18px rgba(0,35,71,.18)!important}.ame-desktop-menu-luxury a:hover:before{transform:translateX(115%)}.ame-desktop-menu-luxury a:hover:after,.ame-desktop-menu-luxury .current-menu-item>a:after{opacity:1!important}
-/* Homepage trust strip — compact, aligned, premium */
-.ame-bazaar-home .ame-trust-section{position:relative!important;padding:24px 0!important;background:linear-gradient(180deg,#f8fbfd 0%,#eef5fb 100%)!important;border-top:1px solid rgba(0,35,71,.07)!important;border-bottom:1px solid rgba(0,35,71,.07)!important}.ame-bazaar-home .ame-trust-grid{width:min(1120px,100%)!important;margin-inline:auto!important;display:grid!important;grid-template-columns:repeat(4,minmax(0,1fr))!important;gap:14px!important;align-items:stretch!important}.ame-bazaar-home .ame-trust-card{min-width:0!important;min-height:70px!important;padding:12px 14px!important;border:1px solid rgba(0,35,71,.09)!important;border-radius:14px!important;background:rgba(255,255,255,.88)!important;box-shadow:0 8px 24px rgba(0,35,71,.07)!important;box-sizing:border-box!important;display:flex!important;align-items:center!important;justify-content:center!important;gap:10px!important;transition:transform .2s ease,box-shadow .2s ease,border-color .2s ease!important}.ame-bazaar-home .ame-trust-card:hover{transform:translateY(-2px)!important;box-shadow:0 12px 28px rgba(0,35,71,.12)!important;border-color:rgba(245,158,11,.4)!important}.ame-bazaar-home .ame-trust-card-icon-wrapper{width:34px!important;height:34px!important;min-width:34px!important;border-radius:50%!important;background:#f7f5ef!important;display:grid!important;place-items:center!important;color:var(--ame-global-gold)!important}.ame-bazaar-home .ame-trust-card-icon{width:17px!important;height:17px!important}.ame-bazaar-home .ame-trust-card-text{min-width:0!important;text-align:left!important}.ame-bazaar-home .ame-trust-card-title{display:block!important;font-size:12px!important;font-weight:800!important;line-height:1.25!important;color:#002347!important}.ame-bazaar-home .ame-trust-card-desc{display:block!important;margin-top:3px!important;font-size:10px!important;line-height:1.25!important;color:#617085!important}.ame-bazaar-home .ame-trust-authority-row{display:none!important}
-/* Reviews — remove excessive spread and restore a single visual rhythm */
-.ame-bazaar-home .ame-reviews-section{padding:clamp(48px,6vw,68px) 0!important}.ame-bazaar-home .ame-reviews-section>.ame-bazaar-container{width:min(1080px,calc(100% - 40px))!important;margin-inline:auto!important}.ame-bazaar-home .ame-reviews-header{max-width:850px!important;margin:0 auto 30px!important;text-align:center!important}.ame-bazaar-home .ame-reviews-title{margin:0!important}.ame-bazaar-home .ame-reviews-subtitle{margin:.65rem auto 0!important;max-width:760px!important}.ame-bazaar-home .ame-reviews-layout-grid{display:grid!important;grid-template-columns:minmax(0,1fr) minmax(0,1fr)!important;gap:28px!important;align-items:stretch!important}.ame-bazaar-home .ame-reviews-left-col,.ame-bazaar-home .ame-reviews-right-col{min-width:0!important}.ame-bazaar-home .ame-reviews-google-card{height:100%!important;box-sizing:border-box!important;display:flex!important;align-items:center!important;padding:30px!important;border-radius:18px!important;box-shadow:0 14px 35px rgba(0,35,71,.08)!important}.ame-bazaar-home .ame-reviews-google-rating-wrap{min-width:120px!important}.ame-bazaar-home .ame-reviews-trust-cards-grid{display:grid!important;grid-template-columns:1fr!important;gap:16px!important;height:100%!important}.ame-bazaar-home .ame-reviews-trust-card{min-height:0!important;box-sizing:border-box!important;padding:22px 24px!important;border-radius:16px!important;box-shadow:0 10px 28px rgba(0,35,71,.07)!important;display:flex!important;align-items:center!important}.ame-bazaar-home .ame-reviews-trust-card-content{min-width:0!important}.ame-bazaar-home .ame-reviews-trust-card-title{font-weight:800!important}
-/* Visit store — tighter two-column alignment */
-.ame-bazaar-home .ame-visit-store-section{padding:clamp(48px,6vw,72px) 0!important}.ame-bazaar-home .ame-visit-store-section>.ame-bazaar-container{width:min(1080px,calc(100% - 40px))!important;margin-inline:auto!important}.ame-bazaar-home .ame-visit-store-grid{grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr)!important;gap:30px!important;align-items:center!important}.ame-bazaar-home .ame-visit-store-heading{margin-top:0!important}.ame-bazaar-home .ame-visit-store-intro{max-width:650px!important}.ame-bazaar-home .ame-visit-store-banner-wrapper{margin-top:22px!important;margin-bottom:0!important}.ame-bazaar-home .ame-map-container{height:100%!important;min-height:360px!important}
-@media(max-width:767px){
- .ame-header-luxury-wrapper{min-height:112px!important;padding:8px 0 6px!important;background:rgba(255,255,255,.98)!important}
- .ame-header-luxury-inner{position:relative!important;min-height:96px!important;height:96px!important;display:flex!important;align-items:flex-start!important;justify-content:center!important;padding:0 10px!important;box-sizing:border-box!important}
- .ame-header-luxury-left{position:absolute!important;left:8px!important;right:8px!important;bottom:4px!important;display:block!important;width:auto!important;z-index:3!important}
- .ame-luxury-menu-toggle{display:none!important}
- .ame-desktop-nav-luxury{display:block!important;width:100%!important;overflow:hidden!important}
- .ame-desktop-menu-luxury{display:flex!important;width:100%!important;max-width:none!important;justify-content:flex-start!important;gap:4px!important;padding:4px!important;border-radius:999px!important;overflow-x:auto!important;overflow-y:hidden!important;scrollbar-width:none!important;-webkit-overflow-scrolling:touch!important;background:rgba(248,250,252,.96)!important;box-shadow:0 5px 18px rgba(0,35,71,.08)!important}
- .ame-desktop-menu-luxury::-webkit-scrollbar{display:none!important}
- .ame-desktop-menu-luxury a{min-height:30px!important;padding:6px 10px!important;font-size:10px!important;letter-spacing:.045em!important}
- .ame-header-luxury-center{position:absolute!important;top:0!important;left:50%!important;transform:translateX(-50%)!important;z-index:4!important}
- .ame-logo-img{max-height:38px!important;width:auto!important}
- .ame-header-luxury-right{position:absolute!important;top:3px!important;right:8px!important;gap:5px!important;z-index:5!important}
- .ame-luxury-pill-btn{display:none!important}
- .ame-header-luxury-right .ame-luxury-action-btn{width:28px!important;height:28px!important;padding:5px!important;border-radius:50%!important;background:#f5f8fb!important;display:grid!important;place-items:center!important}
- .ame-header-luxury-right .ame-luxury-icon{width:15px!important;height:15px!important}
- .ame-bazaar-home .ame-trust-section{padding:14px 0!important}
- .ame-bazaar-home .ame-trust-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:9px!important;width:calc(100% - 24px)!important}
- .ame-bazaar-home .ame-trust-card{min-height:62px!important;padding:9px 8px!important;border-radius:12px!important;gap:7px!important}
- .ame-bazaar-home .ame-trust-card-icon-wrapper{width:28px!important;height:28px!important;min-width:28px!important}
- .ame-bazaar-home .ame-trust-card-icon{width:14px!important;height:14px!important}
- .ame-bazaar-home .ame-trust-card-title{font-size:10px!important}
- .ame-bazaar-home .ame-trust-card-desc{font-size:8.5px!important}
- .ame-bazaar-home .ame-trust-grid .ame-trust-card:nth-child(n+5){display:none!important}
- .ame-bazaar-home .ame-reviews-section{padding:42px 0!important}
- .ame-bazaar-home .ame-reviews-section>.ame-bazaar-container,.ame-bazaar-home .ame-visit-store-section>.ame-bazaar-container{width:calc(100% - 28px)!important}
- .ame-bazaar-home .ame-reviews-layout-grid{grid-template-columns:1fr!important;gap:16px!important}
- .ame-bazaar-home .ame-reviews-google-card{height:auto!important;min-height:170px!important;padding:22px!important}
- .ame-bazaar-home .ame-reviews-trust-cards-grid{height:auto!important;gap:10px!important}
- .ame-bazaar-home .ame-reviews-trust-card{padding:16px 18px!important;min-height:92px!important}
- .ame-bazaar-home .ame-visit-store-section{padding:44px 0!important}
- .ame-bazaar-home .ame-visit-store-grid{grid-template-columns:1fr!important;gap:20px!important}
- .ame-bazaar-home .ame-visit-store-heading{font-size:clamp(2rem,10vw,2.7rem)!important}
- .ame-bazaar-home .ame-visit-store-banner-wrapper{margin-top:16px!important}
- .ame-bazaar-home .ame-map-container{min-height:300px!important;height:300px!important}
- .ame-bazaar-home .ame-categories-grid{gap:12px!important}.ame-bazaar-home .ame-category-card-visual{aspect-ratio:4/3!important}.ame-bazaar-home .ame-category-card-content{padding:11px!important}.ame-bazaar-home .ame-category-card-title{font-size:1rem!important}.ame-bazaar-home .ame-category-card-btn{min-height:36px!important}
+/*
+Theme Name: AME Bazaar Astra Child
+Theme URI: https://github.com/Yashu-maheshwari/ame-bazaar-code-
+Author: Yashu Maheshwari & Gemini
+Author URI: https://github.com/Yashu-maheshwari
+Description: Premium Astra child theme foundation for the AME Bazaar digital platform.
+Template: astra
+Version: 1.0.4
+Text Domain: ame-bazaar
+*/
+
+/* Theme foundation styles live in assets/css/main.css. */
+:root {
+	--ame-color-navy: #002347;
+	--ame-color-gold: #d4af37;
+	--ame-color-gold-dark: #916c02;
+	--ame-color-cream: #f8f7f4;
+	--ame-color-white: #ffffff;
+	--ame-color-slate: #334155;
+	--ame-color-charcoal: #1f2937;
+	--ame-color-border: #dbe2ea;
+	--ame-radius-sm: 0.5rem;
+	--ame-radius-md: 1rem;
+	--ame-radius-lg: 1.5rem;
+	--ame-shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.06);
+	--ame-shadow-md: 0 10px 30px rgba(15, 23, 42, 0.08);
+	--ame-shadow-lg: 0 20px 60px rgba(15, 23, 42, 0.12);
+	--ame-font-body: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+	--ame-font-heading: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+
+	--ame-content-width: 1200px;
+	--ame-container-padding: clamp(1rem, 3vw, 2rem);
+	--ame-section-padding: clamp(3rem, 7vw, 6rem);
+	--ame-transition: 180ms ease;
 }
-.ame-bazaar-home :is(h1,h2,h3,h4,h5,h6){text-wrap:balance}.ame-bazaar-home :is(a,button,.ame-bazaar-btn,.ame-hero-btn){-webkit-tap-highlight-color:transparent}
+
+html { scroll-behavior: smooth; }
+
+body {
+	margin: 0;
+	font-family: var(--ame-font-body);
+	color: var(--ame-color-charcoal);
+	background: var(--ame-color-white);
+	line-height: 1.6;
+	text-rendering: optimizeLegibility;
+	-webkit-font-smoothing: antialiased;
+}
+
+img { max-width: 100%; height: auto; display: block; }
+
+a {
+	color: inherit;
+	text-decoration-thickness: 0.08em;
+	text-underline-offset: 0.18em;
+	transition: color var(--ame-transition), opacity var(--ame-transition),
+		background-color var(--ame-transition), border-color var(--ame-transition);
+}
+a:hover { color: var(--ame-color-navy); }
+
+button, input, select, textarea { font: inherit; }
+
+:focus-visible {
+	outline: 3px solid var(--ame-color-gold);
+	outline-offset: 3px;
+}
+
+.screen-reader-text {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	padding: 0;
+	margin: -1px;
+	overflow: hidden;
+	clip: rect(0, 0, 0, 0);
+	white-space: nowrap;
+	border: 0;
+}
+
+.screen-reader-text:focus {
+	position: static;
+	width: auto;
+	height: auto;
+	margin: 0;
+	overflow: visible;
+	clip: auto;
+	white-space: normal;
+}
+
+.ame-bazaar-container {
+	width: min(var(--ame-content-width), calc(100% - (var(--ame-container-padding) * 2)));
+	margin-inline: auto;
+}
+
+.ame-bazaar-section { padding-block: var(--ame-section-padding); }
+
+.ame-bazaar-surface { background: var(--ame-color-cream); }
+
+.ame-bazaar-shell {
+	min-height: 100vh;
+	background: var(--ame-color-white);
+}
+
+.ame-bazaar-stack {
+	display: grid;
+	gap: 1.5rem;
+}
+
+.ame-bazaar-btn {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	gap: 0.5rem;
+	padding: 0.9rem 1.4rem;
+	border-radius: 999px;
+	border: 1px solid transparent;
+	font-weight: 600;
+	letter-spacing: 0.01em;
+	text-decoration: none;
+	cursor: pointer;
+}
+.ame-bazaar-btn--primary { background: var(--ame-color-navy); color: var(--ame-color-white); }
+.ame-bazaar-btn--secondary { background: transparent; color: var(--ame-color-navy); border-color: currentColor; }
+.ame-bazaar-btn:hover { transform: translateY(-1px); box-shadow: var(--ame-shadow-sm); }
+
+/* VISIBLE OFFICIAL SOCIAL LINKS */
+.ame-bazaar-social-links { display: flex; align-items: center; gap: 0.75rem; margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid rgba(255, 255, 255, 0.14); }
+.ame-bazaar-social-link { display: inline-flex; align-items: center; gap: 0.55rem; min-height: 42px; padding: 0.55rem 0.9rem; border: 1px solid rgba(255, 255, 255, 0.24); border-radius: 999px; background: rgba(255, 255, 255, 0.06); color: #ffffff !important; font-size: 0.78rem; font-weight: 700; letter-spacing: 0.04em; text-decoration: none !important; transition: transform 180ms ease, background-color 180ms ease, border-color 180ms ease; }
+.ame-bazaar-social-link svg { width: 20px; height: 20px; flex: 0 0 20px; display: block; }
+.ame-bazaar-social-link:hover { transform: translateY(-2px); background: rgba(255, 255, 255, 0.14); border-color: var(--ame-color-gold); color: #ffffff !important; }
+@media (max-width: 480px) { .ame-bazaar-social-links { gap: 0.55rem; } .ame-bazaar-social-link { min-height: 40px; padding-inline: 0.75rem; font-size: 0.72rem; } }
+
+/* TRUST BAR ENHANCEMENT */
+.ame-trust-bar-section { background: linear-gradient(135deg, #001b38 0%, #002347 100%) !important; border-top: 2px solid var(--ame-color-gold) !important; border-bottom: 2px solid var(--ame-color-gold) !important; box-shadow: var(--ame-shadow-md); }
+.ame-trust-bar-item { transition: transform 0.2s ease; }
+.ame-trust-bar-item:hover { transform: translateY(-2px); }
+.ame-trust-bar-icon-wrap { transition: background-color 0.25s ease; }
+.ame-trust-bar-item:hover .ame-trust-bar-icon-wrap { background: rgba(212, 175, 55, 0.28) !important; }
+
+/* AI FASHION ADVISOR & SEARCH STYLES */
+.ame-ai-topic-chip.active { background: var(--ame-color-navy) !important; color: #ffffff !important; box-shadow: var(--ame-shadow-sm); }
+.ame-ai-topic-chip:hover { background: #e2e8f0 !important; color: var(--ame-color-navy) !important; }
+.ame-prompt-tap { transition: all 0.2s ease-in-out; }
+.ame-prompt-tap:hover { border-color: var(--ame-color-navy) !important; background: #f8fafc !important; color: var(--ame-color-navy) !important; transform: translateY(-1px); box-shadow: var(--ame-shadow-sm); }
+.ame-faq-accordion-item { transition: border-color 0.2s ease, box-shadow 0.2s ease; }
+.ame-faq-accordion-item:hover { border-color: var(--ame-color-gold) !important; box-shadow: var(--ame-shadow-sm); }
+.ame-faq-accordion-item[open] { border-color: var(--ame-color-gold) !important; }
+.ame-faq-accordion-item[open] .ame-faq-arrow { transform: rotate(180deg); color: var(--ame-color-gold-dark) !important; }
+.ame-search-result-card { transition: all 0.2s ease; }
+.ame-search-result-card:hover { border-color: var(--ame-color-gold) !important; transform: translateY(-2px); box-shadow: var(--ame-shadow-md); }
+.ame-guide-card { transition: all 0.2s ease; }
+.ame-guide-card:hover { transform: translateY(-3px); box-shadow: var(--ame-shadow-md); border-color: var(--ame-color-gold) !important; }
+.ame-mobile-drawer-header { border-bottom: 1px solid var(--ame-color-border); }
+
+/* WOOCOMMERCE SINGLE PRODUCT EXPERIENCE ENHANCEMENTS */
+@media (max-width: 768px) { .ame-specs-guarantees-grid { grid-template-columns: 1fr !important; gap: 2.5rem !important; } }
+.ame-specs-table td { border-bottom: 1px solid var(--ame-color-border, #dbe2ea); }
+.ame-faq-accordion-item[open] .ame-faq-arrow { transform: rotate(180deg); }
+.ame-sticky-add-to-cart { position: fixed; bottom: 0; left: 0; right: 0; background: var(--ame-color-white, #ffffff); box-shadow: 0 -4px 20px rgba(0, 35, 71, 0.08); padding: 0.75rem 1rem; display: flex; justify-content: space-between; align-items: center; z-index: 999; border-top: 1px solid var(--ame-color-border, #dbe2ea); }
+.ame-sticky-add-to-cart-info { display: flex; flex-direction: column; max-width: 50%; }
+.ame-sticky-add-to-cart-title { font-size: 0.85rem; font-weight: 700; color: var(--ame-color-navy); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.ame-sticky-add-to-cart-price { font-size: 0.95rem; font-weight: 800; color: var(--ame-color-gold-dark, #916c02); }
+.ame-sticky-add-to-cart-actions { display: flex; gap: 0.5rem; align-items: center; }
+.ame-btn-sticky-wa { background: #25d366; color: #fff; padding: 0.6rem 0.85rem; border-radius: 40px; font-weight: 700; font-size: 0.75rem; display: inline-flex; align-items: center; gap: 0.35rem; text-decoration: none; transition: background-color var(--ame-transition); }
+.ame-btn-sticky-wa:hover { background: #128c7e; color: #fff; }
+.ame-btn-sticky-add { background: var(--ame-color-navy); color: #fff; padding: 0.6rem 1rem; border-radius: 40px; font-weight: 700; font-size: 0.75rem; text-decoration: none; text-transform: uppercase; letter-spacing: 0.02em; }
+@media (min-width: 992px) { .ame-sticky-add-to-cart { display: none !important; } }
+
+/* PREMIUM CSS UTILITY CLASSES */
+.ame-card { background: var(--ame-color-white, #ffffff); border: 1px solid var(--ame-color-border, #dbe2ea); border-radius: var(--ame-radius-sm, 8px); padding: 1.25rem; transition: all var(--ame-transition); }
+.ame-elevated { box-shadow: var(--ame-shadow-md, 0 10px 30px rgba(15,23,42,0.06)); }
+.ame-glass { background: rgba(255, 255, 255, 0.7); backdrop-filter: blur(12px) saturate(180%); -webkit-backdrop-filter: blur(12px) saturate(180%); border: 1px solid rgba(255, 255, 255, 0.3); }
+.ame-premium { border: 1px solid var(--ame-color-gold, #d4af37) !important; background: linear-gradient(180deg, #ffffff 0%, #fdfdfa 100%); }
+.ame-hover-lift { transition: transform var(--ame-transition), box-shadow var(--ame-transition), border-color var(--ame-transition); }
+.ame-hover-lift:hover { transform: translateY(-2px); box-shadow: var(--ame-shadow-md, 0 10px 30px rgba(15,23,42,0.08)); border-color: var(--ame-color-gold, #d4af37); }
+
+/* WOOCOMMERCE CATEGORY PAGES (PLP) & PRODUCT CARDS */
+.ame-product-card-image-link:hover .ame-product-primary-image { opacity: 0 !important; }
+.ame-product-card-image-link:hover .ame-product-hover-image { opacity: 1 !important; }
+.ame-product-card-image-wrap:hover .ame-product-card-quick-actions { opacity: 1 !important; transform: translateY(0) !important; }
+.ame-product-card-quick-actions { opacity: 0; transform: translateY(5px); transition: all 0.25s ease; }
+.ame-hover-glow:hover { box-shadow: 0 0 20px rgba(212, 175, 55, 0.4) !important; border-color: var(--ame-color-gold) !important; }
+.ame-depth-1 { box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03); }
+.ame-depth-2 { box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.02); }
+.ame-premium-card { border: 1px solid var(--ame-color-border, #dbe2ea); border-radius: 12px; background: #ffffff; transition: all var(--ame-transition); }
+.ame-premium-card:hover { transform: translateY(-4px); box-shadow: var(--ame-shadow-md); border-color: var(--ame-color-gold); }
+@media (max-width: 991px) { .ame-category-grid { grid-template-columns: 1fr !important; } .ame-shop-sidebar { margin-bottom: 2rem; } }
+.ame-card-wa-btn:hover { background: #128c7e !important; }
+.ame-card-add-btn:hover { background: var(--ame-color-gold) !important; color: var(--ame-color-navy) !important; }
+.ame-category-card:hover .ame-category-image img { transform: scale(1.05); }
+.ame-category-card:hover .ame-icon { transform: translateX(3px); }
+
+/* HOMEPAGE CATEGORIES: 4-across desktop, Men then Women; 2x2 on mobile */
+.ame-bazaar-home .ame-categories-grid {
+	width: min(1200px, 100%) !important;
+	grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+	grid-template-areas: 'men women kids accessories' !important;
+	gap: 18px !important;
+}
+.ame-bazaar-home .ame-category-card:nth-child(1) { grid-area: accessories !important; }
+.ame-bazaar-home .ame-category-card:nth-child(2) { grid-area: kids !important; }
+.ame-bazaar-home .ame-category-card:nth-child(3) { grid-area: men !important; }
+.ame-bazaar-home .ame-category-card:nth-child(4) { grid-area: women !important; }
+@media (max-width: 767px) {
+	.ame-bazaar-home .ame-categories-grid {
+		width: min(100%, 900px) !important;
+		grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+		grid-template-areas: 'men women' 'kids accessories' !important;
+	}
+}
