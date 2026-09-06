@@ -21,8 +21,6 @@ jobs:
         run: |
           echo "Setting up SSH directory..."
           mkdir -p ~/.ssh
-          
-          # Write SSH key using printf (secret corrected run)
           printf "%b\n" "$SSH_PRIVATE_KEY" | tr -d '\r' > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
           echo "SSH setup completed."
@@ -43,15 +41,23 @@ jobs:
             ${{ secrets.USERNAME }}@${{ secrets.HOST }}:domains/amebazaar.in/public_html/wp-content/themes/ame-bazaar/
           echo "Deployment successful!"
 
+      - name: Provision Meta Social Feed Secrets
+        env:
+          META_ACCESS_TOKEN: ${{ secrets.META_ACCESS_TOKEN }}
+          META_FACEBOOK_PAGE_ID: ${{ secrets.META_FACEBOOK_PAGE_ID }}
+          META_INSTAGRAM_USER_ID: ${{ secrets.META_INSTAGRAM_USER_ID }}
+          PORT: ${{ secrets.PORT }}
+          USERNAME: ${{ secrets.USERNAME }}
+          HOST: ${{ secrets.HOST }}
+        run: bash scripts/provision-meta-secrets.sh
+
       - name: Flush Remote OPCache
         run: |
           echo "Copying OPCache flusher to web root..."
           ssh -p ${{ secrets.PORT }} -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null ${{ secrets.USERNAME }}@${{ secrets.HOST }} \
             "cp domains/amebazaar.in/public_html/wp-content/themes/ame-bazaar/clear-cache.php domains/amebazaar.in/public_html/clear-cache.php"
-          
           echo "Triggering OPCache flush..."
           curl -X POST -sL "https://amebazaar.in/clear-cache.php?token=7fa2e10db708b8b9487c69ea230768b6"
-          
           echo "Removing OPCache flusher from web root..."
           ssh -p ${{ secrets.PORT }} -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null ${{ secrets.USERNAME }}@${{ secrets.HOST }} \
             "rm domains/amebazaar.in/public_html/clear-cache.php"
@@ -70,37 +76,29 @@ jobs:
           echo "Listing domains contents..."
           ssh -p ${{ secrets.PORT }} -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null \
             ${{ secrets.USERNAME }}@${{ secrets.HOST }} "ls -la domains"
-          
           echo "Listing domains/amebazaar.in contents..."
           ssh -p ${{ secrets.PORT }} -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null \
             ${{ secrets.USERNAME }}@${{ secrets.HOST }} "ls -la domains/amebazaar.in"
-          
           echo "Listing domains/amebazaar.in/public_html contents..."
           ssh -p ${{ secrets.PORT }} -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null \
             ${{ secrets.USERNAME }}@${{ secrets.HOST }} "ls -la domains/amebazaar.in/public_html"
-          
           echo "Listing public_html contents..."
           ssh -p ${{ secrets.PORT }} -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null \
             ${{ secrets.USERNAME }}@${{ secrets.HOST }} "ls -la public_html"
-          
           echo "Listing remote theme files..."
           ssh -p ${{ secrets.PORT }} -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null \
             ${{ secrets.USERNAME }}@${{ secrets.HOST }} "ls -la domains/amebazaar.in/public_html/wp-content/themes/ame-bazaar/"
-          
           echo "Checking functions.php content..."
           ssh -p ${{ secrets.PORT }} -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null \
             ${{ secrets.USERNAME }}@${{ secrets.HOST }} "cat domains/amebazaar.in/public_html/wp-content/themes/ame-bazaar/functions.php"
-          
           echo "Checking if style.css exists..."
           ssh -p ${{ secrets.PORT }} -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null \
             ${{ secrets.USERNAME }}@${{ secrets.HOST }} "test -f domains/amebazaar.in/public_html/wp-content/themes/ame-bazaar/style.css"
           echo "style.css exists."
-          
           echo "Checking if functions.php exists..."
           ssh -p ${{ secrets.PORT }} -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null \
             ${{ secrets.USERNAME }}@${{ secrets.HOST }} "test -f domains/amebazaar.in/public_html/wp-content/themes/ame-bazaar/functions.php"
           echo "functions.php exists."
-          
           echo "Verification successful: theme files deployed correctly!"
 
   qa-audit:
@@ -146,4 +144,3 @@ jobs:
         with:
           name: qa-report
           path: qa/report.html
-
