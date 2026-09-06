@@ -1,6 +1,13 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+# Meta social feed is optional. If credentials are not configured in GitHub,
+# skip provisioning so the main website deployment and cache flush can continue.
+if [[ -z "${META_ACCESS_TOKEN:-}" && -z "${META_FACEBOOK_PAGE_ID:-}" && -z "${META_INSTAGRAM_USER_ID:-}" ]]; then
+  echo "Meta social feed credentials not configured; skipping server-side provisioning."
+  exit 0
+fi
+
 : "${META_ACCESS_TOKEN:?META_ACCESS_TOKEN is required}"
 : "${META_FACEBOOK_PAGE_ID:?META_FACEBOOK_PAGE_ID is required}"
 : "${META_INSTAGRAM_USER_ID:?META_INSTAGRAM_USER_ID is required}"
