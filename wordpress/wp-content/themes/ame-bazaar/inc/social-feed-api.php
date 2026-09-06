@@ -1,9 +1,10 @@
 <?php
 /**
- * Public read-only proxy for the AME Bazaar social feed Google Apps Script.
+ * Server-side live Facebook + Instagram feed for AME Bazaar.
  *
- * Meta credentials remain inside Apps Script. WordPress only proxies the
- * public feed payload to the same-origin frontend to avoid browser CORS.
+ * Meta credentials are stored outside the theme in wp-content/ame-social-secrets.php.
+ * The browser only receives the normalized public feed payload through the
+ * same-origin WordPress REST endpoint.
  *
  * @package Ame_Bazaar
  */
@@ -12,24 +13,17 @@ if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
 
-function ame_bazaar_social_feed_proxy_callback() {
-    $gas_url   = 'https://script.google.com/macros/s/AKfycbxoBZ3tVKbFto_3DqrM0qVUd0Nda09cacHmOCi2p_y0bFcUuljQiGzx3sUBpO4RNmNf/exec';
-    $cache_key = 'ame_bazaar_social_feed_v1';
-    $cached    = get_transient( $cache_key );
+if ( file_exists( WP_CONTENT_DIR . '/ame-social-secrets.php' ) ) {
+    require_once WP_CONTENT_DIR . '/ame-social-secrets.php';
+}
 
-    if ( false !== $cached && is_array( $cached ) ) {
-        return new WP_REST_Response( $cached, 200 );
-    }
+function ame_bazaar_meta_graph_request( $path, $access_token, $query = array() ) {
+    $version = defined( 'AME_META_GRAPH_VERSION' ) ? AME_META_GRAPH_VERSION : 'v25.0';
+    $url     = 'https://graph.facebook.com/' . $version . '/' . ltrim( $path, '/' );
+    $query['access_token'] = $access_token;
 
     $response = wp_remote_get(
-        add_query_arg(
-            array(
-                'action' => 'social_feed',
-                'limit'  => 9,
-                '_'      => time(),
-            ),
-            $gas_url
-        ),
+        add_query_arg( $query, $url ),
         array(
             'timeout' => 15,
             'headers' => array( 'Accept' => 'application/json' ),
@@ -37,7 +31,7 @@ function ame_bazaar_social_feed_proxy_callback() {
     );
 
     if ( is_wp_error( $response ) ) {
-        return new WP_Error( 'social_feed_unavailable', 'Social feed source is unavailable.', array( 'status' => 502 ) );
+        return $response;
     }
 
     $status = wp_remote_retrieve_response_code( $response );
@@ -45,12 +39,112 @@ function ame_bazaar_social_feed_proxy_callback() {
     $data   = json_decode( $body, true );
 
     if ( $status < 200 || $status >= 300 || ! is_array( $data ) ) {
-        return new WP_Error( 'social_feed_invalid', 'Social feed source did not return valid JSON.', array( 'status' => 502 ) );
+        $message = 'Meta Graph API request failed.';
+        if ( is_array( $data ) && ! empty( $data['error']['message'] ) ) {
+            $message = $data['error']['message'];
+        }
+        return new WP_Error( 'meta_graph_error', $message, array( 'status' => $status ) );
     }
 
-    set_transient( $cache_key, $data, 5 * MINUTE_IN_SECONDS );
+    return $data;
+}
 
-    return new WP_REST_Response( $data, 200 );
+function ame_bazaar_social_feed_proxy_callback() {
+    if ( ! defined( 'AME_META_ACCESS_TOKEN' ) || ! AME_META_ACCESS_TOKEN ||
+        ! defined( 'AME_META_FACEBOOK_PAGE_ID' ) || ! AME_META_FACEBOOK_PAGE_ID ||
+        ! defined( 'AME_META_INSTAGRAM_USER_ID' ) || ! AME_META_INSTAGRAM_USER_ID ) {
+        return new WP_Error( 'social_feed_not_configured', 'Meta social feed is not configured.', array( 'status' => 503 ) );
+    }
+
+    $cache_key = 'ame_bazaar_social_feed_v2';
+    $cached    = get_transient( $cache_key );
+
+    if ( false !== $cached && is_array( $cached ) ) {
+        return new WP_REST_Response( $cached, 200 );
+    }
+
+    $user_token = AME_META_ACCESS_TOKEN;
+
+    // Meta's Facebook Login flow uses a user token to obtain the Page access
+    // token that acts on behalf of the linked Facebook Page/Instagram account.
+    $page = ame_bazaar_meta_graph_request(
+        AME_META_FACEBOOK_PAGE_ID,
+        $user_token,
+        array(
+            'fields' => 'name,access_token,instagram_business_account',
+        )
+    );
+
+    if ( is_wp_error( $page ) ) {
+        return new WP_Error( 'social_feed_page_auth', 'Could not connect to the AME Bazaar Facebook Page.', array( 'status' => 502 ) );
+    }
+
+    $page_token = ! empty( $page['access_token'] ) ? $page['access_token'] : $user_token;
+    $page_name  = ! empty( $page['name'] ) ? $page['name'] : 'AME Bazaar';
+
+    // Facebook: own Page posts.
+    $facebook_posts = ame_bazaar_meta_graph_request(
+        AME_META_FACEBOOK_PAGE_ID . '/posts',
+        $page_token,
+        array(
+            'fields' => 'id,message,created_time,full_picture,permalink_url',
+            'limit'  => 3,
+        )
+    );
+
+    if ( is_wp_error( $facebook_posts ) ) {
+        $facebook_posts = array( 'data' => array() );
+    }
+
+    // Instagram profile metadata.
+    $instagram_profile = ame_bazaar_meta_graph_request(
+        AME_META_INSTAGRAM_USER_ID,
+        $page_token,
+        array(
+            'fields' => 'id,username,name,biography,profile_picture_url,followers_count,follows_count,media_count',
+        )
+    );
+
+    if ( is_wp_error( $instagram_profile ) ) {
+        $instagram_profile = array(
+            'id'       => AME_META_INSTAGRAM_USER_ID,
+            'username' => 'ame_bazaar',
+        );
+    }
+
+    // Instagram: latest media from the connected Professional account.
+    $instagram_media = ame_bazaar_meta_graph_request(
+        AME_META_INSTAGRAM_USER_ID . '/media',
+        $page_token,
+        array(
+            'fields' => 'id,caption,media_type,media_url,thumbnail_url,permalink,timestamp',
+            'limit'  => 9,
+        )
+    );
+
+    if ( is_wp_error( $instagram_media ) ) {
+        $instagram_media = array( 'data' => array() );
+    }
+
+    $payload = array(
+        'success'    => true,
+        'source'     => 'meta_graph_api',
+        'updated_at' => gmdate( 'c' ),
+        'facebook'   => array(
+            'profile' => array(
+                'name' => $page_name,
+            ),
+            'posts'   => ! empty( $facebook_posts['data'] ) ? $facebook_posts['data'] : array(),
+        ),
+        'instagram' => array(
+            'profile' => $instagram_profile,
+            'posts'   => ! empty( $instagram_media['data'] ) ? $instagram_media['data'] : array(),
+        ),
+    );
+
+    set_transient( $cache_key, $payload, 5 * MINUTE_IN_SECONDS );
+
+    return new WP_REST_Response( $payload, 200 );
 }
 
 add_action( 'rest_api_init', function () {
