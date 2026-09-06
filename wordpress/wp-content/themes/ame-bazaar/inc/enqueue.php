@@ -64,10 +64,11 @@ function ame_bazaar_enqueue_assets() {
 			ame_bazaar_asset_version( 'assets/css/premium-homepage.css' )
 		);
 
-		// Final category-order override must load after every homepage stylesheet.
+		// Definitive category order: Men, Women, Kids, Accessories.
+		// Reset named grid areas so DOM order is controlled explicitly and remains stable.
 		wp_add_inline_style(
 			'ame-bazaar-premium-homepage',
-			'.ame-bazaar-home .ame-categories-grid .ame-category-card:nth-child(1){order:3!important;grid-area:auto!important}.ame-bazaar-home .ame-categories-grid .ame-category-card:nth-child(2){order:4!important;grid-area:auto!important}.ame-bazaar-home .ame-categories-grid .ame-category-card:nth-child(3){order:2!important;grid-area:auto!important}.ame-bazaar-home .ame-categories-grid .ame-category-card:nth-child(4){order:1!important;grid-area:auto!important}'
+			'.ame-bazaar-home .ame-categories-grid{grid-template-areas:none!important}.ame-bazaar-home .ame-categories-grid .ame-category-card{grid-area:auto!important}.ame-bazaar-home .ame-categories-grid .ame-category-card:nth-child(1){order:4!important}.ame-bazaar-home .ame-categories-grid .ame-category-card:nth-child(2){order:3!important}.ame-bazaar-home .ame-categories-grid .ame-category-card:nth-child(3){order:1!important}.ame-bazaar-home .ame-categories-grid .ame-category-card:nth-child(4){order:2!important}'
 		);
 	}
 
