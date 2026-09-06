@@ -41,17 +41,21 @@ $instagram_url = 'https://www.instagram.com/ame_bazaar/';
 				</div>
 
 				<div class="ame-social-feed-embed ame-social-feed-embed-facebook">
-					<iframe
-						title="AME Bazaar Facebook Page timeline"
-						src="https://www.facebook.com/plugins/page.php?href=https%3A%2F%2Fwww.facebook.com%2FAMETTBAZAAR&tabs=timeline&width=500&height=720&small_header=false&adapt_container_width=true&hide_cover=false&show_facepile=false&show_posts=true"
-						width="500"
-						height="720"
-						style="border:none;overflow:hidden;max-width:100%;"
-						scrolling="no"
-						frameborder="0"
-						allowfullscreen="true"
-						allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
-					></iframe>
+					<div
+						class="fb-page"
+						data-href="<?php echo esc_url( $facebook_url ); ?>"
+						data-tabs="timeline"
+						data-width="500"
+						data-height="720"
+						data-small-header="false"
+						data-adapt-container-width="true"
+						data-hide-cover="false"
+						data-show-facepile="false"
+					>
+						<div class="fb-xfbml-parse-ignore">
+							<a href="<?php echo esc_url( $facebook_url ); ?>" target="_blank" rel="noopener noreferrer">View AME Bazaar on Facebook</a>
+						</div>
+					</div>
 				</div>
 			</article>
 
@@ -223,6 +227,12 @@ $instagram_url = 'https://www.instagram.com/ame_bazaar/';
 	padding: .25rem 0 0;
 }
 
+.ame-social-feed-embed-facebook .fb-page,
+.ame-social-feed-embed-facebook .fb-page > span,
+.ame-social-feed-embed-facebook .fb-page iframe {
+	max-width: 100% !important;
+}
+
 .ame-social-feed-embed-instagram {
 	display: flex;
 	justify-content: center;
@@ -276,6 +286,31 @@ $instagram_url = 'https://www.instagram.com/ame_bazaar/';
 
 <script>
 (function () {
+	function loadFacebookSdk() {
+		if (window.FB && window.FB.XFBML) {
+			window.FB.XFBML.parse();
+			return;
+		}
+
+		if (document.querySelector('script[data-ame-facebook-sdk]')) {
+			return;
+		}
+
+		window.fbAsyncInit = function () {
+			if (window.FB && window.FB.XFBML) {
+				window.FB.XFBML.parse();
+			}
+		};
+
+		var script = document.createElement('script');
+		script.async = true;
+		script.defer = true;
+		script.crossOrigin = 'anonymous';
+		script.src = 'https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v23.0';
+		script.dataset.ameFacebookSdk = '1';
+		document.body.appendChild(script);
+	}
+
 	function loadInstagramEmbed() {
 		if (window.instgrm && window.instgrm.Embeds) {
 			window.instgrm.Embeds.process();
@@ -291,12 +326,17 @@ $instagram_url = 'https://www.instagram.com/ame_bazaar/';
 		script.src = 'https://www.instagram.com/embed.js';
 		script.dataset.ameInstagramEmbed = '1';
 		document.body.appendChild(script);
-	} 
+	}
+
+	function initSocialEmbeds() {
+		loadFacebookSdk();
+		loadInstagramEmbed();
+	}
 
 	if (document.readyState === 'loading') {
-		document.addEventListener('DOMContentLoaded', loadInstagramEmbed, { once: true });
+		document.addEventListener('DOMContentLoaded', initSocialEmbeds, { once: true });
 	} else {
-		loadInstagramEmbed();
+		initSocialEmbeds();
 	}
 })();
 </script>
