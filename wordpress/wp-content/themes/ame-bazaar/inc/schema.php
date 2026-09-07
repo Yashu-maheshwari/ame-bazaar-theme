@@ -100,8 +100,8 @@ function ame_bazaar_get_organization_schema() {
 	$whatsapp     = ame_bazaar_get_business_setting( 'whatsapp', '+91 99999 99999' );
 	$clean_wa     = preg_replace( '/[^0-9+]/', '', $whatsapp );
 	$whatsapp_url = 'https://wa.me/' . ltrim( $clean_wa, '+' );
-	$facebook     = ame_bazaar_get_business_setting( 'facebook', 'https://www.facebook.com/amebazaar' );
-	$instagram    = ame_bazaar_get_business_setting( 'instagram', 'https://www.instagram.com/amebazaar' );
+	$facebook     = ame_bazaar_get_business_setting( 'facebook', 'https://www.facebook.com/AmeBazaar/' );
+	$instagram    = ame_bazaar_get_business_setting( 'instagram', 'https://www.instagram.com/ame_bazaar/' );
 
 	$schema = array(
 		'@type' => 'Organization',
@@ -173,8 +173,8 @@ function ame_bazaar_get_clothing_store_schema() {
 	// Additional info
 	$areas_served = get_theme_mod( 'ame_bazaar_areas_served', 'Kirari, Mubarakpur, Meer Vihar, Baljit Vihar, Prem Nagar, Nangloi, Budh Vihar, Rohini' );
 	$price_range  = get_theme_mod( 'ame_bazaar_price_range', '₹100–₹1000' );
-	$facebook     = ame_bazaar_get_business_setting( 'facebook', 'https://www.facebook.com/amebazaar' );
-	$instagram    = ame_bazaar_get_business_setting( 'instagram', 'https://www.instagram.com/amebazaar' );
+	$facebook     = ame_bazaar_get_business_setting( 'facebook', 'https://www.facebook.com/AmeBazaar/' );
+	$instagram    = ame_bazaar_get_business_setting( 'instagram', 'https://www.instagram.com/ame_bazaar/' );
 	$primary_cat  = ame_bazaar_get_business_setting( 'primary_category', 'ClothingStore' );
 
 	$schema = array(

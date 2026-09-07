@@ -705,8 +705,8 @@ function ame_bazaar_render_business_settings_page() {
 	$longitude         = ame_bazaar_get_business_setting( 'longitude', '77.0583' );
 	$hours             = ame_bazaar_get_business_setting( 'hours', 'Mo-Su 09:00–22:00' );
 	$holiday_hours     = ame_bazaar_get_business_setting( 'holiday_hours', 'Diwali: Closed' );
-	$instagram         = ame_bazaar_get_business_setting( 'instagram', 'https://www.instagram.com/amebazaar' );
-	$facebook          = ame_bazaar_get_business_setting( 'facebook', 'https://www.facebook.com/amebazaar' );
+	$instagram         = ame_bazaar_get_business_setting( 'instagram', 'https://www.instagram.com/ame_bazaar/' );
+	$facebook          = ame_bazaar_get_business_setting( 'facebook', 'https://www.facebook.com/AmeBazaar/' );
 	$youtube           = ame_bazaar_get_business_setting( 'youtube', '#' );
 	$gbp_url           = ame_bazaar_get_business_setting( 'gbp_url', '#' );
 	$reviews_rating    = ame_bazaar_get_business_setting( 'google_reviews_rating', '4.9' );

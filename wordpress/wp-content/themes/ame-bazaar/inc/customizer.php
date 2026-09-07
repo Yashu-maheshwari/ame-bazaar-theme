@@ -643,7 +643,7 @@ function ame_bazaar_customize_register( $wp_customize ) {
 
 	// Social profile URLs
 	$wp_customize->add_setting( 'ame_bazaar_facebook_url', array(
-		'default'           => 'https://www.facebook.com/amebazaar',
+		'default'           => 'https://www.facebook.com/AmeBazaar/',
 		'sanitize_callback' => 'esc_url_raw',
 		'transport'         => 'refresh',
 	) );
@@ -655,7 +655,7 @@ function ame_bazaar_customize_register( $wp_customize ) {
 	) );
 
 	$wp_customize->add_setting( 'ame_bazaar_instagram_url', array(
-		'default'           => 'https://www.instagram.com/amebazaar',
+		'default'           => 'https://www.instagram.com/ame_bazaar/',
 		'sanitize_callback' => 'esc_url_raw',
 		'transport'         => 'refresh',
 	) );

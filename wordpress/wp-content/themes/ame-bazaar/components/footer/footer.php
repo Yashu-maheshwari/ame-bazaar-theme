@@ -18,8 +18,8 @@ $clean_wa       = preg_replace( '/[^0-9+]/', '', $whatsapp );
 $whatsapp_url   = 'https://wa.me/' . ltrim( $clean_wa, '+' ) . '?text=Hello%20AME%20Bazaar%2C%20I%20have%20an%20inquiry';
 $email          = ame_bazaar_get_business_setting( 'email', 'contact@amebazaar.com' );
 $maps_url       = ame_bazaar_get_business_setting( 'maps_url', 'https://maps.google.com/?q=AME+Bazaar+Kirari+Delhi' );
-$facebook       = ame_bazaar_get_business_setting( 'facebook', 'https://www.facebook.com/amebazaar' );
-$instagram      = ame_bazaar_get_business_setting( 'instagram', 'https://www.instagram.com/amebazaar' );
+$facebook       = ame_bazaar_get_business_setting( 'facebook', 'https://www.facebook.com/AmeBazaar/' );
+$instagram      = ame_bazaar_get_business_setting( 'instagram', 'https://www.instagram.com/ame_bazaar/' );
 $hours          = ame_bazaar_get_business_setting( 'hours', 'Mo-Su 09:00–22:00' );
 
 // Formatting opening hours text nicely for humans
