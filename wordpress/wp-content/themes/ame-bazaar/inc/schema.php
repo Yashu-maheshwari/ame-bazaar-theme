@@ -139,6 +139,13 @@ function ame_bazaar_get_organization_schema() {
 	if ( $facebook && '#' !== $facebook ) {
 		$same_as[] = $facebook;
 	}
+	// Safely preserve both official Facebook identities in the Knowledge Graph.
+	if ( ! in_array( 'https://www.facebook.com/AMETTBAZAAR/', $same_as, true ) ) {
+		$same_as[] = 'https://www.facebook.com/AMETTBAZAAR/';
+	}
+	if ( ! in_array( 'https://www.facebook.com/AmeBazaar/', $same_as, true ) ) {
+		$same_as[] = 'https://www.facebook.com/AmeBazaar/';
+	}
 	if ( $instagram && '#' !== $instagram ) {
 		$same_as[] = $instagram;
 	}
@@ -317,6 +324,13 @@ function ame_bazaar_get_clothing_store_schema() {
 	$same_as = array();
 	if ( $facebook && '#' !== $facebook ) {
 		$same_as[] = $facebook;
+	}
+	// Safely preserve both official Facebook identities in the Knowledge Graph.
+	if ( ! in_array( 'https://www.facebook.com/AMETTBAZAAR/', $same_as, true ) ) {
+		$same_as[] = 'https://www.facebook.com/AMETTBAZAAR/';
+	}
+	if ( ! in_array( 'https://www.facebook.com/AmeBazaar/', $same_as, true ) ) {
+		$same_as[] = 'https://www.facebook.com/AmeBazaar/';
 	}
 	if ( $instagram && '#' !== $instagram ) {
 		$same_as[] = $instagram;
