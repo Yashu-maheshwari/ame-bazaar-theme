@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 /**
  * Google Business Profile Service for AME Bazaar.
  * 
@@ -15,9 +15,9 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @return array|false Returns ['rating' => float, 'review_count' => int] or false if unavailable.
  */
 function ame_bazaar_get_gbp_summary() {
-	\ = get_transient( 'ame_bazaar_gbp_data' );
-	if ( false !== \ && is_array( \ ) && isset( \['rating'] ) ) {
-		return \;
+	$cached = get_transient( 'ame_bazaar_gbp_data' );
+	if ( false !== $cached && is_array( $cached ) && isset( $cached['rating'] ) ) {
+		return $cached;
 	}
 	
 	// If no cache, trigger an immediate synchronous fetch for the first run.
@@ -29,91 +29,91 @@ function ame_bazaar_get_gbp_summary() {
  * Can be triggered via WP-Cron.
  */
 function ame_bazaar_refresh_gbp_data() {
-	\ = '/home/u473080180/domains/amebazaar.in/ame-gbp-secrets.php';
+	$secrets_path = '/home/u473080180/domains/amebazaar.in/ame-gbp-secrets.php';
 	
-	if ( ! file_exists( \ ) ) {
+	if ( ! file_exists( $secrets_path ) ) {
 		return false;
 	}
 	
-	\ = include \;
-	if ( empty( \['client_id'] ) || empty( \['refresh_token'] ) ) {
+	$secrets = include $secrets_path;
+	if ( empty( $secrets['client_id'] ) || empty( $secrets['refresh_token'] ) ) {
 		return false;
 	}
 	
 	// 1. Fetch Access Token
-	\ = 'https://oauth2.googleapis.com/token';
-	\ = wp_remote_post( \, [
+	$token_url = 'https://oauth2.googleapis.com/token';
+	$response = wp_remote_post( $token_url, [
 		'body' => [
-			'client_id'     => \['client_id'],
-			'client_secret' => \['client_secret'],
-			'refresh_token' => \['refresh_token'],
+			'client_id'     => $secrets['client_id'],
+			'client_secret' => $secrets['client_secret'],
+			'refresh_token' => $secrets['refresh_token'],
 			'grant_type'    => 'refresh_token',
 		],
 		'timeout' => 15,
 	] );
 	
-	if ( is_wp_error( \ ) ) {
+	if ( is_wp_error( $response ) ) {
 		return false;
 	}
 	
-	\ = json_decode( wp_remote_retrieve_body( \ ), true );
-	if ( empty( \['access_token'] ) ) {
+	$token_data = json_decode( wp_remote_retrieve_body( $response ), true );
+	if ( empty( $token_data['access_token'] ) ) {
 		return false;
 	}
 	
-	\ = \['access_token'];
+	$access_token = $token_data['access_token'];
 	
-	\ = wp_remote_get( 'https://mybusinessaccountmanagement.googleapis.com/v1/accounts', [
-		'headers' => [ 'Authorization' => 'Bearer ' . \ ],
+	$accounts_resp = wp_remote_get( 'https://mybusinessaccountmanagement.googleapis.com/v1/accounts', [
+		'headers' => [ 'Authorization' => 'Bearer ' . $access_token ],
 		'timeout' => 15,
 	] );
 	
-	if ( is_wp_error( \ ) ) {
+	if ( is_wp_error( $accounts_resp ) ) {
 		return false;
 	}
 	
-	\ = json_decode( wp_remote_retrieve_body( \ ), true );
-	if ( empty( \['accounts'] ) ) {
+	$accounts_data = json_decode( wp_remote_retrieve_body( $accounts_resp ), true );
+	if ( empty( $accounts_data['accounts'] ) ) {
 		return false;
 	}
 	
 	// Find the matching account and location
-	foreach ( \['accounts'] as \ ) {
-		\ = wp_remote_get( 'https://mybusinessbusinessinformation.googleapis.com/v1/' . \['name'] . '/locations?readMask=name,title', [
-			'headers' => [ 'Authorization' => 'Bearer ' . \ ],
+	foreach ( $accounts_data['accounts'] as $acc ) {
+		$locations_resp = wp_remote_get( 'https://mybusinessbusinessinformation.googleapis.com/v1/' . $acc['name'] . '/locations?readMask=name,title', [
+			'headers' => [ 'Authorization' => 'Bearer ' . $access_token ],
 			'timeout' => 15,
 		] );
 		
-		if ( ! is_wp_error( \ ) ) {
-			\ = json_decode( wp_remote_retrieve_body( \ ), true );
-			if ( ! empty( \['locations'] ) ) {
-				foreach ( \['locations'] as \ ) {
-					if ( stripos( \['title'], 'AME Bazaar - Family Garment Store' ) !== false || stripos( \['title'], 'AME Bazaar' ) !== false ) {
+		if ( ! is_wp_error( $locations_resp ) ) {
+			$locations_data = json_decode( wp_remote_retrieve_body( $locations_resp ), true );
+			if ( ! empty( $locations_data['locations'] ) ) {
+				foreach ( $locations_data['locations'] as $loc ) {
+					if ( stripos( $loc['title'], 'AME Bazaar - Family Garment Store' ) !== false || stripos( $loc['title'], 'AME Bazaar' ) !== false ) {
 						
 						// Verify it has reviews before committing
-						\  = str_replace( 'locations/', '', \['name'] );
-						\  = str_replace( 'accounts/', '', \['name'] );
-						\ = "https://mybusiness.googleapis.com/v4/accounts/{\}/locations/{\}/reviews";
+						$v4_loc  = str_replace( 'locations/', '', $loc['name'] );
+						$v4_acc  = str_replace( 'accounts/', '', $acc['name'] );
+						$rev_url = "https://mybusiness.googleapis.com/v4/accounts/{$v4_acc}/locations/{$v4_loc}/reviews";
 						
-						\ = wp_remote_get( \, [
-							'headers' => [ 'Authorization' => 'Bearer ' . \ ],
+						$rev_resp = wp_remote_get( $rev_url, [
+							'headers' => [ 'Authorization' => 'Bearer ' . $access_token ],
 							'timeout' => 15,
 						] );
 						
-						if ( ! is_wp_error( \ ) ) {
-							\ = json_decode( wp_remote_retrieve_body( \ ), true );
-							if ( isset( \['averageRating'] ) && isset( \['totalReviewCount'] ) ) {
+						if ( ! is_wp_error( $rev_resp ) ) {
+							$rev_data = json_decode( wp_remote_retrieve_body( $rev_resp ), true );
+							if ( isset( $rev_data['averageRating'] ) && isset( $rev_data['totalReviewCount'] ) ) {
 								
-								\ = [
-									'rating'       => (float) \['averageRating'],
-									'review_count' => (int) \['totalReviewCount'],
+								$gbp_data = [
+									'rating'       => (float) $rev_data['averageRating'],
+									'review_count' => (int) $rev_data['totalReviewCount'],
 									'updated_at'   => current_time( 'timestamp' ),
 									'source'       => 'google_business_profile'
 								];
 								
 								// Cache for 1 hour
-								set_transient( 'ame_bazaar_gbp_data', \, HOUR_IN_SECONDS );
-								return \;
+								set_transient( 'ame_bazaar_gbp_data', $gbp_data, HOUR_IN_SECONDS );
+								return $gbp_data;
 							}
 						}
 					}
