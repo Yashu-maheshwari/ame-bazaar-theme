@@ -549,7 +549,7 @@ function ame_bazaar_get_faq_schema() {
 		}
 	} elseif ( is_page( 'faq' ) || is_page_template( 'templates/template-faq.php' ) ) {
 		// Output global FAQ data for the main FAQ page
-		$faq_categories = ame_bazaar_get_structured_faq_data();
+		$faq_categories = ame_bazaar_get_knowledge_base_faqs();
 		if ( ! empty( $faq_categories ) ) {
 			foreach ( $faq_categories as $cat ) {
 				foreach ( $cat['faqs'] as $faq ) {
