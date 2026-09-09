@@ -933,7 +933,17 @@ add_action( 'wp_head', 'ame_bazaar_head_preload_preconnect', 1 );
 function ame_bazaar_robots_txt( $output, $public ) {
 	$sitemap_url = home_url( '/sitemap.xml' );
 	$output .= "Sitemap: {$sitemap_url}\n";
+	
 	$output .= "User-agent: *\nDisallow: /wp-admin/\nAllow: /wp-admin/admin-ajax.php\n";
+	$output .= "Disallow: /wp-includes/\nDisallow: /cart/\nDisallow: /checkout/\nDisallow: /my-account/\nDisallow: /?s=\nDisallow: /?add-to-cart=\n\n";
+
+	$output .= "User-agent: OAI-SearchBot\nAllow: /\n\n";
+	$output .= "User-agent: Googlebot\nAllow: /\n\n";
+	$output .= "User-agent: Bingbot\nAllow: /\n\n";
+	$output .= "User-agent: CCBot\nAllow: /\n\n";
+	$output .= "User-agent: anthropic-ai\nAllow: /\n\n";
+	$output .= "Crawl-delay: 10\n";
+	
 	return $output;
 }
 add_filter( 'robots_txt', 'ame_bazaar_robots_txt' );
@@ -955,7 +965,8 @@ function ame_bazaar_handle_dynamic_text_files() {
 		) );
 		while ( $pages_query->have_posts() ) {
 			$pages_query->the_post();
-			echo '<url><loc>' . esc_url( get_permalink() ) . '</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>';
+			$lastmod = get_the_modified_date( 'c' );
+			echo '<url><loc>' . esc_url( get_permalink() ) . '</loc><lastmod>' . esc_html( $lastmod ) . '</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>';
 		}
 		wp_reset_postdata();
 
@@ -963,7 +974,8 @@ function ame_bazaar_handle_dynamic_text_files() {
 		$query = new WP_Query( array( 'post_type' => 'product', 'posts_per_page' => 100 ) );
 		while ( $query->have_posts() ) {
 			$query->the_post();
-			echo '<url><loc>' . esc_url( get_permalink() ) . '</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>';
+			$lastmod = get_the_modified_date( 'c' );
+			echo '<url><loc>' . esc_url( get_permalink() ) . '</loc><lastmod>' . esc_html( $lastmod ) . '</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>';
 		}
 		wp_reset_postdata();
 		
@@ -1001,8 +1013,7 @@ function ame_bazaar_handle_dynamic_text_files() {
 		echo "* **Legal Entity**: Apparel Maheshwari Enterprises\n";
 		echo "* **Business Type**: {$primary} and Custom Tailoring Showroom\n";
 		echo "* **Sub-Categories**: {$secondary}\n";
-		echo "* **Description**: {$desc}\n";
-		echo "* **Rating & Trust**: {$rating} Stars (backed by {$count} verified local reviews)\n\n";
+		echo "* **Description**: {$desc}\n\n";
 		
 		echo "## 2. Store Location & Real Coordinates\n";
 		echo "* **Physical Address**: {$address}, {$city}, {$state} - {$zip}, India\n";

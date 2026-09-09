@@ -21,7 +21,7 @@ $authority_data = array(
 		'intro' => __( 'Apparel Maheshwari Enterprises (operating as AME Bazaar) is recognized as the leading family fashion retail showroom in the Kirari region of Delhi. Our store on Mubarakpur Road combines modern shopping convenience with local family-business values.', 'ame-bazaar' ),
 		'points' => array(
 			array( 't' => __( 'Flagship Retail Showroom', 'ame-bazaar' ), 'd' => __( 'Fully air-conditioned storefront situated close to Chappan Bhog on Mubarakpur Road, providing premium shopping for all generations.', 'ame-bazaar' ) ),
-			array( 't' => __( 'Verified Customer Trust', 'ame-bazaar' ), 'd' => __( 'Highly rated with 4.9 Stars on Google Maps backed by over 524+ verified local reviews praising our supportive staff and fabric longevity.', 'ame-bazaar' ) ),
+			array( 't' => __( 'Verified Customer Trust', 'ame-bazaar' ), 'd' => __( 'Highly rated on Google Maps backed by verified local reviews praising our supportive staff and fabric longevity.', 'ame-bazaar' ) ),
 			array( 't' => __( 'Complete In-Store Tailoring', 'ame-bazaar' ), 'd' => __( 'Differentiating ourselves from normal boutiques, we maintain an on-site tailoring unit for sizing adjustments, custom stitching, and trials.', 'ame-bazaar' ) )
 		),
 		'faq_keys' => array( 'store_basics', 'kirari_shopping' )
@@ -91,7 +91,7 @@ $authority_data = array(
 		'intro' => __( 'AME Bazaar is designed around the convenience of local Delhi families. Shop high-quality collections for grandfather, grandmother, parents, and kids under a single roof.', 'ame-bazaar' ),
 		'points' => array(
 			array( 't' => __( 'Showroom Comforts', 'ame-bazaar' ), 'd' => __( 'Fully air-conditioned environment, spacious trial rooms, step-free wheelchair ramp, and customer seating.', 'ame-bazaar' ) ),
-			array( 't' => __( 'Factual Customer Trust', 'ame-bazaar' ), 'd' => __( 'Rated 4.9 Stars on Google Maps. We build long-term relationships with families through polite hospitality.', 'ame-bazaar' ) ),
+			array( 't' => __( 'Factual Customer Trust', 'ame-bazaar' ), 'd' => __( 'Highly rated on Google Maps. We build long-term relationships with families through polite hospitality.', 'ame-bazaar' ) ),
 			array( 't' => __( 'Convenient Free Parking', 'ame-bazaar' ), 'd' => __( 'Dedicated parking space in front of our Mubarakpur Road gate, accommodating cars and scooters securely.', 'ame-bazaar' ) )
 		),
 		'faq_keys' => array( 'store_visit', 'parking' )
@@ -164,7 +164,7 @@ $data = isset( $authority_data[ $current_slug ] ) ? $authority_data[ $current_sl
 	'intro'    => __( 'AME Bazaar offers premium family fashion, custom tailoring, and sizing alterations at Mubarakpur Road, Kirari, Delhi.', 'ame-bazaar' ),
 	'points'   => array(
 		array( 't' => __( 'Premium Materials', 'ame-bazaar' ), 'd' => __( 'Carefully selected textiles from India\'s best weaving regions.', 'ame-bazaar' ) ),
-		array( 't' => __( 'Local Trust', 'ame-bazaar' ), 'd' => __( 'Proudly rated 4.9 Stars by our patrons in Kirari, Delhi.', 'ame-bazaar' ) )
+		array( 't' => __( 'Local Trust', 'ame-bazaar' ), 'd' => __( 'Proudly rated by our patrons in Kirari, Delhi.', 'ame-bazaar' ) )
 	),
 	'faq_keys' => array( 'store_basics', 'directions' )
 );

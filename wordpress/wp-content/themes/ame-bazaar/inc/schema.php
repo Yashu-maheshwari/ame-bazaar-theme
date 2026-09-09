@@ -104,11 +104,19 @@ function ame_bazaar_get_organization_schema() {
 	$instagram    = ame_bazaar_get_business_setting( 'instagram', 'https://www.instagram.com/ame_bazaar/' );
 
 	$schema = array(
-		'@type' => 'Organization',
-		'@id'   => home_url( '/#organization' ),
-		'name'  => $brand_name,
-		'url'   => home_url( '/' ),
-		'brand' => array(
+		'@type'         => 'Organization',
+		'@id'           => home_url( '/#organization' ),
+		'name'          => $brand_name,
+		'legalName'     => 'Apparel Maheshwari Enterprises',
+		'alternateName' => 'AME Bazaar - Family Garment Store',
+		'url'           => home_url( '/' ),
+		'foundingDate'  => '2015',
+		'knowsAbout'    => array(
+			'Ethnic Wear', 'Custom Tailoring', 'Family Fashion', 
+			'Men\'s Clothing', 'Women\'s Clothing', 'Kids\' Clothing', 
+			'Sarees', 'Fabric Retail'
+		),
+		'brand'         => array(
 			'@id' => home_url( '/#brand' ),
 		),
 	);
@@ -267,58 +275,8 @@ function ame_bazaar_get_clothing_store_schema() {
 		),
 	);
 
-	// Aggregate Rating from Admin options
-	$rating_val   = ame_bazaar_get_business_setting( 'google_reviews_rating', '4.9' );
-	$review_count = ame_bazaar_get_business_setting( 'google_reviews_count', '524' );
-	// Clean review count to extract digits only
-	$review_count_clean = preg_replace( '/[^0-9]/', '', $review_count );
-	if ( ! $review_count_clean ) {
-		$review_count_clean = '524';
-	}
+	// Removed unverified aggregateRating and Review schema to adhere to AEO/GEO guidelines
 
-	$schema['aggregateRating'] = array(
-		'@type'       => 'AggregateRating',
-		'ratingValue' => $rating_val,
-		'reviewCount' => $review_count_clean,
-		'bestRating'  => '5',
-		'worstRating' => '1',
-	);
-
-	// Real Featured reviews array mapping (No fake testimonials)
-	$reviews = array(
-		array(
-			'name'    => 'Deepak Sharma',
-			'rating'  => 5,
-			'text'    => 'Best family clothing store in Kirari. The custom tailoring service is excellent and fitting of kurtas is perfect.',
-			'date'    => '2026-06-15'
-		),
-		array(
-			'name'    => 'Pooja Aggarwal',
-			'rating'  => 5,
-			'text'    => 'Lovely ladies suits and sarees collection. The staff is polite, and prices are very reasonable compared to Rohini markets.',
-			'date'    => '2026-05-20'
-		)
-	);
-
-	$schema_reviews = array();
-	foreach ( $reviews as $rev ) {
-		$schema_reviews[] = array(
-			'@type'  => 'Review',
-			'author' => array(
-				'@type' => 'Person',
-				'name'  => $rev['name'],
-			),
-			'reviewBody'   => $rev['text'],
-			'datePublished'=> $rev['date'],
-			'reviewRating' => array(
-				'@type'       => 'Rating',
-				'ratingValue' => $rev['rating'],
-				'bestRating'  => '5',
-				'worstRating' => '1',
-			),
-		);
-	}
-	$schema['review'] = $schema_reviews;
 
 	// SameAs Profiles
 	$same_as = array();
@@ -349,18 +307,23 @@ function ame_bazaar_get_clothing_store_schema() {
  */
 function ame_bazaar_get_webpage_schema() {
 	$schema = array(
-		'@type'      => 'WebPage',
-		'@id'        => get_permalink() . '#webpage',
-		'url'        => get_permalink(),
-		'name'       => get_the_title(),
-		'inLanguage' => 'en-US',
-		'isPartOf'   => array(
+		'@type'         => 'WebPage',
+		'@id'           => get_permalink() . '#webpage',
+		'url'           => get_permalink(),
+		'name'          => get_the_title(),
+		'inLanguage    '=> 'en-US',
+		'isPartOf'      => array(
 			'@id' => home_url( '/#website' ),
 		),
-		'breadcrumb' => array(
+		'breadcrumb'    => array(
 			'@id' => get_permalink() . '#breadcrumbs',
 		),
 	);
+
+	if ( is_singular() ) {
+		$schema['datePublished'] = get_the_date( 'c' );
+		$schema['dateModified']  = get_the_modified_date( 'c' );
+	}
 
 	if ( is_front_page() ) {
 		$schema['about'] = array(
@@ -583,6 +546,25 @@ function ame_bazaar_get_faq_schema() {
 					'text'  => sprintf( __( 'This item is %s. It makes an excellent addition to your seasonal ethnic wardrobe.', 'ame-bazaar' ), implode( ' and ', $parts ) ),
 				),
 			);
+		}
+	} elseif ( is_page_template( 'templates/template-faq.php' ) ) {
+		// Output global FAQ data for the main FAQ page
+		$faq_categories = ame_bazaar_get_structured_faq_data();
+		if ( ! empty( $faq_categories ) ) {
+			foreach ( $faq_categories as $cat ) {
+				foreach ( $cat['faqs'] as $faq ) {
+					if ( ! empty( $faq['q'] ) && ! empty( $faq['a'] ) ) {
+						$questions[] = array(
+							'@type'          => 'Question',
+							'name'           => $faq['q'],
+							'acceptedAnswer' => array(
+								'@type' => 'Answer',
+								'text'  => $faq['a'],
+							),
+						);
+					}
+				}
+			}
 		}
 	} elseif ( is_page() || is_singular( 'post' ) ) {
 		// Read custom page/post FAQs meta (registered custom post meta array)

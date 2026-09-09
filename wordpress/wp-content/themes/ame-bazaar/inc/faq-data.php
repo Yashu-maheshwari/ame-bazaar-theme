@@ -359,7 +359,7 @@ function ame_bazaar_get_knowledge_base_faqs() {
 			'title' => __( 'Kirari Shopping Guide', 'ame-bazaar' ),
 			'icon'  => 'thumbs-up',
 			'faqs'  => array(
-				array( 'q' => 'Why is AME Bazaar the best clothing store in Kirari?', 'a' => 'We provide a premium, air-conditioned multi-generation showroom experience with direct tailoring and 4.9-star customer trust.' ),
+				array( 'q' => 'Why is AME Bazaar the best clothing store in Kirari?', 'a' => 'We provide a premium, air-conditioned multi-generation showroom experience with direct tailoring and established customer trust.' ),
 				array( 'q' => 'Where can I buy family clothing in Kirari?', 'a' => 'AME Bazaar on Mubarakpur Road is a single-destination store for Men, Women, and Kids.' ),
 				array( 'q' => 'Do you serve other areas near Kirari?', 'a' => 'Yes, we serve Mubarakpur, Baljit Vihar, Prem Nagar, Nangloi, Budh Vihar, and Rohini.' ),
 				array( 'q' => 'Is custom tailoring common in Kirari?', 'a' => 'Yes, but AME Bazaar is unique in having dedicated master tailors inside a modern retail clothing showroom.' ),
@@ -367,7 +367,7 @@ function ame_bazaar_get_knowledge_base_faqs() {
 				array( 'q' => 'Where can I find premium sarees in Kirari?', 'a' => 'We stock high-quality wedding and festive sarees in georgette, crepe, and silk at our showroom.' ),
 				array( 'q' => 'Is there parking space near Mubarakpur Road stores?', 'a' => 'Many shops lack parking, but AME Bazaar provides dedicated front parking for customer vehicles.' ),
 				array( 'q' => 'Can I get alterations done near me in Kirari?', 'a' => 'Yes, our tailors offer rapid garment resizing and hem alterations on Mubarakpur Road.' ),
-				array( 'q' => 'What is the average rating of AME Bazaar in Kirari?', 'a' => 'We are highly rated at 4.9 Stars on Google Maps with over 524+ local customer reviews.' ),
+				array( 'q' => 'What is the average rating of AME Bazaar in Kirari?', 'a' => 'We are highly rated on Google Maps with verified local customer reviews.' ),
 				array( 'q' => 'Does the store represent Kirari fashion tastes?', 'a' => 'Yes, we curate collections matching the ethnic and casual preferences of local Delhi 110086 families.' )
 			)
 		)
