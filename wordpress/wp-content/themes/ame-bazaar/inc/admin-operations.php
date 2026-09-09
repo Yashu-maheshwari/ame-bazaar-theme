@@ -946,7 +946,7 @@ function ame_bazaar_robots_txt( $output, $public ) {
 	
 	return $output;
 }
-add_filter( 'robots_txt', 'ame_bazaar_robots_txt' );
+add_filter( 'robots_txt', 'ame_bazaar_robots_txt', 10, 2 );
 
 function ame_bazaar_handle_dynamic_text_files() {
 	$request = $_SERVER['REQUEST_URI'];
