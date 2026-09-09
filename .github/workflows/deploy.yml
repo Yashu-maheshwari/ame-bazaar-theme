@@ -39,6 +39,17 @@ jobs:
             -e "ssh -p ${{ secrets.PORT }} -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null" \
             wordpress/wp-content/themes/ame-bazaar/ \
             ${{ secrets.USERNAME }}@${{ secrets.HOST }}:domains/amebazaar.in/public_html/wp-content/themes/ame-bazaar/
+          
+          echo "Deploying llms.txt to root..."
+          rsync --archive --compress --verbose \
+            -e "ssh -p ${{ secrets.PORT }} -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null" \
+            wordpress/wp-content/themes/ame-bazaar/llms.txt \
+            ${{ secrets.USERNAME }}@${{ secrets.HOST }}:domains/amebazaar.in/public_html/llms.txt
+            
+          echo "Removing physical robots.txt if it exists to allow WordPress dynamic robots.txt..."
+          ssh -p ${{ secrets.PORT }} -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null ${{ secrets.USERNAME }}@${{ secrets.HOST }} \
+            "rm -f domains/amebazaar.in/public_html/robots.txt"
+          
           echo "Deployment successful!"
 
       - name: Provision Meta Social Feed Secrets
