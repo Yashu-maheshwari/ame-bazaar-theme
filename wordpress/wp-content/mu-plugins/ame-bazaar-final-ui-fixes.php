@@ -94,10 +94,6 @@ add_action('wp_enqueue_scripts', function () {
  .ame-inner-hero-fixed :is(h1,h2){font-size:clamp(2rem,9vw,2.65rem)!important;line-height:1.08!important}
 }
 .ame-google-review-fixed{cursor:pointer!important}
-#ame-global-whatsapp-cta{position:fixed!important;right:24px!important;bottom:24px!important;width:58px!important;height:58px!important;border-radius:50%!important;z-index:100000!important;display:grid!important;place-items:center!important;background:#25D366!important;color:#fff!important;box-shadow:0 12px 30px rgba(0,0,0,.2)!important;border:3px solid #fff!important;text-decoration:none!important;transition:transform .2s ease,box-shadow .2s ease!important}
-#ame-global-whatsapp-cta:hover{transform:translateY(-3px) scale(1.03)!important;box-shadow:0 16px 34px rgba(0,0,0,.25)!important}
-#ame-global-whatsapp-cta svg{width:30px!important;height:30px!important;display:block!important}
-@media(max-width:782px){#ame-global-whatsapp-cta{right:16px!important;bottom:16px!important;width:56px!important;height:56px!important}#ame-global-whatsapp-cta svg{width:29px!important;height:29px!important}}
 CSS;
     wp_register_style('ame-bazaar-final-ui-fixes', false);
     wp_enqueue_style('ame-bazaar-final-ui-fixes');
@@ -132,29 +128,6 @@ CSS;
         a.href=reviewUrl; a.target='_blank'; a.rel='noopener noreferrer'; a.classList.add('ame-google-review-fixed');
       }
     });
-
-    /* WhatsApp: reuse the site's real WhatsApp URL, then standardize the floating control everywhere. */
-    var waLinks=Array.prototype.slice.call(document.querySelectorAll('a[href*="wa.me"],a[href*="whatsapp.com"],a[href*="api.whatsapp.com"]'));
-    var waHref=waLinks.length ? waLinks[0].href : '';
-    var wa=null;
-    waLinks.forEach(function(a){
-      var r=a.getBoundingClientRect(), cs=window.getComputedStyle(a);
-      if(!wa && (cs.position==='fixed' || (r.width<=100 && r.height<=100))){ wa=a; }
-    });
-    if(!wa && waHref){
-      wa=document.createElement('a');
-      wa.href=waHref;
-      wa.target='_blank';
-      wa.rel='noopener noreferrer';
-      document.body.appendChild(wa);
-    }
-    if(wa){
-      wa.id='ame-global-whatsapp-cta';
-      wa.setAttribute('aria-label','Chat with AME Bazaar on WhatsApp');
-      wa.setAttribute('title','Chat with AME Bazaar on WhatsApp');
-      wa.innerHTML='<svg viewBox="0 0 32 32" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><path fill="currentColor" d="M16 3.2A12.7 12.7 0 0 0 5.2 22.9L3.6 28.8l6.1-1.6A12.8 12.8 0 1 0 16 3.2Zm0 23.2c-2 0-3.9-.5-5.6-1.5l-.4-.2-3.6.9 1-3.5-.2-.4a10.5 10.5 0 1 1 8.8 4.7Zm5.8-7.9c-.3-.2-1.8-.9-2.1-1-.3-.1-.5-.2-.7.2-.2.3-.8 1-.9 1.2-.2.2-.3.2-.6.1-1.6-.8-2.7-1.5-3.8-3.3-.3-.5.3-.5.8-1.7.1-.2 0-.4-.1-.6-.1-.2-.7-1.7-1-1-2.3-.3-.6-.5-.5-.7-.5h-.6c-.2 0-.6.1-.9.4-.3.3-1.1 1.1-1.1 2.7s1.1 3.1 1.2 3.3c.2.2 2.2 3.4 5.4 4.8 2 .9 2.8 1 3.8.8.6-.1 1.8-.7 2.1-1.4.3-.7.3-1.3.2-1.4-.2-.2-.4-.3-.7-.4Z"/></svg>';
-      waLinks.forEach(function(other){ if(other!==wa && other.getBoundingClientRect().width<120){ other.style.display='none'; } });
-    }
   });
 })();
 JS;

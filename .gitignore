@@ -3,3 +3,5 @@ config/runtime.env
 
 node_modules/
 
+
+ame-gbp-secrets.php*

@@ -196,29 +196,6 @@ add_action( 'wp_enqueue_scripts', function () {
     .ame-logo-img { max-height: 30px !important; }
 }
 
-/* 3. One permanent WhatsApp floating button. */
-#ame-global-whatsapp-cta {
-    position: fixed !important;
-    right: 22px !important;
-    bottom: 22px !important;
-    width: 58px !important;
-    height: 58px !important;
-    border-radius: 50% !important;
-    z-index: 2147483000 !important;
-    display: grid !important;
-    place-items: center !important;
-    background: #25D366 !important;
-    color: #fff !important;
-    border: 3px solid #fff !important;
-    box-shadow: 0 10px 28px rgba(0,0,0,.22) !important;
-    text-decoration: none !important;
-}
-#ame-global-whatsapp-cta svg { width: 31px !important; height: 31px !important; display:block !important; }
-@media(max-width:782px){
-    #ame-global-whatsapp-cta { right: 15px !important; bottom: 15px !important; width:56px !important; height:56px !important; }
-    #ame-global-whatsapp-cta svg { width:30px !important; height:30px !important; }
-}
-
 /* Hide any other tiny/floating WhatsApp widgets once our canonical button exists. */
 body.ame-has-global-whatsapp a.ame-legacy-whatsapp-float { display:none !important; }
 CSS;
@@ -228,20 +205,13 @@ CSS;
     wp_add_inline_style( 'ame-bazaar-final-production-fixes', $css );
 }, 1000 );
 
-/** Permanent WhatsApp button + broken-review link correction. */
+/** Broken-review link correction. */
 add_action( 'wp_footer', function () {
-    $whatsapp = function_exists( 'ame_bazaar_get_business_setting' ) ? ame_bazaar_get_business_setting( 'whatsapp', '+91 99535 69533' ) : '+91 99535 69533';
-    $wa_digits = preg_replace( '/\D+/', '', (string) $whatsapp );
-    if ( strlen( $wa_digits ) === 10 ) { $wa_digits = '91' . $wa_digits; }
-    $wa_url = 'https://wa.me/' . $wa_digits;
     $review_url = 'https://www.google.com/maps/search/?api=1&query=AME%20Bazaar%20Kirari%20Delhi';
     ?>
-    <a id="ame-global-whatsapp-cta" href="<?php echo esc_url( $wa_url ); ?>" target="_blank" rel="noopener noreferrer" aria-label="Chat with AME Bazaar on WhatsApp" title="Chat with AME Bazaar on WhatsApp">
-        <svg viewBox="0 0 32 32" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><path fill="currentColor" d="M16 3.2A12.7 12.7 0 0 0 5.2 22.9L3.6 28.8l6.1-1.6A12.8 12.8 0 1 0 16 3.2Zm0 23.2c-2 0-3.9-.5-5.6-1.5l-.4-.2-3.6.9 1-3.5-.2-.4a10.5 10.5 0 1 1 8.8 4.7Zm5.8-7.9c-.3-.2-1.8-.9-2.1-1-.3-.1-.5-.2-.7.2-.2.3-.8 1-.9 1.2-.2.2-.3.2-.6.1-1.6-.8-2.7-1.5-3.8-3.3-.3-.5.3-.5.8-1.7.1-.2 0-.4-.1-.6-.1-.2-.7-1.7-1-1-2.3-.3-.6-.5-.5-.7-.5h-.6c-.2 0-.6.1-.9.4-.3.3-1.1 1.1-1.1 2.7s1.1 3.1 1.2 3.3c.2.2 2.2 3.4 5.4 4.8 2 .9 2.8 1 3.8.8.6-.1 1.8-.7 2.1-1.4.3-.7.3-1.3.2-1.4-.2-.2-.4-.3-.7-.4Z"/></svg>
-    </a>
     <script>
     (function(){
-        document.body.classList.add('ame-has-global-whatsapp');
+        /* Google Reviews: replace stale internal link with a safe Google Maps destination. */
         var reviewUrl=<?php echo wp_json_encode( $review_url ); ?>;
         var anchors=document.querySelectorAll('a');
         anchors.forEach(function(a){
@@ -251,12 +221,6 @@ add_action( 'wp_footer', function () {
                 a.setAttribute('href',reviewUrl);
                 a.setAttribute('target','_blank');
                 a.setAttribute('rel','noopener noreferrer');
-            }
-            if (href.indexOf('wa.me')!==-1 || href.indexOf('whatsapp.com')!==-1 || href.indexOf('api.whatsapp.com')!==-1) {
-                var r=a.getBoundingClientRect(), cs=window.getComputedStyle(a);
-                if (a.id!=='ame-global-whatsapp-cta' && (cs.position==='fixed' || (r.width<=100 && r.height<=100))) {
-                    a.classList.add('ame-legacy-whatsapp-float');
-                }
             }
         });
     })();

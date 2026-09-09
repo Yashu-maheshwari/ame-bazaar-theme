@@ -102,13 +102,14 @@ function ame_bazaar_get_organization_schema() {
 	$whatsapp_url = 'https://wa.me/' . ltrim( $clean_wa, '+' );
 	$facebook     = ame_bazaar_get_business_setting( 'facebook', 'https://www.facebook.com/AmeBazaar/' );
 	$instagram    = ame_bazaar_get_business_setting( 'instagram', 'https://www.instagram.com/ame_bazaar/' );
+	$maps_url     = ame_bazaar_get_business_setting( 'maps_url', 'https://maps.google.com/?q=AME+Bazaar+Kirari+Delhi' );
 
 	$schema = array(
 		'@type'         => 'Organization',
 		'@id'           => home_url( '/#organization' ),
-		'name'          => $brand_name,
+		'name'          => 'AME Bazaar - Family Garment Store',
 		'legalName'     => 'Apparel Maheshwari Enterprises',
-		'alternateName' => 'AME Bazaar - Family Garment Store',
+		'alternateName' => 'AME Bazaar',
 		'url'           => home_url( '/' ),
 		'foundingDate'  => '2015',
 		'knowsAbout'    => array(
@@ -156,6 +157,9 @@ function ame_bazaar_get_organization_schema() {
 	}
 	if ( $instagram && '#' !== $instagram ) {
 		$same_as[] = $instagram;
+	}
+	if ( $maps_url ) {
+		$same_as[] = $maps_url;
 	}
 	if ( ! empty( $same_as ) ) {
 		$schema['sameAs'] = $same_as;
@@ -918,6 +922,16 @@ function ame_bazaar_output_schema() {
 	echo '<script type="application/ld+json">' . wp_json_encode( $output, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE ) . '</script>' . "\n";
 }
 add_action( 'wp_head', 'ame_bazaar_output_schema', 20 );
+
+/**
+ * Remove duplicate WooCommerce default structured data to prevent conflicts
+ * with our highly optimized custom AME schema.
+ */
+add_action( 'init', function() {
+    if ( class_exists( 'WooCommerce' ) && isset( WC()->structured_data ) ) {
+        remove_action( 'wp_footer', array( WC()->structured_data, 'output_structured_data' ), 10 );
+    }
+});
 
 /**
  * Get WooCommerce Product entity schema with advanced specifications.

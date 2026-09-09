@@ -32,9 +32,8 @@ function ame_bazaar_get_custom_logo_url() {
 }
 
 function ame_bazaar_get_brand_name() {
-	$brand = get_bloginfo( 'name' );
-
-	return $brand ? $brand : 'AME Bazaar';
+	// Force the exact Brand Name for AEO/GEO consistency, ignoring WP Site Title.
+	return 'AME Bazaar';
 }
 
 /**
