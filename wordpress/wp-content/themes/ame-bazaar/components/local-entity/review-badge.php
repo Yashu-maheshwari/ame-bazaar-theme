@@ -16,6 +16,7 @@ function ame_bazaar_render_review_badge() {
 	$rating = ame_bazaar_get_business_setting( 'google_reviews_rating', '4.9' );
 	$count  = ame_bazaar_get_business_setting( 'google_reviews_count', '524' );
 	$g_url  = ame_bazaar_get_business_setting( 'google_review_url', '#' );
+	if ( ! $rating || ! $count ) { return; }
 	
 	?>
 	<div class="ame-reviews-badge-wrapper" style="display:inline-flex; align-items:center; gap:0.5rem; background:var(--ame-color-cream); border:1px solid var(--ame-color-border); padding:0.5rem 1rem; border-radius:30px;">

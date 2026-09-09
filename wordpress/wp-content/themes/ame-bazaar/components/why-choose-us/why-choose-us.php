@@ -32,7 +32,7 @@ $why_cards = array(
 	4 => array(
 		'icon'  => '<svg class="ame-why-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>',
 		'title' => 'Highly Rated Local Business',
-		'desc'  => 'Proudly rated 4.8+ Stars on Google Reviews. Recognized for exceptional customer support, local Delhi apparel retail expertise, and honest service.',
+		'desc'  => ( function_exists('ame_bazaar_get_business_setting') && ($rating = ame_bazaar_get_business_setting( 'google_reviews_rating', '' )) ) ? "Proudly rated {$rating} Stars on Google Reviews. Recognized for exceptional customer support, local Delhi apparel retail expertise, and honest service." : "Highly rated by local families. Recognized for exceptional customer support, local Delhi apparel retail expertise, and honest service.",
 	),
 );
 

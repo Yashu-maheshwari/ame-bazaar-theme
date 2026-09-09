@@ -246,7 +246,7 @@ function ame_bazaar_customize_register( $wp_customize ) {
 		),
 		4 => array(
 			'title' => 'Highly Rated Local Business',
-			'desc'  => 'Proudly rated 4.8+ Stars on Google Reviews. Recognized for exceptional customer support, local Delhi apparel retail expertise, and honest service.',
+			'desc'  => 'Highly rated by local families. Recognized for exceptional customer support, local Delhi apparel retail expertise, and honest service.',
 		),
 	);
 

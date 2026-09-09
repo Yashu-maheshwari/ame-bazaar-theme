@@ -15,6 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 function ame_bazaar_render_review_summary() {
 	$rating = ame_bazaar_get_business_setting( 'google_reviews_rating', '4.9' );
 	$count  = ame_bazaar_get_business_setting( 'google_reviews_count', '524' );
+	if ( ! $rating || ! $count ) { return; }
 	
 	// Real options parsed distribution
 	$dist = array(

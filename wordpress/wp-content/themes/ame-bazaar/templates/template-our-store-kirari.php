@@ -286,10 +286,12 @@ get_header();
 
 	<!-- Trust ribbon -->
 	<div style="background:var(--ame-color-cream);border-bottom:1px solid var(--ame-color-border);padding:0.85rem 0;">
-		<div class="ame-bazaar-container" style="display:flex;flex-wrap:wrap;gap:1rem 2rem;align-items:center;justify-content:center;font-size:0.82rem;color:var(--ame-color-slate);">
-			<span>⭐ <strong><?php echo esc_html( $rating_val ); ?>/5</strong> · <?php echo esc_html( $review_count ); ?> <?php esc_html_e( 'Google Reviews', 'ame-bazaar' ); ?></span>
-			<span aria-hidden="true" style="color:var(--ame-color-border);">|</span>
-			<span>🕘 <?php echo esc_html( $hours ); ?></span>
+		<div class="ame-page-meta" style="display:flex; flex-wrap:wrap; gap:1rem; justify-content:center; align-items:center; color:var(--ame-color-slate); font-size:0.9rem;">
+			<?php if ( $rating_val && $review_count ) : ?>
+				<span>⭐ <strong><?php echo esc_html( $rating_val ); ?>/5</strong> · <?php echo esc_html( $review_count ); ?> <?php esc_html_e( 'Google Reviews', 'ame-bazaar' ); ?></span>
+				<span aria-hidden="true" style="color:var(--ame-color-border);">|</span>
+			<?php endif; ?>
+			<span>🕒 <?php echo esc_html( $hours ); ?></span>
 			<span aria-hidden="true" style="color:var(--ame-color-border);">|</span>
 			<span>📍 <?php echo esc_html( $full_address ); ?></span>
 		</div>

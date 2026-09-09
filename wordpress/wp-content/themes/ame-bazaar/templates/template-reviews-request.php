@@ -96,7 +96,11 @@ $qr_src = "https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=" . raw
 			
 			<div style="font-size:1.5rem; color:#facc15; margin-bottom:1rem;">★★★★★</div>
 			<div style="font-size:0.9rem; color:#64748b; margin-bottom:2rem;">
-				<?php echo esc_html( sprintf( 'Current Rating: %s based on %s+ store reviews.', $rating, $rating > 4.5 ? '500' : '100' ) ); ?>
+				<?php if ( $rating ) : ?>
+					<?php echo esc_html( sprintf( 'Current Rating: %s based on %s+ store reviews.', $rating, $rating > 4.5 ? '500' : '100' ) ); ?>
+				<?php else : ?>
+					Your feedback helps us improve our family store!
+				<?php endif; ?>
 			</div>
 			
 			<span style="font-size:0.8rem; color:#94a3b8; display:block;"><?php echo esc_html( $address ); ?></span>

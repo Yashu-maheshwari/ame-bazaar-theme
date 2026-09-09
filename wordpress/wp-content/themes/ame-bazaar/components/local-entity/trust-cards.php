@@ -57,6 +57,7 @@ function ame_bazaar_render_google_rating_card() {
 	$rating    = ame_bazaar_get_business_setting( 'google_reviews_rating', '4.9' );
 	$count     = ame_bazaar_get_business_setting( 'google_reviews_count', '524' );
 	$gbp_url   = ame_bazaar_get_business_setting( 'gbp_url', '#' );
+	if ( ! $rating || ! $count ) { return; }
 	?>
 	<div class="ame-trust-card ame-google-rating-card" style="background:var(--ame-color-white); border:1px solid var(--ame-color-border); border-radius:var(--ame-radius-md); padding:2rem; box-shadow:var(--ame-shadow-sm); text-align:center;">
 		<span style="font-size:0.7rem; font-weight:700; text-transform:uppercase; color:var(--ame-color-slate); letter-spacing:0.05em; display:block; margin-bottom:0.5rem;">Google Customer Rating</span>

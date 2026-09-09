@@ -609,6 +609,21 @@ add_filter( 'posts_where', 'ame_bazaar_product_search_meta_where' );
  * 6. Helper to fetch global business settings.
  */
 function ame_bazaar_get_business_setting( $key, $default = '' ) {
+	// Intercept Google Business Profile queries
+	if ( 'google_reviews_rating' === $key || 'google_reviews_count' === $key ) {
+		if ( function_exists( 'ame_bazaar_get_gbp_summary' ) ) {
+			$gbp_data = ame_bazaar_get_gbp_summary();
+			if ( $gbp_data && isset( $gbp_data['rating'] ) && isset( $gbp_data['review_count'] ) ) {
+				if ( 'google_reviews_rating' === $key ) {
+					return (string) $gbp_data['rating'];
+				}
+				if ( 'google_reviews_count' === $key ) {
+					return (string) $gbp_data['review_count'];
+				}
+			}
+		}
+	}
+
 	$val = get_option( 'ame_bazaar_' . $key );
 	if ( ! $val ) {
 		// Fallback to customizer theme mods if available
