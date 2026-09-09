@@ -36,11 +36,11 @@ add_action( 'wp_enqueue_scripts', function () {
     align-items:center!important;
     justify-content:center!important;
     min-height:34px!important;
-    padding:8px 10px!important;
+    padding:8px 14px!important;
     border-radius:999px!important;
-    font-size:8px!important;
-    font-weight:800!important;
-    letter-spacing:.035em!important;
+    font-size:13px!important;
+    font-weight:700!important;
+    letter-spacing:.02em!important;
     white-space:nowrap!important;
     flex:0 1 auto!important;
     background:#002347!important;
@@ -108,7 +108,7 @@ add_action( 'wp_enqueue_scripts', function () {
     display:flex!important;
     width:100%!important;
     max-width:100%!important;
-    justify-content:center!important;
+    justify-content:flex-start!important;
     overflow-x:auto!important;
     overflow-y:hidden!important;
     white-space:nowrap!important;
@@ -117,14 +117,16 @@ add_action( 'wp_enqueue_scripts', function () {
     border:1px solid rgba(0,35,71,.10)!important;
     border-radius:20px!important;
     box-shadow:0 5px 16px rgba(0,35,71,.06)!important;
+    -webkit-overflow-scrolling: touch!important;
   }
   .ame-desktop-nav-luxury::-webkit-scrollbar{display:none!important}
   .ame-desktop-nav-luxury a{
     flex:0 0 auto!important;
-    font-size:9px!important;font-weight:800!important;
-    padding:10px 10px!important;
+    font-size:14px!important;font-weight:600!important;
+    padding:10px 16px!important;
     white-space:nowrap!important;
-    letter-spacing:.025em!important;
+    letter-spacing:.01em!important;
+    color:#002347!important;
   }
   /* Premium blue landing feel for the actual hero, without changing video content. */
   .ame-hero-section,.ame-homepage-hero,.ame-hero-banner,.ame-hero-wrap{
@@ -144,10 +146,10 @@ add_action( 'wp_enqueue_scripts', function () {
   .ame-header-luxury-center,.ame-logo-link{width:56px!important;height:56px!important}
   .ame-logo-img{max-width:44px!important;max-height:44px!important}
   .ame-mobile-pill-zone{gap:4px!important}
-  .ame-mobile-pill-zone .ame-luxury-pill-btn{padding:7px 8px!important;font-size:7.5px!important}
+  .ame-mobile-pill-zone .ame-luxury-pill-btn{padding:7px 12px!important;font-size:12px!important}
   .ame-header-luxury-right .ame-luxury-action-btn{width:30px!important;height:30px!important;min-width:30px!important;min-height:30px!important}
   .ame-header-luxury-right .ame-luxury-icon{width:15px!important;height:15px!important}
-  .ame-desktop-nav-luxury a{font-size:8px!important;padding-inline:8px!important}
+  .ame-desktop-nav-luxury a{font-size:13px!important;padding-inline:12px!important}
 }
 CSS;
     wp_register_style( 'ame-bazaar-mobile-header-premium-final', false );
