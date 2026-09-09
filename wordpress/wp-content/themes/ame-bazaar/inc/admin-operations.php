@@ -615,7 +615,7 @@ function ame_bazaar_get_business_setting( $key, $default = '' ) {
 			$gbp_data = ame_bazaar_get_gbp_summary();
 			if ( $gbp_data && isset( $gbp_data['rating'] ) && isset( $gbp_data['review_count'] ) ) {
 				if ( 'google_reviews_rating' === $key ) {
-					return (string) $gbp_data['rating'];
+					return number_format( (float) $gbp_data['rating'], 1 );
 				}
 				if ( 'google_reviews_count' === $key ) {
 					return (string) $gbp_data['review_count'];
