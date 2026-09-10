@@ -1,0 +1,15 @@
+{
+  "business_profile": {
+    "country_of_origin": "India",
+    "manufacturer_name": "Apparel Maheshwari Enterprises",
+    "manufacturer_address": "",
+    "manufacturer_pincode": "",
+    "packer_name": "Apparel Maheshwari Enterprises",
+    "packer_address": "",
+    "packer_pincode": "",
+    "importer_name": "",
+    "importer_address": "",
+    "importer_pincode": ""
+  },
+  "notes": "Do NOT invent values for address or pincode. Provide exact registered business details. Leave Importer blank if not applicable and if Meesho allows."
+}

@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meesho Attribute Review</title>
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background: #f0f2f5; margin: 0; padding: 20px; color: #333; }
+        .container { max-width: 1200px; margin: 0 auto; }
+        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        .stats { font-size: 14px; color: #666; background: #fff; padding: 5px 15px; border-radius: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+        .card { background: #fff; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); display: flex; overflow: hidden; margin-bottom: 20px; }
+        .card-image { width: 450px; background: #fafafa; display: flex; align-items: center; justify-content: center; border-right: 1px solid #eee; padding: 10px; }
+        .card-image img { max-width: 100%; max-height: 600px; object-fit: contain; }
+        .card-content { flex: 1; padding: 30px; display: flex; flex-direction: column; }
+        .meta { font-size: 13px; color: #666; margin-bottom: 15px; background: #f8f9fa; padding: 10px; border-radius: 4px; border: 1px solid #e9ecef; }
+        h2 { margin: 0 0 10px 0; font-size: 22px; }
+        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px; }
+        .form-group { display: flex; flex-direction: column; }
+        label { font-weight: 600; margin-bottom: 5px; font-size: 13px; }
+        .sugg-badge { font-size: 10px; padding: 2px 5px; border-radius: 3px; margin-left: 5px; font-weight: normal; }
+        .sugg-ai { background: #e3f2fd; color: #0d47a1; border: 1px solid #bbdefb; }
+        .sugg-none { background: #ffebee; color: #b71c1c; border: 1px solid #ffcdd2; }
+        input, select { padding: 8px; border: 1px solid #ccc; border-radius: 4px; font-size: 14px; }
+        .actions { margin-top: auto; display: flex; gap: 10px; }
+        button { padding: 12px 20px; border: none; border-radius: 4px; font-size: 15px; font-weight: 600; cursor: pointer; transition: background 0.2s; }
+        .btn-approve { background: #E7135C; color: white; flex: 1; }
+        .btn-approve:hover { background: #c8104f; }
+        .btn-skip { background: #e0e0e0; color: #333; }
+        .btn-skip:hover { background: #d0d0d0; }
+        .btn-batch { background: #1976D2; color: white; margin-left: auto; }
+        .shortcuts { font-size: 12px; color: #888; text-align: center; margin-top: 10px; }
+        #loading { text-align: center; padding: 50px; font-size: 18px; color: #666; display: none; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header">
+        <h1>Meesho Attribute Review</h1>
+        <div>
+            <button class="btn-batch" onclick="alert('Batch mode UI would open here for bulk mapping identical products.')">Batch Apply...</button>
+            <span class="stats" id="stats">Remaining: 0 | Approved: 0</span>
+        </div>
+    </div>
+
+    <div id="loading">Loading prioritized product...</div>
+
+    <div class="card" id="productCard" style="display: none;">
+        <div class="card-image">
+            <img id="pImage" src="" alt="Product Image">
+        </div>
+        <div class="card-content">
+            <h2 id="pName"></h2>
+            <div class="meta">
+                ID: <strong id="pId"></strong> | SKU: <strong id="pSku"></strong><br>
+                WC Cat: <strong id="pWCCat"></strong><br>
+                Meesho Cat: <strong id="pMCat"></strong>
+            </div>
+            
+            <div class="grid">
+                <!-- Color -->
+                <div class="form-group">
+                    <label>Color <span id="suggColorBadge" class="sugg-badge"></span></label>
+                    <input type="text" id="attrColor" placeholder="e.g. Red, Blue, Assorted">
+                </div>
+                <!-- Fabric -->
+                <div class="form-group">
+                    <label>Fabric <span id="suggFabricBadge" class="sugg-badge"></span></label>
+                    <input type="text" id="attrFabric" placeholder="e.g. Cotton, Silk">
+                </div>
+                <!-- Neck -->
+                <div class="form-group">
+                    <label>Neck <span id="suggNeckBadge" class="sugg-badge"></span></label>
+                    <input type="text" id="attrNeck" placeholder="e.g. Round Neck">
+                </div>
+                <!-- Sleeve -->
+                <div class="form-group">
+                    <label>Sleeve Length <span id="suggSleeveBadge" class="sugg-badge"></span></label>
+                    <input type="text" id="attrSleeve" placeholder="e.g. Short Sleeves">
+                </div>
+                <!-- Pattern -->
+                <div class="form-group">
+                    <label>Pattern <span id="suggPatternBadge" class="sugg-badge"></span></label>
+                    <input type="text" id="attrPattern" placeholder="e.g. Solid, Printed">
+                </div>
+                <!-- Fit -->
+                <div class="form-group">
+                    <label>Fit/Shape <span id="suggFitBadge" class="sugg-badge"></span></label>
+                    <input type="text" id="attrFit" placeholder="e.g. Regular">
+                </div>
+                <!-- Chest Size -->
+                <div class="form-group">
+                    <label>Chest Size (in) <span id="suggChestBadge" class="sugg-badge"></span></label>
+                    <input type="text" id="attrChest" placeholder="UNKNOWN / leave blank if NA">
+                </div>
+                <!-- Length Size -->
+                <div class="form-group">
+                    <label>Length Size (in) <span id="suggLengthBadge" class="sugg-badge"></span></label>
+                    <input type="text" id="attrLength" placeholder="UNKNOWN / leave blank if NA">
+                </div>
+            </div>
+
+            <div class="actions">
+                <button class="btn-skip" onclick="skipProduct()">Skip (Right Arrow)</button>
+                <button class="btn-approve" onclick="approveProduct()">Approve & Next (Enter)</button>
+            </div>
+            <div class="shortcuts">
+                * Fields left blank will be recorded as UNKNOWN. Do NOT invent measurements.
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    let currentProduct = null;
+    let currentSugg = null;
+
+    async function updateStats() {
+        const res = await fetch('/api/queue-stats');
+        const stats = await res.json();
+        document.getElementById('stats').innerText = `Remaining: ${stats.remaining} | Approved: ${stats.approved}`;
+    }
+
+    function setBadge(elId, suggObj) {
+        const el = document.getElementById(elId);
+        if (suggObj.source === 'AI_SUGGESTION') {
+            el.className = 'sugg-badge sugg-ai';
+            el.innerText = `AI: ${suggObj.conf}`;
+        } else {
+            el.className = 'sugg-badge sugg-none';
+            el.innerText = 'UNKNOWN';
+        }
+    }
+
+    async function loadNext() {
+        document.getElementById('productCard').style.display = 'none';
+        document.getElementById('loading').style.display = 'block';
+        
+        await updateStats();
+        
+        const res = await fetch('/api/next-attribute');
+        const data = await res.json();
+        
+        if (data.error || !data.product) {
+            document.getElementById('loading').innerText = 'All priority products reviewed or error occurred.';
+            return;
+        }
+
+        currentProduct = data.product;
+        currentSugg = data.suggestions;
+        
+        document.getElementById('pId').innerText = currentProduct.id;
+        document.getElementById('pSku').innerText = currentProduct.sku;
+        document.getElementById('pWCCat').innerText = currentProduct.categories || 'Uncategorized';
+        document.getElementById('pMCat').innerText = currentProduct.meesho_category || 'N/A';
+        document.getElementById('pName').innerText = currentProduct.name;
+        document.getElementById('pImage').src = currentProduct.display_image || '';
+        
+        // Populate inputs with AI suggestions if available, else blank
+        document.getElementById('attrColor').value = currentSugg.color.value;
+        setBadge('suggColorBadge', currentSugg.color);
+
+        document.getElementById('attrFabric').value = currentSugg.fabric.value;
+        setBadge('suggFabricBadge', currentSugg.fabric);
+
+        document.getElementById('attrNeck').value = currentSugg.neck.value;
+        setBadge('suggNeckBadge', currentSugg.neck);
+
+        document.getElementById('attrSleeve').value = currentSugg.sleeve_length.value;
+        setBadge('suggSleeveBadge', currentSugg.sleeve_length);
+
+        document.getElementById('attrPattern').value = currentSugg.pattern.value;
+        setBadge('suggPatternBadge', currentSugg.pattern);
+
+        document.getElementById('attrFit').value = currentSugg.fit_shape.value;
+        setBadge('suggFitBadge', currentSugg.fit_shape);
+
+        document.getElementById('attrChest').value = currentSugg.chest_size.value;
+        setBadge('suggChestBadge', currentSugg.chest_size);
+
+        document.getElementById('attrLength').value = currentSugg.length_size.value;
+        setBadge('suggLengthBadge', currentSugg.length_size);
+        
+        document.getElementById('loading').style.display = 'none';
+        document.getElementById('productCard').style.display = 'flex';
+        document.getElementById('attrColor').focus();
+    }
+
+    async function approveProduct() {
+        if (!currentProduct) return;
+        
+        const payload = {
+            product_id: currentProduct.id,
+            sku: currentProduct.sku,
+            meesho_category: currentProduct.meesho_category,
+            color: document.getElementById('attrColor').value || 'UNKNOWN',
+            fabric: document.getElementById('attrFabric').value || 'UNKNOWN',
+            neck: document.getElementById('attrNeck').value || 'UNKNOWN',
+            sleeve_length: document.getElementById('attrSleeve').value || 'UNKNOWN',
+            pattern: document.getElementById('attrPattern').value || 'UNKNOWN',
+            fit_shape: document.getElementById('attrFit').value || 'UNKNOWN',
+            chest_size: document.getElementById('attrChest').value || 'UNKNOWN',
+            length_size: document.getElementById('attrLength').value || 'UNKNOWN',
+            action: 'approve'
+        };
+        
+        await fetch('/api/approve-attribute', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+        });
+        loadNext();
+    }
+
+    async function skipProduct() {
+        if (!currentProduct) return;
+        await fetch('/api/approve-attribute', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ product_id: currentProduct.id, action: 'skip' })
+        });
+        loadNext();
+    }
+
+    document.addEventListener('keydown', (e) => {
+        // Only trigger Enter if we aren't focused on a text input, or if we want to submit anyway
+        // For rapid entry, Enter saves the form.
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            approveProduct();
+        } else if (e.key === 'ArrowRight' && document.activeElement.tagName !== 'INPUT') {
+            skipProduct();
+        }
+    });
+
+    loadNext();
+</script>
+</body>
+</html>
