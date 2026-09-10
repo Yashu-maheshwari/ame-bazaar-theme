@@ -2,7 +2,7 @@
  * Raintech → WooCommerce Image Recovery Script
  * 
  * Phase 1: Reads extracted image files + manifest from PowerShell extractor.
- * Phase 2: Uploads to WooCommerce Media Library via custom AME endpoint.
+ * Phase 2: Uploads to WordPress Media Library via WP REST API (Application Password).
  * Phase 3: Sets as product featured image via WC REST API.
  * 
  * IDEMPOTENT: Skips products that already have images.
@@ -17,9 +17,16 @@ const path = require('path');
 const WC_URL = process.env.WC_URL || 'https://amebazaar.in';
 const WC_KEY = process.env.WC_CONSUMER_KEY;
 const WC_SECRET = process.env.WC_CONSUMER_SECRET;
+const WP_USER = process.env.WP_USERNAME;
+const WP_PASS = process.env.WP_APP_PASSWORD;
 
 if (!WC_KEY || !WC_SECRET) {
     console.error('ERROR: WC_CONSUMER_KEY / WC_CONSUMER_SECRET not set in .env');
+    process.exit(1);
+}
+if (!WP_USER || !WP_PASS) {
+    console.error('ERROR: WP_USERNAME / WP_APP_PASSWORD not set in .env');
+    console.error('Create an Application Password at: https://amebazaar.in/wp-admin/profile.php');
     process.exit(1);
 }
 
@@ -30,7 +37,7 @@ const STATE_FILE = path.join(__dirname, 'recovery_state.json');
 
 // ---- Helpers ----
 
-function apiRequest(method, apiPath, bodyObj) {
+function wcRequest(method, apiPath, bodyObj) {
     return new Promise((resolve, reject) => {
         const url = new URL(apiPath, WC_URL);
         const body = bodyObj ? JSON.stringify(bodyObj) : null;
@@ -64,6 +71,51 @@ function apiRequest(method, apiPath, bodyObj) {
         });
         req.on('error', reject);
         if (body) req.write(body);
+        req.end();
+    });
+}
+
+function wpMediaUpload(filePath, filename) {
+    return new Promise((resolve, reject) => {
+        const fileData = fs.readFileSync(filePath);
+        const ext = path.extname(filename).toLowerCase();
+        const mimeMap = { '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg', '.png': 'image/png', '.gif': 'image/gif', '.bmp': 'image/bmp' };
+        const mime = mimeMap[ext] || 'image/jpeg';
+
+        // Use WordPress Application Password for /wp/v2/media
+        const wpAuth = Buffer.from(`${WP_USER}:${WP_PASS}`).toString('base64');
+
+        const boundary = '----RaintechBoundary' + Date.now();
+        const header = `--${boundary}\r\nContent-Disposition: form-data; name="file"; filename="${filename}"\r\nContent-Type: ${mime}\r\n\r\n`;
+        const footer = `\r\n--${boundary}--\r\n`;
+
+        const bodyParts = [Buffer.from(header, 'utf8'), fileData, Buffer.from(footer, 'utf8')];
+        const body = Buffer.concat(bodyParts);
+
+        const options = {
+            hostname: new URL(WC_URL).hostname,
+            port: 443,
+            path: '/wp-json/wp/v2/media',
+            method: 'POST',
+            headers: {
+                'User-Agent': 'RaintechRecovery/1.0',
+                'Authorization': `Basic ${wpAuth}`,
+                'Content-Type': `multipart/form-data; boundary=${boundary}`,
+                'Content-Length': body.length,
+                'Content-Disposition': `attachment; filename="${filename}"`
+            }
+        };
+
+        const req = https.request(options, (res) => {
+            let data = '';
+            res.on('data', chunk => data += chunk);
+            res.on('end', () => {
+                try { resolve({ status: res.statusCode, data: JSON.parse(data) }); }
+                catch(e) { resolve({ status: res.statusCode, data: data.substring(0, 500) }); }
+            });
+        });
+        req.on('error', reject);
+        req.write(body);
         req.end();
     });
 }
@@ -105,7 +157,7 @@ async function run() {
     let allProducts = [];
     let page = 1;
     while (true) {
-        const res = await apiRequest('GET', `/wp-json/wc/v3/products?per_page=100&status=publish&page=${page}&_fields=id,name,sku,images`);
+        const res = await wcRequest('GET', `/wp-json/wc/v3/products?per_page=100&status=publish&page=${page}&_fields=id,name,sku,images`);
         if (res.status !== 200 || !Array.isArray(res.data) || res.data.length === 0) break;
         allProducts = allProducts.concat(res.data);
         page++;
@@ -157,7 +209,6 @@ async function run() {
 
         const imagePath = path.join(IMAGES_DIR, entry.Filename);
         if (!fs.existsSync(imagePath)) {
-            console.log(`[SKIP] ${sku} - image file not found: ${entry.Filename}`);
             noMatch++;
             continue;
         }
@@ -173,17 +224,11 @@ async function run() {
         processed++;
         console.log(`\n[${processed}/${BATCH_LIMIT}] Processing: WC#${wcProduct.id} SKU=${wcProduct.sku} "${wcProduct.name}"`);
 
-        // Step 1: Upload image via custom AME endpoint
-        const imageData = fs.readFileSync(imagePath);
-        const base64Data = imageData.toString('base64');
-        
-        console.log(`  Uploading ${entry.Filename} (${fileStat.size} bytes) via /ame/v1/upload-image...`);
+        // Step 1: Upload image to WP Media Library via Application Password
+        console.log(`  Uploading ${entry.Filename} (${fileStat.size} bytes)...`);
         let uploadRes;
         try {
-            uploadRes = await apiRequest('POST', '/wp-json/ame/v1/upload-image', {
-                filename: entry.Filename,
-                data: base64Data
-            });
+            uploadRes = await wpMediaUpload(imagePath, entry.Filename);
         } catch(e) {
             console.log(`  [FAIL] Upload error: ${e.message}`);
             uploadFailed++;
@@ -193,7 +238,7 @@ async function run() {
             continue;
         }
 
-        if (uploadRes.status !== 200 && uploadRes.status !== 201) {
+        if (uploadRes.status !== 201 && uploadRes.status !== 200) {
             const errMsg = typeof uploadRes.data === 'object' ? (uploadRes.data.message || JSON.stringify(uploadRes.data)) : String(uploadRes.data).substring(0, 200);
             console.log(`  [FAIL] Upload HTTP ${uploadRes.status}: ${errMsg}`);
             uploadFailed++;
@@ -203,14 +248,14 @@ async function run() {
             continue;
         }
 
-        const mediaId = uploadRes.data.media_id;
+        const mediaId = uploadRes.data.id;
         const mediaUrl = uploadRes.data.source_url;
-        console.log(`  Media uploaded: ID=${mediaId}, URL=${mediaUrl}`);
+        console.log(`  Media uploaded: ID=${mediaId}`);
 
         // Step 2: Set as product featured image via WC API (ONLY images field)
         let updateRes;
         try {
-            updateRes = await apiRequest('PUT', `/wp-json/wc/v3/products/${wcProduct.id}`, {
+            updateRes = await wcRequest('PUT', `/wp-json/wc/v3/products/${wcProduct.id}`, {
                 images: [{ id: mediaId }]
             });
         } catch(e) {
