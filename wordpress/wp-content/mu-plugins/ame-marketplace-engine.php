@@ -33,6 +33,9 @@ class AME_Marketplace_Engine {
         // Handle CSV Export
         add_action( 'admin_post_export_meesho_csv', [ $this, 'export_meesho_csv' ] );
         
+        // Register REST API endpoint for image uploads
+        add_action( 'rest_api_init', [ $this, 'register_rest_routes' ] );
+        
         // Register default adapters
         $this->register_adapters();
     }
@@ -466,6 +469,72 @@ class AME_Meesho_Adapter extends AME_Marketplace_Adapter {
 
     public function update_price( $ame_product_id, $account_id, $price ) {
         // TODO: Implement price sync
+    }
+
+    /**
+     * Register REST API routes for image upload
+     */
+    public function register_rest_routes() {
+        register_rest_route( 'ame/v1', '/upload-image', [
+            'methods'             => 'POST',
+            'callback'            => [ $this, 'handle_image_upload' ],
+            'permission_callback' => function( $request ) {
+                return current_user_can( 'upload_files' );
+            },
+        ]);
+    }
+
+    /**
+     * Handle image upload via REST API
+     * Accepts base64-encoded image data, validates, and sideloads into Media Library
+     */
+    public function handle_image_upload( $request ) {
+        $filename = sanitize_file_name( $request->get_param('filename') );
+        $data     = $request->get_param('data');
+        
+        if ( empty( $filename ) || empty( $data ) ) {
+            return new WP_Error( 'missing_params', 'filename and data are required', [ 'status' => 400 ] );
+        }
+        
+        $decoded = base64_decode( $data, true );
+        if ( $decoded === false || strlen( $decoded ) < 100 ) {
+            return new WP_Error( 'invalid_data', 'Invalid or corrupt image data', [ 'status' => 400 ] );
+        }
+        
+        // Validate MIME from binary header
+        $allowed = [ 'image/jpeg', 'image/png', 'image/gif', 'image/bmp', 'image/webp' ];
+        $finfo = new finfo( FILEINFO_MIME_TYPE );
+        $mime  = $finfo->buffer( $decoded );
+        if ( ! in_array( $mime, $allowed ) ) {
+            return new WP_Error( 'invalid_mime', "Invalid image type: $mime", [ 'status' => 400 ] );
+        }
+        
+        // Write to temp file
+        $tmp = wp_tempnam( $filename );
+        file_put_contents( $tmp, $decoded );
+        
+        $file_array = [
+            'name'     => $filename,
+            'tmp_name' => $tmp,
+            'size'     => strlen( $decoded ),
+            'error'    => UPLOAD_ERR_OK,
+        ];
+        
+        require_once( ABSPATH . 'wp-admin/includes/media.php' );
+        require_once( ABSPATH . 'wp-admin/includes/file.php' );
+        require_once( ABSPATH . 'wp-admin/includes/image.php' );
+        
+        $media_id = media_handle_sideload( $file_array, 0 );
+        
+        if ( is_wp_error( $media_id ) ) {
+            @unlink( $tmp );
+            return new WP_Error( 'upload_failed', $media_id->get_error_message(), [ 'status' => 500 ] );
+        }
+        
+        return rest_ensure_response([
+            'media_id'   => $media_id,
+            'source_url' => wp_get_attachment_url( $media_id ),
+        ]);
     }
 }
 
