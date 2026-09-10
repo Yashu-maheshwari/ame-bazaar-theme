@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meesho Manual Category Review Tool</title>
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background: #f0f2f5; margin: 0; padding: 20px; color: #333; }
+        .container { max-width: 1000px; margin: 0 auto; }
+        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        .stats { font-size: 14px; color: #666; background: #fff; padding: 5px 15px; border-radius: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+        .card { background: #fff; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); display: flex; overflow: hidden; margin-bottom: 20px; }
+        .card-image { width: 400px; background: #fafafa; display: flex; align-items: center; justify-content: center; border-right: 1px solid #eee; }
+        .card-image img { max-width: 100%; max-height: 500px; object-fit: contain; }
+        .card-image .no-image { color: #999; padding: 50px; }
+        .card-content { flex: 1; padding: 30px; display: flex; flex-direction: column; }
+        .meta { font-size: 12px; color: #888; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 5px; }
+        h2 { margin: 0 0 15px 0; font-size: 24px; }
+        .desc { font-size: 14px; color: #555; margin-bottom: 20px; background: #f9f9f9; padding: 15px; border-radius: 4px; border-left: 3px solid #ddd; max-height: 150px; overflow-y: auto; }
+        .form-group { margin-bottom: 20px; }
+        label { display: block; font-weight: 600; margin-bottom: 8px; }
+        select, input { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; font-size: 16px; box-sizing: border-box; }
+        .actions { margin-top: auto; display: flex; gap: 10px; }
+        button { padding: 12px 24px; border: none; border-radius: 4px; font-size: 16px; font-weight: 600; cursor: pointer; transition: background 0.2s; }
+        .btn-approve { background: #E7135C; color: white; flex: 1; } /* Meesho Pink */
+        .btn-approve:hover { background: #c8104f; }
+        .btn-skip { background: #e0e0e0; color: #333; }
+        .btn-skip:hover { background: #d0d0d0; }
+        .shortcuts { font-size: 12px; color: #888; text-align: center; margin-top: 20px; }
+        #loading { text-align: center; padding: 50px; font-size: 18px; color: #666; display: none; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header">
+        <h1>Meesho Catalog Review</h1>
+        <div class="stats" id="stats">Remaining: 0 | Approved: 0</div>
+    </div>
+
+    <div id="loading">Loading next product...</div>
+
+    <div class="card" id="productCard" style="display: none;">
+        <div class="card-image">
+            <img id="pImage" src="" alt="Product Image" style="display: none;">
+            <div id="pNoImage" class="no-image">No Image Available</div>
+        </div>
+        <div class="card-content">
+            <div class="meta"><span id="pWCId"></span> &bull; SKU: <strong id="pSku"></strong> &bull; WC Cat: <strong id="pWCCat"></strong></div>
+            <h2 id="pName"></h2>
+            <div class="desc" id="pDesc"></div>
+            
+            <div class="form-group">
+                <label for="categorySelect">Assign Meesho Category</label>
+                <input type="text" id="categorySearch" placeholder="Search verified categories..." list="categoryList" autocomplete="off">
+                <datalist id="categoryList"></datalist>
+            </div>
+
+            <div class="actions">
+                <button class="btn-skip" onclick="skipProduct()">Skip (Right Arrow)</button>
+                <button class="btn-approve" onclick="approveProduct()">Save & Next (Enter)</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="shortcuts">
+        Keyboard Shortcuts: <strong>Enter</strong> = Save & Next | <strong>Right Arrow</strong> = Skip
+    </div>
+</div>
+
+<script>
+    let currentProduct = null;
+    let taxonomy = [];
+
+    async function loadTaxonomy() {
+        const res = await fetch('/api/taxonomy');
+        taxonomy = await res.json();
+        const dataList = document.getElementById('categoryList');
+        taxonomy.forEach(cat => {
+            const option = document.createElement('option');
+            option.value = cat;
+            dataList.appendChild(option);
+        });
+    }
+
+    async function updateStats() {
+        const res = await fetch('/api/queue-stats');
+        const stats = await res.json();
+        document.getElementById('stats').innerText = `Remaining: ${stats.remaining} | Approved: ${stats.approved}`;
+    }
+
+    async function loadNext() {
+        document.getElementById('productCard').style.display = 'none';
+        document.getElementById('loading').style.display = 'block';
+        
+        await updateStats();
+        
+        const res = await fetch('/api/next');
+        const data = await res.json();
+        
+        if (data.error || !data.product) {
+            document.getElementById('loading').innerText = data.error ? 'Error loading product, fetching next...' : 'All caught up! No more products in queue.';
+            if (data.error) setTimeout(loadNext, 1000);
+            return;
+        }
+
+        currentProduct = data.product;
+        
+        document.getElementById('pWCId').innerText = 'WC#' + currentProduct.id;
+        document.getElementById('pSku').innerText = currentProduct.sku;
+        document.getElementById('pWCCat').innerText = currentProduct.categories || 'Uncategorized';
+        document.getElementById('pName').innerText = currentProduct.name;
+        document.getElementById('pDesc').innerHTML = currentProduct.description || '<em>No description</em>';
+        
+        const imgEl = document.getElementById('pImage');
+        const noImgEl = document.getElementById('pNoImage');
+        if (currentProduct.image) {
+            imgEl.src = currentProduct.image;
+            imgEl.style.display = 'block';
+            noImgEl.style.display = 'none';
+        } else {
+            imgEl.style.display = 'none';
+            noImgEl.style.display = 'block';
+        }
+        
+        document.getElementById('categorySearch').value = '';
+        
+        // Auto-suggest based on existing logic if possible, else blank
+        
+        document.getElementById('loading').style.display = 'none';
+        document.getElementById('productCard').style.display = 'flex';
+        document.getElementById('categorySearch').focus();
+    }
+
+    async function approveProduct() {
+        if (!currentProduct) return;
+        const cat = document.getElementById('categorySearch').value;
+        if (!cat) {
+            alert('Please select a category before approving.');
+            return;
+        }
+        
+        await fetch('/api/approve', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                id: currentProduct.id,
+                sku: currentProduct.sku,
+                category: cat,
+                action: 'approve'
+            })
+        });
+        loadNext();
+    }
+
+    async function skipProduct() {
+        if (!currentProduct) return;
+        await fetch('/api/approve', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                id: currentProduct.id,
+                action: 'skip'
+            })
+        });
+        loadNext();
+    }
+
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            approveProduct();
+        } else if (e.key === 'ArrowRight' && document.activeElement.tagName !== 'INPUT') {
+            skipProduct();
+        }
+    });
+
+    loadTaxonomy().then(loadNext);
+
+</script>
+</body>
+</html>
