@@ -220,3 +220,5 @@ function ame_bazaar_async_google_fonts() {
 add_action( 'wp_head', 'ame_bazaar_async_google_fonts', 2 );
 
 
+
+require_once AME_BAZAAR_PATH . '/inc/indexnow.php';
