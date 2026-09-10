@@ -179,19 +179,23 @@ async function run() {
         manifestMap[m.ProductCode.toLowerCase()] = m;
     }
 
-    // Process batch
+    // Process in internal batches of 100
     let processed = 0;
     let succeeded = 0;
     let skippedAlreadyRecovered = 0;
     let uploadFailed = 0;
     let noMatch = 0;
     let invalidBlob = 0;
+    let consecutiveFailures = 0;
 
     const skus = Object.keys(missingImageMap);
-    
-    for (const sku of skus) {
-        if (processed >= BATCH_LIMIT) break;
+    const BATCH_SIZE = 100;
+    const totalToProcess = Math.min(skus.length, BATCH_LIMIT);
 
+    console.log(`\nTargeting ${totalToProcess} products for recovery...`);
+
+    for (let i = 0; i < totalToProcess; i++) {
+        const sku = skus[i];
         const wcProduct = missingImageMap[sku];
         
         // Already recovered in a previous run?
@@ -222,7 +226,7 @@ async function run() {
         }
 
         processed++;
-        console.log(`\n[${processed}/${BATCH_LIMIT}] Processing: WC#${wcProduct.id} SKU=${wcProduct.sku} "${wcProduct.name}"`);
+        console.log(`\n[${processed}/${totalToProcess}] Processing: WC#${wcProduct.id} SKU=${wcProduct.sku} "${wcProduct.name}"`);
 
         // Step 1: Upload image to WP Media Library via Application Password
         console.log(`  Uploading ${entry.Filename} (${fileStat.size} bytes)...`);
@@ -232,9 +236,11 @@ async function run() {
         } catch(e) {
             console.log(`  [FAIL] Upload error: ${e.message}`);
             uploadFailed++;
+            consecutiveFailures++;
             state.log.push({ sku, wcId: wcProduct.id, status: 'upload_failed', error: e.message });
             saveState(state);
             await sleep(1000);
+            if (consecutiveFailures >= 10) { console.error('SYSTEMIC ERROR: 10 consecutive failures. Stopping.'); break; }
             continue;
         }
 
@@ -242,9 +248,11 @@ async function run() {
             const errMsg = typeof uploadRes.data === 'object' ? (uploadRes.data.message || JSON.stringify(uploadRes.data)) : String(uploadRes.data).substring(0, 200);
             console.log(`  [FAIL] Upload HTTP ${uploadRes.status}: ${errMsg}`);
             uploadFailed++;
+            consecutiveFailures++;
             state.log.push({ sku, wcId: wcProduct.id, status: 'upload_failed', httpStatus: uploadRes.status, error: errMsg });
             saveState(state);
             await sleep(1000);
+            if (consecutiveFailures >= 10) { console.error('SYSTEMIC ERROR: 10 consecutive failures. Stopping.'); break; }
             continue;
         }
 
@@ -261,9 +269,11 @@ async function run() {
         } catch(e) {
             console.log(`  [FAIL] Product update error: ${e.message}`);
             uploadFailed++;
+            consecutiveFailures++;
             state.log.push({ sku, wcId: wcProduct.id, mediaId, status: 'product_update_failed', error: e.message });
             saveState(state);
             await sleep(1000);
+            if (consecutiveFailures >= 10) { console.error('SYSTEMIC ERROR: 10 consecutive failures. Stopping.'); break; }
             continue;
         }
 
@@ -271,9 +281,11 @@ async function run() {
             const errMsg = typeof updateRes.data === 'object' ? (updateRes.data.message || JSON.stringify(updateRes.data)) : String(updateRes.data).substring(0, 200);
             console.log(`  [FAIL] Product update HTTP ${updateRes.status}: ${errMsg}`);
             uploadFailed++;
+            consecutiveFailures++;
             state.log.push({ sku, wcId: wcProduct.id, mediaId, status: 'product_update_failed', httpStatus: updateRes.status, error: errMsg });
             saveState(state);
             await sleep(1000);
+            if (consecutiveFailures >= 10) { console.error('SYSTEMIC ERROR: 10 consecutive failures. Stopping.'); break; }
             continue;
         }
 
@@ -286,19 +298,31 @@ async function run() {
             console.log(`  [OK] Image set. Media ID=${mediaId}`);
             console.log(`  [OK] SKU verified unchanged: ${updateRes.data.sku}`);
             succeeded++;
+            consecutiveFailures = 0; // reset on success
             state.recovered[sku] = { wcId: wcProduct.id, mediaId, mediaUrl, timestamp: new Date().toISOString() };
             state.log.push({ sku, wcId: wcProduct.id, mediaId, mediaUrl, status: 'success' });
         } else {
             console.log(`  [WARN] Verification issue. hasImage=${hasImage}, skuUnchanged=${skuUnchanged}`);
             uploadFailed++;
+            consecutiveFailures++;
             state.log.push({ sku, wcId: wcProduct.id, mediaId, status: 'verification_failed', hasImage, skuUnchanged });
         }
 
         saveState(state);
-        await sleep(500); // Rate limiting
+        
+        // Batch summary every 100
+        if (processed % BATCH_SIZE === 0) {
+            console.log(`\n--- BATCH OF ${BATCH_SIZE} COMPLETED ---`);
+            console.log(`Progress: ${processed}/${totalToProcess}`);
+            console.log(`Recent Successes: ${succeeded}, Recent Failures: ${uploadFailed}`);
+            console.log(`Waiting 5 seconds before next batch...`);
+            await sleep(5000);
+        } else {
+            await sleep(500); // Normal rate limiting
+        }
     }
 
-    console.log(`\n=== BATCH COMPLETE ===`);
+    console.log(`\n=== RECOVERY COMPLETE ===`);
     console.log(`Processed:                ${processed}`);
     console.log(`Successfully recovered:   ${succeeded}`);
     console.log(`Skipped (prev recovered): ${skippedAlreadyRecovered}`);
