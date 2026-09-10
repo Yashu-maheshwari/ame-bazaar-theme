@@ -30,8 +30,77 @@ class AME_Marketplace_Engine {
         // Add Admin Menu
         add_action( 'admin_menu', [ $this, 'register_admin_menu' ] );
         
+        // Handle CSV Export
+        add_action( 'admin_post_export_meesho_csv', [ $this, 'export_meesho_csv' ] );
+        
         // Register default adapters
         $this->register_adapters();
+    }
+
+    public function export_meesho_csv() {
+        if ( ! current_user_can( 'manage_woocommerce' ) ) {
+            wp_die( 'Unauthorized access' );
+        }
+
+        $results = $this->scan_woocommerce_catalog();
+
+        header('Content-Type: text/csv; charset=utf-8');
+        header('Content-Disposition: attachment; filename=meesho_bulk_catalog_' . date('Y-m-d') . '.csv');
+
+        $output = fopen('php://output', 'w');
+
+        // Compulsory Meesho Headers (Simplified for generation)
+        fputcsv($output, [
+            'Product Name', 
+            'Description', 
+            'Category', 
+            'SKU', 
+            'MRP', 
+            'Selling Price', 
+            'Weight (gms)', 
+            'Stock', 
+            'Image URL 1'
+        ]);
+
+        $args = [
+            'post_type'      => 'product',
+            'posts_per_page' => -1,
+            'post_status'    => 'publish',
+        ];
+
+        $products = new WP_Query( $args );
+
+        if ( $products->have_posts() ) {
+            while ( $products->have_posts() ) {
+                $products->the_post();
+                $product = wc_get_product( get_the_ID() );
+                
+                if ( ! $product ) continue;
+
+                // Check readiness (skip if missing vital info)
+                if ( empty( $product->get_sku() ) || empty( $product->get_price() ) || empty( $product->get_image_id() ) ) {
+                    continue; // In a robust version, we might still export with blanks so user can fill them
+                }
+
+                $image_url = wp_get_attachment_url( $product->get_image_id() );
+                
+                fputcsv($output, [
+                    $product->get_name(),
+                    wp_strip_all_tags( $product->get_description() ),
+                    '', // Category needs manual mapping per Meesho's strict categories
+                    $product->get_sku(),
+                    $product->get_regular_price() ?: $product->get_price(),
+                    $product->get_price(),
+                    $product->get_weight() ?: 500, // Default to 500g if missing
+                    $product->get_manage_stock() ? $product->get_stock_quantity() : 100,
+                    $image_url
+                ]);
+            }
+        }
+        wp_reset_postdata();
+
+        fclose($output);
+        exit;
     }
 
     public function maybe_create_tables() {
@@ -88,29 +157,138 @@ class AME_Marketplace_Engine {
     }
 
     public function render_admin_page() {
+        $scan_results = $this->scan_woocommerce_catalog();
+        
         ?>
         <div class="wrap">
             <h1>AME Bazaar Marketplace Engine</h1>
             <p>Connect and manage multiple marketplaces from a single source of truth.</p>
             
-            <table class="wp-list-table widefat fixed striped">
-                <thead>
-                    <tr>
-                        <th>Marketplace</th>
-                        <th>Status</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><strong>Meesho</strong></td>
-                        <td>Not Connected</td>
-                        <td><a href="#" class="button button-primary">Configure</a></td>
-                    </tr>
-                </tbody>
-            </table>
+            <h2 class="nav-tab-wrapper">
+                <a href="#" class="nav-tab nav-tab-active">Dashboard</a>
+                <a href="#" class="nav-tab">Meesho Bulk Export</a>
+            </h2>
+
+            <div class="card" style="max-width: 800px; margin-top: 20px;">
+                <h2>WooCommerce Catalog Readiness Report</h2>
+                <p>Analyzing products for marketplace integration readiness.</p>
+                
+                <table class="widefat striped">
+                    <tbody>
+                        <tr>
+                            <th>Total WooCommerce Products Found:</th>
+                            <td><strong><?php echo esc_html( $scan_results['total'] ); ?></strong></td>
+                        </tr>
+                        <tr>
+                            <th>Ready for Publishing:</th>
+                            <td style="color: green;"><strong><?php echo esc_html( $scan_results['ready'] ); ?></strong></td>
+                        </tr>
+                        <tr>
+                            <th>Missing Required Fields:</th>
+                            <td style="color: red;"><strong><?php echo esc_html( $scan_results['missing'] ); ?></strong></td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <?php if ( ! empty( $scan_results['missing_details'] ) ) : ?>
+                    <h3 style="margin-top: 20px;">Products Missing Data</h3>
+                    <div style="max-height: 300px; overflow-y: auto;">
+                        <table class="widefat fixed striped">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Product Name</th>
+                                    <th>Missing Fields</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php foreach ( $scan_results['missing_details'] as $detail ) : ?>
+                                    <tr>
+                                        <td>#<?php echo esc_html( $detail['id'] ); ?></td>
+                                        <td><?php echo esc_html( $detail['name'] ); ?></td>
+                                        <td style="color: red;"><?php echo esc_html( implode( ', ', $detail['missing'] ) ); ?></td>
+                                    </tr>
+                                <?php endforeach; ?>
+                            </tbody>
+                        </table>
+                    </div>
+                <?php endif; ?>
+                
+                <div style="margin-top: 20px;">
+                    <h3>Next Action</h3>
+                    <p>Since direct API V2 catalog creation requires a support ticket and approval, the current most automated legitimate workflow is the <strong>Official Bulk Catalog Upload</strong>.</p>
+                    <form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>">
+                        <input type="hidden" name="action" value="export_meesho_csv">
+                        <?php submit_button( 'Generate Meesho Bulk Excel/CSV (Option B)', 'primary', 'submit', false ); ?>
+                        <span class="description"> Generates a CSV file matching Meesho's bulk upload format using your WooCommerce products.</span>
+                    </form>
+                </div>
+            </div>
         </div>
         <?php
+    }
+
+    /**
+     * Scans WooCommerce catalog to check readiness for Meesho
+     */
+    private function scan_woocommerce_catalog() {
+        $results = [
+            'total' => 0,
+            'ready' => 0,
+            'missing' => 0,
+            'missing_details' => []
+        ];
+
+        if ( ! class_exists( 'WooCommerce' ) ) {
+            return $results;
+        }
+
+        $args = [
+            'post_type'      => 'product',
+            'posts_per_page' => -1,
+            'post_status'    => 'publish',
+        ];
+
+        $products = new WP_Query( $args );
+        $results['total'] = $products->found_posts;
+
+        if ( $products->have_posts() ) {
+            while ( $products->have_posts() ) {
+                $products->the_post();
+                $product = wc_get_product( get_the_ID() );
+                
+                if ( ! $product ) continue;
+
+                $missing_fields = [];
+                
+                if ( empty( $product->get_sku() ) ) {
+                    $missing_fields[] = 'SKU';
+                }
+                if ( empty( $product->get_price() ) ) {
+                    $missing_fields[] = 'Price';
+                }
+                if ( empty( $product->get_image_id() ) ) {
+                    $missing_fields[] = 'Main Image';
+                }
+                if ( empty( $product->get_weight() ) ) {
+                    $missing_fields[] = 'Weight';
+                }
+                
+                if ( empty( $missing_fields ) ) {
+                    $results['ready']++;
+                } else {
+                    $results['missing']++;
+                    $results['missing_details'][] = [
+                        'id' => get_the_ID(),
+                        'name' => get_the_title(),
+                        'missing' => $missing_fields
+                    ];
+                }
+            }
+        }
+        wp_reset_postdata();
+
+        return $results;
     }
 
     /**
