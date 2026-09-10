@@ -77,21 +77,60 @@ class AME_Marketplace_Engine {
                 
                 if ( ! $product ) continue;
 
-                // Check readiness (skip if missing vital info)
-                if ( empty( $product->get_sku() ) || empty( $product->get_price() ) || empty( $product->get_image_id() ) ) {
-                    continue; // In a robust version, we might still export with blanks so user can fill them
+                $pName = strtolower( $product->get_name() );
+                $terms = wc_get_product_terms( $product->get_id(), 'product_cat' );
+                $catNames = array_map( function( $cat ) { return strtolower( $cat->name ); }, is_array($terms) && !is_wp_error($terms) ? $terms : [] );
+                $catString = implode( ' ', $catNames );
+                
+                $weight = 500;
+                if ( strpos( $pName, 'gown' ) !== false || strpos( $pName, 'coat pant' ) !== false || strpos( $pName, 'coat-pant' ) !== false || strpos( $pName, 'suit' ) !== false || strpos( $pName, 'sherwani' ) !== false ||
+                     strpos( $catString, 'gown' ) !== false || strpos( $catString, 'coat pant' ) !== false || strpos( $catString, 'coat-pant' ) !== false || strpos( $catString, 'suit' ) !== false || strpos( $catString, 'sherwani' ) !== false ) {
+                    $weight = 1500;
                 }
 
-                $image_url = wp_get_attachment_url( $product->get_image_id() );
+                $image_id = $product->get_image_id();
+                if ( empty( $image_id ) && ! empty( $product->get_sku() ) ) {
+                    global $wpdb;
+                    $recovered_id = $wpdb->get_var( $wpdb->prepare( "SELECT ID FROM $wpdb->posts WHERE post_type = 'attachment' AND post_title LIKE %s LIMIT 1", '%' . $wpdb->esc_like( $product->get_sku() ) . '%' ) );
+                    if ( $recovered_id ) {
+                        $image_id = $recovered_id;
+                    }
+                }
+
+                $mappedCategory = 'category_mapping_required';
+                if ( ! empty( $terms ) && !is_wp_error($terms) ) {
+                    $primaryCat = $terms[0]->name;
+                    $meeshoCategoryMap = [
+                        'Gown' => 'Women > Ethnic Wear > Gowns',
+                        'Gowns' => 'Women > Ethnic Wear > Gowns',
+                        'Wedding Gown' => 'Women > Ethnic Wear > Gowns',
+                        'Sherwani' => 'Men > Ethnic Wear > Sherwanis',
+                        'Sherwanis' => 'Men > Ethnic Wear > Sherwanis',
+                        'Suit' => 'Men > Western Wear > Suits',
+                        'Suits' => 'Men > Western Wear > Suits',
+                        'Coat Pant' => 'Men > Western Wear > Suits',
+                        'Coat-Pant' => 'Men > Western Wear > Suits',
+                    ];
+                    if ( isset( $meeshoCategoryMap[$primaryCat] ) ) {
+                        $mappedCategory = $meeshoCategoryMap[$primaryCat];
+                    }
+                }
+
+                // Check readiness (skip if missing vital info)
+                if ( empty( $product->get_sku() ) || empty( $product->get_price() ) || empty( $image_id ) || $mappedCategory === 'category_mapping_required' ) {
+                    continue; 
+                }
+
+                $image_url = wp_get_attachment_url( $image_id );
                 
                 fputcsv($output, [
                     $product->get_name(),
                     wp_strip_all_tags( $product->get_description() ),
-                    '', // Category needs manual mapping per Meesho's strict categories
+                    $mappedCategory,
                     $product->get_sku(),
                     $product->get_regular_price() ?: $product->get_price(),
                     $product->get_price(),
-                    $product->get_weight() ?: 500, // Default to 500g if missing
+                    $weight, // Use derived Meesho-specific weight
                     $product->get_manage_stock() ? $product->get_stock_quantity() : 100,
                     $image_url
                 ]);
@@ -259,20 +298,51 @@ class AME_Marketplace_Engine {
                 
                 if ( ! $product ) continue;
 
-                $missing_fields = [];
+                // Check readiness
+                $pName = strtolower( $product->get_name() );
+                $terms = wc_get_product_terms( $product->get_id(), 'product_cat' );
+                $catNames = array_map( function( $cat ) { return strtolower( $cat->name ); }, is_array($terms) && !is_wp_error($terms) ? $terms : [] );
+                $catString = implode( ' ', $catNames );
                 
-                if ( empty( $product->get_sku() ) ) {
-                    $missing_fields[] = 'SKU';
+                $weight = 500;
+                if ( strpos( $pName, 'gown' ) !== false || strpos( $pName, 'coat pant' ) !== false || strpos( $pName, 'coat-pant' ) !== false || strpos( $pName, 'suit' ) !== false || strpos( $pName, 'sherwani' ) !== false ||
+                     strpos( $catString, 'gown' ) !== false || strpos( $catString, 'coat pant' ) !== false || strpos( $catString, 'coat-pant' ) !== false || strpos( $catString, 'suit' ) !== false || strpos( $catString, 'sherwani' ) !== false ) {
+                    $weight = 1500;
                 }
-                if ( empty( $product->get_price() ) ) {
-                    $missing_fields[] = 'Price';
+
+                $image_id = $product->get_image_id();
+                if ( empty( $image_id ) && ! empty( $product->get_sku() ) ) {
+                    global $wpdb;
+                    $recovered_id = $wpdb->get_var( $wpdb->prepare( "SELECT ID FROM $wpdb->posts WHERE post_type = 'attachment' AND post_title LIKE %s LIMIT 1", '%' . $wpdb->esc_like( $product->get_sku() ) . '%' ) );
+                    if ( $recovered_id ) {
+                        $image_id = $recovered_id;
+                    }
                 }
-                if ( empty( $product->get_image_id() ) ) {
-                    $missing_fields[] = 'Main Image';
+
+                $mappedCategory = 'category_mapping_required';
+                if ( ! empty( $terms ) && !is_wp_error($terms) ) {
+                    $primaryCat = $terms[0]->name;
+                    $meeshoCategoryMap = [
+                        'Gown' => 'Women > Ethnic Wear > Gowns',
+                        'Gowns' => 'Women > Ethnic Wear > Gowns',
+                        'Wedding Gown' => 'Women > Ethnic Wear > Gowns',
+                        'Sherwani' => 'Men > Ethnic Wear > Sherwanis',
+                        'Sherwanis' => 'Men > Ethnic Wear > Sherwanis',
+                        'Suit' => 'Men > Western Wear > Suits',
+                        'Suits' => 'Men > Western Wear > Suits',
+                        'Coat Pant' => 'Men > Western Wear > Suits',
+                        'Coat-Pant' => 'Men > Western Wear > Suits',
+                    ];
+                    if ( isset( $meeshoCategoryMap[$primaryCat] ) ) {
+                        $mappedCategory = $meeshoCategoryMap[$primaryCat];
+                    }
                 }
-                if ( empty( $product->get_weight() ) ) {
-                    $missing_fields[] = 'Weight';
-                }
+
+                $missing_fields = [];
+                if ( empty( $product->get_sku() ) ) { $missing_fields[] = 'SKU'; }
+                if ( empty( $product->get_price() ) ) { $missing_fields[] = 'Price'; }
+                if ( empty( $image_id ) ) { $missing_fields[] = 'missing_image'; }
+                if ( $mappedCategory === 'category_mapping_required' ) { $missing_fields[] = 'category_mapping_required'; }
                 
                 if ( empty( $missing_fields ) ) {
                     $results['ready']++;
