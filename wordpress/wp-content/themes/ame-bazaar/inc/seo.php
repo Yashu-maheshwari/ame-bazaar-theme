@@ -143,15 +143,6 @@ function ame_bazaar_optimize_document_title( $title_parts ) {
 	if ( is_front_page() || is_home() ) {
 		$title_parts['title']   = 'AME Bazaar';
 		$title_parts['tagline'] = 'Family Fashion Store & Custom Tailoring in Kirari, Delhi';
-	} elseif ( is_product() ) {
-		$post_id = get_the_ID();
-		$custom_title = get_post_meta( $post_id, '_ame_seo_title', true );
-		if ( ! empty( $custom_title ) ) {
-			// Replace the entire title
-			$title_parts['title'] = wp_strip_all_tags( $custom_title );
-			unset($title_parts['site']);
-			unset($title_parts['tagline']);
-		}
 	}
 	return $title_parts;
 }
