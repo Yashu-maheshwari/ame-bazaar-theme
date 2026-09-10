@@ -97,27 +97,11 @@ class AME_Marketplace_Engine {
                     }
                 }
 
-                $mappedCategory = 'category_mapping_required';
-                if ( ! empty( $terms ) && !is_wp_error($terms) ) {
-                    $primaryCat = $terms[0]->name;
-                    $meeshoCategoryMap = [
-                        'Gown' => 'Women > Ethnic Wear > Gowns',
-                        'Gowns' => 'Women > Ethnic Wear > Gowns',
-                        'Wedding Gown' => 'Women > Ethnic Wear > Gowns',
-                        'Sherwani' => 'Men > Ethnic Wear > Sherwanis',
-                        'Sherwanis' => 'Men > Ethnic Wear > Sherwanis',
-                        'Suit' => 'Men > Western Wear > Suits',
-                        'Suits' => 'Men > Western Wear > Suits',
-                        'Coat Pant' => 'Men > Western Wear > Suits',
-                        'Coat-Pant' => 'Men > Western Wear > Suits',
-                    ];
-                    if ( isset( $meeshoCategoryMap[$primaryCat] ) ) {
-                        $mappedCategory = $meeshoCategoryMap[$primaryCat];
-                    }
-                }
+                $mappedCategory = $this->get_meesho_category_and_status( $product );
+                $sku = $product->get_sku() ?: 'R-' . $product->get_id(); // Safe SKU fallback
 
                 // Check readiness (skip if missing vital info)
-                if ( empty( $product->get_sku() ) || empty( $product->get_price() ) || empty( $image_id ) || $mappedCategory === 'category_mapping_required' ) {
+                if ( empty( $sku ) || empty( $product->get_price() ) || empty( $image_id ) || $mappedCategory === 'needs_review' ) {
                     continue; 
                 }
 
@@ -127,7 +111,7 @@ class AME_Marketplace_Engine {
                     $product->get_name(),
                     wp_strip_all_tags( $product->get_description() ),
                     $mappedCategory,
-                    $product->get_sku(),
+                    $sku,
                     $product->get_regular_price() ?: $product->get_price(),
                     $product->get_price(),
                     $weight, // Use derived Meesho-specific weight
@@ -319,30 +303,14 @@ class AME_Marketplace_Engine {
                     }
                 }
 
-                $mappedCategory = 'category_mapping_required';
-                if ( ! empty( $terms ) && !is_wp_error($terms) ) {
-                    $primaryCat = $terms[0]->name;
-                    $meeshoCategoryMap = [
-                        'Gown' => 'Women > Ethnic Wear > Gowns',
-                        'Gowns' => 'Women > Ethnic Wear > Gowns',
-                        'Wedding Gown' => 'Women > Ethnic Wear > Gowns',
-                        'Sherwani' => 'Men > Ethnic Wear > Sherwanis',
-                        'Sherwanis' => 'Men > Ethnic Wear > Sherwanis',
-                        'Suit' => 'Men > Western Wear > Suits',
-                        'Suits' => 'Men > Western Wear > Suits',
-                        'Coat Pant' => 'Men > Western Wear > Suits',
-                        'Coat-Pant' => 'Men > Western Wear > Suits',
-                    ];
-                    if ( isset( $meeshoCategoryMap[$primaryCat] ) ) {
-                        $mappedCategory = $meeshoCategoryMap[$primaryCat];
-                    }
-                }
+                $mappedCategory = $this->get_meesho_category_and_status( $product );
+                $sku = $product->get_sku() ?: 'R-' . $product->get_id(); // Safe SKU fallback
 
                 $missing_fields = [];
-                if ( empty( $product->get_sku() ) ) { $missing_fields[] = 'SKU'; }
+                if ( empty( $sku ) ) { $missing_fields[] = 'SKU'; }
                 if ( empty( $product->get_price() ) ) { $missing_fields[] = 'Price'; }
                 if ( empty( $image_id ) ) { $missing_fields[] = 'missing_image'; }
-                if ( $mappedCategory === 'category_mapping_required' ) { $missing_fields[] = 'category_mapping_required'; }
+                if ( $mappedCategory === 'needs_review' ) { $missing_fields[] = 'needs_review'; }
                 
                 if ( empty( $missing_fields ) ) {
                     $results['ready']++;
@@ -359,6 +327,45 @@ class AME_Marketplace_Engine {
         wp_reset_postdata();
 
         return $results;
+    }
+
+    private function get_meesho_category_and_status( $product ) {
+        $pName = strtolower( $product->get_name() );
+        $terms = wc_get_product_terms( $product->get_id(), 'product_cat' );
+        $catNames = array_map( function( $cat ) { return strtolower( $cat->name ); }, is_array($terms) && !is_wp_error($terms) ? $terms : [] );
+        $catString = implode( ' ', $catNames );
+        $str = $pName . ' ' . $catString;
+
+        $isBoys = strpos($str, 'boys') !== false || strpos($str, 'baba suit') !== false || strpos($str, 'boy') !== false;
+        $isGirls = strpos($str, 'girls') !== false || strpos($str, 'frock') !== false || strpos($str, 'girl') !== false;
+        $isKids = $isBoys || $isGirls || strpos($str, 'infant') !== false || strpos($str, 'baby') !== false;
+        $isMen = strpos($str, 'men') !== false || (!$isKids && strpos($str, 'women') === false && strpos($str, 'lady') === false);
+        $isWomen = strpos($str, 'women') !== false || strpos($str, 'lady') !== false || strpos($str, 'kurti') !== false || strpos($str, 'gown') !== false || strpos($str, 'lehenga') !== false;
+
+        $cat = 'category_mapping_required';
+        $conf = 'None';
+
+        if (strpos($str, 'gown') !== false) { $cat = 'Women > Ethnic Wear > Gowns'; $conf = 'High'; }
+        elseif (strpos($str, 'sherwani') !== false) { $cat = 'Men > Ethnic Wear > Sherwanis'; $conf = 'High'; }
+        elseif (strpos($str, 'suit') !== false && $isMen && strpos($str, 'track') === false) { $cat = 'Men > Western Wear > Suits'; $conf = 'High'; }
+        elseif (strpos($str, 'coat pant') !== false || strpos($str, 'coat-pant') !== false) { $cat = 'Men > Western Wear > Suits'; $conf = 'High'; }
+        elseif (strpos($str, 'baba suit') !== false || strpos($str, 'h/s set') !== false || strpos($str, 'f/s set') !== false || strpos($str, 'cloth set') !== false) { $cat = 'Kids > Boys Clothing > Clothing Sets'; $conf = 'High'; }
+        elseif (strpos($str, 'kurta pajama') !== false) { $cat = 'Men > Ethnic Wear > Kurta Sets'; $conf = 'High'; }
+        elseif (strpos($str, 'frock') !== false) { $cat = 'Kids > Girls Clothing > Frocks & Dresses'; $conf = 'High'; }
+        elseif (strpos($str, 'kurti') !== false) { $cat = 'Women > Ethnic Wear > Kurtis'; $conf = 'High'; }
+        
+        elseif (strpos($str, 'jeans') !== false) { $cat = $isKids ? ($isGirls ? 'Kids > Girls Clothing > Jeans' : 'Kids > Boys Clothing > Jeans') : ($isWomen ? 'Women > Western Wear > Jeans' : 'Men > Western Wear > Jeans'); $conf = 'Medium'; }
+        elseif (strpos($str, 'tshirt') !== false || strpos($str, 't shirt') !== false || strpos($str, 't-shirt') !== false) { $cat = $isKids ? 'Kids > Boys Clothing > Tshirts' : ($isWomen ? 'Women > Western Wear > Tshirts' : 'Men > Western Wear > Tshirts'); $conf = 'Medium'; }
+        elseif (strpos($str, 'shirt') !== false) { $cat = $isKids ? 'Kids > Boys Clothing > Shirts' : ($isWomen ? 'Women > Western Wear > Shirts' : 'Men > Western Wear > Shirts'); $conf = 'Medium'; }
+        elseif (strpos($str, 'sweater') !== false || strpos($str, 'winter wear') !== false || strpos($str, 'sweatshirt') !== false || strpos($str, 'hood') !== false || strpos($str, 'cardigan') !== false || strpos($str, 'jacket') !== false) { $cat = $isKids ? 'Kids > Boys & Girls Winter Wear' : ($isWomen ? 'Women > Western Wear > Winter Wear' : 'Men > Western Wear > Winter Wear'); $conf = 'Medium'; }
+        elseif (strpos($str, 'undergarment') !== false || strpos($str, 'panty') !== false || strpos($str, 'bra') !== false || strpos($str, 'innerwear') !== false) { $cat = $isWomen ? 'Women > Innerwear' : 'Men > Innerwear'; $conf = 'Medium'; }
+        elseif (strpos($str, 'nighty') !== false || strpos($str, 'p/j set') !== false) { $cat = 'Women > Western Wear > Nightwear'; $conf = 'Medium'; }
+        elseif (strpos($str, 'capri') !== false || strpos($str, 'capry') !== false || strpos($str, 'plazo') !== false || strpos($str, 'lower') !== false || strpos($str, 'track') !== false || strpos($str, 'cargo') !== false || strpos($str, 'chinos') !== false || strpos($str, 'trouser') !== false) { $cat = $isMen ? 'Men > Western Wear > Trousers & Pants' : 'Women > Western Wear > Trousers & Pants'; $conf = 'Low'; }
+
+        if ($conf !== 'High') {
+            return 'needs_review';
+        }
+        return $cat;
     }
 
     /**
