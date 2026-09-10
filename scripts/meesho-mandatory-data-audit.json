@@ -1,0 +1,195 @@
+{
+    "audit_summary": {
+        "total_fields_analyzed": 30,
+        "fully_automatable": 10,
+        "requires_business_level_config": 6,
+        "requires_manual_product_level_entry": 14,
+        "requires_human_workflow": 1
+    },
+    "field_analysis": [
+        {
+            "field": "Country of Origin",
+            "source": "AME Bazaar Codebase (schema.php: _ame_country_of_origin)",
+            "automatable": true,
+            "confidence": "High",
+            "example": "India",
+            "resolution": "Business-level default"
+        },
+        {
+            "field": "Manufacturer Name",
+            "source": "AME Bazaar Codebase (schema.php: _ame_manufacturer)",
+            "automatable": true,
+            "confidence": "High",
+            "example": "Apparel Maheshwari Enterprises",
+            "resolution": "Business-level default"
+        },
+        {
+            "field": "Manufacturer Address",
+            "source": "None",
+            "automatable": false,
+            "confidence": "None",
+            "example": "",
+            "resolution": "MANUAL BUSINESS INPUT REQUIRED (Configure once for marketplace)"
+        },
+        {
+            "field": "Manufacturer Pincode",
+            "source": "None",
+            "automatable": false,
+            "confidence": "None",
+            "example": "",
+            "resolution": "MANUAL BUSINESS INPUT REQUIRED (Configure once for marketplace)"
+        },
+        {
+            "field": "Packer Name",
+            "source": "None",
+            "automatable": false,
+            "confidence": "None",
+            "example": "Apparel Maheshwari Enterprises",
+            "resolution": "MANUAL BUSINESS INPUT REQUIRED (Can mirror Manufacturer)"
+        },
+        {
+            "field": "Packer Address",
+            "source": "None",
+            "automatable": false,
+            "confidence": "None",
+            "example": "",
+            "resolution": "MANUAL BUSINESS INPUT REQUIRED (Can mirror Manufacturer)"
+        },
+        {
+            "field": "Packer Pincode",
+            "source": "None",
+            "automatable": false,
+            "confidence": "None",
+            "example": "",
+            "resolution": "MANUAL BUSINESS INPUT REQUIRED (Can mirror Manufacturer)"
+        },
+        {
+            "field": "Importer Details (Name, Addr, Pin)",
+            "source": "None",
+            "automatable": false,
+            "confidence": "None",
+            "example": "",
+            "resolution": "MANUAL BUSINESS INPUT REQUIRED"
+        },
+        {
+            "field": "Color",
+            "source": "None",
+            "automatable": false,
+            "confidence": "None",
+            "example": "",
+            "resolution": "MANUAL PRODUCT LEVEL INPUT REQUIRED"
+        },
+        {
+            "field": "Fabric",
+            "source": "None",
+            "automatable": false,
+            "confidence": "None",
+            "example": "",
+            "resolution": "MANUAL PRODUCT LEVEL INPUT REQUIRED"
+        },
+        {
+            "field": "Fit/Shape",
+            "source": "None",
+            "automatable": false,
+            "confidence": "None",
+            "example": "",
+            "resolution": "MANUAL PRODUCT LEVEL INPUT REQUIRED"
+        },
+        {
+            "field": "Generic Name",
+            "source": "Marketplace Engine Classification",
+            "automatable": true,
+            "confidence": "High",
+            "example": "T-shirt",
+            "resolution": "Derived from Category Mapping"
+        },
+        {
+            "field": "Neck",
+            "source": "None",
+            "automatable": false,
+            "confidence": "None",
+            "example": "",
+            "resolution": "MANUAL PRODUCT LEVEL INPUT REQUIRED"
+        },
+        {
+            "field": "Net Quantity",
+            "source": "Default logic",
+            "automatable": true,
+            "confidence": "High",
+            "example": "1",
+            "resolution": "Hardcode as 1 for single-item listings"
+        },
+        {
+            "field": "Pattern",
+            "source": "None",
+            "automatable": false,
+            "confidence": "None",
+            "example": "",
+            "resolution": "MANUAL PRODUCT LEVEL INPUT REQUIRED"
+        },
+        {
+            "field": "Print/Pattern Type",
+            "source": "None",
+            "automatable": false,
+            "confidence": "None",
+            "example": "",
+            "resolution": "MANUAL PRODUCT LEVEL INPUT REQUIRED"
+        },
+        {
+            "field": "Sleeve Length",
+            "source": "None",
+            "automatable": false,
+            "confidence": "None",
+            "example": "",
+            "resolution": "MANUAL PRODUCT LEVEL INPUT REQUIRED"
+        },
+        {
+            "field": "Sizes (Chest, Length, Shoulder)",
+            "source": "None",
+            "automatable": false,
+            "confidence": "None",
+            "example": "",
+            "resolution": "MANUAL PRODUCT LEVEL INPUT REQUIRED"
+        },
+        {
+            "field": "MRP",
+            "source": "Raintech_DB1 -> Product Table -> MRP Column",
+            "automatable": true,
+            "confidence": "High",
+            "example": "795.00",
+            "resolution": "Automated sync from Raintech Database"
+        },
+        {
+            "field": "Meesho Price",
+            "source": "Raintech_DB1 -> Product Table -> SellingPrice Column",
+            "automatable": true,
+            "confidence": "High",
+            "example": "450.00",
+            "resolution": "Automated sync from Raintech Database"
+        },
+        {
+            "field": "Inventory",
+            "source": "WooCommerce",
+            "automatable": true,
+            "confidence": "High",
+            "example": "10",
+            "resolution": "Automated sync from WooCommerce API"
+        },
+        {
+            "field": "SKU",
+            "source": "WooCommerce",
+            "automatable": true,
+            "confidence": "High",
+            "example": "P-3616",
+            "resolution": "Automated sync from WooCommerce API"
+        },
+        {
+            "field": "Image 1 (Front)",
+            "source": "Meesho Supplier Panel -> Image Bulk Upload",
+            "automatable": false,
+            "confidence": "High",
+            "example": "https://images.meesho.com/...",
+            "resolution": "Requires human to generate links via Supplier Panel, then tool maps URLs to SKUs."
+        }
+    ]
+}
