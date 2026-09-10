@@ -559,16 +559,16 @@ function ame_bazaar_render_admin_store_dashboard() {
  */
 function ame_bazaar_auto_product_seo_title( $title ) {
 	if ( is_product() ) {
-		global $post;
+		$post_id = get_queried_object_id();
 		
-		$custom_title = get_post_meta( $post->ID, '_ame_seo_title', true );
+		$custom_title = get_post_meta( $post_id, '_ame_seo_title', true );
 		if ( ! empty( $custom_title ) ) {
 			return wp_strip_all_tags( $custom_title );
 		}
 
-		$fabric = get_post_meta( $post->ID, '_ame_fabric', true );
+		$fabric = get_post_meta( $post_id, '_ame_fabric', true );
 		if ( $fabric ) {
-			return get_the_title() . ' - ' . $fabric . ' Ethnic Wear | AME Bazaar Kirari Delhi';
+			return get_the_title( $post_id ) . ' - ' . $fabric . ' Ethnic Wear | AME Bazaar Kirari Delhi';
 		}
 	}
 	return $title;
