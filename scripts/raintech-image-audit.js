@@ -1,10 +1,11 @@
+require('dotenv').config();
 const https = require('https');
 const fs = require('fs');
 
 const wcOptions = {
     hostname: 'amebazaar.in',
     port: 443,
-    auth: 'ck_787d6ed7345177b1492b0dacf67995e858bb053c:cs_76f69590461eace3163b94a4a1af111281d7ff08',
+    auth: `${process.env.WC_CONSUMER_KEY}:${process.env.WC_CONSUMER_SECRET}`,
     headers: { 'User-Agent': 'Node.js' }
 };
 
