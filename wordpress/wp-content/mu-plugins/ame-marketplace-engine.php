@@ -343,23 +343,40 @@ class AME_Marketplace_Engine {
         $isGirls = strpos($str, 'girls') !== false || strpos($str, 'frock') !== false || strpos($str, 'girl') !== false;
         $isKids = $isBoys || $isGirls || strpos($str, 'infant') !== false || strpos($str, 'baby') !== false;
         $isMen = strpos($str, 'men') !== false || (!$isKids && strpos($str, 'women') === false && strpos($str, 'lady') === false);
-        $isWomen = strpos($str, 'women') !== false || strpos($str, 'lady') !== false || strpos($str, 'kurti') !== false || strpos($str, 'gown') !== false || strpos($str, 'lehenga') !== false;
+    public function get_meesho_category_and_status( $product_id ) {
+        $product = wc_get_product( $product_id );
+        if ( ! $product ) return 'needs_review';
 
-        $cat = 'category_mapping_required';
+        $product_id = is_object( $product_id ) ? $product_id->get_id() : $product->get_id();
+        $cats = wp_get_post_terms( $product_id, 'product_cat', ['fields' => 'names'] );
+        $catNames = strtolower(implode(' ', is_array($cats) && !is_wp_error($cats) ? $cats : []));
+        $name = strtolower($product->get_name());
+        $str = $name . ' ' . $catNames;
+
+        $isKids = strpos($str, 'kids') !== false || strpos($str, 'baba') !== false || strpos($str, 'baby') !== false || strpos($str, 'frock') !== false || strpos($str, 'boy') !== false || strpos($str, 'girl') !== false || strpos($str, 'infant') !== false;
+        $isGirls = strpos($str, 'girl') !== false || strpos($str, 'frock') !== false;
+        $isMen = strpos($str, 'men') !== false || strpos($str, 'gents') !== false || strpos($str, 'boy') !== false || (!$isKids && strpos($str, 'women') === false && strpos($str, 'lady') === false);
+        $isWomen = strpos($str, 'women') !== false || strpos($str, 'lady') !== false || strpos($str, 'ladies') !== false || strpos($str, 'female') !== false || strpos($str, 'kurti') !== false || strpos($str, 'gown') !== false || strpos($str, 'lehenga') !== false;
+
+        $cat = 'needs_review';
         $conf = 'None';
 
-        // High Confidence Exact Matches
+        // 1. Women / Ethnic / Sets
         if (strpos($str, 'gown') !== false) { $cat = 'Women > Ethnic Wear > Gowns'; $conf = 'High'; }
         elseif (strpos($str, 'sherwani') !== false) { $cat = 'Men > Ethnic Wear > Sherwanis'; $conf = 'High'; }
-        elseif (strpos($str, 'suit') !== false && $isMen && strpos($str, 'track') === false && strpos($str, 'baba') === false) { $cat = 'Men > Western Wear > Suits'; $conf = 'High'; }
+        elseif (strpos($str, 'suit') !== false && $isMen && strpos($str, 'track') === false && strpos($str, 'baba') === false && strpos($str, 'night') === false) { $cat = 'Men > Western Wear > Suits'; $conf = 'High'; }
         elseif (strpos($str, 'coat pant') !== false || strpos($str, 'coat-pant') !== false || strpos($str, 'blazer') !== false) { $cat = 'Men > Western Wear > Suits'; $conf = 'High'; }
         elseif (strpos($str, 'baba suit') !== false || strpos($str, 'h/s set') !== false || strpos($str, 'f/s set') !== false || strpos($str, 'cloth set') !== false) { $cat = 'Kids > Boys Clothing > Clothing Sets'; $conf = 'High'; }
-        elseif (strpos($str, 'kurta pajama') !== false) { $cat = 'Men > Ethnic Wear > Kurta Sets'; $conf = 'High'; }
+        elseif (strpos($str, 'kurta pajama') !== false || strpos($str, 'k/p') !== false) { $cat = 'Men > Ethnic Wear > Kurta Sets'; $conf = 'High'; }
         elseif (strpos($str, 'frock') !== false) { $cat = 'Kids > Girls Clothing > Frocks & Dresses'; $conf = 'High'; }
         elseif (strpos($str, 'kurti') !== false || strpos($str, 'kurti set') !== false) { $cat = 'Women > Ethnic Wear > Kurtis'; $conf = 'High'; }
         elseif (strpos($str, 'dress') !== false && ($isGirls || $isWomen)) { $cat = $isGirls ? 'Kids > Girls Clothing > Frocks & Dresses' : 'Women > Western Wear > Dresses'; $conf = 'High'; }
+        elseif (strpos($str, 'waist coat') !== false || strpos($str, 'koati') !== false || strpos($str, 'koti') !== false) { $cat = 'Men > Ethnic Wear > Ethnic Jackets'; $conf = 'High'; }
+        elseif (strpos($str, 'plazo') !== false || strpos($str, 'sharara') !== false || strpos($str, 'divider') !== false) { $cat = 'Women > Ethnic Wear > Palazzos'; $conf = 'High'; }
+        elseif (strpos($str, 'blouse') !== false) { $cat = 'Women > Ethnic Wear > Blouses'; $conf = 'High'; }
+        elseif (strpos($str, 'co ord set') !== false || strpos($str, 'co-ord set') !== false || strpos($str, 'cord set') !== false) { $cat = 'Women > Western Wear > Co-ords'; $conf = 'High'; }
         
-        // Deeper Classification for large generic categories (Boys/Girls/Men/Uncategorized)
+        // 2. Western Wear Tops
         elseif (strpos($str, 'shirt') !== false && strpos($str, 'tshirt') === false && strpos($str, 't-shirt') === false && strpos($str, 'sweat') === false) {
             $cat = $isKids ? 'Kids > Boys Clothing > Shirts' : ($isWomen ? 'Women > Western Wear > Shirts' : 'Men > Western Wear > Shirts');
             $conf = 'High';
@@ -368,37 +385,73 @@ class AME_Marketplace_Engine {
             $cat = $isKids ? 'Kids > Boys Clothing > Tshirts' : ($isWomen ? 'Women > Western Wear > Tshirts' : 'Men > Western Wear > Tshirts');
             $conf = 'High';
         }
-        elseif (strpos($str, 'jeans') !== false) {
+        elseif (strpos($str, 'top ') !== false || strpos($str, 'tops') !== false || substr($str, -3) === 'top' || strpos($str, 'middy') !== false) {
+            $cat = $isGirls ? 'Kids > Girls Clothing > Tops & Tunics' : 'Women > Western Wear > Tops';
+            $conf = 'High';
+        }
+
+        // 3. Western Wear Bottoms
+        elseif (strpos($str, 'jeans') !== false || strpos($str, 'denim') !== false) {
             $cat = $isKids ? ($isGirls ? 'Kids > Girls Clothing > Jeans' : 'Kids > Boys Clothing > Jeans') : ($isWomen ? 'Women > Western Wear > Jeans' : 'Men > Western Wear > Jeans');
             $conf = 'High';
         }
-        elseif (strpos($str, 'sweater') !== false || strpos($str, 'winter wear') !== false || strpos($str, 'sweatshirt') !== false || strpos($str, 'hood') !== false || strpos($str, 'cardigan') !== false || strpos($str, 'jacket') !== false) {
-            $cat = $isKids ? 'Kids > Boys & Girls Winter Wear' : ($isWomen ? 'Women > Western Wear > Winter Wear' : 'Men > Western Wear > Winter Wear');
+        elseif (strpos($str, 'legging') !== false || strpos($str, 'jegging') !== false || strpos($str, 'jagging') !== false || strpos($str, 'tighty') !== false) {
+            $cat = 'Women > Western Wear > Jeggings';
             $conf = 'High';
         }
-        elseif (strpos($str, 'undergarment') !== false || strpos($str, 'panty') !== false || strpos($str, 'bra') !== false || strpos($str, 'innerwear') !== false || strpos($str, 'slip') !== false || strpos($str, 'supporter') !== false) {
-            $cat = $isWomen ? 'Women > Innerwear' : 'Men > Innerwear';
+        elseif (strpos($str, 'lower') !== false || strpos($str, 'track') !== false || strpos($str, 'cargo') !== false || strpos($str, 'chinos') !== false || strpos($str, 'trouser') !== false || strpos($str, 'pant') !== false || strpos($str, 'pents') !== false) {
+            $cat = $isKids ? ($isGirls ? 'Kids > Girls Clothing > Trackpants & Trousers' : 'Kids > Boys Clothing > Trackpants & Trousers') : ($isWomen ? 'Women > Western Wear > Trousers & Pants' : 'Men > Western Wear > Trousers & Pants');
+            $conf = 'High';
+        }
+        elseif (strpos($str, 'capri') !== false || strpos($str, 'capry') !== false || strpos($str, 'bermuda') !== false || strpos($str, 'nikar') !== false || strpos($str, 'nikker') !== false || strpos($str, 'neckar') !== false || strpos($str, 'shorts') !== false || strpos($str, 'shorties') !== false) {
+            $cat = $isKids ? ($isGirls ? 'Kids > Girls Clothing > Shorts' : 'Kids > Boys Clothing > Shorts') : ($isWomen ? 'Women > Western Wear > Shorts' : 'Men > Western Wear > Shorts');
+            $conf = 'High';
+        }
+
+        // 4. Winterwear & Nightwear
+        elseif (strpos($str, 'sweater') !== false || strpos($str, 'winter wear') !== false || strpos($str, 'sweatshirt') !== false || strpos($str, 'hood') !== false || strpos($str, 'cardigan') !== false || strpos($str, 'jacket') !== false) {
+            $cat = $isKids ? 'Kids > Boys & Girls Winter Wear' : ($isWomen ? 'Women > Western Wear > Winter Wear' : 'Men > Western Wear > Winter Wear');
             $conf = 'High';
         }
         elseif (strpos($str, 'nighty') !== false || strpos($str, 'p/j set') !== false || strpos($str, 'night suit') !== false || strpos($str, 'nightwear') !== false) {
             $cat = $isWomen ? 'Women > Western Wear > Nightwear' : 'Men > Western Wear > Nightwear';
             $conf = 'High';
         }
-        elseif (strpos($str, 'towel') !== false) {
-            $cat = 'Home & Kitchen > Bath > Towels';
+
+        // 5. Innerwear
+        elseif (strpos($str, 'bra ') !== false || strpos($str, 'panty') !== false || strpos($str, 'slips') !== false || strpos($str, 'skivi') !== false) {
+            $cat = 'Women > Innerwear';
+            $conf = 'High';
+        }
+        elseif (strpos($str, 'undergarment') !== false || strpos($str, 'innerwear') !== false || strpos($str, 'trunk') !== false || strpos($str, 'vest') !== false || strpos($str, 'supporter') !== false) {
+            $cat = 'Men > Innerwear';
+            $conf = 'High';
+        }
+
+        // 6. Accessories & Home
+        elseif (strpos($str, 'towel') !== false || strpos($str, 'gamcha') !== false || strpos($str, 'hanky') !== false || strpos($str, 'hankey') !== false || strpos($str, 'bedsheet') !== false || strpos($str, 'dry sheet') !== false || strpos($str, 'baby bed') !== false || strpos($str, 'mosquito net') !== false || strpos($str, 'pillow') !== false) {
+            $cat = (strpos($str, 'towel') !== false || strpos($str, 'gamcha') !== false) ? 'Home & Kitchen > Bath > Towels' : 'Home & Kitchen > Bedding > Bedsheets';
             $conf = 'High';
         }
         elseif (strpos($str, 'socks') !== false) {
-            $cat = $isKids ? 'Kids > Kids Accessories > Socks' : ($isWomen ? 'Women > Western Wear > Socks' : 'Men > Innerwear > Socks');
-            $conf = 'Medium';
-        }
-        elseif (strpos($str, 'top ') !== false || strpos($str, 'tops') !== false || substr($str, -3) === 'top') {
-            $cat = $isGirls ? 'Kids > Girls Clothing > Tops & Tunics' : 'Women > Western Wear > Tops';
+            $cat = 'Men > Innerwear > Socks';
             $conf = 'High';
         }
-        elseif (strpos($str, 'capri') !== false || strpos($str, 'capry') !== false || strpos($str, 'plazo') !== false || strpos($str, 'lower') !== false || strpos($str, 'track') !== false || strpos($str, 'cargo') !== false || strpos($str, 'chinos') !== false || strpos($str, 'trouser') !== false || strpos($str, 'pant') !== false || strpos($str, 'jeggings') !== false || strpos($str, 'leggings') !== false) {
-            $cat = $isMen ? 'Men > Western Wear > Trousers & Pants' : 'Women > Western Wear > Trousers & Pants';
-            $conf = 'Medium';
+        elseif (strpos($str, 'belt') !== false) {
+            $cat = 'Men > Men Accessories > Belts';
+            $conf = 'High';
+        }
+        elseif (strpos($str, 'gift set') !== false || strpos($str, 'rattle') !== false || strpos($str, 'diaper') !== false || strpos($str, 'bib') !== false || strpos($str, 'cap set') !== false) {
+            $cat = 'Kids > Infant Clothing > Clothing Sets';
+            $conf = 'High';
+        }
+        elseif (strpos($str, 'rain coat') !== false || strpos($str, 'raincoat') !== false) {
+            $cat = 'Men > Western Wear > Raincoats';
+            $conf = 'High';
+        }
+        elseif (strpos($str, 'bottle') !== false) {
+            $cat = 'Home & Kitchen > Kitchen Storage > Water Bottles';
+            $conf = 'High';
         }
 
         if ($conf !== 'High') {
