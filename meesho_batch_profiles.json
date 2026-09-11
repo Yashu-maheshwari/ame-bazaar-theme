@@ -1,0 +1,517 @@
+{
+  "NoFab-Printed-NoNeck": {
+    "fabric": null,
+    "pattern": "Printed",
+    "neck": null,
+    "count": 16,
+    "sample_skus": [
+      "P-3651",
+      "",
+      "P-0178",
+      "P-0324",
+      "P-0282"
+    ]
+  },
+  "Cotton-NoPat-NoNeck": {
+    "fabric": "Cotton",
+    "pattern": null,
+    "neck": null,
+    "count": 2337,
+    "sample_skus": [
+      "P-3616",
+      "P-3506",
+      "P-3505",
+      "P-0786",
+      "P-0703"
+    ]
+  },
+  "Denim-NoPat-NoNeck": {
+    "fabric": "Denim",
+    "pattern": null,
+    "neck": null,
+    "count": 4,
+    "sample_skus": [
+      "P-3487",
+      "P-0037",
+      "P-0750",
+      "P-1874"
+    ]
+  },
+  "NoFab-NoPat-NoNeck": {
+    "fabric": null,
+    "pattern": null,
+    "neck": null,
+    "count": 49,
+    "sample_skus": [
+      "P-3269",
+      "P-3268",
+      "P-2939",
+      "P-2938",
+      "P-2937"
+    ]
+  },
+  "Wool-NoPat-NoNeck": {
+    "fabric": "Wool",
+    "pattern": null,
+    "neck": null,
+    "count": 5,
+    "sample_skus": [
+      "P-2703",
+      "P-0725",
+      "P-0649",
+      "P-0350",
+      "P-0366"
+    ]
+  },
+  "NoFab-Floral-Round": {
+    "fabric": null,
+    "pattern": "Floral",
+    "neck": "Round",
+    "count": 3,
+    "sample_skus": [
+      "",
+      "p - 3437",
+      "P-3467"
+    ]
+  },
+  "NoFab-Printed-V-Neck": {
+    "fabric": null,
+    "pattern": "Printed",
+    "neck": "V-Neck",
+    "count": 1,
+    "sample_skus": [
+      "P-1821"
+    ]
+  },
+  "Denim-NoPat-Collar": {
+    "fabric": "Denim",
+    "pattern": null,
+    "neck": "Collar",
+    "count": 4,
+    "sample_skus": [
+      "P-0660",
+      "P-0665",
+      "P-0662",
+      "P-0662"
+    ]
+  },
+  "Velvet-NoPat-NoNeck": {
+    "fabric": "Velvet",
+    "pattern": null,
+    "neck": null,
+    "count": 2,
+    "sample_skus": [
+      "P-0670",
+      "P-0669"
+    ]
+  },
+  "Cotton-Printed-NoNeck": {
+    "fabric": "Cotton",
+    "pattern": "Printed",
+    "neck": null,
+    "count": 14,
+    "sample_skus": [
+      "P-0192",
+      "P-0362",
+      "P-0357",
+      "P-0352",
+      "P-0353"
+    ]
+  },
+  "NoFab-NoPat-Round": {
+    "fabric": null,
+    "pattern": null,
+    "neck": "Round",
+    "count": 9,
+    "sample_skus": [
+      "P-0250",
+      "P-0280",
+      "P-0271",
+      "P-0274",
+      "P-0272"
+    ]
+  },
+  "Cotton-Printed-Round": {
+    "fabric": "Cotton",
+    "pattern": "Printed",
+    "neck": "Round",
+    "count": 2,
+    "sample_skus": [
+      "P-0201",
+      "P-0160"
+    ]
+  },
+  "Cotton-Solid-NoNeck": {
+    "fabric": "Cotton",
+    "pattern": "Solid",
+    "neck": null,
+    "count": 3,
+    "sample_skus": [
+      "P-0089",
+      "P-3209",
+      "P-1360"
+    ]
+  },
+  "Silk-Embroidered-Round": {
+    "fabric": "Silk",
+    "pattern": "Embroidered",
+    "neck": "Round",
+    "count": 1,
+    "sample_skus": [
+      "P-0365"
+    ]
+  },
+  "Cotton-Printed-Collar": {
+    "fabric": "Cotton",
+    "pattern": "Printed",
+    "neck": "Collar",
+    "count": 1,
+    "sample_skus": [
+      "P-0309"
+    ]
+  },
+  "Silk-Embroidered-Collar": {
+    "fabric": "Silk",
+    "pattern": "Embroidered",
+    "neck": "Collar",
+    "count": 1,
+    "sample_skus": [
+      "P-0305"
+    ]
+  },
+  "NoFab-Solid-Square": {
+    "fabric": null,
+    "pattern": "Solid",
+    "neck": "Square",
+    "count": 1,
+    "sample_skus": [
+      "P-0195"
+    ]
+  },
+  "Cotton-NoPat-Round": {
+    "fabric": "Cotton",
+    "pattern": null,
+    "neck": "Round",
+    "count": 20,
+    "sample_skus": [
+      "P-0251",
+      "P-0986",
+      "P-0251",
+      "P-0687",
+      "P-3154"
+    ]
+  },
+  "Net-NoPat-NoNeck": {
+    "fabric": "Net",
+    "pattern": null,
+    "neck": null,
+    "count": 1,
+    "sample_skus": [
+      "P-0216"
+    ]
+  },
+  "Cotton-Floral-Collar": {
+    "fabric": "Cotton",
+    "pattern": "Floral",
+    "neck": "Collar",
+    "count": 3,
+    "sample_skus": [
+      "P-1731",
+      "P-3292",
+      "P-3583"
+    ]
+  },
+  "Cotton-Striped-Round": {
+    "fabric": "Cotton",
+    "pattern": "Striped",
+    "neck": "Round",
+    "count": 3,
+    "sample_skus": [
+      "P-0997",
+      "P-3164",
+      "P-2203"
+    ]
+  },
+  "Net-Floral-NoNeck": {
+    "fabric": "Net",
+    "pattern": "Floral",
+    "neck": null,
+    "count": 1,
+    "sample_skus": [
+      "P-0398"
+    ]
+  },
+  "NoFab-Floral-NoNeck": {
+    "fabric": null,
+    "pattern": "Floral",
+    "neck": null,
+    "count": 7,
+    "sample_skus": [
+      "P-3514",
+      "P-2719",
+      "P-3072",
+      "P-2578",
+      "P-3081"
+    ]
+  },
+  "Cotton-Solid-Collar": {
+    "fabric": "Cotton",
+    "pattern": "Solid",
+    "neck": "Collar",
+    "count": 1,
+    "sample_skus": [
+      "P-2765"
+    ]
+  },
+  "Cotton-Solid-Round": {
+    "fabric": "Cotton",
+    "pattern": "Solid",
+    "neck": "Round",
+    "count": 2,
+    "sample_skus": [
+      "P-3070",
+      "P-3139"
+    ]
+  },
+  "NoFab-Printed-Collar": {
+    "fabric": null,
+    "pattern": "Printed",
+    "neck": "Collar",
+    "count": 1,
+    "sample_skus": [
+      "P-1286"
+    ]
+  },
+  "NoFab-Solid-Collar": {
+    "fabric": null,
+    "pattern": "Solid",
+    "neck": "Collar",
+    "count": 2,
+    "sample_skus": [
+      "P-1813",
+      "P-2101"
+    ]
+  },
+  "Cotton-Geometric-Collar": {
+    "fabric": "Cotton",
+    "pattern": "Geometric",
+    "neck": "Collar",
+    "count": 1,
+    "sample_skus": [
+      "P-2039"
+    ]
+  },
+  "NoFab-NoPat-Collar": {
+    "fabric": null,
+    "pattern": null,
+    "neck": "Collar",
+    "count": 2,
+    "sample_skus": [
+      "P-1816",
+      "P-0215"
+    ]
+  },
+  "Cotton-NoPat-Collar": {
+    "fabric": "Cotton",
+    "pattern": null,
+    "neck": "Collar",
+    "count": 7,
+    "sample_skus": [
+      "P-1288",
+      "P-1280",
+      "P-3577",
+      "P-3322",
+      "P-3095"
+    ]
+  },
+  "Cotton-NoPat-V-Neck": {
+    "fabric": "Cotton",
+    "pattern": null,
+    "neck": "V-Neck",
+    "count": 3,
+    "sample_skus": [
+      "P-1834",
+      "P-3602",
+      "P-3595"
+    ]
+  },
+  "NoFab-NoPat-V-Neck": {
+    "fabric": null,
+    "pattern": null,
+    "neck": "V-Neck",
+    "count": 1,
+    "sample_skus": [
+      "P-3603"
+    ]
+  },
+  "Velvet-Geometric-V-Neck": {
+    "fabric": "Velvet",
+    "pattern": "Geometric",
+    "neck": "V-Neck",
+    "count": 1,
+    "sample_skus": [
+      "P-1858"
+    ]
+  },
+  "Wool-NoPat-Round": {
+    "fabric": "Wool",
+    "pattern": null,
+    "neck": "Round",
+    "count": 1,
+    "sample_skus": [
+      "P-1359"
+    ]
+  },
+  "Wool-Floral-Collar": {
+    "fabric": "Wool",
+    "pattern": "Floral",
+    "neck": "Collar",
+    "count": 2,
+    "sample_skus": [
+      "P-0718",
+      "P-0616"
+    ]
+  },
+  "Fleece-NoPat-Round": {
+    "fabric": "Fleece",
+    "pattern": null,
+    "neck": "Round",
+    "count": 1,
+    "sample_skus": [
+      "P-2783"
+    ]
+  },
+  "Denim-NoPat-Round": {
+    "fabric": "Denim",
+    "pattern": null,
+    "neck": "Round",
+    "count": 1,
+    "sample_skus": [
+      "P-3468"
+    ]
+  },
+  "Cotton-Floral-Round": {
+    "fabric": "Cotton",
+    "pattern": "Floral",
+    "neck": "Round",
+    "count": 3,
+    "sample_skus": [
+      "P-3589",
+      "P-2513",
+      "P-1034"
+    ]
+  },
+  "Cotton-NoPat-Polo": {
+    "fabric": "Cotton",
+    "pattern": null,
+    "neck": "Polo",
+    "count": 14,
+    "sample_skus": [
+      "P-1385",
+      "P-0032",
+      "P-0048",
+      "P-1486",
+      "P-1399"
+    ]
+  },
+  "Silk-Solid-Collar": {
+    "fabric": "Silk",
+    "pattern": "Solid",
+    "neck": "Collar",
+    "count": 1,
+    "sample_skus": [
+      "P-2982"
+    ]
+  },
+  "Silk-Floral-Collar": {
+    "fabric": "Silk",
+    "pattern": "Floral",
+    "neck": "Collar",
+    "count": 1,
+    "sample_skus": [
+      "P-3001"
+    ]
+  },
+  "Cotton-Printed-Polo": {
+    "fabric": "Cotton",
+    "pattern": "Printed",
+    "neck": "Polo",
+    "count": 2,
+    "sample_skus": [
+      "P-3299",
+      "P-0313"
+    ]
+  },
+  "Cotton-NoPat-Henley": {
+    "fabric": "Cotton",
+    "pattern": null,
+    "neck": "Henley",
+    "count": 1,
+    "sample_skus": [
+      "P-3276"
+    ]
+  },
+  "NoFab-Floral-Collar": {
+    "fabric": null,
+    "pattern": "Floral",
+    "neck": "Collar",
+    "count": 1,
+    "sample_skus": [
+      "P-3346"
+    ]
+  },
+  "Fleece-NoPat-Collar": {
+    "fabric": "Fleece",
+    "pattern": null,
+    "neck": "Collar",
+    "count": 1,
+    "sample_skus": [
+      "P-1898"
+    ]
+  },
+  "Net-Printed-NoNeck": {
+    "fabric": "Net",
+    "pattern": "Printed",
+    "neck": null,
+    "count": 1,
+    "sample_skus": [
+      "P-0216"
+    ]
+  },
+  "Denim-Striped-NoNeck": {
+    "fabric": "Denim",
+    "pattern": "Striped",
+    "neck": null,
+    "count": 1,
+    "sample_skus": [
+      "P-0344"
+    ]
+  },
+  "Cotton-Embroidered-NoNeck": {
+    "fabric": "Cotton",
+    "pattern": "Embroidered",
+    "neck": null,
+    "count": 1,
+    "sample_skus": [
+      "P-0230"
+    ]
+  },
+  "NoFab-Solid-NoNeck": {
+    "fabric": null,
+    "pattern": "Solid",
+    "neck": null,
+    "count": 1,
+    "sample_skus": [
+      "P-2710"
+    ]
+  },
+  "NoFab-Embroidered-NoNeck": {
+    "fabric": null,
+    "pattern": "Embroidered",
+    "neck": null,
+    "count": 1,
+    "sample_skus": [
+      "P-1865"
+    ]
+  }
+}
