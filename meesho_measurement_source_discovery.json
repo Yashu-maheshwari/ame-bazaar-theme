@@ -1,0 +1,16 @@
+{
+  "total_products_checked": 4626,
+  "sources_scanned": [
+    "WooCommerce Products (REST API)",
+    "WooCommerce Variations",
+    "WooCommerce Meta Data",
+    "Raintech DB (PowerShell SQL)",
+    "raintech_products.csv",
+    "Local Excel Files"
+  ],
+  "exact_measurements_found": 0,
+  "size_labels_only": 506,
+  "no_data": 4120,
+  "partial_measurements": 0,
+  "reusable_measurement_profiles": 0
+}
