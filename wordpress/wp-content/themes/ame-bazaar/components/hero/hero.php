@@ -28,7 +28,7 @@ $secondary_btn = get_option( 'ame_bazaar_hero_secondary_btn_text', __( 'Visit St
 
 // Fetch media files (IDs to URLs)
 $desktop_webm = wp_get_attachment_url( get_option( 'ame_bazaar_media_hero_desktop_video_webm' ) );
-$desktop_mp4  = wp_get_attachment_url( get_option( 'ame_bazaar_media_hero_desktop_video_mp4' ) ) ?: 'https://assets.mixkit.co/videos/preview/mixkit-fashion-woman-with-silver-dress-in-a-studio-setting-40292-large.mp4';
+$desktop_mp4  = wp_get_attachment_url( get_option( 'ame_bazaar_media_hero_desktop_video_mp4' ) ) ?: home_url( '/wp-content/uploads/2026/08/without_any_mistake_accurrecy.mp4' );
 $mobile_webm  = wp_get_attachment_url( get_option( 'ame_bazaar_media_hero_mobile_video_webm' ) );
 $mobile_mp4   = wp_get_attachment_url( get_option( 'ame_bazaar_media_hero_mobile_video_mp4' ) );
 $poster       = wp_get_attachment_image_url( get_option( 'ame_bazaar_media_hero_poster' ), 'full' ) ?: 'https://images.unsplash.com/photo-1490481651871-ab68de25d43d?q=80&w=1920&auto=format&fit=crop';
@@ -76,28 +76,41 @@ $maps_url = ame_bazaar_get_business_setting( 'maps_url', 'https://maps.google.co
 			<div class="ame-hero__slide is-active" data-slide="0" aria-hidden="false">
 				<?php if ( $has_video ) : ?>
 					<video
+						id="heroVideoEl"
 						class="ame-hero__video"
-						autoplay
 						muted
 						loop
 						playsinline
-						preload="metadata"
+						preload="none"
 						poster="<?php echo esc_url( $poster ); ?>"
 						draggable="false"
 					>
 						<?php if ( $mobile_webm ) : ?>
-							<source src="<?php echo esc_url( $mobile_webm ); ?>" type="video/webm" media="(max-width: 767px)">
+							<source data-src="<?php echo esc_url( $mobile_webm ); ?>" type="video/webm" media="(max-width: 767px)">
 						<?php endif; ?>
 						<?php if ( $mobile_mp4 ) : ?>
-							<source src="<?php echo esc_url( $mobile_mp4 ); ?>" type="video/mp4" media="(max-width: 767px)">
+							<source data-src="<?php echo esc_url( $mobile_mp4 ); ?>" type="video/mp4" media="(max-width: 767px)">
 						<?php endif; ?>
 						<?php if ( $desktop_webm ) : ?>
-							<source src="<?php echo esc_url( $desktop_webm ); ?>" type="video/webm">
+							<source data-src="<?php echo esc_url( $desktop_webm ); ?>" type="video/webm">
 						<?php endif; ?>
 						<?php if ( $desktop_mp4 ) : ?>
-							<source src="<?php echo esc_url( $desktop_mp4 ); ?>" type="video/mp4">
+							<source data-src="<?php echo esc_url( $desktop_mp4 ); ?>" type="video/mp4">
 						<?php endif; ?>
 					</video>
+					<script>
+					window.addEventListener('load', function() {
+						var video = document.getElementById('heroVideoEl');
+						if (video) {
+							var sources = video.getElementsByTagName('source');
+							for (var i = 0; i < sources.length; i++) {
+								sources[i].src = sources[i].getAttribute('data-src');
+							}
+							video.load();
+							video.play().catch(function(e){});
+						}
+					});
+					</script>
 				<?php else : ?>
 					<picture class="ame-hero__picture">
 						<img
