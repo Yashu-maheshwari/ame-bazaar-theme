@@ -2703,7 +2703,7 @@
         "P-0357",
         "P-0281"
       ],
-      "status": "AUTO-DETECTED",
+      "status": "APPROVED",
       "attributes": {
         "color": {
           "value": "HUMAN_REQUIRED",
@@ -2728,7 +2728,13 @@
           "evidence_level": "E"
         }
       },
-      "measurements": "HUMAN_REQUIRED"
+      "measurements": "HUMAN_REQUIRED",
+      "approved_by": "user",
+      "approval_timestamp": "2026-09-11T11:52:53.048Z",
+      "approved_attributes": {
+        "pattern": "Printed"
+      },
+      "source": "safe_profile_dryrun"
     },
     "UNKNOWN_PROFILE_003": {
       "profile_id": "UNKNOWN_PROFILE_003",
@@ -2763,7 +2769,7 @@
         "P-0275",
         "P-0276"
       ],
-      "status": "AUTO-DETECTED",
+      "status": "APPROVED",
       "attributes": {
         "color": {
           "value": "HUMAN_REQUIRED",
@@ -2788,7 +2794,13 @@
           "evidence_level": "E"
         }
       },
-      "measurements": "HUMAN_REQUIRED"
+      "measurements": "HUMAN_REQUIRED",
+      "approved_by": "user",
+      "approval_timestamp": "2026-09-11T11:52:53.050Z",
+      "approved_attributes": {
+        "fabric": "Cotton"
+      },
+      "source": "safe_profile_dryrun"
     },
     "UNKNOWN_PROFILE_004": {
       "profile_id": "UNKNOWN_PROFILE_004",
@@ -2805,7 +2817,7 @@
         "P-0750",
         "P-1874"
       ],
-      "status": "AUTO-DETECTED",
+      "status": "APPROVED",
       "attributes": {
         "color": {
           "value": "HUMAN_REQUIRED",
@@ -2830,7 +2842,13 @@
           "evidence_level": "E"
         }
       },
-      "measurements": "HUMAN_REQUIRED"
+      "measurements": "HUMAN_REQUIRED",
+      "approved_by": "user",
+      "approval_timestamp": "2026-09-11T11:52:53.050Z",
+      "approved_attributes": {
+        "fabric": "Denim"
+      },
+      "source": "safe_profile_dryrun"
     },
     "UNKNOWN_PROFILE_005": {
       "profile_id": "UNKNOWN_PROFILE_005",
@@ -2861,7 +2879,7 @@
         "P-2870",
         "P-2805"
       ],
-      "status": "AUTO-DETECTED",
+      "status": "APPROVED",
       "attributes": {
         "color": {
           "value": "Pink",
@@ -2886,7 +2904,13 @@
           "evidence_level": "E"
         }
       },
-      "measurements": "HUMAN_REQUIRED"
+      "measurements": "HUMAN_REQUIRED",
+      "approved_by": "user",
+      "approval_timestamp": "2026-09-11T11:52:53.050Z",
+      "approved_attributes": {
+        "color": "Pink"
+      },
+      "source": "safe_profile_dryrun"
     },
     "UNKNOWN_PROFILE_006": {
       "profile_id": "UNKNOWN_PROFILE_006",
@@ -2909,7 +2933,7 @@
         "P-2685",
         "P-0765"
       ],
-      "status": "AUTO-DETECTED",
+      "status": "APPROVED",
       "attributes": {
         "color": {
           "value": "Black",
@@ -2934,7 +2958,13 @@
           "evidence_level": "E"
         }
       },
-      "measurements": "HUMAN_REQUIRED"
+      "measurements": "HUMAN_REQUIRED",
+      "approved_by": "user",
+      "approval_timestamp": "2026-09-11T11:52:53.050Z",
+      "approved_attributes": {
+        "color": "Black"
+      },
+      "source": "safe_profile_dryrun"
     },
     "UNKNOWN_PROFILE_007": {
       "profile_id": "UNKNOWN_PROFILE_007",
@@ -2959,7 +2989,7 @@
         "P-0681",
         "P-0685"
       ],
-      "status": "AUTO-DETECTED",
+      "status": "APPROVED",
       "attributes": {
         "color": {
           "value": "White",
@@ -2984,7 +3014,13 @@
           "evidence_level": "E"
         }
       },
-      "measurements": "HUMAN_REQUIRED"
+      "measurements": "HUMAN_REQUIRED",
+      "approved_by": "user",
+      "approval_timestamp": "2026-09-11T11:52:53.050Z",
+      "approved_attributes": {
+        "color": "White"
+      },
+      "source": "safe_profile_dryrun"
     },
     "UNKNOWN_PROFILE_008": {
       "profile_id": "UNKNOWN_PROFILE_008",
@@ -3001,7 +3037,7 @@
         "P-0032",
         "P-0048"
       ],
-      "status": "AUTO-DETECTED",
+      "status": "APPROVED",
       "attributes": {
         "color": {
           "value": "HUMAN_REQUIRED",
@@ -3026,7 +3062,13 @@
           "evidence_level": "E"
         }
       },
-      "measurements": "HUMAN_REQUIRED"
+      "measurements": "HUMAN_REQUIRED",
+      "approved_by": "user",
+      "approval_timestamp": "2026-09-11T11:52:53.051Z",
+      "approved_attributes": {
+        "neck": "Polo"
+      },
+      "source": "safe_profile_dryrun"
     },
     "UNKNOWN_PROFILE_009": {
       "profile_id": "UNKNOWN_PROFILE_009",
@@ -3047,7 +3089,7 @@
         "P-0350",
         "P-0366"
       ],
-      "status": "AUTO-DETECTED",
+      "status": "APPROVED",
       "attributes": {
         "color": {
           "value": "HUMAN_REQUIRED",
@@ -3072,7 +3114,13 @@
           "evidence_level": "E"
         }
       },
-      "measurements": "HUMAN_REQUIRED"
+      "measurements": "HUMAN_REQUIRED",
+      "approved_by": "user",
+      "approval_timestamp": "2026-09-11T11:52:53.051Z",
+      "approved_attributes": {
+        "fabric": "Wool"
+      },
+      "source": "safe_profile_dryrun"
     },
     "UNKNOWN_PROFILE_010": {
       "profile_id": "UNKNOWN_PROFILE_010",
@@ -3089,7 +3137,7 @@
         "P-1095",
         "P-1094"
       ],
-      "status": "AUTO-DETECTED",
+      "status": "APPROVED",
       "attributes": {
         "color": {
           "value": "Yellow",
@@ -3114,7 +3162,13 @@
           "evidence_level": "E"
         }
       },
-      "measurements": "HUMAN_REQUIRED"
+      "measurements": "HUMAN_REQUIRED",
+      "approved_by": "user",
+      "approval_timestamp": "2026-09-11T11:52:53.051Z",
+      "approved_attributes": {
+        "color": "Yellow"
+      },
+      "source": "safe_profile_dryrun"
     },
     "UNKNOWN_PROFILE_011": {
       "profile_id": "UNKNOWN_PROFILE_011",
@@ -4235,7 +4289,7 @@
       "skus": [
         ""
       ],
-      "status": "AUTO-DETECTED",
+      "status": "APPROVED",
       "attributes": {
         "color": {
           "value": "Red",
@@ -4264,7 +4318,15 @@
           "confidence": "High"
         }
       },
-      "measurements": "HUMAN_REQUIRED"
+      "measurements": "HUMAN_REQUIRED",
+      "approved_by": "user",
+      "approval_timestamp": "2026-09-11T11:52:53.051Z",
+      "approved_attributes": {
+        "color": "Red",
+        "pattern": "Printed",
+        "sleeve": "Full"
+      },
+      "source": "safe_profile_dryrun"
     },
     "FROCK_PROFILE_001": {
       "profile_id": "FROCK_PROFILE_001",
@@ -4277,7 +4339,7 @@
       "skus": [
         ""
       ],
-      "status": "AUTO-DETECTED",
+      "status": "APPROVED",
       "attributes": {
         "color": {
           "value": "Red",
@@ -4302,7 +4364,13 @@
           "evidence_level": "E"
         }
       },
-      "measurements": "HUMAN_REQUIRED"
+      "measurements": "HUMAN_REQUIRED",
+      "approved_by": "user",
+      "approval_timestamp": "2026-09-11T11:52:53.051Z",
+      "approved_attributes": {
+        "color": "Red"
+      },
+      "source": "safe_profile_dryrun"
     },
     "CLOTHING_SET_PROFILE_004": {
       "profile_id": "CLOTHING_SET_PROFILE_004",
@@ -4661,7 +4729,7 @@
       "skus": [
         "P-0670"
       ],
-      "status": "AUTO-DETECTED",
+      "status": "APPROVED",
       "attributes": {
         "color": {
           "value": "HUMAN_REQUIRED",
@@ -4686,7 +4754,13 @@
           "evidence_level": "E"
         }
       },
-      "measurements": "HUMAN_REQUIRED"
+      "measurements": "HUMAN_REQUIRED",
+      "approved_by": "user",
+      "approval_timestamp": "2026-09-11T11:52:53.051Z",
+      "approved_attributes": {
+        "fabric": "Velvet"
+      },
+      "source": "safe_profile_dryrun"
     },
     "UNKNOWN_PROFILE_013": {
       "profile_id": "UNKNOWN_PROFILE_013",
@@ -4699,7 +4773,7 @@
       "skus": [
         "P-0669"
       ],
-      "status": "AUTO-DETECTED",
+      "status": "APPROVED",
       "attributes": {
         "color": {
           "value": "HUMAN_REQUIRED",
@@ -4724,7 +4798,13 @@
           "evidence_level": "E"
         }
       },
-      "measurements": "HUMAN_REQUIRED"
+      "measurements": "HUMAN_REQUIRED",
+      "approved_by": "user",
+      "approval_timestamp": "2026-09-11T11:52:53.051Z",
+      "approved_attributes": {
+        "fabric": "Velvet"
+      },
+      "source": "safe_profile_dryrun"
     },
     "UNKNOWN_PROFILE_014": {
       "profile_id": "UNKNOWN_PROFILE_014",
@@ -4737,7 +4817,7 @@
       "skus": [
         "P-0071"
       ],
-      "status": "AUTO-DETECTED",
+      "status": "APPROVED",
       "attributes": {
         "color": {
           "value": "HUMAN_REQUIRED",
@@ -4762,7 +4842,13 @@
           "evidence_level": "E"
         }
       },
-      "measurements": "HUMAN_REQUIRED"
+      "measurements": "HUMAN_REQUIRED",
+      "approved_by": "user",
+      "approval_timestamp": "2026-09-11T11:52:53.051Z",
+      "approved_attributes": {
+        "neck": "Collar"
+      },
+      "source": "safe_profile_dryrun"
     },
     "CLOTHING_SET_PROFILE_005": {
       "profile_id": "CLOTHING_SET_PROFILE_005",
@@ -4823,7 +4909,7 @@
         "P-0280",
         "P-0687"
       ],
-      "status": "AUTO-DETECTED",
+      "status": "APPROVED",
       "attributes": {
         "color": {
           "value": "White",
@@ -4852,7 +4938,15 @@
           "confidence": "High"
         }
       },
-      "measurements": "HUMAN_REQUIRED"
+      "measurements": "HUMAN_REQUIRED",
+      "approved_by": "user",
+      "approval_timestamp": "2026-09-11T11:52:53.051Z",
+      "approved_attributes": {
+        "color": "White",
+        "neck": "Round",
+        "sleeve": "Sleeveless"
+      },
+      "source": "safe_profile_dryrun"
     },
     "UNKNOWN_PROFILE_016": {
       "profile_id": "UNKNOWN_PROFILE_016",
@@ -4869,7 +4963,7 @@
         "P-0274",
         "P-0272"
       ],
-      "status": "AUTO-DETECTED",
+      "status": "APPROVED",
       "attributes": {
         "color": {
           "value": "Red",
@@ -4896,7 +4990,14 @@
           "evidence_level": "E"
         }
       },
-      "measurements": "HUMAN_REQUIRED"
+      "measurements": "HUMAN_REQUIRED",
+      "approved_by": "user",
+      "approval_timestamp": "2026-09-11T11:52:53.051Z",
+      "approved_attributes": {
+        "color": "Red",
+        "neck": "Round"
+      },
+      "source": "safe_profile_dryrun"
     },
     "UNKNOWN_PROFILE_017": {
       "profile_id": "UNKNOWN_PROFILE_017",
@@ -4909,7 +5010,7 @@
       "skus": [
         "P-0258"
       ],
-      "status": "AUTO-DETECTED",
+      "status": "APPROVED",
       "attributes": {
         "color": {
           "value": "HUMAN_REQUIRED",
@@ -4934,7 +5035,13 @@
           "evidence_level": "E"
         }
       },
-      "measurements": "HUMAN_REQUIRED"
+      "measurements": "HUMAN_REQUIRED",
+      "approved_by": "user",
+      "approval_timestamp": "2026-09-11T11:52:53.051Z",
+      "approved_attributes": {
+        "neck": "Round"
+      },
+      "source": "safe_profile_dryrun"
     },
     "UNKNOWN_PROFILE_018": {
       "profile_id": "UNKNOWN_PROFILE_018",
@@ -4995,7 +5102,7 @@
         "P-1146",
         "P-1397"
       ],
-      "status": "AUTO-DETECTED",
+      "status": "APPROVED",
       "attributes": {
         "color": {
           "value": "HUMAN_REQUIRED",
@@ -5020,7 +5127,13 @@
           "evidence_level": "E"
         }
       },
-      "measurements": "HUMAN_REQUIRED"
+      "measurements": "HUMAN_REQUIRED",
+      "approved_by": "user",
+      "approval_timestamp": "2026-09-11T11:52:53.051Z",
+      "approved_attributes": {
+        "neck": "Polo"
+      },
+      "source": "safe_profile_dryrun"
     },
     "CLOTHING_SET_PROFILE_006": {
       "profile_id": "CLOTHING_SET_PROFILE_006",
@@ -5041,7 +5154,7 @@
         "P-1031",
         "P-1711"
       ],
-      "status": "AUTO-DETECTED",
+      "status": "APPROVED",
       "attributes": {
         "color": {
           "value": "Pink",
@@ -5066,7 +5179,13 @@
           "evidence_level": "E"
         }
       },
-      "measurements": "HUMAN_REQUIRED"
+      "measurements": "HUMAN_REQUIRED",
+      "approved_by": "user",
+      "approval_timestamp": "2026-09-11T11:52:53.051Z",
+      "approved_attributes": {
+        "color": "Pink"
+      },
+      "source": "safe_profile_dryrun"
     },
     "FROCK_PROFILE_002": {
       "profile_id": "FROCK_PROFILE_002",
@@ -5169,7 +5288,7 @@
       "skus": [
         "P-2181"
       ],
-      "status": "AUTO-DETECTED",
+      "status": "APPROVED",
       "attributes": {
         "color": {
           "value": "White",
@@ -5194,7 +5313,13 @@
           "evidence_level": "E"
         }
       },
-      "measurements": "HUMAN_REQUIRED"
+      "measurements": "HUMAN_REQUIRED",
+      "approved_by": "user",
+      "approval_timestamp": "2026-09-11T11:52:53.051Z",
+      "approved_attributes": {
+        "color": "White"
+      },
+      "source": "safe_profile_dryrun"
     },
     "UNKNOWN_PROFILE_020": {
       "profile_id": "UNKNOWN_PROFILE_020",
@@ -5215,7 +5340,7 @@
         "P-0683",
         "P-0705"
       ],
-      "status": "AUTO-DETECTED",
+      "status": "APPROVED",
       "attributes": {
         "color": {
           "value": "Grey",
@@ -5240,7 +5365,13 @@
           "evidence_level": "E"
         }
       },
-      "measurements": "HUMAN_REQUIRED"
+      "measurements": "HUMAN_REQUIRED",
+      "approved_by": "user",
+      "approval_timestamp": "2026-09-11T11:52:53.051Z",
+      "approved_attributes": {
+        "color": "Grey"
+      },
+      "source": "safe_profile_dryrun"
     },
     "CLOTHING_SET_PROFILE_007": {
       "profile_id": "CLOTHING_SET_PROFILE_007",
@@ -5479,7 +5610,7 @@
       "skus": [
         "P-0037"
       ],
-      "status": "AUTO-DETECTED",
+      "status": "APPROVED",
       "attributes": {
         "color": {
           "value": "HUMAN_REQUIRED",
@@ -5504,7 +5635,13 @@
           "evidence_level": "E"
         }
       },
-      "measurements": "HUMAN_REQUIRED"
+      "measurements": "HUMAN_REQUIRED",
+      "approved_by": "user",
+      "approval_timestamp": "2026-09-11T11:52:53.051Z",
+      "approved_attributes": {
+        "fabric": "Denim"
+      },
+      "source": "safe_profile_dryrun"
     },
     "UNKNOWN_PROFILE_025": {
       "profile_id": "UNKNOWN_PROFILE_025",
@@ -5517,7 +5654,7 @@
       "skus": [
         "P-0251"
       ],
-      "status": "AUTO-DETECTED",
+      "status": "APPROVED",
       "attributes": {
         "color": {
           "value": "White",
@@ -5548,7 +5685,16 @@
           "confidence": "High"
         }
       },
-      "measurements": "HUMAN_REQUIRED"
+      "measurements": "HUMAN_REQUIRED",
+      "approved_by": "user",
+      "approval_timestamp": "2026-09-11T11:52:53.051Z",
+      "approved_attributes": {
+        "color": "White",
+        "fabric": "Cotton",
+        "neck": "Round",
+        "sleeve": "Sleeveless"
+      },
+      "source": "safe_profile_dryrun"
     },
     "TSHIRT_PROFILE_006": {
       "profile_id": "TSHIRT_PROFILE_006",
@@ -5561,7 +5707,7 @@
       "skus": [
         "P-0347"
       ],
-      "status": "AUTO-DETECTED",
+      "status": "APPROVED",
       "attributes": {
         "color": {
           "value": "HUMAN_REQUIRED",
@@ -5586,7 +5732,13 @@
           "evidence_level": "E"
         }
       },
-      "measurements": "HUMAN_REQUIRED"
+      "measurements": "HUMAN_REQUIRED",
+      "approved_by": "user",
+      "approval_timestamp": "2026-09-11T11:52:53.051Z",
+      "approved_attributes": {
+        "fabric": "Cotton"
+      },
+      "source": "safe_profile_dryrun"
     },
     "JEANS_PROFILE_003": {
       "profile_id": "JEANS_PROFILE_003",
@@ -5599,7 +5751,7 @@
       "skus": [
         "P-0349"
       ],
-      "status": "AUTO-DETECTED",
+      "status": "APPROVED",
       "attributes": {
         "color": {
           "value": "Red",
@@ -5626,7 +5778,14 @@
           "evidence_level": "E"
         }
       },
-      "measurements": "HUMAN_REQUIRED"
+      "measurements": "HUMAN_REQUIRED",
+      "approved_by": "user",
+      "approval_timestamp": "2026-09-11T11:52:53.051Z",
+      "approved_attributes": {
+        "color": "Red",
+        "fabric": "Cotton"
+      },
+      "source": "safe_profile_dryrun"
     },
     "JEANS_PROFILE_004": {
       "profile_id": "JEANS_PROFILE_004",
@@ -5639,7 +5798,7 @@
       "skus": [
         "P-0362"
       ],
-      "status": "AUTO-DETECTED",
+      "status": "APPROVED",
       "attributes": {
         "color": {
           "value": "HUMAN_REQUIRED",
@@ -5664,7 +5823,13 @@
           "evidence_level": "E"
         }
       },
-      "measurements": "HUMAN_REQUIRED"
+      "measurements": "HUMAN_REQUIRED",
+      "approved_by": "user",
+      "approval_timestamp": "2026-09-11T11:52:53.051Z",
+      "approved_attributes": {
+        "pattern": "Printed"
+      },
+      "source": "safe_profile_dryrun"
     }
   },
   "verified_measurements": {},
