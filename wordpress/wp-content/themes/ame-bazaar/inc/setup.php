@@ -251,6 +251,14 @@ add_action( 'init', 'ame_bazaar_create_authority_and_ai_pages' );
 /**
  * Handle template redirect to serve /llms.txt dynamically at the root.
  */
+/**
+ * Add llms.txt discoverability link to head.
+ */
+function ame_bazaar_llms_txt_head_link() {
+	echo '<link rel="llms-txt" href="' . esc_url( home_url( '/llms.txt' ) ) . '">' . "\n";
+}
+add_action( 'wp_head', 'ame_bazaar_llms_txt_head_link' );
+
 function ame_bazaar_serve_llms_txt_route() {
 	$request_uri = $_SERVER['REQUEST_URI'];
 	if ( untrailingslashit( $request_uri ) === '/llms.txt' ) {
