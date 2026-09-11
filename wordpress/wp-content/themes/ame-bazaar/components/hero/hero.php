@@ -81,7 +81,7 @@ $maps_url = ame_bazaar_get_business_setting( 'maps_url', 'https://maps.google.co
 						muted
 						loop
 						playsinline
-						preload="auto"
+						preload="metadata"
 						poster="<?php echo esc_url( $poster ); ?>"
 						draggable="false"
 					>
