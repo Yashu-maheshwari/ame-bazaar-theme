@@ -79,7 +79,9 @@ function ame_bazaar_output_seo_meta() {
 		$desc = ame_bazaar_get_business_setting( 'short_description', 'Apparel Maheshwari Enterprises (AME Bazaar) offers premium fashion ethnic wear for men, women, and kids, along with custom tailoring and alteration services in Kirari, Delhi.' );
 		$url  = home_url( '/' );
 	} elseif ( is_singular() ) {
-		$type = 'article';
+		if ( ! ( class_exists( 'WooCommerce' ) && is_product() ) ) {
+			$type = 'article';
+		}
 		if ( has_excerpt() ) {
 			$desc = get_the_excerpt();
 		} else {
