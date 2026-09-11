@@ -373,3 +373,50 @@ function ame_bazaar_get_knowledge_base_faqs() {
 		)
 	);
 }
+
+/**
+ * Retrieve contextual FAQs for specific product categories.
+ *
+ * @param string $slug The category slug.
+ * @return array Array of FAQ pairs.
+ */
+function ame_bazaar_get_category_faqs( $slug ) {
+	$faqs = array(
+		'boys'  => array(
+			array(
+				'q' => 'What types of boys clothing are available at AME Bazaar?',
+				'a' => 'AME Bazaar\'s boys collection includes T-shirts, shirts, jeans, shorts, joggers, track pants, clothing sets and other boys\' clothing options.',
+			),
+			array(
+				'q' => 'Are boys\' outfits suitable for different occasions?',
+				'a' => 'The boys\' collection includes options described for casual wear, festive celebrations, birthday parties, family functions, vacations and seasonal wear.',
+			),
+			array(
+				'q' => 'Where can I shop for boys\' clothing at AME Bazaar?',
+				'a' => 'AME Bazaar is located in Kirari, Delhi, where customers can shop for boys\' clothing in person.',
+			),
+		),
+		'girls' => array(
+			array(
+				'q' => 'What types of girls clothing are available at AME Bazaar?',
+				'a' => 'The girls\' collection includes cotton tops, stretchable jeans, party wear frocks and traditional ethnic outfits.',
+			),
+			array(
+				'q' => 'Where can I shop for girls\' clothing at AME Bazaar?',
+				'a' => 'AME Bazaar is located in Kirari, Delhi, where customers can shop for girls\' clothing in person.',
+			),
+		),
+		'men'   => array(
+			array(
+				'q' => 'What types of men\'s clothing are available at AME Bazaar?',
+				'a' => 'AME Bazaar\'s men\'s collection includes shirts, casual T-shirts, denim jeans, trousers and traditional kurta pajamas.',
+			),
+			array(
+				'q' => 'Where can I shop for men\'s clothing at AME Bazaar?',
+				'a' => 'AME Bazaar is located in Kirari, Delhi, where customers can shop for men\'s clothing in person.',
+			),
+		),
+	);
+
+	return isset( $faqs[ $slug ] ) ? $faqs[ $slug ] : array();
+}

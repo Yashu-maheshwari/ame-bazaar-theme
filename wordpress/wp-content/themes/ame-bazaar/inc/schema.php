@@ -403,6 +403,23 @@ function ame_bazaar_get_faq_schema() {
 				);
 			}
 		}
+	} elseif ( is_product_category() ) {
+		if ( function_exists( 'ame_bazaar_get_category_faqs' ) ) {
+			$term     = get_queried_object();
+			$cat_faqs = ame_bazaar_get_category_faqs( $term->slug );
+			if ( ! empty( $cat_faqs ) ) {
+				foreach ( $cat_faqs as $faq ) {
+					$questions[] = array(
+						'@type'          => 'Question',
+						'name'           => $faq['q'],
+						'acceptedAnswer' => array(
+							'@type' => 'Answer',
+							'text'  => $faq['a'],
+						),
+					);
+				}
+			}
+		}
 	} elseif ( is_page_template( 'templates/template-ai-advisor.php' ) || is_page_template( 'templates/template-ask-ame.php' ) ) {
 		$all_faqs = function_exists( 'ame_bazaar_get_knowledge_base_faqs' ) ? ame_bazaar_get_knowledge_base_faqs() : array();
 		foreach ( $all_faqs as $group ) {

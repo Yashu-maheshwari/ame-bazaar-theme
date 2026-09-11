@@ -446,6 +446,46 @@ do_action( 'woocommerce_before_main_content' );
 			</div>
 		</div>
 
+		<?php
+		if ( is_product_category() && function_exists( 'ame_bazaar_get_category_faqs' ) ) {
+			$term = get_queried_object();
+			$faqs = ame_bazaar_get_category_faqs( $term->slug );
+			if ( ! empty( $faqs ) ) {
+				?>
+				<section class="ame-category-faq" aria-labelledby="ame-category-faq-title" style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--ame-color-border, #e2e8f0); max-width: 900px;">
+					<h2 id="ame-category-faq-title" style="font-size: 1.5rem; font-weight: 800; color: var(--ame-color-navy); margin-bottom: 1.5rem; text-transform: uppercase; letter-spacing: 0.02em;">Frequently Asked Questions</h2>
+					<div class="ame-faq-accordion" style="display: flex; flex-direction: column; gap: 1rem;">
+						<?php foreach ( $faqs as $faq ) : ?>
+							<details style="background: #fff; border: 1px solid var(--ame-color-border, #e2e8f0); border-radius: 8px; overflow: hidden; padding: 1rem;">
+								<summary style="font-weight: 700; color: var(--ame-color-navy); cursor: pointer; list-style: none; font-size: 1rem; padding-right: 1.5rem; position: relative;">
+									<?php echo esc_html( $faq['q'] ); ?>
+								</summary>
+								<div style="margin-top: 1rem; color: var(--ame-color-slate); font-size: 0.95rem; line-height: 1.6;">
+									<?php echo wp_kses_post( $faq['a'] ); ?>
+								</div>
+							</details>
+						<?php endforeach; ?>
+					</div>
+					<style>
+						.ame-category-faq details summary::-webkit-details-marker { display: none; }
+						.ame-category-faq details summary::after {
+							content: '+';
+							position: absolute;
+							right: 0;
+							top: 50%;
+							transform: translateY(-50%);
+							font-size: 1.2rem;
+							color: var(--ame-color-gold-dark, #ca8a04);
+						}
+						.ame-category-faq details[open] summary::after {
+							content: '-';
+						}
+					</style>
+				</section>
+				<?php
+			}
+		}
+		?>
 
 	</div>
 </div>
