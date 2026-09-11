@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Meesho Batch Attribute Review</title>
+    <style>
+        body { font-family: sans-serif; background: #f4f4f4; padding: 20px; }
+        .container { max-width: 1000px; margin: auto; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .profile-card { border: 1px solid #ddd; margin-bottom: 20px; padding: 15px; border-radius: 4px; }
+        .profile-header { display: flex; justify-content: space-between; font-weight: bold; font-size: 1.1em; border-bottom: 1px solid #eee; padding-bottom: 10px; margin-bottom: 10px; }
+        .badge { padding: 4px 8px; border-radius: 12px; font-size: 0.8em; color: white; }
+        .badge.auto { background: #3498db; }
+        .badge.approved { background: #2ecc71; }
+        .badge.human { background: #e74c3c; }
+        table { width: 100%; border-collapse: collapse; margin-bottom: 15px; }
+        th, td { border: 1px solid #eee; padding: 8px; text-align: left; }
+        th { background: #f9f9f9; }
+        .actions { text-align: right; }
+        button { padding: 8px 16px; border: none; border-radius: 4px; cursor: pointer; color: white; background: #2c3e50; }
+        button.approve { background: #2ecc71; }
+        button:hover { opacity: 0.9; }
+        input { padding: 4px; width: 90%; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Meesho Batch Attribute Review</h2>
+        <p>Review automatically generated profiles and batch-approve attributes for hundreds of products at once.</p>
+        
+        <div id="profiles-container">Loading...</div>
+    </div>
+
+    <script>
+        let profilesData = {};
+
+        async function loadProfiles() {
+            const res = await fetch('/api/batch-profiles');
+            const data = await res.json();
+            profilesData = data.profiles;
+            renderProfiles();
+        }
+
+        function renderProfiles() {
+            const container = document.getElementById('profiles-container');
+            container.innerHTML = '';
+            
+            for (let pid in profilesData) {
+                let p = profilesData[pid];
+                
+                let badgeClass = 'auto';
+                if (p.status === 'USER-APPROVED') badgeClass = 'approved';
+                
+                let html = `
+                    <div class="profile-card" id="card-${p.profile_id}">
+                        <div class="profile-header">
+                            <span>${p.profile_id} (${p.category})</span>
+                            <span class="badge ${badgeClass}">${p.status}</span>
+                        </div>
+                        <p><strong>Products Grouped:</strong> ${p.product_count} <small>(${p.skus.slice(0,5).join(', ')}${p.skus.length>5 ? '...' : ''})</small></p>
+                        <table>
+                            <tr>
+                                <th>Attribute</th>
+                                <th>Value</th>
+                                <th>Evidence</th>
+                            </tr>
+                `;
+                
+                for (let attr in p.attributes) {
+                    let a = p.attributes[attr];
+                    let valHtml = a.value === 'HUMAN_REQUIRED' ? `<input type="text" id="input-${p.profile_id}-${attr}" placeholder="Enter ${attr}">` : `<input type="text" id="input-${p.profile_id}-${attr}" value="${a.value}">`;
+                    let evHtml = a.evidence_level === 'E' ? '<span class="badge human">None</span>' : `<span class="badge auto">${a.evidence_level}</span> (${a.source})`;
+                    
+                    html += `
+                            <tr>
+                                <td>${attr.toUpperCase()}</td>
+                                <td>${valHtml}</td>
+                                <td>${evHtml}</td>
+                            </tr>
+                    `;
+                }
+                
+                // Measurement status
+                html += `
+                            <tr>
+                                <td>MEASUREMENTS</td>
+                                <td><span class="badge human">HUMAN_REQUIRED</span></td>
+                                <td>(Size chart must be assigned later)</td>
+                            </tr>
+                </table>
+                <div class="actions">
+                    <button class="approve" onclick="approveProfile('${p.profile_id}')">Approve & Apply to ${p.product_count} Products</button>
+                </div>
+                </div>`;
+                
+                container.innerHTML += html;
+            }
+        }
+
+        async function approveProfile(pid) {
+            let p = profilesData[pid];
+            let updatedAttrs = {};
+            for (let attr in p.attributes) {
+                updatedAttrs[attr] = document.getElementById(`input-${pid}-${attr}`).value;
+            }
+            
+            const res = await fetch('/api/batch-profiles/approve', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ profile_id: pid, attributes: updatedAttrs })
+            });
+            
+            if (res.ok) {
+                alert('Profile approved!');
+                loadProfiles();
+            }
+        }
+
+        loadProfiles();
+    </script>
+</body>
+</html>

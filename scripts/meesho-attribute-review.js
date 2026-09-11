@@ -218,22 +218,35 @@ app.post('/api/approve-attribute', (req, res) => {
     res.json({ success: true });
 });
 
-app.post('/api/batch-approve', (req, res) => {
+app.get('/api/batch-profiles', (req, res) => {
+    const PROFILE_STATE = path.join(__dirname, 'meesho-profile-state.json');
+    if (!fs.existsSync(PROFILE_STATE)) return res.json({ profiles: {} });
+    const state = JSON.parse(fs.readFileSync(PROFILE_STATE, 'utf-8'));
+    res.json({ profiles: state.profiles, measurements: state.verified_measurements });
+});
+
+app.post('/api/batch-profiles/approve', (req, res) => {
+    const PROFILE_STATE = path.join(__dirname, 'meesho-profile-state.json');
     let data = req.body;
-    let ids = data.product_ids || [];
-    let attrs = data.attributes || {};
+    const state = JSON.parse(fs.readFileSync(PROFILE_STATE, 'utf-8'));
     
-    ids.forEach(id => {
-        let idStr = id.toString();
-        attributeState.attributes[idStr] = {
-            status: 'approved',
-            ...attrs,
-            timestamp: new Date().toISOString()
-        };
-    });
-    
-    fs.writeFileSync(STATE_FILE, JSON.stringify(attributeState, null, 2));
-    res.json({ success: true, count: ids.length });
+    let profile = state.profiles[data.profile_id];
+    if (profile) {
+        profile.status = 'USER-APPROVED';
+        profile.approved_by = 'user';
+        profile.approval_timestamp = new Date().toISOString();
+        
+        // Update attributes to User-Approved
+        for (let k in data.attributes) {
+            profile.attributes[k].value = data.attributes[k];
+            profile.attributes[k].source = 'User Approval';
+        }
+        
+        fs.writeFileSync(PROFILE_STATE, JSON.stringify(state, null, 2));
+        res.json({ success: true });
+    } else {
+        res.json({ success: false, error: 'Profile not found' });
+    }
 });
 
 const PORT = 3001;
