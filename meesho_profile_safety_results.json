@@ -1,0 +1,453 @@
+{
+  "total_profiles": 44,
+  "SAFE_TO_APPROVE": 31,
+  "NEEDS_REVIEW": 13,
+  "INVALID": 0,
+  "products_safe": 1979,
+  "products_needs_review": 21,
+  "products_invalid": 0,
+  "conflicting_skus": [],
+  "duplicate_assignments": [],
+  "profile_details": [
+    {
+      "profile": "UNKNOWN_PROFILE_001",
+      "category": "UNKNOWN",
+      "products": 1321,
+      "color": null,
+      "fabric": null,
+      "pattern": null,
+      "status": "SAFE_TO_APPROVE",
+      "reasons": ""
+    },
+    {
+      "profile": "UNKNOWN_PROFILE_002",
+      "category": "UNKNOWN",
+      "products": 9,
+      "color": null,
+      "fabric": null,
+      "pattern": "Printed",
+      "status": "SAFE_TO_APPROVE",
+      "reasons": ""
+    },
+    {
+      "profile": "UNKNOWN_PROFILE_003",
+      "category": "UNKNOWN",
+      "products": 12,
+      "color": null,
+      "fabric": "Cotton",
+      "pattern": null,
+      "status": "SAFE_TO_APPROVE",
+      "reasons": ""
+    },
+    {
+      "profile": "UNKNOWN_PROFILE_004",
+      "category": "UNKNOWN",
+      "products": 3,
+      "color": null,
+      "fabric": "Denim",
+      "pattern": null,
+      "status": "SAFE_TO_APPROVE",
+      "reasons": ""
+    },
+    {
+      "profile": "UNKNOWN_PROFILE_005",
+      "category": "UNKNOWN",
+      "products": 10,
+      "color": "Pink",
+      "fabric": null,
+      "pattern": null,
+      "status": "SAFE_TO_APPROVE",
+      "reasons": ""
+    },
+    {
+      "profile": "UNKNOWN_PROFILE_006",
+      "category": "UNKNOWN",
+      "products": 6,
+      "color": "Black",
+      "fabric": null,
+      "pattern": null,
+      "status": "SAFE_TO_APPROVE",
+      "reasons": ""
+    },
+    {
+      "profile": "UNKNOWN_PROFILE_007",
+      "category": "UNKNOWN",
+      "products": 7,
+      "color": "White",
+      "fabric": null,
+      "pattern": null,
+      "status": "SAFE_TO_APPROVE",
+      "reasons": ""
+    },
+    {
+      "profile": "UNKNOWN_PROFILE_008",
+      "category": "UNKNOWN",
+      "products": 3,
+      "color": null,
+      "fabric": null,
+      "pattern": null,
+      "status": "SAFE_TO_APPROVE",
+      "reasons": ""
+    },
+    {
+      "profile": "UNKNOWN_PROFILE_009",
+      "category": "UNKNOWN",
+      "products": 5,
+      "color": null,
+      "fabric": "Wool",
+      "pattern": null,
+      "status": "SAFE_TO_APPROVE",
+      "reasons": ""
+    },
+    {
+      "profile": "UNKNOWN_PROFILE_010",
+      "category": "UNKNOWN",
+      "products": 3,
+      "color": "Yellow",
+      "fabric": null,
+      "pattern": null,
+      "status": "SAFE_TO_APPROVE",
+      "reasons": ""
+    },
+    {
+      "profile": "UNKNOWN_PROFILE_011",
+      "category": "UNKNOWN",
+      "products": 3,
+      "color": "Red",
+      "fabric": null,
+      "pattern": null,
+      "status": "NEEDS_REVIEW",
+      "reasons": "Multiple colors found in : Red, Black | Multiple colors found in P-2684: Red, White"
+    },
+    {
+      "profile": "UNKNOWN_PROFILE_012",
+      "category": "UNKNOWN",
+      "products": 4,
+      "color": "Red",
+      "fabric": "Cotton",
+      "pattern": null,
+      "status": "NEEDS_REVIEW",
+      "reasons": "Multiple colors found in P-3646: Red, Grey, Brown | Multiple colors found in P-3647: Red, Blue, Grey, Brown, Navy | Multiple colors found in P-3645: Red, Blue, Grey, Brown..."
+    },
+    {
+      "profile": "CLOTHING_SET_PROFILE_001",
+      "category": "CLOTHING_SET",
+      "products": 470,
+      "color": null,
+      "fabric": null,
+      "pattern": null,
+      "status": "SAFE_TO_APPROVE",
+      "reasons": ""
+    },
+    {
+      "profile": "CLOTHING_SET_PROFILE_002",
+      "category": "CLOTHING_SET",
+      "products": 2,
+      "color": "Red",
+      "fabric": null,
+      "pattern": "Floral",
+      "status": "NEEDS_REVIEW",
+      "reasons": "Multiple colors found in : Red, White, Green | Multiple colors found in p - 3437: Red, Blue"
+    },
+    {
+      "profile": "CLOTHING_SET_PROFILE_003",
+      "category": "CLOTHING_SET",
+      "products": 1,
+      "color": "Red",
+      "fabric": null,
+      "pattern": "Printed",
+      "status": "SAFE_TO_APPROVE",
+      "reasons": ""
+    },
+    {
+      "profile": "FROCK_PROFILE_001",
+      "category": "FROCK",
+      "products": 1,
+      "color": "Red",
+      "fabric": null,
+      "pattern": null,
+      "status": "SAFE_TO_APPROVE",
+      "reasons": ""
+    },
+    {
+      "profile": "CLOTHING_SET_PROFILE_004",
+      "category": "CLOTHING_SET",
+      "products": 1,
+      "color": "Red",
+      "fabric": null,
+      "pattern": "Printed",
+      "status": "NEEDS_REVIEW",
+      "reasons": "Multiple colors found in P-1821: Red, Blue, Grey, Navy"
+    },
+    {
+      "profile": "TSHIRT_PROFILE_001",
+      "category": "TSHIRT",
+      "products": 2,
+      "color": "Red",
+      "fabric": "Denim",
+      "pattern": null,
+      "status": "NEEDS_REVIEW",
+      "reasons": "Multiple colors found in P-0660: Red, Blue, Navy | Multiple fabrics found in P-0660: Denim, Fleece | Multiple colors found in P-0665: Red, Blue, Navy..."
+    },
+    {
+      "profile": "TSHIRT_PROFILE_002",
+      "category": "TSHIRT",
+      "products": 58,
+      "color": null,
+      "fabric": null,
+      "pattern": null,
+      "status": "SAFE_TO_APPROVE",
+      "reasons": ""
+    },
+    {
+      "profile": "JEANS_PROFILE_001",
+      "category": "JEANS",
+      "products": 37,
+      "color": null,
+      "fabric": null,
+      "pattern": null,
+      "status": "SAFE_TO_APPROVE",
+      "reasons": ""
+    },
+    {
+      "profile": "TSHIRT_PROFILE_003",
+      "category": "TSHIRT",
+      "products": 1,
+      "color": null,
+      "fabric": "Velvet",
+      "pattern": null,
+      "status": "SAFE_TO_APPROVE",
+      "reasons": ""
+    },
+    {
+      "profile": "UNKNOWN_PROFILE_013",
+      "category": "UNKNOWN",
+      "products": 1,
+      "color": null,
+      "fabric": "Velvet",
+      "pattern": null,
+      "status": "SAFE_TO_APPROVE",
+      "reasons": ""
+    },
+    {
+      "profile": "UNKNOWN_PROFILE_014",
+      "category": "UNKNOWN",
+      "products": 1,
+      "color": null,
+      "fabric": null,
+      "pattern": null,
+      "status": "SAFE_TO_APPROVE",
+      "reasons": ""
+    },
+    {
+      "profile": "CLOTHING_SET_PROFILE_005",
+      "category": "CLOTHING_SET",
+      "products": 1,
+      "color": "Red",
+      "fabric": "Cotton",
+      "pattern": "Printed",
+      "status": "NEEDS_REVIEW",
+      "reasons": "Multiple colors found in P-0192: Red, Purple | Multiple fabrics found in P-0192: Cotton, Denim"
+    },
+    {
+      "profile": "UNKNOWN_PROFILE_015",
+      "category": "UNKNOWN",
+      "products": 3,
+      "color": "White",
+      "fabric": null,
+      "pattern": null,
+      "status": "SAFE_TO_APPROVE",
+      "reasons": ""
+    },
+    {
+      "profile": "UNKNOWN_PROFILE_016",
+      "category": "UNKNOWN",
+      "products": 3,
+      "color": "Red",
+      "fabric": null,
+      "pattern": null,
+      "status": "SAFE_TO_APPROVE",
+      "reasons": ""
+    },
+    {
+      "profile": "UNKNOWN_PROFILE_017",
+      "category": "UNKNOWN",
+      "products": 1,
+      "color": null,
+      "fabric": null,
+      "pattern": null,
+      "status": "SAFE_TO_APPROVE",
+      "reasons": ""
+    },
+    {
+      "profile": "UNKNOWN_PROFILE_018",
+      "category": "UNKNOWN",
+      "products": 1,
+      "color": "Red",
+      "fabric": "Denim",
+      "pattern": null,
+      "status": "NEEDS_REVIEW",
+      "reasons": "Multiple colors found in P-0662: Red, Blue | Multiple fabrics found in P-0662: Denim, Wool"
+    },
+    {
+      "profile": "TSHIRT_PROFILE_004",
+      "category": "TSHIRT",
+      "products": 3,
+      "color": null,
+      "fabric": null,
+      "pattern": null,
+      "status": "SAFE_TO_APPROVE",
+      "reasons": ""
+    },
+    {
+      "profile": "CLOTHING_SET_PROFILE_006",
+      "category": "CLOTHING_SET",
+      "products": 5,
+      "color": "Pink",
+      "fabric": null,
+      "pattern": null,
+      "status": "SAFE_TO_APPROVE",
+      "reasons": ""
+    },
+    {
+      "profile": "FROCK_PROFILE_002",
+      "category": "FROCK",
+      "products": 4,
+      "color": null,
+      "fabric": null,
+      "pattern": null,
+      "status": "SAFE_TO_APPROVE",
+      "reasons": ""
+    },
+    {
+      "profile": "UNKNOWN_PROFILE_019",
+      "category": "UNKNOWN",
+      "products": 2,
+      "color": "Red",
+      "fabric": "Cotton",
+      "pattern": "Printed",
+      "status": "NEEDS_REVIEW",
+      "reasons": "Multiple colors found in P-0201: Red, Black, White, Green | Multiple colors found in P-0160: Red, Blue, White, Navy | Multiple fabrics found in P-0160: Cotton, Denim"
+    },
+    {
+      "profile": "TSHIRT_PROFILE_005",
+      "category": "TSHIRT",
+      "products": 1,
+      "color": "White",
+      "fabric": null,
+      "pattern": null,
+      "status": "SAFE_TO_APPROVE",
+      "reasons": ""
+    },
+    {
+      "profile": "UNKNOWN_PROFILE_020",
+      "category": "UNKNOWN",
+      "products": 5,
+      "color": "Grey",
+      "fabric": null,
+      "pattern": null,
+      "status": "SAFE_TO_APPROVE",
+      "reasons": ""
+    },
+    {
+      "profile": "CLOTHING_SET_PROFILE_007",
+      "category": "CLOTHING_SET",
+      "products": 1,
+      "color": "Red",
+      "fabric": "Cotton",
+      "pattern": "Solid",
+      "status": "NEEDS_REVIEW",
+      "reasons": "Multiple colors found in P-0089: Red, Grey, Navy"
+    },
+    {
+      "profile": "UNKNOWN_PROFILE_021",
+      "category": "UNKNOWN",
+      "products": 1,
+      "color": "Red",
+      "fabric": "Silk",
+      "pattern": "Embroidered",
+      "status": "NEEDS_REVIEW",
+      "reasons": "Multiple colors found in P-0365: Red, Maroon | Multiple fabrics found in P-0365: Silk, Velvet"
+    },
+    {
+      "profile": "UNKNOWN_PROFILE_022",
+      "category": "UNKNOWN",
+      "products": 1,
+      "color": "Red",
+      "fabric": "Cotton",
+      "pattern": "Printed",
+      "status": "NEEDS_REVIEW",
+      "reasons": "Multiple colors found in P-0309: Red, Blue, Green | Multiple fabrics found in P-0309: Cotton, Denim"
+    },
+    {
+      "profile": "UNKNOWN_PROFILE_023",
+      "category": "UNKNOWN",
+      "products": 1,
+      "color": "Red",
+      "fabric": "Silk",
+      "pattern": "Embroidered",
+      "status": "NEEDS_REVIEW",
+      "reasons": "Multiple colors found in P-0305: Red, White, Maroon"
+    },
+    {
+      "profile": "UNKNOWN_PROFILE_024",
+      "category": "UNKNOWN",
+      "products": 1,
+      "color": "Red",
+      "fabric": null,
+      "pattern": "Solid",
+      "status": "NEEDS_REVIEW",
+      "reasons": "Multiple colors found in P-0195: Red, Black"
+    },
+    {
+      "profile": "JEANS_PROFILE_002",
+      "category": "JEANS",
+      "products": 1,
+      "color": null,
+      "fabric": "Denim",
+      "pattern": null,
+      "status": "SAFE_TO_APPROVE",
+      "reasons": ""
+    },
+    {
+      "profile": "UNKNOWN_PROFILE_025",
+      "category": "UNKNOWN",
+      "products": 1,
+      "color": "White",
+      "fabric": "Cotton",
+      "pattern": null,
+      "status": "SAFE_TO_APPROVE",
+      "reasons": ""
+    },
+    {
+      "profile": "TSHIRT_PROFILE_006",
+      "category": "TSHIRT",
+      "products": 1,
+      "color": null,
+      "fabric": "Cotton",
+      "pattern": null,
+      "status": "SAFE_TO_APPROVE",
+      "reasons": ""
+    },
+    {
+      "profile": "JEANS_PROFILE_003",
+      "category": "JEANS",
+      "products": 1,
+      "color": "Red",
+      "fabric": "Cotton",
+      "pattern": null,
+      "status": "SAFE_TO_APPROVE",
+      "reasons": ""
+    },
+    {
+      "profile": "JEANS_PROFILE_004",
+      "category": "JEANS",
+      "products": 1,
+      "color": null,
+      "fabric": null,
+      "pattern": "Printed",
+      "status": "SAFE_TO_APPROVE",
+      "reasons": ""
+    }
+  ]
+}
