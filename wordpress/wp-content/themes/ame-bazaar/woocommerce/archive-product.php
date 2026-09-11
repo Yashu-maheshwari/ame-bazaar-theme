@@ -436,7 +436,7 @@ do_action( 'woocommerce_before_main_content' );
 								<a href="<?php echo esc_url( home_url( '/product-category/men/' ) ); ?>" class="ame-ai-topic-chip" style="font-size: 0.8rem; padding: 0.4rem 1rem; border-radius: 40px; background: #f1f5f9; color: #334155; text-decoration: none; font-weight: 600;">Men's Wear</a>
 								<a href="<?php echo esc_url( home_url( '/product-category/women/' ) ); ?>" class="ame-ai-topic-chip" style="font-size: 0.8rem; padding: 0.4rem 1rem; border-radius: 40px; background: #f1f5f9; color: #334155; text-decoration: none; font-weight: 600;">Women's Wear</a>
 								<a href="<?php echo esc_url( home_url( '/product-category/kids/' ) ); ?>" class="ame-ai-topic-chip" style="font-size: 0.8rem; padding: 0.4rem 1rem; border-radius: 40px; background: #f1f5f9; color: #334155; text-decoration: none; font-weight: 600;">Kids Wear</a>
-								<a href="<?php echo esc_url( home_url( '/product-category/women/' ) ); ?>" class="ame-ai-topic-chip" style="font-size: 0.8rem; padding: 0.4rem 1rem; border-radius: 40px; background: #f1f5f9; color: #334155; text-decoration: none; font-weight: 600;">Women's Wear</a>
+								<a href="<?php echo esc_url( home_url( '/product-category/kids/infant/' ) ); ?>" class="ame-ai-topic-chip" style="font-size: 0.8rem; padding: 0.4rem 1rem; border-radius: 40px; background: #f1f5f9; color: #334155; text-decoration: none; font-weight: 600;">Infant</a>
 							</div>
 						</div>
 					</div>

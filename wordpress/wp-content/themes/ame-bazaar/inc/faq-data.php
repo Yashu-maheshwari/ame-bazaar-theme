@@ -426,6 +426,16 @@ function ame_bazaar_get_category_faqs( $slug ) {
 				'a' => 'AME Bazaar is located in Kirari, Delhi, where customers can shop for women\'s clothing in person.',
 			),
 		),
+		'infant' => array(
+			array(
+				'q' => 'What infant items are available at AME Bazaar?',
+				'a' => 'AME Bazaar\'s Infant collection includes gift sets, cloth sets, winter wear, baby beds, caps and towels.',
+			),
+			array(
+				'q' => 'Where can I buy infant clothing and gift sets in Kirari?',
+				'a' => 'AME Bazaar is located in Kirari, Delhi, where customers can shop for infant clothing and gift sets in person.',
+			),
+		),
 	);
 
 	return isset( $faqs[ $slug ] ) ? $faqs[ $slug ] : array();
