@@ -952,18 +952,20 @@ add_action( 'wp_head', 'ame_bazaar_head_preload_preconnect', 1 );
  * 9. Crawling, Sitemap.xml, LLMs.txt and Robots.txt dynamic handler.
  */
 function ame_bazaar_robots_txt( $output, $public ) {
-	$sitemap_url = home_url( '/wp-sitemap.xml' );
-	$output .= "Sitemap: {$sitemap_url}\n";
-	
-	$output .= "User-agent: *\nDisallow: /wp-admin/\nAllow: /wp-admin/admin-ajax.php\n";
-	$output .= "Disallow: /wp-includes/\nDisallow: /cart/\nDisallow: /checkout/\nDisallow: /my-account/\nDisallow: /?s=\nDisallow: /?add-to-cart=\n\n";
+	// Add disallow rules for sensitive WooCommerce endpoints
+	$output .= "\nDisallow: /wp-includes/\nDisallow: /cart/\nDisallow: /checkout/\nDisallow: /my-account/\nDisallow: /?s=\nDisallow: /?add-to-cart=\n\n";
 
+	// Add modern AI Search Bots explicitly
 	$output .= "User-agent: OAI-SearchBot\nAllow: /\n\n";
+	$output .= "User-agent: GPTBot\nAllow: /\n\n";
+	$output .= "User-agent: ChatGPT-User\nAllow: /\n\n";
 	$output .= "User-agent: Googlebot\nAllow: /\n\n";
+	$output .= "User-agent: Google-Extended\nAllow: /\n\n";
 	$output .= "User-agent: Bingbot\nAllow: /\n\n";
 	$output .= "User-agent: CCBot\nAllow: /\n\n";
 	$output .= "User-agent: anthropic-ai\nAllow: /\n\n";
-	$output .= "Crawl-delay: 10\n";
+	$output .= "User-agent: ClaudeBot\nAllow: /\n\n";
+	$output .= "User-agent: PerplexityBot\nAllow: /\n\n";
 	
 	return $output;
 }

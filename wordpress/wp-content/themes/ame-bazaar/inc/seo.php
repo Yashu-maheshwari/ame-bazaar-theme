@@ -19,9 +19,32 @@ function ame_bazaar_output_seo_meta() {
 	}
 
 	$brand_name = ame_bazaar_get_brand_name();
-	$url        = get_permalink();
-	$title      = get_the_title();
-	$type       = 'website';
+	
+	// Determine correct URL, Title, and Type based on context
+	if ( is_front_page() || is_home() ) {
+		$url   = home_url( '/' );
+		$title = get_bloginfo( 'name' );
+		$type  = 'website';
+	} elseif ( class_exists( 'WooCommerce' ) && is_shop() ) {
+		$shop_page_id = wc_get_page_id( 'shop' );
+		$url   = get_permalink( $shop_page_id );
+		$title = get_the_title( $shop_page_id );
+		$type  = 'website';
+	} elseif ( is_tax() || is_category() || is_tag() ) {
+		global $wp;
+		$url   = home_url( add_query_arg( array(), $wp->request ) ) . '/';
+		$title = single_term_title( '', false ) . ' - ' . $brand_name;
+		$type  = 'website';
+	} elseif ( is_post_type_archive() ) {
+		$url   = get_post_type_archive_link( get_query_var( 'post_type' ) );
+		$title = post_type_archive_title( '', false ) . ' - ' . $brand_name;
+		$type  = 'website';
+	} else {
+		$url   = get_permalink();
+		$title = get_the_title();
+		$type  = ( class_exists( 'WooCommerce' ) && is_product() ) ? 'product' : 'article';
+	}
+	
 	$image      = ame_bazaar_get_custom_logo_url();
 
 	// Check for single product meta overrides

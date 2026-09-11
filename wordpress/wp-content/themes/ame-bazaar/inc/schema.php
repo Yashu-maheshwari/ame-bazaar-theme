@@ -309,18 +309,36 @@ function ame_bazaar_get_clothing_store_schema() {
  *
  * @return array
  */
+function ame_bazaar_get_current_url_and_title() {
+	$brand_name = ame_bazaar_get_brand_name();
+	if ( is_front_page() || is_home() ) {
+		return array( home_url( '/' ), get_bloginfo( 'name' ) );
+	} elseif ( class_exists( 'WooCommerce' ) && is_shop() ) {
+		$shop_page_id = wc_get_page_id( 'shop' );
+		return array( get_permalink( $shop_page_id ), get_the_title( $shop_page_id ) );
+	} elseif ( is_tax() || is_category() || is_tag() ) {
+		global $wp;
+		return array( home_url( add_query_arg( array(), $wp->request ) ) . '/', single_term_title( '', false ) . ' - ' . $brand_name );
+	} elseif ( is_post_type_archive() ) {
+		return array( get_post_type_archive_link( get_query_var( 'post_type' ) ), post_type_archive_title( '', false ) . ' - ' . $brand_name );
+	} else {
+		return array( get_permalink(), get_the_title() );
+	}
+}
+
 function ame_bazaar_get_webpage_schema() {
+	list( $current_url, $current_title ) = ame_bazaar_get_current_url_and_title();
 	$schema = array(
 		'@type'         => 'WebPage',
-		'@id'           => get_permalink() . '#webpage',
-		'url'           => get_permalink(),
-		'name'          => get_the_title(),
-		'inLanguage    '=> 'en-US',
+		'@id'           => $current_url . '#webpage',
+		'url'           => $current_url,
+		'name'          => $current_title,
+		'inLanguage'    => 'en-US',
 		'isPartOf'      => array(
 			'@id' => home_url( '/#website' ),
 		),
 		'breadcrumb'    => array(
-			'@id' => get_permalink() . '#breadcrumbs',
+			'@id' => $current_url . '#breadcrumbs',
 		),
 	);
 
@@ -609,10 +627,11 @@ function ame_bazaar_get_faq_schema() {
  */
 function ame_bazaar_get_breadcrumb_schema() {
 	$brand_name = ame_bazaar_get_brand_name();
+	list( $current_url, $current_title ) = ame_bazaar_get_current_url_and_title();
 
 	$schema = array(
 		'@type'           => 'BreadcrumbList',
-		'@id'             => get_permalink() . '#breadcrumbs',
+		'@id'             => $current_url . '#breadcrumbs',
 		'itemListElement' => array(
 			array(
 				'@type'    => 'ListItem',
@@ -623,7 +642,7 @@ function ame_bazaar_get_breadcrumb_schema() {
 		),
 	);
 
-	if ( ! is_front_page() ) {
+	if ( ! is_front_page() && ! is_home() ) {
 		if ( is_singular() ) {
 			$schema['itemListElement'][] = array(
 				'@type'    => 'ListItem',
@@ -631,12 +650,19 @@ function ame_bazaar_get_breadcrumb_schema() {
 				'name'     => get_the_title(),
 				'item'     => get_permalink(),
 			);
-		} elseif ( is_archive() ) {
+		} elseif ( is_archive() || is_tax() || is_category() || is_tag() ) {
 			$schema['itemListElement'][] = array(
 				'@type'    => 'ListItem',
 				'position' => 2,
-				'name'     => get_the_archive_title(),
-				'item'     => get_permalink(),
+				'name'     => strip_tags( get_the_archive_title() ),
+				'item'     => $current_url,
+			);
+		} elseif ( is_search() ) {
+			$schema['itemListElement'][] = array(
+				'@type'    => 'ListItem',
+				'position' => 2,
+				'name'     => 'Search Results',
+				'item'     => home_url( '/?s=' . get_search_query() ),
 			);
 		}
 	}
