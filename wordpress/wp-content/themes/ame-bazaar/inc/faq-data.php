@@ -416,6 +416,16 @@ function ame_bazaar_get_category_faqs( $slug ) {
 				'a' => 'AME Bazaar is located in Kirari, Delhi, where customers can shop for men\'s clothing in person.',
 			),
 		),
+		'women' => array(
+			array(
+				'q' => 'What types of women\'s clothing are available at AME Bazaar?',
+				'a' => 'AME Bazaar\'s women\'s collection includes suits, kurtis, nightwear, jeans and innerwear.',
+			),
+			array(
+				'q' => 'Where can I shop for women\'s clothing at AME Bazaar?',
+				'a' => 'AME Bazaar is located in Kirari, Delhi, where customers can shop for women\'s clothing in person.',
+			),
+		),
 	);
 
 	return isset( $faqs[ $slug ] ) ? $faqs[ $slug ] : array();
