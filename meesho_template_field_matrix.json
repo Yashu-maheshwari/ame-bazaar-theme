@@ -1,0 +1,482 @@
+{
+  "Product Name": {
+    "T-SHIRT": "Mandatory",
+    "FROCK/DRESS": "Mandatory",
+    "CLOTHING SET": "Mandatory",
+    "JEANS/BOTTOMWEAR": "Mandatory"
+  },
+  "Variation": {
+    "T-SHIRT": "Mandatory",
+    "FROCK/DRESS": "Mandatory",
+    "CLOTHING SET": "Mandatory",
+    "JEANS/BOTTOMWEAR": "Mandatory"
+  },
+  "Meesho Price": {
+    "T-SHIRT": "Mandatory",
+    "FROCK/DRESS": "Mandatory",
+    "CLOTHING SET": "Mandatory",
+    "JEANS/BOTTOMWEAR": "Mandatory"
+  },
+  "Wrong/Defective Returns Price": {
+    "T-SHIRT": "Optional",
+    "FROCK/DRESS": "Optional",
+    "CLOTHING SET": "Optional",
+    "JEANS/BOTTOMWEAR": "Optional"
+  },
+  "MRP": {
+    "T-SHIRT": "Mandatory",
+    "FROCK/DRESS": "Mandatory",
+    "CLOTHING SET": "Mandatory",
+    "JEANS/BOTTOMWEAR": "Mandatory"
+  },
+  "Net Weight (gms)": {
+    "T-SHIRT": "Mandatory",
+    "FROCK/DRESS": "Mandatory",
+    "CLOTHING SET": "Mandatory",
+    "JEANS/BOTTOMWEAR": "Mandatory"
+  },
+  "Inventory": {
+    "T-SHIRT": "Mandatory",
+    "FROCK/DRESS": "Mandatory",
+    "CLOTHING SET": "Mandatory",
+    "JEANS/BOTTOMWEAR": "Mandatory"
+  },
+  "Country of Origin": {
+    "T-SHIRT": "Mandatory",
+    "FROCK/DRESS": "Mandatory",
+    "CLOTHING SET": "Mandatory",
+    "JEANS/BOTTOMWEAR": "Mandatory"
+  },
+  "Manufacturer Name": {
+    "T-SHIRT": "Mandatory",
+    "FROCK/DRESS": "Mandatory",
+    "CLOTHING SET": "Mandatory",
+    "JEANS/BOTTOMWEAR": "Mandatory"
+  },
+  "Manufacturer Address": {
+    "T-SHIRT": "Mandatory",
+    "FROCK/DRESS": "Mandatory",
+    "CLOTHING SET": "Mandatory",
+    "JEANS/BOTTOMWEAR": "Mandatory"
+  },
+  "Manufacturer Pincode": {
+    "T-SHIRT": "Mandatory",
+    "FROCK/DRESS": "Mandatory",
+    "CLOTHING SET": "Mandatory",
+    "JEANS/BOTTOMWEAR": "Mandatory"
+  },
+  "Packer Name": {
+    "T-SHIRT": "Mandatory",
+    "FROCK/DRESS": "Mandatory",
+    "CLOTHING SET": "Mandatory",
+    "JEANS/BOTTOMWEAR": "Mandatory"
+  },
+  "Packer Address": {
+    "T-SHIRT": "Mandatory",
+    "FROCK/DRESS": "Mandatory",
+    "CLOTHING SET": "Mandatory",
+    "JEANS/BOTTOMWEAR": "Mandatory"
+  },
+  "Packer Pincode": {
+    "T-SHIRT": "Mandatory",
+    "FROCK/DRESS": "Mandatory",
+    "CLOTHING SET": "Mandatory",
+    "JEANS/BOTTOMWEAR": "Mandatory"
+  },
+  "Importer Name": {
+    "T-SHIRT": "Mandatory",
+    "FROCK/DRESS": "Mandatory",
+    "CLOTHING SET": "Mandatory",
+    "JEANS/BOTTOMWEAR": "Mandatory"
+  },
+  "Importer Address": {
+    "T-SHIRT": "Mandatory",
+    "FROCK/DRESS": "Mandatory",
+    "CLOTHING SET": "Mandatory",
+    "JEANS/BOTTOMWEAR": "Mandatory"
+  },
+  "Importer Pincode": {
+    "T-SHIRT": "Mandatory",
+    "FROCK/DRESS": "Mandatory",
+    "CLOTHING SET": "Mandatory",
+    "JEANS/BOTTOMWEAR": "Mandatory"
+  },
+  "Color": {
+    "T-SHIRT": "Mandatory",
+    "FROCK/DRESS": "Optional",
+    "CLOTHING SET": "N/A",
+    "JEANS/BOTTOMWEAR": "Mandatory"
+  },
+  "Fabric": {
+    "T-SHIRT": "Mandatory",
+    "FROCK/DRESS": "Mandatory",
+    "CLOTHING SET": "N/A",
+    "JEANS/BOTTOMWEAR": "Mandatory"
+  },
+  "Fit/Shape": {
+    "T-SHIRT": "Mandatory",
+    "FROCK/DRESS": "N/A",
+    "CLOTHING SET": "N/A",
+    "JEANS/BOTTOMWEAR": "N/A"
+  },
+  "Generic Name": {
+    "T-SHIRT": "Mandatory",
+    "FROCK/DRESS": "Mandatory",
+    "CLOTHING SET": "Mandatory",
+    "JEANS/BOTTOMWEAR": "Mandatory"
+  },
+  "Neck": {
+    "T-SHIRT": "Mandatory",
+    "FROCK/DRESS": "Mandatory",
+    "CLOTHING SET": "Optional",
+    "JEANS/BOTTOMWEAR": "N/A"
+  },
+  "Net Quantity (N)": {
+    "T-SHIRT": "Mandatory",
+    "FROCK/DRESS": "Mandatory",
+    "CLOTHING SET": "Mandatory",
+    "JEANS/BOTTOMWEAR": "Mandatory"
+  },
+  "Occasion": {
+    "T-SHIRT": "Mandatory",
+    "FROCK/DRESS": "Mandatory",
+    "CLOTHING SET": "Optional",
+    "JEANS/BOTTOMWEAR": "N/A"
+  },
+  "Pattern": {
+    "T-SHIRT": "Mandatory",
+    "FROCK/DRESS": "Optional",
+    "CLOTHING SET": "N/A",
+    "JEANS/BOTTOMWEAR": "N/A"
+  },
+  "Print Or Pattern Type": {
+    "T-SHIRT": "Mandatory",
+    "FROCK/DRESS": "N/A",
+    "CLOTHING SET": "N/A",
+    "JEANS/BOTTOMWEAR": "N/A"
+  },
+  "Sleeve Length": {
+    "T-SHIRT": "Mandatory",
+    "FROCK/DRESS": "Mandatory",
+    "CLOTHING SET": "Optional",
+    "JEANS/BOTTOMWEAR": "N/A"
+  },
+  "Chest Size": {
+    "T-SHIRT": "Mandatory",
+    "FROCK/DRESS": "N/A",
+    "CLOTHING SET": "N/A",
+    "JEANS/BOTTOMWEAR": "N/A"
+  },
+  "Length Size": {
+    "T-SHIRT": "Mandatory",
+    "FROCK/DRESS": "Mandatory",
+    "CLOTHING SET": "N/A",
+    "JEANS/BOTTOMWEAR": "Mandatory"
+  },
+  "Shoulder Size": {
+    "T-SHIRT": "Mandatory",
+    "FROCK/DRESS": "N/A",
+    "CLOTHING SET": "N/A",
+    "JEANS/BOTTOMWEAR": "N/A"
+  },
+  "Image 1 (Front)": {
+    "T-SHIRT": "Mandatory",
+    "FROCK/DRESS": "Mandatory",
+    "CLOTHING SET": "Mandatory",
+    "JEANS/BOTTOMWEAR": "Mandatory"
+  },
+  "Image 2": {
+    "T-SHIRT": "Optional",
+    "FROCK/DRESS": "Optional",
+    "CLOTHING SET": "Optional",
+    "JEANS/BOTTOMWEAR": "Optional"
+  },
+  "Image 3": {
+    "T-SHIRT": "Optional",
+    "FROCK/DRESS": "Optional",
+    "CLOTHING SET": "Optional",
+    "JEANS/BOTTOMWEAR": "Optional"
+  },
+  "Image 4": {
+    "T-SHIRT": "Optional",
+    "FROCK/DRESS": "Optional",
+    "CLOTHING SET": "Optional",
+    "JEANS/BOTTOMWEAR": "Optional"
+  },
+  "Product ID / Style ID": {
+    "T-SHIRT": "Optional",
+    "FROCK/DRESS": "Optional",
+    "CLOTHING SET": "Optional",
+    "JEANS/BOTTOMWEAR": "Optional"
+  },
+  "SKU ID": {
+    "T-SHIRT": "Optional",
+    "FROCK/DRESS": "Optional",
+    "CLOTHING SET": "Optional",
+    "JEANS/BOTTOMWEAR": "Optional"
+  },
+  "Brand Name": {
+    "T-SHIRT": "Optional",
+    "FROCK/DRESS": "Optional",
+    "CLOTHING SET": "Optional",
+    "JEANS/BOTTOMWEAR": "Optional"
+  },
+  "Group ID": {
+    "T-SHIRT": "Optional",
+    "FROCK/DRESS": "Optional",
+    "CLOTHING SET": "Optional",
+    "JEANS/BOTTOMWEAR": "Optional"
+  },
+  "Product Description": {
+    "T-SHIRT": "Optional",
+    "FROCK/DRESS": "Optional",
+    "CLOTHING SET": "Optional",
+    "JEANS/BOTTOMWEAR": "Optional"
+  },
+  "EAN/UPC": {
+    "T-SHIRT": "Optional",
+    "FROCK/DRESS": "N/A",
+    "CLOTHING SET": "N/A",
+    "JEANS/BOTTOMWEAR": "N/A"
+  },
+  "Brand": {
+    "T-SHIRT": "Optional",
+    "FROCK/DRESS": "Optional",
+    "CLOTHING SET": "Optional",
+    "JEANS/BOTTOMWEAR": "Optional"
+  },
+  "Character": {
+    "T-SHIRT": "Optional",
+    "FROCK/DRESS": "N/A",
+    "CLOTHING SET": "N/A",
+    "JEANS/BOTTOMWEAR": "N/A"
+  },
+  "Hemline": {
+    "T-SHIRT": "Optional",
+    "FROCK/DRESS": "N/A",
+    "CLOTHING SET": "N/A",
+    "JEANS/BOTTOMWEAR": "N/A"
+  },
+  "Length": {
+    "T-SHIRT": "Optional",
+    "FROCK/DRESS": "Mandatory",
+    "CLOTHING SET": "N/A",
+    "JEANS/BOTTOMWEAR": "Mandatory"
+  },
+  "Number of Pockets": {
+    "T-SHIRT": "Optional",
+    "FROCK/DRESS": "N/A",
+    "CLOTHING SET": "N/A",
+    "JEANS/BOTTOMWEAR": "N/A"
+  },
+  "Sleeve Styling": {
+    "T-SHIRT": "Optional",
+    "FROCK/DRESS": "N/A",
+    "CLOTHING SET": "N/A",
+    "JEANS/BOTTOMWEAR": "N/A"
+  },
+  "Style": {
+    "T-SHIRT": "Optional",
+    "FROCK/DRESS": "N/A",
+    "CLOTHING SET": "N/A",
+    "JEANS/BOTTOMWEAR": "N/A"
+  },
+  "Fit/ Shape": {
+    "T-SHIRT": "N/A",
+    "FROCK/DRESS": "Mandatory",
+    "CLOTHING SET": "N/A",
+    "JEANS/BOTTOMWEAR": "Mandatory"
+  },
+  "Surface Styling": {
+    "T-SHIRT": "N/A",
+    "FROCK/DRESS": "Mandatory",
+    "CLOTHING SET": "N/A",
+    "JEANS/BOTTOMWEAR": "Optional"
+  },
+  "Bust Size": {
+    "T-SHIRT": "N/A",
+    "FROCK/DRESS": "Mandatory",
+    "CLOTHING SET": "N/A",
+    "JEANS/BOTTOMWEAR": "N/A"
+  },
+  "Kids Weight (In Kgs)": {
+    "T-SHIRT": "N/A",
+    "FROCK/DRESS": "Mandatory",
+    "CLOTHING SET": "Mandatory",
+    "JEANS/BOTTOMWEAR": "N/A"
+  },
+  "Add On": {
+    "T-SHIRT": "N/A",
+    "FROCK/DRESS": "Optional",
+    "CLOTHING SET": "N/A",
+    "JEANS/BOTTOMWEAR": "N/A"
+  },
+  "Bottom Fabric": {
+    "T-SHIRT": "N/A",
+    "FROCK/DRESS": "N/A",
+    "CLOTHING SET": "Mandatory",
+    "JEANS/BOTTOMWEAR": "N/A"
+  },
+  "Included Components": {
+    "T-SHIRT": "N/A",
+    "FROCK/DRESS": "N/A",
+    "CLOTHING SET": "Mandatory",
+    "JEANS/BOTTOMWEAR": "N/A"
+  },
+  "Set Type": {
+    "T-SHIRT": "N/A",
+    "FROCK/DRESS": "N/A",
+    "CLOTHING SET": "Mandatory",
+    "JEANS/BOTTOMWEAR": "N/A"
+  },
+  "Top Fabric": {
+    "T-SHIRT": "N/A",
+    "FROCK/DRESS": "N/A",
+    "CLOTHING SET": "Mandatory",
+    "JEANS/BOTTOMWEAR": "N/A"
+  },
+  "Bottom Length Size": {
+    "T-SHIRT": "N/A",
+    "FROCK/DRESS": "N/A",
+    "CLOTHING SET": "Mandatory",
+    "JEANS/BOTTOMWEAR": "N/A"
+  },
+  "Bottom Waist Size": {
+    "T-SHIRT": "N/A",
+    "FROCK/DRESS": "N/A",
+    "CLOTHING SET": "Mandatory",
+    "JEANS/BOTTOMWEAR": "N/A"
+  },
+  "Top Chest Size": {
+    "T-SHIRT": "N/A",
+    "FROCK/DRESS": "N/A",
+    "CLOTHING SET": "Mandatory",
+    "JEANS/BOTTOMWEAR": "N/A"
+  },
+  "Top Length Size": {
+    "T-SHIRT": "N/A",
+    "FROCK/DRESS": "N/A",
+    "CLOTHING SET": "Mandatory",
+    "JEANS/BOTTOMWEAR": "N/A"
+  },
+  "Add-Ons": {
+    "T-SHIRT": "N/A",
+    "FROCK/DRESS": "N/A",
+    "CLOTHING SET": "Optional",
+    "JEANS/BOTTOMWEAR": "N/A"
+  },
+  "Bottom Closure": {
+    "T-SHIRT": "N/A",
+    "FROCK/DRESS": "N/A",
+    "CLOTHING SET": "Optional",
+    "JEANS/BOTTOMWEAR": "N/A"
+  },
+  "Bottom Color": {
+    "T-SHIRT": "N/A",
+    "FROCK/DRESS": "N/A",
+    "CLOTHING SET": "Optional",
+    "JEANS/BOTTOMWEAR": "N/A"
+  },
+  "Bottom Fit/Shape": {
+    "T-SHIRT": "N/A",
+    "FROCK/DRESS": "N/A",
+    "CLOTHING SET": "Optional",
+    "JEANS/BOTTOMWEAR": "N/A"
+  },
+  "Bottom Pattern": {
+    "T-SHIRT": "N/A",
+    "FROCK/DRESS": "N/A",
+    "CLOTHING SET": "Optional",
+    "JEANS/BOTTOMWEAR": "N/A"
+  },
+  "Bottom Type": {
+    "T-SHIRT": "N/A",
+    "FROCK/DRESS": "N/A",
+    "CLOTHING SET": "Optional",
+    "JEANS/BOTTOMWEAR": "N/A"
+  },
+  "Top Color": {
+    "T-SHIRT": "N/A",
+    "FROCK/DRESS": "N/A",
+    "CLOTHING SET": "Optional",
+    "JEANS/BOTTOMWEAR": "N/A"
+  },
+  "Top Fit/Shape": {
+    "T-SHIRT": "N/A",
+    "FROCK/DRESS": "N/A",
+    "CLOTHING SET": "Optional",
+    "JEANS/BOTTOMWEAR": "N/A"
+  },
+  "Top Pattern": {
+    "T-SHIRT": "N/A",
+    "FROCK/DRESS": "N/A",
+    "CLOTHING SET": "Optional",
+    "JEANS/BOTTOMWEAR": "N/A"
+  },
+  "Top Type": {
+    "T-SHIRT": "N/A",
+    "FROCK/DRESS": "N/A",
+    "CLOTHING SET": "Optional",
+    "JEANS/BOTTOMWEAR": "N/A"
+  },
+  "Distress": {
+    "T-SHIRT": "N/A",
+    "FROCK/DRESS": "N/A",
+    "CLOTHING SET": "N/A",
+    "JEANS/BOTTOMWEAR": "Mandatory"
+  },
+  "Stretch": {
+    "T-SHIRT": "N/A",
+    "FROCK/DRESS": "N/A",
+    "CLOTHING SET": "N/A",
+    "JEANS/BOTTOMWEAR": "Mandatory"
+  },
+  "Waist Rise": {
+    "T-SHIRT": "N/A",
+    "FROCK/DRESS": "N/A",
+    "CLOTHING SET": "N/A",
+    "JEANS/BOTTOMWEAR": "Mandatory"
+  },
+  "Hip Size": {
+    "T-SHIRT": "N/A",
+    "FROCK/DRESS": "N/A",
+    "CLOTHING SET": "N/A",
+    "JEANS/BOTTOMWEAR": "Mandatory"
+  },
+  "Inseam_Length": {
+    "T-SHIRT": "N/A",
+    "FROCK/DRESS": "N/A",
+    "CLOTHING SET": "N/A",
+    "JEANS/BOTTOMWEAR": "Mandatory"
+  },
+  "Rise_Length": {
+    "T-SHIRT": "N/A",
+    "FROCK/DRESS": "N/A",
+    "CLOTHING SET": "N/A",
+    "JEANS/BOTTOMWEAR": "Mandatory"
+  },
+  "Thigh Size": {
+    "T-SHIRT": "N/A",
+    "FROCK/DRESS": "N/A",
+    "CLOTHING SET": "N/A",
+    "JEANS/BOTTOMWEAR": "Mandatory"
+  },
+  "Waist Size": {
+    "T-SHIRT": "N/A",
+    "FROCK/DRESS": "N/A",
+    "CLOTHING SET": "N/A",
+    "JEANS/BOTTOMWEAR": "Mandatory"
+  },
+  "Shade": {
+    "T-SHIRT": "N/A",
+    "FROCK/DRESS": "N/A",
+    "CLOTHING SET": "N/A",
+    "JEANS/BOTTOMWEAR": "Optional"
+  },
+  "Wash": {
+    "T-SHIRT": "N/A",
+    "FROCK/DRESS": "N/A",
+    "CLOTHING SET": "N/A",
+    "JEANS/BOTTOMWEAR": "Optional"
+  }
+}
