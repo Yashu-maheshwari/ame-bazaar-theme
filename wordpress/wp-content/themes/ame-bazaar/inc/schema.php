@@ -1011,14 +1011,9 @@ function ame_bazaar_get_single_product_schema() {
 
 	// Custom properties map
 	$property_mappings = array(
-		'Fabric'               => '_ame_fabric',
-		'Material'             => '_ame_material',
 		'GSM'                  => '_ame_gsm',
 		'Fabric Weight'        => '_ame_fabric_weight',
-		'Pattern'              => '_ame_pattern',
 		'Age Group'            => '_ame_age_group',
-		'Occasion'             => '_ame_occasion',
-		'Season'               => '_ame_season',
 		'Fit'                  => '_ame_fit',
 		'Sleeve Type'          => '_ame_sleeve_type',
 		'Neck Type'            => '_ame_neck_type',
@@ -1027,7 +1022,6 @@ function ame_bazaar_get_single_product_schema() {
 		'Style'                => '_ame_style',
 		'MRP'                  => '_ame_mrp',
 		'Price Segment'        => '_ame_price_segment',
-		'Color'                => '_ame_color_flat',
 		'Size'                 => '_ame_size_flat',
 		'Size Chart'           => '_ame_size_chart',
 		'Wash Instructions'    => '_ame_wash_instructions',
@@ -1035,7 +1029,6 @@ function ame_bazaar_get_single_product_schema() {
 		'Country of Origin'    => '_ame_country_of_origin',
 		'Manufacturer'         => '_ame_manufacturer',
 		'Kirari Stock'         => '_ame_kirari_stock',
-		'Alteration Service'   => '_ame_alteration_available',
 		'AI Keywords'          => '_ame_ai_keywords',
 		'GEO Targets'          => '_ame_geo_target',
 		'Target Demographic'   => '_ame_target_customer',
@@ -1050,9 +1043,6 @@ function ame_bazaar_get_single_product_schema() {
 	foreach ( $property_mappings as $label => $meta_key ) {
 		$val = get_post_meta( $post_id, $meta_key, true );
 		if ( $val ) {
-			if ( '_ame_alteration_available' === $meta_key ) {
-				$val = 'yes' === $val || '1' === $val ? 'Available (30-Min In-Store)' : 'Not Available';
-			}
 			$additional_properties[] = array(
 				'@type' => 'PropertyValue',
 				'name'  => $label,
@@ -1067,13 +1057,26 @@ function ame_bazaar_get_single_product_schema() {
 		$schema['size'] = $flat_size;
 	}
 
-	// Gender mapping to audienceType
-	$gender = get_post_meta( $post_id, '_ame_gender', true );
-	if ( $gender ) {
-		$schema['audience'] = array(
-			'@type'        => 'Audience',
-			'audienceType' => $gender,
+		// Safe Raintech Category mapping to audienceType
+	$raintech_raw = get_post_meta( $post_id, '_ame_raw_raintech_data', true );
+	if ( is_array( $raintech_raw ) && ! empty( $raintech_raw['Category'] ) ) {
+		$category     = trim( (string) $raintech_raw['Category'] );
+		$category_key = strtolower( preg_replace( '/\s+/', ' ', $category ) );
+
+		$gender_map = array(
+			'mens wear'        => 'Men',
+			'female wear'      => 'Women',
+			'kids wear(boys)'  => 'Boys',
+			'kids wear(girls)' => 'Girls',
+			'infant wear'      => 'Infants',
 		);
+
+		if ( isset( $gender_map[ $category_key ] ) ) {
+			$schema['audience'] = array(
+				'@type'        => 'Audience',
+				'audienceType' => $gender_map[ $category_key ],
+			);
+		}
 	}
 
 	if ( ! empty( $additional_properties ) ) {
