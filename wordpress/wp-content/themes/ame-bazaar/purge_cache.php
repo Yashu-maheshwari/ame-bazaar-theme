@@ -1,8 +1,0 @@
-<?php
-require_once('../../../wp-load.php');
-if (class_exists('LiteSpeed\Purge')) {
-    \LiteSpeed\Purge::purge_all();
-    echo "Purged!";
-} else {
-    echo "No LiteSpeed";
-}
