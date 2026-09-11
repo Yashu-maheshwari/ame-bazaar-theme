@@ -249,6 +249,9 @@ app.post('/api/batch-profiles/approve', (req, res) => {
     }
 });
 
+const sizeChartManager = require('./meesho-size-chart-manager');
+app.use('/api/size-charts', sizeChartManager);
+
 const PORT = 3001;
 app.listen(PORT, () => {
     console.log(`Attribute Review tool running on http://localhost:${PORT}`);

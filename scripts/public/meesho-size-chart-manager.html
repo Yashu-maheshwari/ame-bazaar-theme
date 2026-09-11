@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Meesho Verified Size Chart Manager</title>
+    <style>
+        body { font-family: sans-serif; padding: 20px; background: #f0f2f5; }
+        .container { max-width: 1000px; margin: auto; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #ddd; padding-bottom: 10px; margin-bottom: 20px; }
+        .card { border: 1px solid #e0e0e0; padding: 15px; margin-bottom: 20px; border-radius: 6px; }
+        .row { display: flex; gap: 15px; margin-bottom: 10px; align-items: center; }
+        .btn { padding: 8px 16px; border: none; border-radius: 4px; cursor: pointer; background: #007bff; color: white; }
+        .btn-success { background: #28a745; }
+        .btn-warning { background: #ffc107; color: black; }
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        th { background: #f8f9fa; }
+        input[type="number"], input[type="text"] { width: 100%; padding: 6px; box-sizing: border-box; }
+        .alert { padding: 10px; margin-bottom: 15px; border-radius: 4px; display: none; }
+        .alert-error { background: #f8d7da; color: #721c24; }
+        .alert-success { background: #d4edda; color: #155724; }
+        .nav { margin-bottom: 20px; }
+        .nav a { margin-right: 15px; text-decoration: none; color: #007bff; font-weight: bold; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="nav">
+        <a href="/">← Back to Product Review</a>
+        <a href="/meesho-batch-review.html">← Back to Batch Approval</a>
+    </div>
+
+    <div class="header">
+        <h2>Verified Size Chart Manager</h2>
+    </div>
+
+    <div id="msg" class="alert"></div>
+
+    <div class="card">
+        <h3>Create New Verified Size Chart</h3>
+        <div class="row">
+            <label>Category:</label>
+            <select id="new-category" onchange="renderChartEditor()">
+                <option value="">Select Category...</option>
+            </select>
+        </div>
+        <div id="chart-editor" style="display:none; margin-top:15px;">
+            <table id="editor-table">
+                <thead>
+                    <tr id="editor-head"></tr>
+                </thead>
+                <tbody id="editor-body"></tbody>
+            </table>
+            <div style="margin-top: 10px;">
+                <button class="btn" onclick="addSizeRow()">+ Add Size Row (e.g., S/M/L)</button>
+                <button class="btn btn-warning" onclick="saveSizeChart(false)">Save Draft</button>
+                <button class="btn btn-success" onclick="saveSizeChart(true)">Save & VERIFY</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <h3>Existing Size Charts</h3>
+        <div id="existing-charts">Loading...</div>
+    </div>
+</div>
+
+<script>
+let reqs = {};
+let currentCategory = '';
+let draftMeasurements = {};
+
+async function init() {
+    let res = await fetch('/api/size-charts/requirements');
+    reqs = await res.json();
+    
+    let sel = document.getElementById('new-category');
+    for (let c in reqs) {
+        let opt = document.createElement('option');
+        opt.value = c;
+        opt.innerText = c;
+        sel.appendChild(opt);
+    }
+    loadExisting();
+}
+
+function renderChartEditor() {
+    currentCategory = document.getElementById('new-category').value;
+    draftMeasurements = {};
+    let ed = document.getElementById('chart-editor');
+    if (!currentCategory) {
+        ed.style.display = 'none';
+        return;
+    }
+    ed.style.display = 'block';
+    
+    let head = document.getElementById('editor-head');
+    head.innerHTML = '<th>Size Label</th>';
+    reqs[currentCategory].forEach(r => {
+        head.innerHTML += `<th>${r} (inches)</th>`;
+    });
+    head.innerHTML += '<th>Action</th>';
+    
+    document.getElementById('editor-body').innerHTML = '';
+}
+
+function addSizeRow() {
+    let tbody = document.getElementById('editor-body');
+    let tr = document.createElement('tr');
+    let id = 'row_' + Date.now();
+    tr.id = id;
+    
+    let html = `<td><input type="text" placeholder="e.g. M, L, XL" class="size-label"></td>`;
+    reqs[currentCategory].forEach(r => {
+        html += `<td><input type="number" step="0.1" min="0" data-field="${r}" class="meas-val"></td>`;
+    });
+    html += `<td><button onclick="document.getElementById('${id}').remove()">Remove</button></td>`;
+    tr.innerHTML = html;
+    tbody.appendChild(tr);
+}
+
+function showMsg(text, type='error') {
+    let el = document.getElementById('msg');
+    el.innerText = text;
+    el.className = 'alert alert-' + type;
+    el.style.display = 'block';
+    setTimeout(() => el.style.display='none', 5000);
+}
+
+async function saveSizeChart(verify) {
+    let rows = document.querySelectorAll('#editor-body tr');
+    let measurements = {};
+    let error = null;
+
+    rows.forEach(tr => {
+        let sizeLabel = tr.querySelector('.size-label').value.trim().toUpperCase();
+        if(!sizeLabel) error = "Size label cannot be blank";
+        
+        let mData = {};
+        tr.querySelectorAll('.meas-val').forEach(inp => {
+            let field = inp.getAttribute('data-field');
+            let val = inp.value;
+            if(verify && !val) error = `Missing required field ${field} for size ${sizeLabel}`;
+            if(verify && Number(val) < 0) error = `Negative measurement not allowed`;
+            mData[field] = val;
+        });
+        measurements[sizeLabel] = mData;
+    });
+
+    if(verify && Object.keys(measurements).length === 0) error = "No sizes added";
+    if (error) return showMsg(error);
+
+    let res = await fetch('/api/size-charts', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({ category: currentCategory, measurements: measurements })
+    });
+    let data = await res.json();
+    
+    if (data.success && verify) {
+        let vRes = await fetch('/api/size-charts/approve', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({ profile_id: data.profile_id })
+        });
+        let vData = await vRes.json();
+        if(vData.error) return showMsg(vData.error);
+        showMsg("Chart Verified!", "success");
+    } else {
+        showMsg("Draft Saved!", "success");
+    }
+
+    renderChartEditor();
+    document.getElementById('new-category').value = '';
+    loadExisting();
+}
+
+async function loadExisting() {
+    let res = await fetch('/api/size-charts');
+    let data = await res.json();
+    let html = '';
+    
+    for (let id in data.profiles) {
+        let p = data.profiles[id];
+        let statusColor = p.status === 'VERIFIED' ? 'green' : 'orange';
+        html += `<div style="border:1px solid #ccc; padding:10px; margin-bottom:10px;">
+            <h4>${id} <span style="color:${statusColor}">(${p.status})</span></h4>
+            <p><strong>Category:</strong> ${p.category} | <strong>Source:</strong> ${p.source}</p>
+            <pre style="background:#eee; padding:5px;">${JSON.stringify(p.measurements, null, 2)}</pre>
+        </div>`;
+    }
+    
+    document.getElementById('existing-charts').innerHTML = html || 'No charts found.';
+}
+
+init();
+</script>
+</body>
+</html>
