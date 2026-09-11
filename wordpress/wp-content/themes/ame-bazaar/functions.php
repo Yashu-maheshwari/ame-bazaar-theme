@@ -222,6 +222,3 @@ add_action( 'wp_head', 'ame_bazaar_async_google_fonts', 2 );
 
 
 require_once AME_BAZAAR_PATH . '/inc/indexnow.php';
-a d d _ f i l t e r ( ' l i t e s p e e d _ o p t m _ c s s _ c o m b ' ,   ' _ _ r e t u r n _ f a l s e ' ) ;  
- a d d _ f i l t e r ( ' l i t e s p e e d _ o p t m _ c s s _ c o m b ' ,   f u n c t i o n ( \ )   {   i f   ( i s s e t ( \ [ ' t e s t _ c s s _ c o m b i n e _ o f f ' ] ) )   {   r e t u r n   f a l s e ;   }   r e t u r n   \ ;   } ) ;  
- 
