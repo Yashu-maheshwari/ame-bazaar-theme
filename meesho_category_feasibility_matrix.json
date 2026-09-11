@@ -1,0 +1,105 @@
+{
+  "total_products": 4626,
+  "ready_products": 2665,
+  "categories": [
+    {
+      "name": "Men > Western Wear > Tshirts",
+      "template_found": true,
+      "template_name": "Tshirts-10000-EXTERNAL-MeeshoTemplate2PricesENROLMENT.xlsx",
+      "mandatory_fields": [
+        "Country of Origin",
+        "Manufacturer Details",
+        "Packer Details",
+        "Color",
+        "Fabric",
+        "Fit/Shape",
+        "Neck",
+        "Pattern",
+        "Print Or Pattern Type",
+        "Sleeve Length",
+        "Chest Size",
+        "Length Size",
+        "Shoulder Size",
+        "MRP",
+        "Meesho Price",
+        "Image 1 (Front)"
+      ],
+      "auto_woo": [
+        "Inventory",
+        "SKU",
+        "Description"
+      ],
+      "auto_raintech": [
+        "MRP",
+        "Meesho Price"
+      ],
+      "auto_business_profile": [
+        "Country of Origin",
+        "Manufacturer Name",
+        "Manufacturer Address",
+        "Manufacturer Pincode",
+        "Packer Name",
+        "Packer Address",
+        "Packer Pincode"
+      ],
+      "safely_derivable": [
+        "Generic Name",
+        "Net Quantity"
+      ],
+      "human_input_required": [
+        "Color",
+        "Fabric",
+        "Fit/Shape",
+        "Neck",
+        "Pattern",
+        "Print Or Pattern Type",
+        "Sleeve Length"
+      ],
+      "measurements_mandatory": true,
+      "image_generation_required": true,
+      "bulk_generate_safely": false,
+      "automation_percentage": "40%",
+      "exact_blockers": [
+        "Exact Inch Measurements (Chest/Length/Shoulder)",
+        "Fabric",
+        "Meesho Image URL generation"
+      ]
+    },
+    {
+      "name": "Other Categories (Jeans, Kurtis, Frocks, etc.)",
+      "template_found": false,
+      "template_name": "TEMPLATE_NOT_FOUND",
+      "mandatory_fields": [
+        "Unknown (Assume standard compliance, images, price)"
+      ],
+      "auto_woo": [
+        "Inventory",
+        "SKU"
+      ],
+      "auto_raintech": [
+        "MRP",
+        "Meesho Price"
+      ],
+      "auto_business_profile": [
+        "Country of Origin",
+        "Manufacturer Details",
+        "Packer Details"
+      ],
+      "safely_derivable": [
+        "Generic Name"
+      ],
+      "human_input_required": [
+        "Product-specific attributes (Unknown)"
+      ],
+      "measurements_mandatory": "Unknown (Likely yes for apparel)",
+      "image_generation_required": true,
+      "bulk_generate_safely": false,
+      "automation_percentage": "0% (Blocked by missing template)",
+      "exact_blockers": [
+        "Missing Official Template",
+        "Unknown Mandatory Attributes",
+        "Meesho Image URL generation"
+      ]
+    }
+  ]
+}
