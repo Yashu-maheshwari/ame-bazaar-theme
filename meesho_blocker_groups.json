@@ -1,0 +1,64 @@
+{
+  "top_blockers": [
+    {
+      "blocker": "CATEGORY_UNRESOLVED",
+      "category": "ANY",
+      "count": 1408,
+      "automation_possible": "Yes (Attribute Batching)"
+    },
+    {
+      "blocker": "Missing Verified Measurement Chart",
+      "category": "CLOTHING_SET",
+      "count": 481,
+      "automation_possible": "Yes (Size Chart Batching)"
+    },
+    {
+      "blocker": "Missing Official Meesho Image URL",
+      "category": "CLOTHING_SET",
+      "count": 481,
+      "automation_possible": "No (Manual Panel Upload Required)"
+    },
+    {
+      "blocker": "Missing Attributes (Top Fabric, Bottom Fabric, Color)",
+      "category": "CLOTHING_SET",
+      "count": 475,
+      "automation_possible": "Yes (Attribute Batching)"
+    },
+    {
+      "blocker": "Missing Verified Measurement Chart",
+      "category": "TSHIRT",
+      "count": 66,
+      "automation_possible": "Yes (Size Chart Batching)"
+    },
+    {
+      "blocker": "Missing Official Meesho Image URL",
+      "category": "TSHIRT",
+      "count": 66,
+      "automation_possible": "No (Manual Panel Upload Required)"
+    },
+    {
+      "blocker": "Missing Attributes (Color, Fabric, Neck, Pattern, Sleeve Length)",
+      "category": "TSHIRT",
+      "count": 60,
+      "automation_possible": "Yes (Attribute Batching)"
+    },
+    {
+      "blocker": "Missing Verified Measurement Chart",
+      "category": "JEANS",
+      "count": 40,
+      "automation_possible": "Yes (Size Chart Batching)"
+    },
+    {
+      "blocker": "Missing Official Meesho Image URL",
+      "category": "JEANS",
+      "count": 40,
+      "automation_possible": "No (Manual Panel Upload Required)"
+    },
+    {
+      "blocker": "Missing Attributes (Fabric, Color, Pattern)",
+      "category": "JEANS",
+      "count": 37,
+      "automation_possible": "Yes (Attribute Batching)"
+    }
+  ]
+}
