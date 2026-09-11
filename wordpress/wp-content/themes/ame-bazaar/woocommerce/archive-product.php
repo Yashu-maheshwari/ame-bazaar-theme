@@ -194,7 +194,7 @@ do_action( 'woocommerce_before_main_content' );
 						<a href="<?php echo esc_url( $subcat_link ); ?>" class="ame-category-card ame-premium-card ame-hover-depth" style="text-decoration: none; display: flex; flex-direction: column; overflow: hidden; height: 100%; border: 1px solid var(--ame-color-border, #dbe2ea); border-radius: 8px; background: #ffffff; transition: all 0.3s ease;">
 							<!-- Image wrapper -->
 							<div class="ame-category-image" style="aspect-ratio: 4/3; background: #f8fafc; overflow: hidden; position: relative;">
-								<img src="<?php echo esc_url( $image_url ); ?>" alt="<?php echo esc_attr( $subcat->name ); ?>" style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.3s ease;" />
+								<img src="<?php echo esc_url( $image_url ); ?>" alt="<?php echo esc_attr( $subcat->name ); ?>" loading="lazy" style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.3s ease;" />
 								
 								<!-- Optional badges overlay -->
 								<div style="position: absolute; top: 0.5rem; left: 0.5rem; display: flex; flex-direction: column; gap: 0.25rem; z-index: 5;">
