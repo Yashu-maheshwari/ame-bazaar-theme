@@ -1,0 +1,407 @@
+{
+  "total": 44,
+  "READY_FOR_APPROVAL": 26,
+  "NO_ACTION_REQUIRED": 5,
+  "NEEDS_REVIEW": 13,
+  "products_ready": 89,
+  "products_no_action": 1890,
+  "products_needs_review": 21,
+  "details": [
+    {
+      "profile_id": "UNKNOWN_PROFILE_001",
+      "category": "UNKNOWN",
+      "product_count": 1321,
+      "skus_sample": "P-3652, P-3650, P-3649...",
+      "attributes_to_apply": "None",
+      "evidence": "N/A",
+      "status": "NO_ACTION_REQUIRED"
+    },
+    {
+      "profile_id": "UNKNOWN_PROFILE_002",
+      "category": "UNKNOWN",
+      "product_count": 9,
+      "skus_sample": "P-3651, P-0178, P-0324...",
+      "attributes_to_apply": "pattern: Printed",
+      "evidence": "B",
+      "status": "READY_FOR_APPROVAL"
+    },
+    {
+      "profile_id": "UNKNOWN_PROFILE_003",
+      "category": "UNKNOWN",
+      "product_count": 12,
+      "skus_sample": "P-3616, P-3506, P-3505...",
+      "attributes_to_apply": "fabric: Cotton",
+      "evidence": "B",
+      "status": "READY_FOR_APPROVAL"
+    },
+    {
+      "profile_id": "UNKNOWN_PROFILE_004",
+      "category": "UNKNOWN",
+      "product_count": 3,
+      "skus_sample": "P-3487, P-0750, P-1874",
+      "attributes_to_apply": "fabric: Denim",
+      "evidence": "B",
+      "status": "READY_FOR_APPROVAL"
+    },
+    {
+      "profile_id": "UNKNOWN_PROFILE_005",
+      "category": "UNKNOWN",
+      "product_count": 10,
+      "skus_sample": "P-3269, P-3268, P-2894...",
+      "attributes_to_apply": "color: Pink",
+      "evidence": "B",
+      "status": "READY_FOR_APPROVAL"
+    },
+    {
+      "profile_id": "UNKNOWN_PROFILE_006",
+      "category": "UNKNOWN",
+      "product_count": 6,
+      "skus_sample": "P-2939, P-2936, P-2935...",
+      "attributes_to_apply": "color: Black",
+      "evidence": "B",
+      "status": "READY_FOR_APPROVAL"
+    },
+    {
+      "profile_id": "UNKNOWN_PROFILE_007",
+      "category": "UNKNOWN",
+      "product_count": 7,
+      "skus_sample": "P-2938, P-2937, P-2934...",
+      "attributes_to_apply": "color: White",
+      "evidence": "B",
+      "status": "READY_FOR_APPROVAL"
+    },
+    {
+      "profile_id": "UNKNOWN_PROFILE_008",
+      "category": "UNKNOWN",
+      "product_count": 3,
+      "skus_sample": "P-2858, P-0032, P-0048",
+      "attributes_to_apply": "neck: Polo",
+      "evidence": "B",
+      "status": "READY_FOR_APPROVAL"
+    },
+    {
+      "profile_id": "UNKNOWN_PROFILE_009",
+      "category": "UNKNOWN",
+      "product_count": 5,
+      "skus_sample": "P-2703, P-0725, P-0649...",
+      "attributes_to_apply": "fabric: Wool",
+      "evidence": "B",
+      "status": "READY_FOR_APPROVAL"
+    },
+    {
+      "profile_id": "UNKNOWN_PROFILE_010",
+      "category": "UNKNOWN",
+      "product_count": 3,
+      "skus_sample": "P-1097, P-1095, P-1094",
+      "attributes_to_apply": "color: Yellow",
+      "evidence": "B",
+      "status": "READY_FOR_APPROVAL"
+    },
+    {
+      "profile_id": "UNKNOWN_PROFILE_011",
+      "category": "UNKNOWN",
+      "product_count": 3,
+      "skus_sample": ", P-0335, P-2684",
+      "attributes_to_apply": "color: Red",
+      "evidence": "B",
+      "status": "NEEDS_REVIEW"
+    },
+    {
+      "profile_id": "UNKNOWN_PROFILE_012",
+      "category": "UNKNOWN",
+      "product_count": 4,
+      "skus_sample": "P-3646, P-3647, P-3645...",
+      "attributes_to_apply": "color: Red, fabric: Cotton",
+      "evidence": "B",
+      "status": "NEEDS_REVIEW"
+    },
+    {
+      "profile_id": "CLOTHING_SET_PROFILE_001",
+      "category": "CLOTHING_SET",
+      "product_count": 470,
+      "skus_sample": "P-3634, P-3644, P-3440...",
+      "attributes_to_apply": "None",
+      "evidence": "N/A",
+      "status": "NO_ACTION_REQUIRED"
+    },
+    {
+      "profile_id": "CLOTHING_SET_PROFILE_002",
+      "category": "CLOTHING_SET",
+      "product_count": 2,
+      "skus_sample": ", p - 3437",
+      "attributes_to_apply": "color: Red, pattern: Floral, neck: Round, sleeve: Full",
+      "evidence": "B",
+      "status": "NEEDS_REVIEW"
+    },
+    {
+      "profile_id": "CLOTHING_SET_PROFILE_003",
+      "category": "CLOTHING_SET",
+      "product_count": 1,
+      "skus_sample": "",
+      "attributes_to_apply": "color: Red, pattern: Printed, sleeve: Full",
+      "evidence": "B",
+      "status": "READY_FOR_APPROVAL"
+    },
+    {
+      "profile_id": "FROCK_PROFILE_001",
+      "category": "FROCK",
+      "product_count": 1,
+      "skus_sample": "",
+      "attributes_to_apply": "color: Red",
+      "evidence": "B",
+      "status": "READY_FOR_APPROVAL"
+    },
+    {
+      "profile_id": "CLOTHING_SET_PROFILE_004",
+      "category": "CLOTHING_SET",
+      "product_count": 1,
+      "skus_sample": "P-1821",
+      "attributes_to_apply": "color: Red, pattern: Printed, neck: V-Neck",
+      "evidence": "B",
+      "status": "NEEDS_REVIEW"
+    },
+    {
+      "profile_id": "TSHIRT_PROFILE_001",
+      "category": "TSHIRT",
+      "product_count": 2,
+      "skus_sample": "P-0660, P-0665",
+      "attributes_to_apply": "color: Red, fabric: Denim, neck: Collar, sleeve: Full",
+      "evidence": "B",
+      "status": "NEEDS_REVIEW"
+    },
+    {
+      "profile_id": "TSHIRT_PROFILE_002",
+      "category": "TSHIRT",
+      "product_count": 58,
+      "skus_sample": "P-0033, P-2471, P-2243...",
+      "attributes_to_apply": "None",
+      "evidence": "N/A",
+      "status": "NO_ACTION_REQUIRED"
+    },
+    {
+      "profile_id": "JEANS_PROFILE_001",
+      "category": "JEANS",
+      "product_count": 37,
+      "skus_sample": "P-1016, P-1940, P-1942...",
+      "attributes_to_apply": "None",
+      "evidence": "N/A",
+      "status": "NO_ACTION_REQUIRED"
+    },
+    {
+      "profile_id": "TSHIRT_PROFILE_003",
+      "category": "TSHIRT",
+      "product_count": 1,
+      "skus_sample": "P-0670",
+      "attributes_to_apply": "fabric: Velvet",
+      "evidence": "B",
+      "status": "READY_FOR_APPROVAL"
+    },
+    {
+      "profile_id": "UNKNOWN_PROFILE_013",
+      "category": "UNKNOWN",
+      "product_count": 1,
+      "skus_sample": "P-0669",
+      "attributes_to_apply": "fabric: Velvet",
+      "evidence": "B",
+      "status": "READY_FOR_APPROVAL"
+    },
+    {
+      "profile_id": "UNKNOWN_PROFILE_014",
+      "category": "UNKNOWN",
+      "product_count": 1,
+      "skus_sample": "P-0071",
+      "attributes_to_apply": "neck: Collar",
+      "evidence": "B",
+      "status": "READY_FOR_APPROVAL"
+    },
+    {
+      "profile_id": "CLOTHING_SET_PROFILE_005",
+      "category": "CLOTHING_SET",
+      "product_count": 1,
+      "skus_sample": "P-0192",
+      "attributes_to_apply": "color: Red, fabric: Cotton, pattern: Printed, sleeve: Short",
+      "evidence": "B",
+      "status": "NEEDS_REVIEW"
+    },
+    {
+      "profile_id": "UNKNOWN_PROFILE_015",
+      "category": "UNKNOWN",
+      "product_count": 3,
+      "skus_sample": "P-0250, P-0280, P-0687",
+      "attributes_to_apply": "color: White, neck: Round, sleeve: Sleeveless",
+      "evidence": "B",
+      "status": "READY_FOR_APPROVAL"
+    },
+    {
+      "profile_id": "UNKNOWN_PROFILE_016",
+      "category": "UNKNOWN",
+      "product_count": 3,
+      "skus_sample": "P-0271, P-0274, P-0272",
+      "attributes_to_apply": "color: Red, neck: Round",
+      "evidence": "B",
+      "status": "READY_FOR_APPROVAL"
+    },
+    {
+      "profile_id": "UNKNOWN_PROFILE_017",
+      "category": "UNKNOWN",
+      "product_count": 1,
+      "skus_sample": "P-0258",
+      "attributes_to_apply": "neck: Round",
+      "evidence": "B",
+      "status": "READY_FOR_APPROVAL"
+    },
+    {
+      "profile_id": "UNKNOWN_PROFILE_018",
+      "category": "UNKNOWN",
+      "product_count": 1,
+      "skus_sample": "P-0662",
+      "attributes_to_apply": "color: Red, fabric: Denim, neck: Collar, sleeve: Full",
+      "evidence": "B",
+      "status": "NEEDS_REVIEW"
+    },
+    {
+      "profile_id": "TSHIRT_PROFILE_004",
+      "category": "TSHIRT",
+      "product_count": 3,
+      "skus_sample": "P-2362, P-1146, P-1397",
+      "attributes_to_apply": "neck: Polo",
+      "evidence": "B",
+      "status": "READY_FOR_APPROVAL"
+    },
+    {
+      "profile_id": "CLOTHING_SET_PROFILE_006",
+      "category": "CLOTHING_SET",
+      "product_count": 5,
+      "skus_sample": "P-1558, P-1559, P-1729...",
+      "attributes_to_apply": "color: Pink",
+      "evidence": "B",
+      "status": "READY_FOR_APPROVAL"
+    },
+    {
+      "profile_id": "FROCK_PROFILE_002",
+      "category": "FROCK",
+      "product_count": 4,
+      "skus_sample": "P-0387, P-0386, P-0400...",
+      "attributes_to_apply": "None",
+      "evidence": "N/A",
+      "status": "NO_ACTION_REQUIRED"
+    },
+    {
+      "profile_id": "UNKNOWN_PROFILE_019",
+      "category": "UNKNOWN",
+      "product_count": 2,
+      "skus_sample": "P-0201, P-0160",
+      "attributes_to_apply": "color: Red, fabric: Cotton, pattern: Printed, neck: Round, sleeve: Full",
+      "evidence": "B",
+      "status": "NEEDS_REVIEW"
+    },
+    {
+      "profile_id": "TSHIRT_PROFILE_005",
+      "category": "TSHIRT",
+      "product_count": 1,
+      "skus_sample": "P-2181",
+      "attributes_to_apply": "color: White",
+      "evidence": "B",
+      "status": "READY_FOR_APPROVAL"
+    },
+    {
+      "profile_id": "UNKNOWN_PROFILE_020",
+      "category": "UNKNOWN",
+      "product_count": 5,
+      "skus_sample": "P-2686, P-0680, P-0686...",
+      "attributes_to_apply": "color: Grey",
+      "evidence": "B",
+      "status": "READY_FOR_APPROVAL"
+    },
+    {
+      "profile_id": "CLOTHING_SET_PROFILE_007",
+      "category": "CLOTHING_SET",
+      "product_count": 1,
+      "skus_sample": "P-0089",
+      "attributes_to_apply": "color: Red, fabric: Cotton, pattern: Solid, sleeve: Full",
+      "evidence": "B",
+      "status": "NEEDS_REVIEW"
+    },
+    {
+      "profile_id": "UNKNOWN_PROFILE_021",
+      "category": "UNKNOWN",
+      "product_count": 1,
+      "skus_sample": "P-0365",
+      "attributes_to_apply": "color: Red, fabric: Silk, pattern: Embroidered, neck: Round, sleeve: Full",
+      "evidence": "B",
+      "status": "NEEDS_REVIEW"
+    },
+    {
+      "profile_id": "UNKNOWN_PROFILE_022",
+      "category": "UNKNOWN",
+      "product_count": 1,
+      "skus_sample": "P-0309",
+      "attributes_to_apply": "color: Red, fabric: Cotton, pattern: Printed, neck: Collar, sleeve: Full",
+      "evidence": "B",
+      "status": "NEEDS_REVIEW"
+    },
+    {
+      "profile_id": "UNKNOWN_PROFILE_023",
+      "category": "UNKNOWN",
+      "product_count": 1,
+      "skus_sample": "P-0305",
+      "attributes_to_apply": "color: Red, fabric: Silk, pattern: Embroidered, neck: Collar, sleeve: Full",
+      "evidence": "B",
+      "status": "NEEDS_REVIEW"
+    },
+    {
+      "profile_id": "UNKNOWN_PROFILE_024",
+      "category": "UNKNOWN",
+      "product_count": 1,
+      "skus_sample": "P-0195",
+      "attributes_to_apply": "color: Red, pattern: Solid, neck: Square, sleeve: Full",
+      "evidence": "B",
+      "status": "NEEDS_REVIEW"
+    },
+    {
+      "profile_id": "JEANS_PROFILE_002",
+      "category": "JEANS",
+      "product_count": 1,
+      "skus_sample": "P-0037",
+      "attributes_to_apply": "fabric: Denim",
+      "evidence": "B",
+      "status": "READY_FOR_APPROVAL"
+    },
+    {
+      "profile_id": "UNKNOWN_PROFILE_025",
+      "category": "UNKNOWN",
+      "product_count": 1,
+      "skus_sample": "P-0251",
+      "attributes_to_apply": "color: White, fabric: Cotton, neck: Round, sleeve: Sleeveless",
+      "evidence": "B",
+      "status": "READY_FOR_APPROVAL"
+    },
+    {
+      "profile_id": "TSHIRT_PROFILE_006",
+      "category": "TSHIRT",
+      "product_count": 1,
+      "skus_sample": "P-0347",
+      "attributes_to_apply": "fabric: Cotton",
+      "evidence": "B",
+      "status": "READY_FOR_APPROVAL"
+    },
+    {
+      "profile_id": "JEANS_PROFILE_003",
+      "category": "JEANS",
+      "product_count": 1,
+      "skus_sample": "P-0349",
+      "attributes_to_apply": "color: Red, fabric: Cotton",
+      "evidence": "B",
+      "status": "READY_FOR_APPROVAL"
+    },
+    {
+      "profile_id": "JEANS_PROFILE_004",
+      "category": "JEANS",
+      "product_count": 1,
+      "skus_sample": "P-0362",
+      "attributes_to_apply": "pattern: Printed",
+      "evidence": "B",
+      "status": "READY_FOR_APPROVAL"
+    }
+  ]
+}
