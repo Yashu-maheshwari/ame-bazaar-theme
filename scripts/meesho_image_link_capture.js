@@ -43,7 +43,20 @@ function parseSkuAndSlot(filename) {
 }
 
 app.get('/api/batch-status', (req, res) => {
-    res.json(getBatchState());
+    let state = getBatchState();
+    
+    // Dynamically verify physical ZIP presence
+    const ZIP_DIR = path.join(__dirname, 'meesho_image_export_package', 'zips');
+    state.batches.forEach(b => {
+        if (b.status === 'READY') {
+            let zipPath = path.join(ZIP_DIR, b.zip_filename);
+            if (!fs.existsSync(zipPath)) {
+                b.status = 'MISSING_ZIP';
+            }
+        }
+    });
+    
+    res.json(state);
 });
 
 app.post('/api/capture-links-batch', (req, res) => {
