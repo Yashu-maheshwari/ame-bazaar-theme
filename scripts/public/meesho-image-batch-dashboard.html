@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Meesho Image Batch Dashboard</title>
+    <style>
+        body { font-family: sans-serif; padding: 20px; background: #f0f2f5; }
+        .container { max-width: 1200px; margin: auto; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .header { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #eee; padding-bottom: 10px; margin-bottom: 20px; }
+        .stats { display: flex; gap: 20px; margin-bottom: 20px; }
+        .stat-box { background: #e9ecef; padding: 15px; border-radius: 8px; flex: 1; text-align: center; }
+        .stat-box h3 { margin: 0 0 10px 0; font-size: 1.2em; color: #333; }
+        .stat-box p { margin: 0; font-size: 1.5em; font-weight: bold; color: #007bff; }
+        table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
+        th, td { padding: 12px; text-align: left; border-bottom: 1px solid #ddd; }
+        th { background-color: #f8f9fa; }
+        .badge { padding: 5px 10px; border-radius: 20px; font-size: 0.8em; font-weight: bold; color: white; }
+        .badge.ready { background: #6c757d; }
+        .badge.verified { background: #28a745; }
+        .badge.active { background: #ffc107; color: #000; }
+        .action-btn { padding: 8px 15px; border: none; border-radius: 4px; cursor: pointer; color: white; font-weight: bold; background: #007bff; text-decoration: none; display: inline-block; }
+        
+        /* Capture Section */
+        .capture-section { display: none; margin-top: 30px; padding: 20px; border: 2px solid #007bff; border-radius: 8px; background: #f8f9fa; }
+        textarea { width: 100%; height: 200px; padding: 10px; font-family: monospace; box-sizing: border-box; margin-bottom: 10px; }
+        .btn-warning { background: #ffc107; color: black; padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; }
+        .btn-success { background: #28a745; color: white; padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; }
+        .results { margin-top: 20px; padding: 15px; background: white; border-radius: 4px; display: none; border: 1px solid #ddd; }
+        .error-list { color: #dc3545; font-size: 0.9em; max-height: 200px; overflow-y: auto; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <h2>Meesho Image Batch Dashboard</h2>
+    </div>
+
+    <div class="stats">
+        <div class="stat-box"><h3>Total Batches</h3><p id="stat-total-batches">0</p></div>
+        <div class="stat-box"><h3>Total Images</h3><p id="stat-total-images">0</p></div>
+        <div class="stat-box"><h3>Completed</h3><p id="stat-completed">0</p></div>
+        <div class="stat-box"><h3>Remaining</h3><p id="stat-remaining">0</p></div>
+    </div>
+
+    <h3>Next Action Required</h3>
+    <div id="next-action" style="padding: 15px; background: #e3f2fd; border-left: 5px solid #007bff; margin-bottom: 20px; font-size: 1.1em;">
+        Loading...
+    </div>
+
+    <div class="capture-section" id="capture-section">
+        <h3>Capture Links for: <span id="active-batch-id"></span></h3>
+        <p>1. Go to Supplier Panel -> Catalog Upload -> Bulk Upload -> Image Bulk Upload.</p>
+        <p>2. Upload <strong id="active-batch-zip"></strong>.</p>
+        <p>3. Once links are generated, highlight the table, copy (Ctrl+C), and paste below.</p>
+        
+        <textarea id="paste-area" placeholder="Paste Meesho Supplier Panel table data here..."></textarea>
+        
+        <div style="display: flex; gap: 10px;">
+            <button class="btn-warning" onclick="processLinks(true)">Dry Run (Verify)</button>
+            <button class="btn-success" id="btn-save" onclick="processLinks(false)" disabled>Save Batch (Requires Clean Dry Run)</button>
+        </div>
+
+        <div id="results" class="results">
+            <h4 style="margin-top:0;">Dry Run Results <span id="run-type"></span></h4>
+            <p><strong>Status:</strong> <span id="r-status" style="font-weight:bold;"></span></p>
+            <p>Rows parsed: <span id="r-total">0</span></p>
+            <p>Valid URLs: <span id="r-valid">0</span> / <span id="r-expected">0</span> (Expected in batch)</p>
+            <p>Matched SKUs: <span id="r-matched">0</span></p>
+            <p>Foreign SKUs (Wrong Batch): <span id="r-foreign" style="color:red;">0</span></p>
+            <p>Unknown SKUs: <span id="r-unk" style="color:red;">0</span></p>
+            <p>Invalid URLs: <span id="r-inv" style="color:red;">0</span></p>
+            
+            <div id="errors-container" style="display:none; margin-top: 10px;">
+                <h5>Warnings / Errors:</h5>
+                <div id="error-list" class="error-list"></div>
+            </div>
+        </div>
+    </div>
+
+    <h3>Batch Status</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>Batch ID</th>
+                <th>ZIP File</th>
+                <th>Images</th>
+                <th>Status</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody id="batch-list">
+        </tbody>
+    </table>
+</div>
+
+<script>
+let currentActiveBatch = null;
+
+async function loadDashboard() {
+    let res = await fetch('/api/batch-status');
+    let data = await res.json();
+    
+    document.getElementById('stat-total-batches').innerText = data.batches.length;
+    
+    let totalImages = 0;
+    let completedImages = 0;
+    let remainingImages = 0;
+    let nextBatch = null;
+    
+    let tbody = document.getElementById('batch-list');
+    tbody.innerHTML = '';
+    
+    data.batches.forEach(b => {
+        totalImages += b.image_count;
+        if (b.status === 'VERIFIED') {
+            completedImages += b.image_count;
+        } else {
+            remainingImages += b.image_count;
+            if (!nextBatch) nextBatch = b;
+        }
+        
+        let badgeClass = 'ready';
+        if (b.status === 'VERIFIED') badgeClass = 'verified';
+        
+        let tr = document.createElement('tr');
+        tr.innerHTML = \`
+            <td>\${b.id}</td>
+            <td>\${b.zip_filename}</td>
+            <td>\${b.image_count}</td>
+            <td><span class="badge \${badgeClass}">\${b.status}</span></td>
+            <td>
+                \${b.status !== 'VERIFIED' ? \`<button class="action-btn" onclick="startCapture('\${b.id}', '\${b.zip_filename}', \${b.image_count})">Start</button>\` : 'Done'}
+            </td>
+        \`;
+        tbody.appendChild(tr);
+    });
+    
+    document.getElementById('stat-total-images').innerText = totalImages;
+    document.getElementById('stat-completed').innerText = completedImages;
+    document.getElementById('stat-remaining').innerText = remainingImages;
+    
+    if (nextBatch) {
+        document.getElementById('next-action').innerHTML = \`Ready for next batch. Please process <strong>\${nextBatch.zip_filename}</strong>.\`;
+    } else {
+        document.getElementById('next-action').innerHTML = \`<strong>All batches completed successfully!</strong>\`;
+    }
+}
+
+function startCapture(batchId, zipFilename, expectedCount) {
+    currentActiveBatch = batchId;
+    document.getElementById('active-batch-id').innerText = batchId;
+    document.getElementById('active-batch-zip').innerText = zipFilename;
+    document.getElementById('r-expected').innerText = expectedCount;
+    document.getElementById('capture-section').style.display = 'block';
+    window.scrollTo({ top: document.getElementById('capture-section').offsetTop, behavior: 'smooth' });
+}
+
+async function processLinks(dryRun) {
+    if (!currentActiveBatch) return;
+    
+    let rawText = document.getElementById('paste-area').value;
+    if (!rawText.trim()) {
+        alert("Please paste some data first.");
+        return;
+    }
+
+    let res = await fetch('/api/capture-links-batch', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ rawText, dryRun, batchId: currentActiveBatch })
+    });
+    
+    let stats = await res.json();
+    
+    document.getElementById('results').style.display = 'block';
+    document.getElementById('run-type').innerText = dryRun ? '(DRY RUN)' : '(SAVED)';
+    document.getElementById('r-total').innerText = stats.total_rows_parsed;
+    document.getElementById('r-valid').innerText = stats.valid_meesho_links;
+    document.getElementById('r-matched').innerText = stats.matched_skus;
+    document.getElementById('r-foreign').innerText = stats.foreign_skus;
+    document.getElementById('r-unk').innerText = stats.unknown_skus;
+    document.getElementById('r-inv').innerText = stats.invalid_urls;
+
+    let isClean = stats.valid_meesho_links > 0 && stats.foreign_skus === 0 && stats.unknown_skus === 0 && stats.invalid_urls === 0;
+    
+    let statusEl = document.getElementById('r-status');
+    if (isClean) {
+        statusEl.innerText = "CLEAN & READY";
+        statusEl.style.color = "green";
+        document.getElementById('btn-save').disabled = false;
+    } else {
+        statusEl.innerText = "ERRORS DETECTED - Cannot Save";
+        statusEl.style.color = "red";
+        document.getElementById('btn-save').disabled = true;
+    }
+
+    let errCont = document.getElementById('errors-container');
+    let errList = document.getElementById('error-list');
+    if (stats.errors && stats.errors.length > 0) {
+        errCont.style.display = 'block';
+        errList.innerHTML = stats.errors.map(e => \`<div>\${e}</div>\`).join('');
+    } else {
+        errCont.style.display = 'none';
+        errList.innerHTML = '';
+    }
+    
+    if (!dryRun && isClean) {
+        alert("Successfully verified and saved " + currentActiveBatch + "!");
+        document.getElementById('paste-area').value = ''; 
+        document.getElementById('capture-section').style.display = 'none';
+        document.getElementById('btn-save').disabled = true;
+        loadDashboard();
+    }
+}
+
+loadDashboard();
+</script>
+</body>
+</html>
