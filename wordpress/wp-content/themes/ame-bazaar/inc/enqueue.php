@@ -163,9 +163,10 @@ function ame_bazaar_dequeue_wc_blocks_on_homepage() {
 }
 add_action( 'wp_enqueue_scripts', 'ame_bazaar_dequeue_wc_blocks_on_homepage', 100 );
 
-add_action( 'wp_print_styles', function() {
-    if ( is_front_page() ) {
+add_action( 'template_redirect', function() {
+    if ( isset($_GET['ame_dump_styles']) ) {
         global $wp_styles;
-        file_put_contents( WP_CONTENT_DIR . '/uploads/ame_styles_dump.json', wp_json_encode( $wp_styles->queue ) );
+        wp_send_json( $wp_styles->queue );
+        exit;
     }
-}, 9999 );
+} );
