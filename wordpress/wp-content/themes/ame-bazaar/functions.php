@@ -111,6 +111,7 @@ require_once AME_BAZAAR_PATH . '/components/local-entity/customer-highlights.php
 require_once AME_BAZAAR_PATH . '/components/local-entity/popular-review-keywords.php';
 require_once AME_BAZAAR_PATH . '/inc/social-identity.php';
 require_once AME_BAZAAR_PATH . '/inc/social-feed-api.php';
+require_once AME_BAZAAR_PATH . '/inc/class-ame-merchant-feed.php';
 
 /**
  * Dynamic link overrides for legacy/broken menu links stored in database.
