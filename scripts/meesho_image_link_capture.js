@@ -20,11 +20,17 @@ function saveState(state) {
     fs.writeFileSync(STATE_FILE, JSON.stringify(state, null, 2));
 }
 
-function parseSkuFromFilename(filename) {
+function parseSkuAndSlot(filename) {
     let base = filename.replace(/\.[a-z0-9]+$/i, '');
     base = base.replace(/-Copy$/i, '');
-    base = base.replace(/_\d+$/, '');
-    if (base) return base.toUpperCase();
+    
+    let slot = 1;
+    let match = base.match(/_(\d+)$/);
+    if (match) {
+        slot = parseInt(match[1], 10);
+        base = base.replace(/_\d+$/, '');
+    }
+    if (base) return { sku: base.toUpperCase(), slot };
     return null;
 }
 
@@ -46,63 +52,57 @@ app.post('/api/capture-links', (req, res) => {
         dry_run: dryRun
     };
 
-    // Very robust TSV / raw text parsing
-    let lines = rawText.split(/\r?\n/);
+    // Split raw text by "http" to handle concatenated URLs correctly
+    // We replace 'http' with '|http' to safely split on the pipe.
+    let rawChunks = rawText.replace(/(https?:\/\/)/gi, '|$1').split('|');
     
-    // We will extract anything that looks like a filename and anything that looks like a meesho URL on the same line
-    const urlRegex = /https:\/\/upload\.meeshosupplyassets\.com\/[^\s\t]+/i;
-    const fileRegex = /([A-Za-z0-9_-]+(?:-Copy)?\.[a-z]{3,4})/i;
-
     let processedMappings = [];
 
-    for (let line of lines) {
-        line = line.trim();
-        if (!line) continue;
+    for (let chunk of rawChunks) {
+        chunk = chunk.trim();
+        if (!chunk.startsWith('http')) continue;
+        stats.total_rows_parsed++;
 
-        let urlMatch = line.match(urlRegex);
-        let fileMatch = line.match(fileRegex);
-
-        if (urlMatch || fileMatch) {
-            stats.total_rows_parsed++;
-        }
-
-        if (!urlMatch) {
-            if (fileMatch) {
-                stats.invalid_urls++;
-                stats.errors.push(`Row has filename ${fileMatch[1]} but no valid upload.meeshosupplyassets.com URL.`);
-            }
-            continue;
-        }
-
-        let url = urlMatch[0];
+        // Extract the clean URL up to the first space, tab, or common delimiter if present
+        // Since it's concatenated by "http" from our split, this chunk should now be exactly one URL
+        // However, it might still have trailing text like "Actions Copy Link" from TSV.
+        let urlMatch = chunk.match(/^(https?:\/\/[^\s\t]+)/i);
+        if (!urlMatch) continue;
         
-        if (!fileMatch) {
+        let url = urlMatch[1];
+        
+        // Clean trailing artifacts that might be stuck to the URL extension if they didn't have spaces
+        let extMatch = url.match(/(.*?\.jpg|.*?\.jpeg|.*?\.png)/i);
+        if (extMatch) {
+            url = extMatch[1];
+        }
+
+        if (!url.toLowerCase().startsWith('https://upload.meeshosupplyassets.com/')) {
             stats.invalid_urls++;
-            stats.errors.push(`Row has URL ${url} but no recognizable filename.`);
+            stats.errors.push(`Invalid URL domain: ${url}`);
             continue;
         }
 
-        let filename = fileMatch[1];
         stats.valid_meesho_links++;
 
-        let sku = parseSkuFromFilename(filename);
-        if (!sku) {
+        let filename = url.split('/').pop();
+        let parsed = parseSkuAndSlot(filename);
+        if (!parsed) {
             stats.unknown_skus++;
-            stats.errors.push(`Could not extract SKU from filename: ${filename}`);
+            stats.errors.push(`Could not extract SKU from URL filename: ${filename}`);
             continue;
         }
 
-        processedMappings.push({ sku, filename, url });
+        processedMappings.push({ sku: parsed.sku, slot: parsed.slot, filename, url });
     }
 
     for (let map of processedMappings) {
-        let { sku, filename, url } = map;
+        let { sku, slot, filename, url } = map;
         
-        // Find if SKU exists in state. Since user might have lowercase/uppercase mismatches, let's be careful.
+        // Find if SKU exists in state
         let targetSku = null;
         if (state.products[sku]) targetSku = sku;
         else {
-            // Case insensitive search
             for (let k in state.products) {
                 if (k.toUpperCase() === sku.toUpperCase()) {
                     targetSku = k;
@@ -130,18 +130,19 @@ app.post('/api/capture-links', (req, res) => {
             continue;
         }
 
-        // Check if we already have this filename mapped (overwrite protection)
-        // For simplicity, we just append to the array. If they want to reset, we'd need a clear function.
         if (prod.status === 'VERIFIED_MEESHO_URL' && prod.meesho_image_urls.length > 0) {
             stats.already_imported++;
         }
 
         if (!dryRun) {
-            prod.meesho_image_urls.push(url);
-            // set the primary one for backward compatibility if it's null
-            if (!prod.meesho_image_url) {
+            // If it's slot 1, put it at the beginning, else push it
+            if (slot === 1) {
+                prod.meesho_image_urls.unshift(url);
                 prod.meesho_image_url = url;
+            } else {
+                prod.meesho_image_urls.push(url);
             }
+            
             prod.status = 'VERIFIED_MEESHO_URL';
             prod.updated_at = new Date().toISOString();
             
@@ -149,6 +150,7 @@ app.post('/api/capture-links', (req, res) => {
                 timestamp: new Date().toISOString(),
                 action: 'IMPORT_IMAGE_LINK',
                 sku: targetSku,
+                slot: slot,
                 filename: filename,
                 url: url
             });
