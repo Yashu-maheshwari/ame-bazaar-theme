@@ -660,7 +660,45 @@ function ame_bazaar_get_breadcrumb_schema() {
 	);
 
 	if ( ! is_front_page() && ! is_home() ) {
-		if ( is_singular() ) {
+		if ( is_product() && class_exists( 'WooCommerce' ) ) {
+			$position = 2;
+			$terms = wc_get_product_terms( get_the_ID(), 'product_cat', apply_filters( 'woocommerce_breadcrumb_product_terms_args', array( 'orderby' => 'parent', 'order' => 'DESC' ) ) );
+			
+			if ( $terms && ! is_wp_error( $terms ) ) {
+				$main_term = apply_filters( 'woocommerce_breadcrumb_main_term', $terms[0], $terms );
+				$ancestors = get_ancestors( $main_term->term_id, 'product_cat' );
+				$ancestors = array_reverse( $ancestors );
+				
+				foreach ( $ancestors as $ancestor_id ) {
+					$ancestor = get_term( $ancestor_id, 'product_cat' );
+					if ( $ancestor && ! is_wp_error( $ancestor ) ) {
+						$schema['itemListElement'][] = array(
+							'@type'    => 'ListItem',
+							'position' => $position,
+							'name'     => $ancestor->name,
+							'item'     => get_term_link( $ancestor ),
+						);
+						$position++;
+					}
+				}
+				
+				$schema['itemListElement'][] = array(
+					'@type'    => 'ListItem',
+					'position' => $position,
+					'name'     => $main_term->name,
+					'item'     => get_term_link( $main_term ),
+				);
+				$position++;
+			}
+			
+			$schema['itemListElement'][] = array(
+				'@type'    => 'ListItem',
+				'position' => $position,
+				'name'     => get_the_title(),
+				'item'     => get_permalink(),
+			);
+			
+		} elseif ( is_singular() ) {
 			$schema['itemListElement'][] = array(
 				'@type'    => 'ListItem',
 				'position' => 2,
@@ -1012,7 +1050,6 @@ function ame_bazaar_get_single_product_schema() {
 		'name'        => $product->get_name(),
 		'image'       => $image_url,
 		'description' => $desc,
-		'sku'         => $product->get_sku() ? $product->get_sku() : 'AME-' . $post_id,
 		'brand'       => array(
 			'@type' => 'Brand',
 			'name'  => $brand_name,
@@ -1025,6 +1062,16 @@ function ame_bazaar_get_single_product_schema() {
 			'url'           => get_permalink( $post_id ),
 		),
 	);
+
+	if ( $product->get_sku() ) {
+		$schema['sku'] = $product->get_sku();
+	}
+
+	$terms = wc_get_product_terms( $post_id, 'product_cat', apply_filters( 'woocommerce_breadcrumb_product_terms_args', array( 'orderby' => 'parent', 'order' => 'DESC' ) ) );
+	if ( $terms && ! is_wp_error( $terms ) ) {
+		$main_term = apply_filters( 'woocommerce_breadcrumb_main_term', $terms[0], $terms );
+		$schema['category'] = $main_term->name;
+	}
 
 	// Custom properties map
 	$property_mappings = array(
