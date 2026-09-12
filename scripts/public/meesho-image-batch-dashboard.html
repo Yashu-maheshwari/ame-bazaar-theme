@@ -64,11 +64,13 @@
             <h4 style="margin-top:0;">Dry Run Results <span id="run-type"></span></h4>
             <p><strong>Status:</strong> <span id="r-status" style="font-weight:bold;"></span></p>
             <p>Rows parsed: <span id="r-total">0</span></p>
-            <p>Valid URLs: <span id="r-valid">0</span> / <span id="r-expected">0</span> (Expected in batch)</p>
-            <p>Matched SKUs: <span id="r-matched">0</span></p>
+            <p>Valid URLs: <span id="r-valid">0</span> / <span id="r-expected">0</span> (Expected exactly)</p>
+            <p>Matched SKUs: <span id="r-matched">0</span> / <span id="r-expected-2">0</span></p>
+            <p>Duplicates in Paste: <span id="r-dup" style="color:red;">0</span></p>
             <p>Foreign SKUs (Wrong Batch): <span id="r-foreign" style="color:red;">0</span></p>
             <p>Unknown SKUs: <span id="r-unk" style="color:red;">0</span></p>
             <p>Invalid URLs: <span id="r-inv" style="color:red;">0</span></p>
+            <p>Missing Files: <span id="r-mis" style="color:red;">0</span></p>
             
             <div id="errors-container" style="display:none; margin-top: 10px;">
                 <h5>Warnings / Errors:</h5>
@@ -179,11 +181,22 @@ async function processLinks(dryRun) {
     document.getElementById('r-total').innerText = stats.total_rows_parsed;
     document.getElementById('r-valid').innerText = stats.valid_meesho_links;
     document.getElementById('r-matched').innerText = stats.matched_skus;
+    document.getElementById('r-expected-2').innerText = stats.expected_count;
+    document.getElementById('r-dup').innerText = stats.duplicates_in_paste;
     document.getElementById('r-foreign').innerText = stats.foreign_skus;
     document.getElementById('r-unk').innerText = stats.unknown_skus;
     document.getElementById('r-inv').innerText = stats.invalid_urls;
+    document.getElementById('r-mis').innerText = stats.missing_files ? stats.missing_files.length : 0;
 
-    let isClean = stats.valid_meesho_links > 0 && stats.foreign_skus === 0 && stats.unknown_skus === 0 && stats.invalid_urls === 0;
+    let isClean = (
+        stats.valid_meesho_links === stats.expected_count &&
+        stats.matched_skus === stats.expected_count &&
+        stats.foreign_skus === 0 &&
+        stats.unknown_skus === 0 &&
+        stats.invalid_urls === 0 &&
+        stats.duplicates_in_paste === 0 &&
+        (stats.missing_files && stats.missing_files.length === 0)
+    );
     
     let statusEl = document.getElementById('r-status');
     if (isClean) {
