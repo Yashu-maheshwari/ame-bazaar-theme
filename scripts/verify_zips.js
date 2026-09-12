@@ -20,6 +20,14 @@ function run() {
     let duplicates = 0;
 
     batchState.batches.forEach(b => {
+        // Skip already-verified batches (ZIP may have been deleted after successful capture)
+        if (b.status === 'VERIFIED') {
+            md += `| ${b.id} | ${b.zip_filename} | ${b.image_count} | — | — | ✅ ALREADY VERIFIED |\n`;
+            // Still track their filenames for cross-batch duplicate detection
+            b.filenames.forEach(f => seenFilenames.add(f));
+            return;
+        }
+
         let zipPath = path.join(ZIP_DIR, b.zip_filename);
         let exists = fs.existsSync(zipPath);
         
