@@ -939,8 +939,6 @@ function ame_bazaar_render_business_settings_page() {
  * 8. Performance Preconnects and Preloads inside wp_head.
  */
 function ame_bazaar_head_preload_preconnect() {
-	echo '<link rel="preconnect" href="https://fonts.googleapis.com">' . "\n";
-	echo '<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>' . "\n";
 	$logo = ame_bazaar_get_custom_logo_url();
 	if ( $logo ) {
 		echo '<link rel="preload" as="image" href="' . esc_url( $logo ) . '">' . "\n";
