@@ -17,6 +17,7 @@
         .badge.ready { background: #6c757d; }
         .badge.verified { background: #28a745; }
         .badge.active { background: #ffc107; color: #000; }
+        .badge.test_only { background: #17a2b8; }
         .action-btn { padding: 8px 15px; border: none; border-radius: 4px; cursor: pointer; color: white; font-weight: bold; background: #007bff; text-decoration: none; display: inline-block; }
         
         /* Capture Section */
@@ -120,7 +121,9 @@ async function loadDashboard() {
         
         let badgeClass = 'ready';
         if (b.status === 'VERIFIED') badgeClass = 'verified';
-        
+        if (b.status === 'TEST_ONLY') badgeClass = 'test_only';
+        if (b.status === 'MISSING_ZIP') badgeClass = 'active';
+
         let tr = document.createElement('tr');
         tr.innerHTML = `
             <td>${b.id}</td>
