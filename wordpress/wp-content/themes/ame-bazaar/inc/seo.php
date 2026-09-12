@@ -35,6 +35,15 @@ function ame_bazaar_output_seo_meta() {
 		$url   = home_url( add_query_arg( array(), $wp->request ) ) . '/';
 		$title = single_term_title( '', false ) . ' - ' . $brand_name;
 		$type  = 'website';
+		
+		if ( class_exists( 'WooCommerce' ) && is_product_category() ) {
+			$term_id = get_queried_object_id();
+			$seo_data = ame_bazaar_get_category_seo_data( $term_id );
+			if ( $seo_data ) {
+				$title = $seo_data['title'];
+				$custom_desc = $seo_data['desc'];
+			}
+		}
 	} elseif ( is_post_type_archive() ) {
 		$url   = get_post_type_archive_link( get_query_var( 'post_type' ) );
 		$title = post_type_archive_title( '', false ) . ' - ' . $brand_name;
@@ -162,12 +171,68 @@ function ame_bazaar_image_alt_fallback( $attr, $attachment ) {
 add_filter( 'wp_get_attachment_image_attributes', 'ame_bazaar_image_alt_fallback', 10, 2 );
 
 /**
+ * Get programmatic SEO title and description for core WooCommerce categories.
+ */
+function ame_bazaar_get_category_seo_data( $term_id ) {
+	$mapping = array(
+		'men' => array(
+			'title' => "Men's Clothing & Fashion in Kirari, Delhi | AME Bazaar",
+			'desc'  => "Explore men's clothing at AME Bazaar in Kirari, Delhi, including shirts, t-shirts, stretchable jeans, trousers, and traditional kurta pajamas."
+		),
+		'women' => array(
+			'title' => "Women's Clothing & Fashion in Kirari, Delhi | AME Bazaar",
+			'desc'  => "Explore women's clothing at AME Bazaar in Kirari, Delhi, including kurtis, SKD sets, sarees, nightwear, and co-ord sets."
+		),
+		'kids' => array(
+			'title' => "Kids' Clothing & Fashion in Kirari, Delhi | AME Bazaar",
+			'desc'  => "Explore kids' clothing at AME Bazaar in Kirari, Delhi. Premium boys and girls wear, festive ethnic sets, dresses, and casual wear."
+		),
+		'boys' => array(
+			'title' => "Boys' Clothing in Kirari, Delhi | AME Bazaar",
+			'desc'  => "Explore boys' clothing at AME Bazaar in Kirari, Delhi, including baba suits, casual wear, and festive ethnic wear."
+		),
+		'girls' => array(
+			'title' => "Girls' Clothing in Kirari, Delhi | AME Bazaar",
+			'desc'  => "Explore girls' clothing at AME Bazaar in Kirari, Delhi, including frocks, dresses, co-ord sets, and party wear."
+		),
+		'infant' => array(
+			'title' => "Infant Clothing & Baby Essentials in Kirari, Delhi | AME Bazaar",
+			'desc'  => "Explore infant clothing and baby essentials at AME Bazaar in Kirari, Delhi, including rompers, gift sets, cloth sets, and baby beds."
+		),
+		'tailoring' => array(
+			'title' => "Custom Tailoring & Alteration Services in Kirari, Delhi | AME Bazaar",
+			'desc'  => "In-store custom tailoring and garment sizing alterations at AME Bazaar on Mubarakpur Road, Kirari, Delhi. Master tailors for gents and ladies."
+		),
+		'accessories' => array(
+			'title' => "Fashion Accessories in Kirari, Delhi | AME Bazaar",
+			'desc'  => "Shop premium fashion accessories at AME Bazaar in Kirari, Delhi. Belts, wallets, ties, and everyday utility wear."
+		),
+	);
+
+	$term = get_term( $term_id, 'product_cat' );
+	if ( $term && ! is_wp_error( $term ) ) {
+		if ( isset( $mapping[ $term->slug ] ) ) {
+			return $mapping[ $term->slug ];
+		}
+	}
+	return false;
+}
+
+/**
  * Filter the document title parts to optimize the homepage title and single product titles.
  */
 function ame_bazaar_optimize_document_title( $title_parts ) {
 	if ( is_front_page() || is_home() ) {
 		$title_parts['title']   = 'AME Bazaar';
 		$title_parts['tagline'] = 'Family Fashion Store & Custom Tailoring in Kirari, Delhi';
+	} elseif ( class_exists( 'WooCommerce' ) && is_product_category() ) {
+		$term_id = get_queried_object_id();
+		$seo_data = ame_bazaar_get_category_seo_data( $term_id );
+		if ( $seo_data ) {
+			$title_parts['title'] = $seo_data['title'];
+			unset( $title_parts['tagline'] );
+			unset( $title_parts['site'] );
+		}
 	}
 	return $title_parts;
 }
