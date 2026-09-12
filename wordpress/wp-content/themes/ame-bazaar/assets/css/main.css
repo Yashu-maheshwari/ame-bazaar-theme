@@ -5662,50 +5662,6 @@
 	}
 }
 
-/* 6. MOBILE STICKY ADD TO CART */
-@media (max-width: 767px) {
-	.ame-sticky-add-to-cart {
-		position: fixed;
-		bottom: 0;
-		left: 0;
-		width: 100%;
-		background: var(--ame-color-white);
-		box-shadow: 0 -4px 15px rgba(0, 0, 0, 0.08);
-		padding: 0.75rem 1rem;
-		z-index: 9999;
-		display: flex;
-		align-items: center;
-		justify-content: space-between;
-		border-top: 1px solid var(--ame-color-border);
-	}
-	
-	.ame-sticky-add-to-cart-info {
-		display: flex;
-		flex-direction: column;
-	}
-	
-	.ame-sticky-add-to-cart-title {
-		font-size: 0.85rem;
-		font-weight: 700;
-		color: var(--ame-color-navy);
-		white-space: nowrap;
-		overflow: hidden;
-		text-overflow: ellipsis;
-		max-width: 160px;
-	}
-	
-	.ame-sticky-add-to-cart-price {
-		font-size: 0.9rem;
-		font-weight: 700;
-		color: var(--ame-color-gold-dark);
-	}
-	
-	.ame-btn-sticky-add {
-		padding: 0.65rem 1.25rem !important;
-		font-size: 0.8rem !important;
-	}
-}
-
 /* ==========================================================================
    PRODUCTION CART, CHECKOUT & CUSTOMER PORTAL STYLES
    ========================================================================== */
@@ -7412,51 +7368,6 @@
 	color: #ffffff !important;
 	transform: translateY(-2px);
 	box-shadow: 0 4px 10px rgba(0, 35, 71, 0.1) !important;
-}
-
-/* Sticky add to cart mobile bar */
-.ame-sticky-add-to-cart {
-	position: fixed !important;
-	bottom: 0 !important;
-	left: 0 !important;
-	width: 100% !important;
-	background: #ffffff !important;
-	border-top: 1px solid #e2e8f0 !important;
-	padding: 0.75rem 1rem !important;
-	display: flex !important;
-	justify-content: space-between !important;
-	align-items: center !important;
-	z-index: 1000 !important;
-	box-shadow: 0 -4px 15px rgba(0, 35, 71, 0.06) !important;
-}
-
-.ame-sticky-add-to-cart-info {
-	display: flex !important;
-	flex-direction: column !important;
-	gap: 0.2rem !important;
-}
-
-.ame-sticky-add-to-cart-title {
-	font-weight: 700 !important;
-	font-size: 0.85rem !important;
-	color: var(--ame-color-primary, #002347) !important;
-}
-
-.ame-sticky-add-to-cart-price {
-	font-weight: 700 !important;
-	font-size: 0.9rem !important;
-	color: var(--ame-color-accent, #f59e0b) !important;
-}
-
-.ame-btn-sticky-add {
-	padding: 0.6rem 1.5rem !important;
-	font-weight: 700 !important;
-	font-size: 0.85rem !important;
-	border-radius: 30px !important;
-	background: var(--ame-color-primary, #002347) !important;
-	color: #ffffff !important;
-	text-decoration: none !important;
-	text-transform: uppercase !important;
 }
 
 /* Responsive single product page */

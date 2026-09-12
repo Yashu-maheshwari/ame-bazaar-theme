@@ -83,6 +83,15 @@ function ame_bazaar_enqueue_assets() {
 		);
 	}
 
+	if ( function_exists('is_product') && is_product() ) {
+		wp_enqueue_style(
+			'ame-bazaar-sticky-cart',
+			ame_bazaar_asset_uri( 'assets/css/sticky-add-to-cart.css' ),
+			array( 'ame-bazaar-main' ),
+			ame_bazaar_asset_version( 'assets/css/sticky-add-to-cart.css' )
+		);
+	}
+
 	wp_enqueue_style(
 		'ame-bazaar-mobile-header',
 		ame_bazaar_asset_uri( 'assets/css/mobile-header.css' ),
