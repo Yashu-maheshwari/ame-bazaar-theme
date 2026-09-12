@@ -156,12 +156,9 @@ add_action( 'wp_enqueue_scripts', 'ame_bazaar_enqueue_assets' );
  * Phase 21-13: Isolate WooCommerce CSS dependency
  * Remove WooCommerce Blocks CSS from the homepage since no blocks are used.
  */
-function ame_bazaar_dequeue_woocommerce_styles_on_homepage() {
+function ame_bazaar_dequeue_wc_blocks_on_homepage() {
 	if ( is_front_page() || is_home() ) {
-		wp_dequeue_style( 'wc-blocks-style' );
-		wp_dequeue_style( 'woocommerce-layout' );
 		wp_dequeue_style( 'woocommerce-smallscreen' );
-		wp_dequeue_style( 'woocommerce-general' );
 	}
 }
-add_action( 'wp_enqueue_scripts', 'ame_bazaar_dequeue_woocommerce_styles_on_homepage', 100 );
+add_action( 'wp_enqueue_scripts', 'ame_bazaar_dequeue_wc_blocks_on_homepage', 100 );
