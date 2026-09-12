@@ -5,6 +5,16 @@ const bodyParser = require('body-parser');
 
 const app = express();
 app.use(bodyParser.json({ limit: '10mb' }));
+
+// Disable browser caching for all responses
+app.use((req, res, next) => {
+    res.set('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
+    res.set('Pragma', 'no-cache');
+    res.set('Expires', '0');
+    res.set('Surrogate-Control', 'no-store');
+    next();
+});
+
 app.use(express.static(path.join(__dirname, 'public')));
 
 const STATE_FILE = path.join(__dirname, 'meesho-image-link-state.json');
