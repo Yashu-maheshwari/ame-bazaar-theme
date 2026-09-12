@@ -122,15 +122,15 @@ async function loadDashboard() {
         if (b.status === 'VERIFIED') badgeClass = 'verified';
         
         let tr = document.createElement('tr');
-        tr.innerHTML = \`
-            <td>\${b.id}</td>
-            <td>\${b.zip_filename}</td>
-            <td>\${b.image_count}</td>
-            <td><span class="badge \${badgeClass}">\${b.status}</span></td>
+        tr.innerHTML = `
+            <td>${b.id}</td>
+            <td>${b.zip_filename}</td>
+            <td>${b.image_count}</td>
+            <td><span class="badge ${badgeClass}">${b.status}</span></td>
             <td>
-                \${b.status !== 'VERIFIED' ? \`<button class="action-btn" onclick="startCapture('\${b.id}', '\${b.zip_filename}', \${b.image_count})">Start</button>\` : 'Done'}
+                ${b.status !== 'VERIFIED' ? `<button class="action-btn" onclick="startCapture('${b.id}', '${b.zip_filename}', ${b.image_count})">Start</button>` : 'Done'}
             </td>
-        \`;
+        `;
         tbody.appendChild(tr);
     });
     
@@ -139,9 +139,9 @@ async function loadDashboard() {
     document.getElementById('stat-remaining').innerText = remainingImages;
     
     if (nextBatch) {
-        document.getElementById('next-action').innerHTML = \`Ready for next batch. Please process <strong>\${nextBatch.zip_filename}</strong>.\`;
+        document.getElementById('next-action').innerHTML = `Ready for next batch. Please process <strong>${nextBatch.zip_filename}</strong>.`;
     } else {
-        document.getElementById('next-action').innerHTML = \`<strong>All batches completed successfully!</strong>\`;
+        document.getElementById('next-action').innerHTML = `<strong>All batches completed successfully!</strong>`;
     }
 }
 
@@ -197,7 +197,7 @@ async function processLinks(dryRun) {
     let errList = document.getElementById('error-list');
     if (stats.errors && stats.errors.length > 0) {
         errCont.style.display = 'block';
-        errList.innerHTML = stats.errors.map(e => \`<div>\${e}</div>\`).join('');
+        errList.innerHTML = stats.errors.map(e => `<div>${e}</div>`).join('');
     } else {
         errCont.style.display = 'none';
         errList.innerHTML = '';
