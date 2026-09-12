@@ -173,3 +173,14 @@ function ame_bazaar_dequeue_woocommerce_layout_on_homepage() {
     }
 }
 add_action( 'wp_enqueue_scripts', 'ame_bazaar_dequeue_woocommerce_layout_on_homepage', 100 );
+/**
+ * Phase 21-16: Isolate Homepage JavaScript dependency
+ * Remove the completely unused Astra Sites preview JS on the homepage.
+ */
+function ame_bazaar_dequeue_unused_js_on_homepage() {
+    if ( is_front_page() || is_home() ) {
+        wp_dequeue_script( 'starter-templates-zip-preview' );
+    }
+}
+add_action( 'wp_enqueue_scripts', 'ame_bazaar_dequeue_unused_js_on_homepage', 100 );
+
