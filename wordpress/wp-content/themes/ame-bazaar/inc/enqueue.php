@@ -99,16 +99,6 @@ function ame_bazaar_enqueue_assets() {
 		ame_bazaar_asset_version( 'assets/css/mobile-header.css' )
 	);
 
-	// GSAP for cinematic hero animations — loaded only where needed (homepage)
-	if ( is_front_page() || is_home() ) {
-		wp_enqueue_script(
-			'gsap',
-			'https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js',
-			array(),
-			'3.12.5',
-			true
-		);
-	}
 
 	wp_enqueue_script(
 		'ame-bazaar-global',

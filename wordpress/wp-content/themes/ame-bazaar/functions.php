@@ -168,7 +168,6 @@ function ame_bazaar_defer_scripts( $tag, $handle, $src ) {
 		'ame-bazaar-global',
 		'ame-bazaar-mobile-header-interactions',
 		'ame-bazaar-footer-social-links',
-		'gsap',
 		'jquery',
 		'jquery-core',
 		'jquery-migrate'
