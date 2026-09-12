@@ -95,9 +95,9 @@ function ame_bazaar_get_website_schema() {
  */
 function ame_bazaar_get_organization_schema() {
 	$brand_name   = ame_bazaar_get_business_setting( 'store_name', 'AME Bazaar' );
-	$phone        = ame_bazaar_get_business_setting( 'phone', '+91 99999 99999' );
-	$email        = ame_bazaar_get_business_setting( 'email', 'contact@amebazaar.com' );
-	$whatsapp     = ame_bazaar_get_business_setting( 'whatsapp', '+91 99999 99999' );
+	$phone        = ame_bazaar_get_business_setting( 'phone', '+91 99535 69533' );
+	$email        = ame_bazaar_get_business_setting( 'email', 'apparelmaheshwari@gmail.com' );
+	$whatsapp     = ame_bazaar_get_business_setting( 'whatsapp', '+91 99535 69533' );
 	$clean_wa     = preg_replace( '/[^0-9+]/', '', $whatsapp );
 	$whatsapp_url = 'https://wa.me/' . ltrim( $clean_wa, '+' );
 	$facebook     = ame_bazaar_get_business_setting( 'facebook', 'https://www.facebook.com/AmeBazaar/' );
@@ -110,6 +110,7 @@ function ame_bazaar_get_organization_schema() {
 		'name'          => 'AME Bazaar - Family Garment Store',
 		'legalName'     => 'Apparel Maheshwari Enterprises',
 		'alternateName' => 'AME Bazaar',
+		'description'   => 'AME Bazaar (Apparel Maheshwari Enterprises) is a family fashion retail store and custom tailoring showroom located on Mubarakpur Road, Kirari, Delhi, offering men\'s, women\'s, and kids\' clothing.',
 		'url'           => home_url( '/' ),
 		'foundingDate'  => '2015',
 		'knowsAbout'    => array(
@@ -171,7 +172,7 @@ function ame_bazaar_get_organization_schema() {
  */
 function ame_bazaar_get_clothing_store_schema() {
 	$brand_name = ame_bazaar_get_business_setting( 'store_name', 'AME Bazaar' );
-	$phone      = ame_bazaar_get_business_setting( 'phone', '+91 99999 99999' );
+	$phone      = ame_bazaar_get_business_setting( 'phone', '+91 99535 69533' );
 	$maps_url   = ame_bazaar_get_business_setting( 'maps_url', 'https://maps.google.com/?q=AME+Bazaar+Kirari+Delhi' );
 
 	// Coordinates
@@ -196,6 +197,7 @@ function ame_bazaar_get_clothing_store_schema() {
 		'@type'              => 'ClothingStore',
 		'@id'                => home_url( '/#store' ),
 		'name'               => $brand_name,
+		'description'        => 'Physical clothing showroom and custom tailoring center on Mubarakpur Road, Kirari, Delhi, offering ready-made family garments and tailoring services.',
 		'url'                => home_url( '/' ),
 		'telephone'          => $phone,
 		'priceRange'         => $price_range,
@@ -271,6 +273,7 @@ function ame_bazaar_get_clothing_store_schema() {
 			array(
 				'@type' => 'OfferCatalog',
 				'name'  => 'In-Store Tailoring & Custom Garment Alterations',
+				'url'   => home_url( '/tailoring-near-me/' ),
 			),
 		),
 	);
@@ -345,15 +348,15 @@ function ame_bazaar_get_webpage_schema() {
 		);
 	}
 
-	// Check if this is a registered local entity page
+	// Check if this is a registered local entity page or tailoring page
 	if ( is_page() ) {
 		$entity_type = get_post_meta( get_the_ID(), 'ame_local_entity_type', true );
 		$registry    = ame_bazaar_get_entity_registry();
-		if ( $entity_type && isset( $registry[ $entity_type ] ) ) {
+		if ( ( $entity_type && isset( $registry[ $entity_type ] ) ) || is_page( 'tailoring-near-me' ) ) {
 			$schema['about'] = array(
 				'@id' => home_url( '/#store' ),
 			);
-			if ( 'tailoring' === $entity_type ) {
+			if ( 'tailoring' === $entity_type || is_page( 'tailoring-near-me' ) ) {
 				$schema['mainEntity'] = array(
 					'@id' => get_permalink() . '#service',
 				);
@@ -959,7 +962,7 @@ function ame_bazaar_output_schema() {
 	// 9. Tailoring Service Entity (Conditional on tailoring page)
 	if ( is_page() ) {
 		$entity_type = get_post_meta( get_the_ID(), 'ame_local_entity_type', true );
-		if ( 'tailoring' === $entity_type ) {
+		if ( 'tailoring' === $entity_type || is_page( 'tailoring-near-me' ) ) {
 			$service = ame_bazaar_get_tailoring_service_schema();
 			if ( $service ) {
 				$graph[] = $service;
@@ -1095,10 +1098,42 @@ function ame_bazaar_get_single_product_schema() {
 		$schema['sku'] = $product->get_sku();
 	}
 
-	$terms = wc_get_product_terms( $post_id, 'product_cat', apply_filters( 'woocommerce_breadcrumb_product_terms_args', array( 'orderby' => 'parent', 'order' => 'DESC' ) ) );
+	$terms = wc_get_product_terms( $post_id, 'product_cat', array( 'orderby' => 'parent', 'order' => 'DESC' ) );
+	$category_path    = '';
+	$deepest_cat_name = '';
+	$top_cat_name     = '';
+
 	if ( $terms && ! is_wp_error( $terms ) ) {
-		$main_term = apply_filters( 'woocommerce_breadcrumb_main_term', $terms[0], $terms );
-		$schema['category'] = $main_term->name;
+		// Pick the most specific term (deepest term with a parent if available)
+		$deepest_term = $terms[0];
+		foreach ( $terms as $t ) {
+			if ( $t->parent > 0 ) {
+				$deepest_term = $t;
+				break;
+			}
+		}
+		$deepest_cat_name = $deepest_term->name;
+
+		$ancestors = get_ancestors( $deepest_term->term_id, 'product_cat' );
+		$hierarchy = array();
+		if ( ! empty( $ancestors ) ) {
+			foreach ( array_reverse( $ancestors ) as $anc_id ) {
+				$anc_term = get_term( $anc_id, 'product_cat' );
+				if ( $anc_term && ! is_wp_error( $anc_term ) ) {
+					$hierarchy[] = $anc_term->name;
+					if ( empty( $top_cat_name ) ) {
+						$top_cat_name = $anc_term->name;
+					}
+				}
+			}
+		}
+		$hierarchy[] = $deepest_term->name;
+		if ( empty( $top_cat_name ) ) {
+			$top_cat_name = $deepest_term->name;
+		}
+
+		$category_path = implode( ' > ', $hierarchy );
+		$schema['category'] = $category_path;
 	}
 
 	// Custom properties map
@@ -1132,6 +1167,28 @@ function ame_bazaar_get_single_product_schema() {
 
 	$additional_properties = array();
 
+	if ( ! empty( $category_path ) ) {
+		$additional_properties[] = array(
+			'@type' => 'PropertyValue',
+			'name'  => 'Category Hierarchy',
+			'value' => $category_path,
+		);
+	}
+	if ( ! empty( $deepest_cat_name ) ) {
+		$additional_properties[] = array(
+			'@type' => 'PropertyValue',
+			'name'  => 'Product Type',
+			'value' => $deepest_cat_name,
+		);
+	}
+	if ( ! empty( $top_cat_name ) && $top_cat_name !== $deepest_cat_name ) {
+		$additional_properties[] = array(
+			'@type' => 'PropertyValue',
+			'name'  => 'Department',
+			'value' => $top_cat_name,
+		);
+	}
+
 	foreach ( $property_mappings as $label => $meta_key ) {
 		$val = get_post_meta( $post_id, $meta_key, true );
 		if ( $val ) {
@@ -1149,7 +1206,8 @@ function ame_bazaar_get_single_product_schema() {
 		$schema['size'] = $flat_size;
 	}
 
-		// Safe Raintech Category mapping to audienceType
+	// Safe Raintech Category mapping to audienceType
+	$audience_set = false;
 	$raintech_raw = get_post_meta( $post_id, '_ame_raw_raintech_data', true );
 	if ( is_array( $raintech_raw ) && ! empty( $raintech_raw['Category'] ) ) {
 		$category     = trim( (string) $raintech_raw['Category'] );
@@ -1167,6 +1225,28 @@ function ame_bazaar_get_single_product_schema() {
 			$schema['audience'] = array(
 				'@type'        => 'Audience',
 				'audienceType' => $gender_map[ $category_key ],
+			);
+			$audience_set = true;
+		}
+	}
+
+	// Dynamic fallback from existing verified WooCommerce taxonomy
+	if ( ! $audience_set && ! empty( $top_cat_name ) ) {
+		$top_lower = strtolower( $top_cat_name );
+		if ( 'men' === $top_lower || "men's wear" === $top_lower ) {
+			$schema['audience'] = array(
+				'@type'        => 'Audience',
+				'audienceType' => 'Men',
+			);
+		} elseif ( 'women' === $top_lower || "women's wear" === $top_lower ) {
+			$schema['audience'] = array(
+				'@type'        => 'Audience',
+				'audienceType' => 'Women',
+			);
+		} elseif ( 'kids' === $top_lower || "kids' wear" === $top_lower ) {
+			$schema['audience'] = array(
+				'@type'        => 'Audience',
+				'audienceType' => 'Kids',
 			);
 		}
 	}

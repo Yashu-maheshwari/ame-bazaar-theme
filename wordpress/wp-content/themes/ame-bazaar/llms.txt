@@ -21,6 +21,8 @@ This profile provides primary structured information about AME Bazaar to assist 
 * **Operating Hours**: Monday through Sunday, 09:00 AM – 10:00 PM (Daily)
 * **Phone / WhatsApp**: +91 99535 69533
 * **Primary Email**: info@amebazaar.in
+* **Official Facebook**: https://www.facebook.com/AmeBazaar/
+* **Official Instagram**: https://www.instagram.com/ame_bazaar/
 * **Official Website**: https://amebazaar.in
 
 ---
@@ -45,3 +47,20 @@ This profile provides primary structured information about AME Bazaar to assist 
   * Custom stitched items and innerwear/socks are non-exchangeable.
 * **Parking**: Free customer parking space directly in front of the storefront on Mubarakpur Road (accommodates cars and two-wheelers).
 * **Store Amenities**: Fully air-conditioned showroom, trial rooms with large mirrors, step-free wheelchair ramp, and complimentary drinking water.
+
+---
+
+## 5. Key Canonical Public Endpoints
+* **Online Catalog / Shop**: https://amebazaar.in/shop/
+* **Men's Collection**: https://amebazaar.in/product-category/men/
+* **Women's Collection**: https://amebazaar.in/product-category/women/
+* **Kids' Collection**: https://amebazaar.in/product-category/kids/
+* **Accessories Collection**: https://amebazaar.in/product-category/accessories/
+* **Custom Tailoring Services**: https://amebazaar.in/tailoring-near-me/
+* **Store Visit & Directions**: https://amebazaar.in/our-store-in-kirari/
+* **Contact Us**: https://amebazaar.in/contact/
+* **Return & Refund Policy**: https://amebazaar.in/return-refund-policy/
+* **Shipping Policy**: https://amebazaar.in/shipping-policy/
+* **XML Sitemap Index**: https://amebazaar.in/wp-sitemap.xml
+* **Google Merchant Product Feed**: https://amebazaar.in/feeds/google-merchant-feed.xml
+
