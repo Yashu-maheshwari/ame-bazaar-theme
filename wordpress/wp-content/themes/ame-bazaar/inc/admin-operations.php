@@ -950,21 +950,40 @@ add_action( 'wp_head', 'ame_bazaar_head_preload_preconnect', 1 );
  * 9. Crawling, Sitemap.xml, LLMs.txt and Robots.txt dynamic handler.
  */
 function ame_bazaar_robots_txt( $output, $public ) {
-	// Add disallow rules for sensitive WooCommerce endpoints
+	// Add disallow rules for sensitive WooCommerce endpoints to the global wildcard group
 	$output .= "\nDisallow: /wp-includes/\nDisallow: /cart/\nDisallow: /checkout/\nDisallow: /my-account/\nDisallow: /?s=\nDisallow: /?add-to-cart=\n\n";
 
-	// Add modern AI Search Bots explicitly
-	$output .= "User-agent: OAI-SearchBot\nAllow: /\n\n";
-	$output .= "User-agent: GPTBot\nAllow: /\n\n";
-	$output .= "User-agent: ChatGPT-User\nAllow: /\n\n";
-	$output .= "User-agent: Googlebot\nAllow: /\n\n";
-	$output .= "User-agent: Google-Extended\nAllow: /\n\n";
-	$output .= "User-agent: Bingbot\nAllow: /\n\n";
-	$output .= "User-agent: CCBot\nAllow: /\n\n";
-	$output .= "User-agent: anthropic-ai\nAllow: /\n\n";
-	$output .= "User-agent: ClaudeBot\nAllow: /\n\n";
-	$output .= "User-agent: PerplexityBot\nAllow: /\n\n";
-	
+	// Define the core protections that every explicit bot group MUST inherit
+	$protections = "Allow: /\n" . 
+				   "Disallow: /wp-admin/\n" . 
+				   "Allow: /wp-admin/admin-ajax.php\n" . 
+				   "Disallow: /wp-includes/\n" . 
+				   "Disallow: /cart/\n" . 
+				   "Disallow: /checkout/\n" . 
+				   "Disallow: /my-account/\n" . 
+				   "Disallow: /?s=\n" . 
+				   "Disallow: /?add-to-cart=\n" . 
+				   "Disallow: /*?add-to-cart=\n" . 
+				   "Disallow: /*?*add-to-cart=\n\n";
+
+	// Add modern AI Search Bots explicitly with all necessary crawl protections
+	$bots = array(
+		'OAI-SearchBot',
+		'GPTBot',
+		'ChatGPT-User',
+		'Googlebot',
+		'Google-Extended',
+		'Bingbot',
+		'CCBot',
+		'anthropic-ai',
+		'ClaudeBot',
+		'PerplexityBot'
+	);
+
+	foreach ( $bots as $bot ) {
+		$output .= "User-agent: " . $bot . "\n" . $protections;
+	}
+
 	return $output;
 }
 add_filter( 'robots_txt', 'ame_bazaar_robots_txt', 10, 2 );
