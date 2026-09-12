@@ -341,7 +341,11 @@ get_header();
 					<h2 id="why-heading" style="font-size:clamp(1.35rem,2.5vw,1.75rem);font-weight:800;color:var(--ame-color-navy);margin:0 0 1.5rem;">
 						<?php esc_html_e( 'Why Families in Kirari Choose AME Bazaar', 'ame-bazaar' ); ?>
 					</h2>
-					<?php get_template_part( 'components/local-entity/trust-cards' ); ?>
+					<?php
+					if ( function_exists( 'ame_bazaar_render_trust_badges' ) ) {
+						ame_bazaar_render_trust_badges();
+					}
+					?>
 				</section>
 
 				<!-- ── Collections Grid ─────────────────────────────────────── -->
@@ -435,11 +439,17 @@ get_header();
 						// Renders placeholder cards via the existing reusable component.
 						// Replace with real review data when available via get_post_meta / CPT.
 						for ( $i = 0; $i < 3; $i++ ) :
-							get_template_part( 'components/local-entity/review-card' );
+							if ( function_exists( 'ame_bazaar_render_review_card' ) ) {
+								ame_bazaar_render_review_card();
+							}
 						endfor;
 						?>
 					</div>
-					<?php get_template_part( 'components/local-entity/review-cta' ); ?>
+					<?php
+					if ( function_exists( 'ame_bazaar_render_review_ctas' ) ) {
+						ame_bazaar_render_review_ctas();
+					}
+					?>
 				</section>
 
 				<!-- ── FAQ ──────────────────────────────────────────────────── -->
@@ -598,7 +608,11 @@ get_header();
 
 				<?php get_template_part( 'components/local-entity/business-info' ); ?>
 				<?php get_template_part( 'components/local-entity/opening-hours' ); ?>
-				<?php get_template_part( 'components/local-entity/google-rating-widget' ); ?>
+				<?php
+				if ( function_exists( 'ame_bazaar_render_google_rating_widget' ) ) {
+					ame_bazaar_render_google_rating_widget();
+				}
+				?>
 				<?php get_template_part( 'components/local-entity/tailoring-status' ); ?>
 				<?php get_template_part( 'components/local-entity/payment-methods' ); ?>
 

@@ -9,6 +9,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+if ( ! function_exists( 'ame_bazaar_render_google_rating_widget' ) ) {
 /**
  * Render Google Rating Widget.
  */
@@ -40,4 +41,5 @@ function ame_bazaar_render_google_rating_widget() {
 		</a>
 	</div>
 	<?php
+}
 }

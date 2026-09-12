@@ -9,6 +9,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+if ( ! function_exists( 'ame_bazaar_render_review_ctas' ) ) {
 /**
  * Render Review CTAs.
  */
@@ -37,4 +38,5 @@ function ame_bazaar_render_review_ctas() {
 		</a>
 	</div>
 	<?php
+}
 }

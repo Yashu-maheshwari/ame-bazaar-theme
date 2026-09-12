@@ -9,6 +9,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+if ( ! function_exists( 'ame_bazaar_render_store_info_card' ) ) {
 /**
  * Render Store Information trust card.
  */
@@ -49,7 +50,9 @@ function ame_bazaar_render_store_info_card() {
 	</div>
 	<?php
 }
+}
 
+if ( ! function_exists( 'ame_bazaar_render_google_rating_card' ) ) {
 /**
  * Render Google rating card.
  */
@@ -81,7 +84,9 @@ function ame_bazaar_render_google_rating_card() {
 	</div>
 	<?php
 }
+}
 
+if ( ! function_exists( 'ame_bazaar_render_trust_badges' ) ) {
 /**
  * Render trust features badges.
  */
@@ -121,4 +126,5 @@ function ame_bazaar_render_trust_badges() {
 		<?php endif; ?>
 	</div>
 	<?php
+}
 }

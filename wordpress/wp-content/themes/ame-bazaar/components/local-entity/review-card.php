@@ -9,6 +9,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+if ( ! function_exists( 'ame_bazaar_render_review_card' ) ) {
 /**
  * Render Review Card.
  *
@@ -79,4 +80,5 @@ function ame_bazaar_render_review_card( $review = array() ) {
 		</div>
 	</div>
 	<?php
+}
 }
