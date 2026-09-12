@@ -57,7 +57,9 @@ function ame_bazaar_output_seo_meta() {
 	$image      = ame_bazaar_get_custom_logo_url();
 
 	// Check for single product meta overrides
-	$custom_desc = '';
+	if ( ! isset( $custom_desc ) ) {
+		$custom_desc = '';
+	}
 	if ( is_product() ) {
 		$post_id = get_the_ID();
 		$custom_title = get_post_meta( $post_id, '_ame_seo_title', true );
