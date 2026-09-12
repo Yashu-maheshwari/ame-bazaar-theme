@@ -222,3 +222,23 @@ add_action( 'wp_head', 'ame_bazaar_async_google_fonts', 2 );
 
 
 require_once AME_BAZAAR_PATH . '/inc/indexnow.php';
+
+
+
+/**
+ * SEO: Exclude WooCommerce utility pages from XML sitemap to avoid robots.txt conflicts.
+ */
+add_filter( 'wp_sitemaps_posts_query_args', function( $args, $post_type ) {
+	if ( 'page' === $post_type ) {
+		$excluded_ids = array( 6, 7, 8 ); // Cart, Checkout, My Account
+		$args['post__not_in'] = isset( $args['post__not_in'] ) ? array_merge( $args['post__not_in'], $excluded_ids ) : $excluded_ids;
+	}
+	return $args;
+}, 10, 2 );
+
+/**
+ * SEO: Disable the WordPress users sitemap to prevent PII/email slug leakage.
+ */
+add_filter( 'wp_sitemaps_add_provider', function( $provider, $name ) {
+	return ( 'users' === $name ) ? false : $provider;
+}, 10, 2 );

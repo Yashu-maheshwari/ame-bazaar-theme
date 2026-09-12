@@ -44,6 +44,14 @@ function ame_bazaar_output_seo_meta() {
 				$custom_desc = $seo_data['desc'];
 			}
 		}
+	} elseif ( is_author() ) {
+		$url   = get_author_posts_url( get_queried_object_id() );
+		$title = get_the_archive_title() . ' - ' . $brand_name;
+		$type  = 'website';
+	} elseif ( is_search() ) {
+		$url   = get_search_link();
+		$title = __('Search Results for: ', 'ame-bazaar') . get_search_query() . ' - ' . $brand_name;
+		$type  = 'website';
 	} elseif ( is_post_type_archive() ) {
 		$url   = get_post_type_archive_link( get_query_var( 'post_type' ) );
 		$title = post_type_archive_title( '', false ) . ' - ' . $brand_name;
@@ -52,6 +60,16 @@ function ame_bazaar_output_seo_meta() {
 		$url   = get_permalink();
 		$title = get_the_title();
 		$type  = ( class_exists( 'WooCommerce' ) && is_product() ) ? 'product' : 'article';
+	}
+	
+	// Handle pagination for archives (except tax/category which use $wp->request)
+	if ( is_paged() && ! is_singular() && ! ( is_tax() || is_category() || is_tag() ) ) {
+		global $wp_rewrite;
+		if ( $wp_rewrite->using_permalinks() ) {
+			$url = user_trailingslashit( trailingslashit( $url ) . 'page/' . get_query_var( 'paged' ) );
+		} else {
+			$url = add_query_arg( 'paged', get_query_var( 'paged' ), $url );
+		}
 	}
 	
 	$image      = ame_bazaar_get_custom_logo_url();
@@ -147,6 +165,8 @@ function ame_bazaar_output_seo_meta() {
 		echo '<meta name="twitter:image" content="' . esc_url( $image ) . '">' . "\n";
 	}
 }
+// Remove WP Core canonical to prevent duplicates
+remove_action( 'wp_head', 'rel_canonical' );
 add_action( 'wp_head', 'ame_bazaar_output_seo_meta', 5 );
 
 /**
