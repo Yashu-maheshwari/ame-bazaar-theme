@@ -158,7 +158,8 @@ add_action( 'wp_enqueue_scripts', 'ame_bazaar_enqueue_assets' );
  */
 function ame_bazaar_dequeue_wc_blocks_on_homepage() {
 	if ( is_front_page() || is_home() ) {
-		wp_dequeue_style( 'woocommerce-smallscreen' );
+		wp_dequeue_style( 'select2' );
+		wp_dequeue_style( 'selectWoo' );
 	}
 }
 add_action( 'wp_enqueue_scripts', 'ame_bazaar_dequeue_wc_blocks_on_homepage', 100 );
