@@ -162,3 +162,14 @@ function ame_bazaar_dequeue_woocommerce_styles_on_homepage() {
 	}
 }
 add_action( 'wp_enqueue_scripts', 'ame_bazaar_dequeue_woocommerce_styles_on_homepage', 100 );
+
+/**
+ * Phase 21-14: Isolate WooCommerce Layout CSS dependency
+ * Remove woocommerce-layout CSS from the homepage since it uses custom grid markup.
+ */
+function ame_bazaar_dequeue_woocommerce_layout_on_homepage() {
+    if ( is_front_page() || is_home() ) {
+        wp_dequeue_style( 'woocommerce-layout' );
+    }
+}
+add_action( 'wp_enqueue_scripts', 'ame_bazaar_dequeue_woocommerce_layout_on_homepage', 100 );
