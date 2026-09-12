@@ -148,10 +148,6 @@ function ame_bazaar_get_organization_schema() {
 	if ( $facebook && '#' !== $facebook ) {
 		$same_as[] = $facebook;
 	}
-	// Safely preserve both official Facebook identities in the Knowledge Graph.
-	if ( ! in_array( 'https://www.facebook.com/AMETTBAZAAR/', $same_as, true ) ) {
-		$same_as[] = 'https://www.facebook.com/AMETTBAZAAR/';
-	}
 	if ( ! in_array( 'https://www.facebook.com/AmeBazaar/', $same_as, true ) ) {
 		$same_as[] = 'https://www.facebook.com/AmeBazaar/';
 	}
@@ -287,10 +283,6 @@ function ame_bazaar_get_clothing_store_schema() {
 	if ( $facebook && '#' !== $facebook ) {
 		$same_as[] = $facebook;
 	}
-	// Safely preserve both official Facebook identities in the Knowledge Graph.
-	if ( ! in_array( 'https://www.facebook.com/AMETTBAZAAR/', $same_as, true ) ) {
-		$same_as[] = 'https://www.facebook.com/AMETTBAZAAR/';
-	}
 	if ( ! in_array( 'https://www.facebook.com/AmeBazaar/', $same_as, true ) ) {
 		$same_as[] = 'https://www.facebook.com/AmeBazaar/';
 	}
@@ -373,6 +365,10 @@ function ame_bazaar_get_webpage_schema() {
 	if ( is_singular( 'post' ) ) {
 		$schema['mainEntity'] = array(
 			'@id' => get_permalink() . '#article',
+		);
+	} elseif ( function_exists( 'is_product' ) && is_product() ) {
+		$schema['mainEntity'] = array(
+			'@id' => get_permalink() . '#product',
 		);
 	}
 
@@ -1030,9 +1026,16 @@ function ame_bazaar_get_single_product_schema() {
 		return false;
 	}
 
-	$brand_name = get_post_meta( $post_id, '_ame_brand', true );
-	if ( ! $brand_name ) {
-		$brand_name = ame_bazaar_get_business_setting( 'store_name', 'AME Bazaar' );
+	$custom_brand = get_post_meta( $post_id, '_ame_brand', true );
+	$brand_name   = $custom_brand ? $custom_brand : ame_bazaar_get_business_setting( 'store_name', 'AME Bazaar' );
+
+	$brand_schema = array(
+		'@type' => 'Brand',
+		'name'  => $brand_name,
+	);
+	if ( empty( $custom_brand ) || 'AME Bazaar' === $custom_brand ) {
+		$brand_schema['@id'] = home_url( '/#brand' );
+		$brand_schema['url'] = home_url( '/' );
 	}
 
 	$image_id  = $product->get_image_id();
@@ -1043,6 +1046,40 @@ function ame_bazaar_get_single_product_schema() {
 	$desc       = $short_desc ? $short_desc : $long_desc;
 	$desc       = wp_strip_all_tags( $desc );
 
+	// Offer availability mapping
+	$stock_status = $product->get_stock_status();
+	if ( 'onbackorder' === $stock_status ) {
+		$availability = 'https://schema.org/BackOrder';
+	} elseif ( 'outofstock' === $stock_status || ! $product->is_in_stock() ) {
+		$availability = 'https://schema.org/OutOfStock';
+	} else {
+		$availability = 'https://schema.org/InStock';
+	}
+
+	$raw_price       = $product->get_price();
+	$formatted_price = ( '' !== $raw_price && false !== $raw_price && null !== $raw_price ) ? wc_format_decimal( $raw_price, 2 ) : '0.00';
+	$currency        = function_exists( 'get_woocommerce_currency' ) ? get_woocommerce_currency() : 'INR';
+
+	$offer = array(
+		'@type'         => 'Offer',
+		'@id'           => get_permalink( $post_id ) . '#offer',
+		'url'           => get_permalink( $post_id ),
+		'priceCurrency' => $currency,
+		'price'         => $formatted_price,
+		'itemCondition' => 'https://schema.org/NewCondition',
+		'availability'  => $availability,
+		'seller'        => array(
+			'@type' => 'ClothingStore',
+			'@id'   => home_url( '/#store' ),
+			'name'  => ame_bazaar_get_business_setting( 'store_name', 'AME Bazaar' ),
+		),
+	);
+
+	$date_on_sale_to = $product->get_date_on_sale_to();
+	if ( $date_on_sale_to && is_a( $date_on_sale_to, 'WC_DateTime' ) ) {
+		$offer['priceValidUntil'] = $date_on_sale_to->date( 'Y-m-d' );
+	}
+
 	// Build basic Product schema
 	$schema = array(
 		'@type'       => 'Product',
@@ -1050,17 +1087,8 @@ function ame_bazaar_get_single_product_schema() {
 		'name'        => $product->get_name(),
 		'image'       => $image_url,
 		'description' => $desc,
-		'brand'       => array(
-			'@type' => 'Brand',
-			'name'  => $brand_name,
-		),
-		'offers'      => array(
-			'@type'         => 'Offer',
-			'priceCurrency' => 'INR',
-			'price'         => $product->get_price() ? $product->get_price() : '0',
-			'availability'  => $product->is_in_stock() ? 'https://schema.org/InStock' : 'https://schema.org/OutOfStock',
-			'url'           => get_permalink( $post_id ),
-		),
+		'brand'       => $brand_schema,
+		'offers'      => $offer,
 	);
 
 	if ( $product->get_sku() ) {

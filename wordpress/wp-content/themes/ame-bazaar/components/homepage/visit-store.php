@@ -126,7 +126,7 @@ $hours = ame_bazaar_get_business_setting( 'hours', 'Mo-Su 09:00–22:00' );
 					</div>
 
 					<nav class="ame-bazaar-social-links" aria-label="Social media" style="display:flex;align-items:center;gap:0.75rem;margin:0.25rem 0 0.75rem 0;">
-						<a class="ame-bazaar-social-link ame-bazaar-social-link--facebook" href="https://www.facebook.com/AMETTBAZAAR" target="_blank" rel="noopener noreferrer" aria-label="Follow AME Bazaar on Facebook" style="display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;border-radius:50%;">
+						<a class="ame-bazaar-social-link ame-bazaar-social-link--facebook" href="https://www.facebook.com/AmeBazaar/" target="_blank" rel="noopener noreferrer" aria-label="Follow AME Bazaar on Facebook" style="display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;border-radius:50%;">
 							<svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true" focusable="false" style="width:20px;height:20px;max-width:20px;max-height:20px;display:block;"><path d="M14 8h3V4h-3c-3.314 0-5 1.686-5 5v3H6v4h3v4h4v-4h3l1-4h-4V9c0-.552.448-1 1-1Z" fill="currentColor"/></svg>
 						</a>
 						<a class="ame-bazaar-social-link ame-bazaar-social-link--instagram" href="https://www.instagram.com/ame_bazaar/" target="_blank" rel="noopener noreferrer" aria-label="Follow AME Bazaar on Instagram" style="display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;border-radius:50%;">

@@ -14,7 +14,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 function ame_bazaar_official_social_profiles() {
 	return array(
-		'https://www.facebook.com/AMETTBAZAAR',
 		'https://www.facebook.com/AmeBazaar/',
 		'https://www.instagram.com/ame_bazaar/',
 	);

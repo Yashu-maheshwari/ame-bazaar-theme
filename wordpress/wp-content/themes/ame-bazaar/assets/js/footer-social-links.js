@@ -8,7 +8,7 @@ var icons={
 };
 function setup(){var wrap=document.querySelector('.ame-footer-socials');if(!wrap)return;
 var links=wrap.querySelectorAll('.ame-footer-social-link');
-links.forEach(function(a){var label=(a.getAttribute('aria-label')||'').toLowerCase();if(label.indexOf('facebook')>-1){a.href='https://www.facebook.com/AMETTBAZAAR';a.innerHTML=icons.facebook;}else if(label.indexOf('instagram')>-1){a.href='https://www.instagram.com/ame_bazaar/';a.innerHTML=icons.instagram;}});
+links.forEach(function(a){var label=(a.getAttribute('aria-label')||'').toLowerCase();if(label.indexOf('facebook')>-1){a.href='https://www.facebook.com/AmeBazaar/';a.innerHTML=icons.facebook;}else if(label.indexOf('instagram')>-1){a.href='https://www.instagram.com/ame_bazaar/';a.innerHTML=icons.instagram;}});
 if(!wrap.querySelector('.ame-footer-social-threads')){var a=document.createElement('a');a.href='https://www.threads.com/@ame_bazaar';a.className='ame-footer-social-link ame-footer-social-threads';a.target='_blank';a.rel='noopener noreferrer';a.setAttribute('aria-label','Visit AME Bazaar on Threads');a.innerHTML=icons.threads;wrap.appendChild(a);}
 if(!wrap.querySelector('.ame-footer-social-youtube')){var a=document.createElement('a');a.href='https://www.youtube.com/channel/UCWvZ6Oa8KkullmhxB2oEp7A';a.className='ame-footer-social-link ame-footer-social-youtube';a.target='_blank';a.rel='noopener noreferrer';a.setAttribute('aria-label','Visit AME Bazaar on YouTube');a.innerHTML=icons.youtube;wrap.appendChild(a);}
 }

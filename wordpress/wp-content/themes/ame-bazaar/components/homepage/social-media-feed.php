@@ -13,7 +13,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-$facebook_url  = 'https://www.facebook.com/AMETTBAZAAR';
+$facebook_url  = 'https://www.facebook.com/AmeBazaar/';
 $instagram_url = 'https://www.instagram.com/ame_bazaar/';
 $feed_api_url  = rest_url( 'ame/v1/social-feed' );
 ?>
