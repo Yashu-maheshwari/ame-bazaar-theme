@@ -16,6 +16,7 @@ function ame_bazaar_official_social_profiles() {
 	return array(
 		'https://www.facebook.com/AmeBazaar/',
 		'https://www.instagram.com/ame_bazaar/',
+		'https://www.youtube.com/@amebazaar',
 	);
 }
 

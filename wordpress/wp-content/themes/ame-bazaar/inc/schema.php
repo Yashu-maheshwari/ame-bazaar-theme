@@ -102,7 +102,10 @@ function ame_bazaar_get_organization_schema() {
 	$whatsapp_url = 'https://wa.me/' . ltrim( $clean_wa, '+' );
 	$facebook     = ame_bazaar_get_business_setting( 'facebook', 'https://www.facebook.com/AmeBazaar/' );
 	$instagram    = ame_bazaar_get_business_setting( 'instagram', 'https://www.instagram.com/ame_bazaar/' );
-	$maps_url     = ame_bazaar_get_business_setting( 'maps_url', 'https://maps.google.com/?q=AME+Bazaar+Kirari+Delhi' );
+	$maps_url     = ame_bazaar_get_business_setting( 'maps_url', 'https://maps.google.com/?cid=7148817758252271950' );
+	if ( empty( $maps_url ) || false !== strpos( $maps_url, 'q=AME+Bazaar' ) ) {
+		$maps_url = 'https://maps.google.com/?cid=7148817758252271950';
+	}
 
 	$schema = array(
 		'@type'         => 'Organization',
@@ -132,17 +135,25 @@ function ame_bazaar_get_organization_schema() {
 		);
 	}
 
-	// Contact Point for Customer Support
-	$contact_point = array(
-		'@type'       => 'ContactPoint',
-		'telephone'   => $phone,
-		'contactType' => 'customer support',
-		'email'       => $email,
+	// Contact Points for Customer Support & Store Inquiries (bridging verified GBP/Bing Places phone)
+	$contact_points = array(
+		array(
+			'@type'       => 'ContactPoint',
+			'telephone'   => $phone,
+			'contactType' => 'customer support',
+			'email'       => $email,
+		),
+		array(
+			'@type'       => 'ContactPoint',
+			'telephone'   => '+91 90152 79670',
+			'contactType' => 'store inquiries',
+			'email'       => $email,
+		),
 	);
 	if ( $whatsapp_url ) {
-		$contact_point['url'] = $whatsapp_url;
+		$contact_points[0]['url'] = $whatsapp_url;
 	}
-	$schema['contactPoint'] = $contact_point;
+	$schema['contactPoint'] = $contact_points;
 
 	// SameAs Profiles
 	$same_as = array();
@@ -154,6 +165,9 @@ function ame_bazaar_get_organization_schema() {
 	}
 	if ( $instagram && '#' !== $instagram ) {
 		$same_as[] = $instagram;
+	}
+	if ( ! in_array( 'https://www.youtube.com/@amebazaar', $same_as, true ) ) {
+		$same_as[] = 'https://www.youtube.com/@amebazaar';
 	}
 	if ( $maps_url ) {
 		$same_as[] = $maps_url;
@@ -173,7 +187,10 @@ function ame_bazaar_get_organization_schema() {
 function ame_bazaar_get_clothing_store_schema() {
 	$brand_name = ame_bazaar_get_business_setting( 'store_name', 'AME Bazaar' );
 	$phone      = ame_bazaar_get_business_setting( 'phone', '+91 99535 69533' );
-	$maps_url   = ame_bazaar_get_business_setting( 'maps_url', 'https://maps.google.com/?q=AME+Bazaar+Kirari+Delhi' );
+	$maps_url   = ame_bazaar_get_business_setting( 'maps_url', 'https://maps.google.com/?cid=7148817758252271950' );
+	if ( empty( $maps_url ) || false !== strpos( $maps_url, 'q=AME+Bazaar' ) ) {
+		$maps_url = 'https://maps.google.com/?cid=7148817758252271950';
+	}
 
 	// Coordinates
 	$lat = ame_bazaar_get_business_setting( 'latitude', '28.7051' );
@@ -200,6 +217,18 @@ function ame_bazaar_get_clothing_store_schema() {
 		'description'        => 'Physical clothing showroom and custom tailoring center on Mubarakpur Road, Kirari, Delhi, offering ready-made family garments and tailoring services.',
 		'url'                => home_url( '/' ),
 		'telephone'          => $phone,
+		'contactPoint'       => array(
+			array(
+				'@type'       => 'ContactPoint',
+				'telephone'   => $phone,
+				'contactType' => 'customer support',
+			),
+			array(
+				'@type'       => 'ContactPoint',
+				'telephone'   => '+91 90152 79670',
+				'contactType' => 'store inquiries',
+			),
+		),
 		'priceRange'         => $price_range,
 		'hasMap'             => $maps_url,
 		'parentOrganization' => array(
@@ -291,6 +320,9 @@ function ame_bazaar_get_clothing_store_schema() {
 	}
 	if ( $instagram && '#' !== $instagram ) {
 		$same_as[] = $instagram;
+	}
+	if ( ! in_array( 'https://www.youtube.com/@amebazaar', $same_as, true ) ) {
+		$same_as[] = 'https://www.youtube.com/@amebazaar';
 	}
 	if ( ! empty( $same_as ) ) {
 		$schema['sameAs'] = $same_as;
