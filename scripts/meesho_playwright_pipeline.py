@@ -230,16 +230,18 @@ async def run_batch_upload(batch_id="Batch_01"):
             print("The pipeline will automatically resume once logged in.")
             print("!" * 60 + "\n")
             
-            # Wait for user to complete login (up to 5 minutes)
+            # Wait for user to complete login (up to 10 minutes)
             logged_in = False
-            for _ in range(60):
+            for attempt in range(120):
                 await page.wait_for_timeout(5000)
                 if "login" not in page.url.lower() and "supplier.meesho.com" in page.url:
                     logged_in = True
                     break
+                if attempt > 0 and attempt % 6 == 0:
+                    print(f"      Waiting for login... ({attempt * 5}s elapsed)")
             
             if not logged_in:
-                print("[ERROR] Login timeout exceeded (5 minutes). Aborting.")
+                print("[ERROR] Login timeout exceeded (10 minutes). Aborting.")
                 await context.close()
                 return False
 
@@ -262,50 +264,61 @@ async def run_batch_upload(batch_id="Batch_01"):
         print("[UPLOAD] File selected. Waiting for upload processing...")
 
         # Wait for processing and "Get Image Link" button
-        # Wait up to 2 minutes for processing
+        # Wait up to 3 minutes for processing
         get_link_btn = None
-        for _ in range(24):
+        for attempt in range(36):
             await page.wait_for_timeout(5000)
-            # Find button with text 'Get Image Link'
             btn = await page.query_selector("button:has-text('Get Image Link'), input[value*='Get Image Link']")
             if btn and await btn.is_visible():
                 get_link_btn = btn
                 break
+            if attempt > 0 and attempt % 6 == 0:
+                print(f"      Processing upload... ({attempt * 5}s elapsed)")
 
         if not get_link_btn:
-            print("[ERROR] 'Get Image Link' button not found or not active after 2 minutes.")
+            print("[ERROR] 'Get Image Link' button not found or not active after 3 minutes.")
             await context.close()
             return False
 
         print("[ACTION] Clicking 'Get Image Link'...")
         await get_link_btn.click()
-        await page.wait_for_timeout(5000)
+        print("[SCRAPE] Waiting for generated Image Links table to render in DOM...")
 
-        # Step 5: Read DOM Table
-        print("[SCRAPE] Reading generated Image Links table directly from DOM...")
-        extracted_rows = await page.evaluate('''() => {
-            const rows = [];
-            // Look for table rows containing official meesho image links
-            const trs = document.querySelectorAll('table tr');
-            trs.forEach(tr => {
-                const text = tr.innerText || '';
-                const linkEl = tr.querySelector('a[href*="meeshosupplyassets.com"]') || tr.querySelector('input[value*="meeshosupplyassets.com"]');
-                let url = '';
-                if (linkEl) {
-                    url = linkEl.href || linkEl.value || '';
-                } else {
-                    const m = text.match(/https:\\/\\/upload\\.meeshosupplyassets\\.com\\/cataloging\\/[^\\s\\t]+/);
-                    if (m) url = m[0];
-                }
-                if (url) {
-                    rows.push({
-                        row_text: text,
-                        url: url
-                    });
-                }
-            });
-            return rows;
-        }''')
+        # Step 5: Read DOM Table with polling
+        extracted_rows = []
+        for _ in range(12):
+            await page.wait_for_timeout(3000)
+            extracted_rows = await page.evaluate('''() => {
+                const rows = [];
+                const trs = document.querySelectorAll('table tr');
+                trs.forEach(tr => {
+                    const text = tr.innerText || '';
+                    let url = '';
+                    const allElements = tr.querySelectorAll('a, input, textarea, img');
+                    for (const el of allElements) {
+                        const candidate = el.href || el.value || el.src || '';
+                        if (candidate.includes('upload.meeshosupplyassets.com/cataloging/')) {
+                            url = candidate;
+                            break;
+                        }
+                    }
+                    if (!url) {
+                        const m = text.match(/https:\\/\\/upload\\.meeshosupplyassets\\.com\\/cataloging\\/[^\\s\\t]+/);
+                        if (m) url = m[0];
+                    }
+                    if (url) {
+                        const extMatch = url.match(/(.*?\\.jpg|.*?\\.jpeg|.*?\\.png)/i);
+                        if (extMatch) url = extMatch[1];
+                        rows.push({
+                            row_text: text,
+                            url: url
+                        });
+                    }
+                });
+                return rows;
+            }''')
+            if len(extracted_rows) >= expected_count:
+                break
 
         print(f"[SCRAPE] Found {len(extracted_rows)} rows containing official Meesho URLs in DOM.")
 
