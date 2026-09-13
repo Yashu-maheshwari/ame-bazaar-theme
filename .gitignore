@@ -10,3 +10,5 @@ scripts/meesho-attribute-state.json
 scripts/meesho_image_export_package/
 scripts/meesho_image_export_package/zips/
 scripts/meesho_browser_profile/
+__pycache__/
+*.pyc
