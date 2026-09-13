@@ -4,7 +4,7 @@ const path = require('path');
 const bodyParser = require('body-parser');
 
 const app = express();
-app.use(bodyParser.json({ limit: '10mb' }));
+app.use(bodyParser.json({ limit: '20mb' }));
 
 // Disable browser caching for all responses
 app.use((req, res, next) => {
@@ -19,14 +19,11 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 const STATE_FILE = path.join(__dirname, 'meesho-image-link-state.json');
 const BATCH_STATE_FILE = path.join(__dirname, 'meesho-image-batch-state.json');
+const ZIP_DIR = path.join(__dirname, 'meesho_image_export_package', 'zips');
 
 function getState() {
     if (fs.existsSync(STATE_FILE)) return JSON.parse(fs.readFileSync(STATE_FILE, 'utf8'));
     return { products: {}, audit_log: [] };
-}
-
-function saveState(state) {
-    fs.writeFileSync(STATE_FILE, JSON.stringify(state, null, 2));
 }
 
 function getBatchState() {
@@ -34,8 +31,30 @@ function getBatchState() {
     return { batches: [] };
 }
 
+function atomicWriteJson(filePath, data) {
+    const tmpPath = `${filePath}.tmp.${Date.now()}`;
+    fs.writeFileSync(tmpPath, JSON.stringify(data, null, 2), 'utf8');
+    try {
+        if (fs.existsSync(filePath)) {
+            fs.copyFileSync(tmpPath, filePath);
+            fs.unlinkSync(tmpPath);
+        } else {
+            fs.renameSync(tmpPath, filePath);
+        }
+    } catch (e) {
+        fs.writeFileSync(filePath, JSON.stringify(data, null, 2), 'utf8');
+        if (fs.existsSync(tmpPath)) {
+            try { fs.unlinkSync(tmpPath); } catch (_) {}
+        }
+    }
+}
+
+function saveState(state) {
+    atomicWriteJson(STATE_FILE, state);
+}
+
 function saveBatchState(state) {
-    fs.writeFileSync(BATCH_STATE_FILE, JSON.stringify(state, null, 2));
+    atomicWriteJson(BATCH_STATE_FILE, state);
 }
 
 function parseSkuAndSlot(filename) {
@@ -54,19 +73,46 @@ function parseSkuAndSlot(filename) {
 
 app.get('/api/batch-status', (req, res) => {
     let state = getBatchState();
-    
-    // Dynamically verify physical ZIP presence
-    const ZIP_DIR = path.join(__dirname, 'meesho_image_export_package', 'zips');
+    let nextBatch = null;
+    let completedImages = 0;
+    let totalImages = 0;
+
     state.batches.forEach(b => {
-        if (b.status === 'READY') {
-            let zipPath = path.join(ZIP_DIR, b.zip_filename);
-            if (!fs.existsSync(zipPath)) {
+        totalImages += b.image_count;
+        let zipPath = path.join(ZIP_DIR, b.zip_filename);
+        let exists = fs.existsSync(zipPath);
+
+        if (b.status === 'VERIFIED') {
+            completedImages += b.image_count;
+        } else if (b.status === 'READY') {
+            if (!exists) {
                 b.status = 'MISSING_ZIP';
+            } else if (!nextBatch) {
+                nextBatch = {
+                    id: b.id,
+                    zip_filename: b.zip_filename,
+                    image_count: b.image_count,
+                    physical_path: zipPath,
+                    status: b.status,
+                    skus: b.skus,
+                    filenames: b.filenames
+                };
             }
         }
     });
-    
-    res.json(state);
+
+    res.json({
+        batches: state.batches,
+        next_batch: nextBatch,
+        summary: {
+            total_batches: state.batches.length,
+            total_images: totalImages,
+            completed_images: completedImages,
+            remaining_images: totalImages - completedImages,
+            progress_percent: totalImages > 0 ? ((completedImages / totalImages) * 100).toFixed(1) : 0
+        },
+        zip_directory: ZIP_DIR
+    });
 });
 
 app.post('/api/capture-links-batch', (req, res) => {
@@ -79,6 +125,7 @@ app.post('/api/capture-links-batch', (req, res) => {
     if (!state.audit_log) state.audit_log = [];
 
     let stats = {
+        batch_id: batchId,
         total_rows_parsed: 0,
         valid_meesho_links: 0,
         matched_skus: 0,
@@ -89,10 +136,21 @@ app.post('/api/capture-links-batch', (req, res) => {
         expected_count: batch.image_count,
         missing_files: [],
         extra_urls: [],
+        duplicate_details: [],
+        foreign_details: [],
         errors: [],
-        dry_run: dryRun
+        dry_run: !!dryRun,
+        is_clean: false,
+        saved: false,
+        next_batch: null
     };
 
+    if (!rawText || typeof rawText !== 'string' || !rawText.trim()) {
+        stats.errors.push("No data provided. Please paste the Meesho Image Links table.");
+        return res.json(stats);
+    }
+
+    // Split on http/https
     let rawChunks = rawText.replace(/(https?:\/\/)/gi, '|$1').split('|');
     let processedMappings = [];
     let seenUrls = new Set();
@@ -110,7 +168,7 @@ app.post('/api/capture-links-batch', (req, res) => {
         let extMatch = url.match(/(.*?\.jpg|.*?\.jpeg|.*?\.png)/i);
         if (extMatch) url = extMatch[1];
 
-        if (!url.toLowerCase().startsWith('https://upload.meeshosupplyassets.com/')) {
+        if (!url.toLowerCase().startsWith('https://upload.meeshosupplyassets.com/cataloging/')) {
             stats.invalid_urls++;
             stats.errors.push(`Invalid URL domain: ${url}`);
             continue;
@@ -118,6 +176,7 @@ app.post('/api/capture-links-batch', (req, res) => {
 
         if (seenUrls.has(url)) {
             stats.duplicates_in_paste++;
+            stats.duplicate_details.push(url);
             stats.errors.push(`Duplicate URL in paste: ${url}`);
             continue;
         }
@@ -136,6 +195,7 @@ app.post('/api/capture-links-batch', (req, res) => {
         processedMappings.push({ sku: parsed.sku, slot: parsed.slot, filename, url });
     }
 
+    // Validate membership
     for (let map of processedMappings) {
         let { sku, slot, filename, url } = map;
         
@@ -152,20 +212,22 @@ app.post('/api/capture-links-batch', (req, res) => {
 
         if (!targetSku) {
             stats.unknown_skus++;
-            stats.errors.push(`Unknown SKU: ${sku} (from ${filename})`);
+            stats.errors.push(`Unknown SKU in product catalog: ${sku} (from ${filename})`);
             continue;
         }
 
         if (!batch.filenames.includes(filename)) {
             stats.foreign_skus++;
-            stats.errors.push(`FOREIGN SKU: ${filename} belongs to a different batch. You are capturing ${batchId}.`);
+            stats.foreign_details.push(filename);
+            stats.errors.push(`FOREIGN FILE: ${filename} does not belong to ${batchId}. Expected files from this batch only.`);
             continue;
         }
 
         if (seenFilenames.has(filename)) {
             stats.duplicates_in_paste++;
+            stats.duplicate_details.push(filename);
             stats.errors.push(`Duplicate filename mapping in paste: ${filename}`);
-            continue; // already counted in valid links but shouldn't save twice
+            continue;
         }
         seenFilenames.add(filename);
 
@@ -190,12 +252,16 @@ app.post('/api/capture-links-batch', (req, res) => {
         stats.missing_files.length === 0
     );
 
+    stats.is_clean = isClean;
+
     if (!isClean) {
-        stats.errors.unshift(`VALIDATION FAILED: Expected ${stats.expected_count} links, but verified ${stats.valid_meesho_links} clean links.`);
+        stats.errors.unshift(`VALIDATION FAILED: Expected ${stats.expected_count} links, but verified ${stats.matched_skus} valid clean links.`);
     }
 
+    // Execute atomic saves only if clean and not a dry run
     if (!dryRun && isClean) {
-        // Execute saves
+        const nowIso = new Date().toISOString();
+
         for (let map of processedMappings) {
             let { sku, slot, filename, url } = map;
             
@@ -203,23 +269,26 @@ app.post('/api/capture-links-batch', (req, res) => {
             for (let k in state.products) {
                 if (k.toUpperCase() === sku.toUpperCase()) { targetSku = k; break; }
             }
-            if(!targetSku && state.products[sku]) targetSku = sku;
+            if (!targetSku && state.products[sku]) targetSku = sku;
             
             let prod = state.products[targetSku];
             if (!prod.meesho_image_urls) prod.meesho_image_urls = [];
-            if (prod.meesho_image_urls.includes(url) || prod.meesho_image_url === url) continue;
             
-            if (slot === 1) {
-                prod.meesho_image_urls.unshift(url);
-                prod.meesho_image_url = url;
-            } else {
-                prod.meesho_image_urls.push(url);
+            // Preserve existing verified URLs, never overwrite silently
+            if (!prod.meesho_image_urls.includes(url)) {
+                if (slot === 1) {
+                    prod.meesho_image_urls.unshift(url);
+                    prod.meesho_image_url = url;
+                } else {
+                    prod.meesho_image_urls.push(url);
+                }
             }
+            
             prod.status = 'VERIFIED_MEESHO_URL';
-            prod.updated_at = new Date().toISOString();
+            prod.updated_at = nowIso;
             
             state.audit_log.push({
-                timestamp: new Date().toISOString(),
+                timestamp: nowIso,
                 action: 'IMPORT_BATCH_IMAGE_LINK',
                 batch_id: batchId,
                 sku: targetSku,
@@ -230,10 +299,24 @@ app.post('/api/capture-links-batch', (req, res) => {
         }
 
         saveState(state);
+
         batch.status = 'VERIFIED';
         batch.captured_sku_count = stats.matched_skus;
-        batch.updated_at = new Date().toISOString();
+        batch.updated_at = nowIso;
         saveBatchState(batchState);
+
+        stats.saved = true;
+
+        // Automatically detect next READY batch
+        let nextReady = batchState.batches.find(b => b.status === 'READY');
+        if (nextReady) {
+            stats.next_batch = {
+                id: nextReady.id,
+                zip_filename: nextReady.zip_filename,
+                image_count: nextReady.image_count,
+                physical_path: path.join(ZIP_DIR, nextReady.zip_filename)
+            };
+        }
     }
 
     res.json(stats);

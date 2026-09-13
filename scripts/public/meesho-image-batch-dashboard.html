@@ -1,85 +1,184 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Meesho Image Batch Dashboard</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meesho Image Batch Dashboard - Operator Control Center</title>
     <style>
-        body { font-family: sans-serif; padding: 20px; background: #f0f2f5; }
-        .container { max-width: 1200px; margin: auto; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
-        .header { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #eee; padding-bottom: 10px; margin-bottom: 20px; }
-        .stats { display: flex; gap: 20px; margin-bottom: 20px; }
-        .stat-box { background: #e9ecef; padding: 15px; border-radius: 8px; flex: 1; text-align: center; }
-        .stat-box h3 { margin: 0 0 10px 0; font-size: 1.2em; color: #333; }
-        .stat-box p { margin: 0; font-size: 1.5em; font-weight: bold; color: #007bff; }
-        table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
-        th, td { padding: 12px; text-align: left; border-bottom: 1px solid #ddd; }
-        th { background-color: #f8f9fa; }
-        .badge { padding: 5px 10px; border-radius: 20px; font-size: 0.8em; font-weight: bold; color: white; }
+        :root {
+            --primary: #007bff;
+            --success: #28a745;
+            --danger: #dc3545;
+            --warning: #ffc107;
+            --info: #17a2b8;
+            --dark: #343a40;
+            --light: #f8f9fa;
+        }
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; padding: 20px; background: #eef1f6; color: #333; margin: 0; }
+        .container { max-width: 1200px; margin: auto; background: white; padding: 25px; border-radius: 10px; box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
+        .header { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #eaedf2; padding-bottom: 15px; margin-bottom: 20px; }
+        .header h2 { margin: 0; color: #1a1a1a; font-size: 1.6em; }
+        
+        /* Stats & Progress */
+        .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; margin-bottom: 15px; }
+        .stat-card { background: #f8f9fa; border: 1px solid #e2e8f0; border-radius: 8px; padding: 15px; text-align: center; }
+        .stat-card h4 { margin: 0 0 8px 0; color: #6c757d; font-size: 0.9em; text-transform: uppercase; letter-spacing: 0.5px; }
+        .stat-card .val { font-size: 1.8em; font-weight: 700; color: #007bff; margin: 0; }
+        .progress-bar-container { background: #e9ecef; border-radius: 20px; height: 14px; overflow: hidden; margin-bottom: 25px; }
+        .progress-bar { background: linear-gradient(90deg, #28a745, #20c997); height: 100%; width: 0%; transition: width 0.4s ease; }
+
+        /* Current Active Batch Hero */
+        .hero-batch { background: #f0f7ff; border: 2px solid #99c7ff; border-radius: 8px; padding: 20px; margin-bottom: 25px; }
+        .hero-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
+        .hero-title { font-size: 1.4em; font-weight: 700; color: #0056b3; margin: 0; }
+        .zip-pill { background: white; border: 1px solid #b8daff; padding: 8px 14px; border-radius: 6px; font-family: monospace; font-size: 1.05em; display: inline-flex; align-items: center; gap: 10px; margin-top: 8px; }
+        .btn-copy { background: #007bff; color: white; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer; font-size: 0.85em; font-weight: 600; }
+        .btn-copy:hover { background: #0056b3; }
+        .steps-box { background: white; border-radius: 6px; padding: 12px 18px; margin-top: 15px; border-left: 4px solid #007bff; font-size: 0.95em; line-height: 1.6; }
+
+        /* Paste & Action Area */
+        .action-card { background: white; border: 1px solid #dee2e6; border-radius: 8px; padding: 20px; margin-bottom: 25px; }
+        textarea { width: 100%; height: 180px; padding: 12px; font-family: monospace; font-size: 0.9em; box-sizing: border-box; border: 1px solid #ced4da; border-radius: 6px; resize: vertical; margin-bottom: 12px; }
+        textarea:focus { border-color: #80bdff; outline: none; box-shadow: 0 0 0 0.2rem rgba(0,123,255,.25); }
+        .btn-group { display: flex; gap: 12px; align-items: center; }
+        .btn-main { background: #28a745; color: white; border: none; padding: 12px 24px; border-radius: 6px; font-size: 1.1em; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 8px; box-shadow: 0 2px 6px rgba(40,167,69,0.3); }
+        .btn-main:hover { background: #218838; }
+        .btn-main:disabled { background: #6c757d; cursor: not-allowed; box-shadow: none; }
+        .btn-sub { background: #6c757d; color: white; border: none; padding: 12px 18px; border-radius: 6px; font-size: 0.95em; font-weight: 600; cursor: pointer; }
+        .btn-sub:hover { background: #5a6268; }
+        .btn-clear { background: transparent; color: #dc3545; border: 1px solid #dc3545; padding: 10px 16px; border-radius: 6px; cursor: pointer; font-weight: 600; }
+        .btn-clear:hover { background: #dc3545; color: white; }
+
+        /* Result Banner */
+        .banner { display: none; padding: 18px; border-radius: 8px; margin-top: 20px; font-size: 1.05em; line-height: 1.5; }
+        .banner.pass { background: #d4edda; border: 2px solid #28a745; color: #155724; }
+        .banner.fail { background: #f8d7da; border: 2px solid #dc3545; color: #721c24; }
+        .banner-title { font-size: 1.25em; font-weight: 800; margin-bottom: 8px; }
+        .stats-row { display: flex; gap: 20px; margin-top: 10px; font-size: 0.95em; }
+        .error-box { background: white; border-radius: 4px; padding: 10px 15px; margin-top: 12px; max-height: 150px; overflow-y: auto; font-family: monospace; font-size: 0.85em; border: 1px solid #f5c6cb; color: #721c24; }
+
+        /* Table */
+        table { width: 100%; border-collapse: collapse; margin-top: 15px; font-size: 0.9em; }
+        th, td { padding: 10px 12px; text-align: left; border-bottom: 1px solid #dee2e6; }
+        th { background: #f8f9fa; color: #495057; font-weight: 600; }
+        tr.active-row { background: #e8f4fd; font-weight: 600; }
+        .badge { padding: 4px 8px; border-radius: 12px; font-size: 0.8em; font-weight: 700; color: white; display: inline-block; }
         .badge.ready { background: #6c757d; }
         .badge.verified { background: #28a745; }
-        .badge.active { background: #ffc107; color: #000; }
+        .badge.active { background: #007bff; }
         .badge.test_only { background: #17a2b8; }
-        .action-btn { padding: 8px 15px; border: none; border-radius: 4px; cursor: pointer; color: white; font-weight: bold; background: #007bff; text-decoration: none; display: inline-block; }
-        
-        /* Capture Section */
-        .capture-section { display: none; margin-top: 30px; padding: 20px; border: 2px solid #007bff; border-radius: 8px; background: #f8f9fa; }
-        textarea { width: 100%; height: 200px; padding: 10px; font-family: monospace; box-sizing: border-box; margin-bottom: 10px; }
-        .btn-warning { background: #ffc107; color: black; padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; }
-        .btn-success { background: #28a745; color: white; padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; }
-        .results { margin-top: 20px; padding: 15px; background: white; border-radius: 4px; display: none; border: 1px solid #ddd; }
-        .error-list { color: #dc3545; font-size: 0.9em; max-height: 200px; overflow-y: auto; }
+        .badge.missing_zip { background: #dc3545; }
+        .action-link { color: #007bff; text-decoration: none; font-weight: 600; cursor: pointer; }
+        .action-link:hover { text-decoration: underline; }
     </style>
 </head>
 <body>
 <div class="container">
     <div class="header">
-        <h2>Meesho Image Batch Dashboard</h2>
+        <h2>⚡ Meesho Image Batch Dashboard</h2>
+        <span id="header-status" style="font-size: 0.95em; color: #28a745; font-weight: 600;">● Local Engine Online</span>
     </div>
 
-    <div class="stats">
-        <div class="stat-box"><h3>Total Batches</h3><p id="stat-total-batches">0</p></div>
-        <div class="stat-box"><h3>Total Images</h3><p id="stat-total-images">0</p></div>
-        <div class="stat-box"><h3>Completed</h3><p id="stat-completed">0</p></div>
-        <div class="stat-box"><h3>Remaining</h3><p id="stat-remaining">0</p></div>
-    </div>
-
-    <h3>Next Action Required</h3>
-    <div id="next-action" style="padding: 15px; background: #e3f2fd; border-left: 5px solid #007bff; margin-bottom: 20px; font-size: 1.1em;">
-        Loading...
-    </div>
-
-    <div class="capture-section" id="capture-section">
-        <h3>Capture Links for: <span id="active-batch-id"></span></h3>
-        <p>1. Go to Supplier Panel -> Catalog Upload -> Bulk Upload -> Image Bulk Upload.</p>
-        <p>2. Upload <strong id="active-batch-zip"></strong>.</p>
-        <p>3. Once links are generated, highlight the table, copy (Ctrl+C), and paste below.</p>
-        
-        <textarea id="paste-area" placeholder="Paste Meesho Supplier Panel table data here..."></textarea>
-        
-        <div style="display: flex; gap: 10px;">
-            <button class="btn-warning" onclick="processLinks(true)">Dry Run (Verify)</button>
-            <button class="btn-success" id="btn-save" onclick="processLinks(false)" disabled>Save Batch (Requires Clean Dry Run)</button>
+    <!-- Stats & Overall Progress -->
+    <div class="stats-grid">
+        <div class="stat-card">
+            <h4>Total Batches</h4>
+            <p class="val" id="stat-total-batches">0</p>
         </div>
+        <div class="stat-card">
+            <h4>Total Images</h4>
+            <p class="val" id="stat-total-images">0</p>
+        </div>
+        <div class="stat-card">
+            <h4>Images Verified</h4>
+            <p class="val" style="color: #28a745;" id="stat-completed">0</p>
+        </div>
+        <div class="stat-card">
+            <h4>Images Remaining</h4>
+            <p class="val" style="color: #6c757d;" id="stat-remaining">0</p>
+        </div>
+    </div>
+    
+    <div class="progress-bar-container">
+        <div id="progress-bar" class="progress-bar"></div>
+    </div>
 
-        <div id="results" class="results">
-            <h4 style="margin-top:0;">Dry Run Results <span id="run-type"></span></h4>
-            <p><strong>Status:</strong> <span id="r-status" style="font-weight:bold;"></span></p>
-            <p>Rows parsed: <span id="r-total">0</span></p>
-            <p>Valid URLs: <span id="r-valid">0</span> / <span id="r-expected">0</span> (Expected exactly)</p>
-            <p>Matched SKUs: <span id="r-matched">0</span> / <span id="r-expected-2">0</span></p>
-            <p>Duplicates in Paste: <span id="r-dup" style="color:red;">0</span></p>
-            <p>Foreign SKUs (Wrong Batch): <span id="r-foreign" style="color:red;">0</span></p>
-            <p>Unknown SKUs: <span id="r-unk" style="color:red;">0</span></p>
-            <p>Invalid URLs: <span id="r-inv" style="color:red;">0</span></p>
-            <p>Missing Files: <span id="r-mis" style="color:red;">0</span></p>
-            
-            <div id="errors-container" style="display:none; margin-top: 10px;">
-                <h5>Warnings / Errors:</h5>
-                <div id="error-list" class="error-list"></div>
+    <!-- Prominent Current Batch Hero -->
+    <div class="hero-batch" id="hero-card">
+        <div class="hero-top">
+            <div>
+                <span class="badge active" id="hero-badge" style="font-size: 0.9em;">ACTIVE BATCH</span>
+                <span class="hero-title" id="hero-batch-id" style="margin-left: 10px;">Loading...</span>
+            </div>
+            <div style="font-size: 1.1em; font-weight: 600; color: #495057;">
+                Expected: <span id="hero-expected-count" style="color: #007bff;">50</span> Images
             </div>
         </div>
+
+        <div>
+            <strong>ZIP File to Upload:</strong><br>
+            <div class="zip-pill">
+                <span id="hero-zip-filename">Batch_01.zip</span>
+                <button class="btn-copy" onclick="copyZipPath()">📋 Copy Full Path</button>
+            </div>
+            <input type="hidden" id="hero-physical-path" value="">
+        </div>
+
+        <div class="steps-box">
+            <strong>3-Step Operator Instructions:</strong><br>
+            1. In your normal Chrome, open: <code>Catalog Upload → Bulk Upload → Image Bulk Upload</code><br>
+            2. Upload <strong id="step-zip-name">Batch_01.zip</strong> and click <strong>"Get Image Link"</strong>.<br>
+            3. Highlight the resulting table, copy (<kbd>Ctrl+C</kbd>), and paste below.
+        </div>
     </div>
 
-    <h3>Batch Status</h3>
+    <!-- Paste & Ingestion Area -->
+    <div class="action-card">
+        <label for="paste-area" style="font-weight: 600; font-size: 1.05em; display: block; margin-bottom: 8px;">
+            Paste Meesho Table Results for <span id="input-batch-label" style="color: #007bff;">Batch_01</span>:
+        </label>
+        <textarea id="paste-area" placeholder="Paste Meesho Supplier Panel table data here (Ctrl+V)..."></textarea>
+        
+        <div class="btn-group">
+            <button class="btn-main" id="btn-save" onclick="processLinks(false)">
+                ⚡ One-Click Validate & Save Batch
+            </button>
+            <button class="btn-sub" onclick="processLinks(true)">
+                🔍 Dry Run Only
+            </button>
+            <button class="btn-clear" onclick="clearPasteArea()">
+                🗑️ Clear
+            </button>
+        </div>
+
+        <!-- Result Banners -->
+        <div id="banner-pass" class="banner pass">
+            <div class="banner-title" id="pass-title">✅ PASS: Batch Verified & Saved!</div>
+            <div id="pass-message">All 50 SKUs validated cleanly. Next batch is now queued above.</div>
+            <div class="stats-row">
+                <span>Valid URLs: <strong id="pass-valid">0</strong></span>
+                <span>Matched SKUs: <strong id="pass-matched">0</strong></span>
+                <span>Duplicates: <strong>0</strong></span>
+                <span>Foreign SKUs: <strong>0</strong></span>
+            </div>
+        </div>
+
+        <div id="banner-fail" class="banner fail">
+            <div class="banner-title" id="fail-title">❌ FAIL: Validation Blocked</div>
+            <div id="fail-summary">The pasted table does not match the exact requirements for this batch.</div>
+            <div class="stats-row">
+                <span>Parsed Rows: <strong id="fail-total">0</strong></span>
+                <span>Valid URLs: <strong id="fail-valid">0</strong> / <span id="fail-expected">50</span></span>
+                <span>Duplicates: <strong id="fail-dup" style="color:red;">0</strong></span>
+                <span>Foreign Files: <strong id="fail-foreign" style="color:red;">0</strong></span>
+                <span>Missing: <strong id="fail-missing" style="color:red;">0</strong></span>
+            </div>
+            <div class="error-box" id="fail-errors"></div>
+        </div>
+    </div>
+
+    <!-- Full Batch Table -->
+    <h3 style="margin-top: 30px; margin-bottom: 10px; color: #333;">All Batches Status</h3>
     <table>
         <thead>
             <tr>
@@ -90,144 +189,186 @@
                 <th>Action</th>
             </tr>
         </thead>
-        <tbody id="batch-list">
-        </tbody>
+        <tbody id="batch-list"></tbody>
     </table>
 </div>
 
 <script>
 let currentActiveBatch = null;
+let currentZipFilename = null;
+let currentExpectedCount = 50;
+let currentPhysicalPath = "";
 
 async function loadDashboard() {
-    let res = await fetch('/api/batch-status');
-    let data = await res.json();
-    
-    document.getElementById('stat-total-batches').innerText = data.batches.length;
-    
-    let totalImages = 0;
-    let completedImages = 0;
-    let remainingImages = 0;
-    let nextBatch = null;
-    
-    let tbody = document.getElementById('batch-list');
-    tbody.innerHTML = '';
-    
-    data.batches.forEach(b => {
-        totalImages += b.image_count;
-        if (b.status === 'VERIFIED') {
-            completedImages += b.image_count;
-        } else {
-            remainingImages += b.image_count;
-            if (!nextBatch) nextBatch = b;
-        }
+    try {
+        let res = await fetch('/api/batch-status');
+        let data = await res.json();
         
-        let badgeClass = 'ready';
-        if (b.status === 'VERIFIED') badgeClass = 'verified';
-        if (b.status === 'TEST_ONLY') badgeClass = 'test_only';
-        if (b.status === 'MISSING_ZIP') badgeClass = 'active';
+        document.getElementById('stat-total-batches').innerText = data.summary.total_batches;
+        document.getElementById('stat-total-images').innerText = data.summary.total_images;
+        document.getElementById('stat-completed').innerText = data.summary.completed_images;
+        document.getElementById('stat-remaining').innerText = data.summary.remaining_images;
+        document.getElementById('progress-bar').style.width = data.summary.progress_percent + '%';
 
-        let tr = document.createElement('tr');
-        tr.innerHTML = `
-            <td>${b.id}</td>
-            <td>${b.zip_filename}</td>
-            <td>${b.image_count}</td>
-            <td><span class="badge ${badgeClass}">${b.status}</span></td>
-            <td>
-                ${b.status !== 'VERIFIED' ? `<button class="action-btn" onclick="startCapture('${b.id}', '${b.zip_filename}', ${b.image_count})">Start</button>` : 'Done'}
-            </td>
-        `;
-        tbody.appendChild(tr);
-    });
-    
-    document.getElementById('stat-total-images').innerText = totalImages;
-    document.getElementById('stat-completed').innerText = completedImages;
-    document.getElementById('stat-remaining').innerText = remainingImages;
-    
-    if (nextBatch) {
-        document.getElementById('next-action').innerHTML = `Ready for next batch. Please process <strong>${nextBatch.zip_filename}</strong>.`;
-    } else {
-        document.getElementById('next-action').innerHTML = `<strong>All batches completed successfully!</strong>`;
+        let tbody = document.getElementById('batch-list');
+        tbody.innerHTML = '';
+
+        // Determine next active batch
+        let nextBatch = data.next_batch;
+        if (!currentActiveBatch && nextBatch) {
+            setActiveBatch(nextBatch.id, nextBatch.zip_filename, nextBatch.image_count, nextBatch.physical_path);
+        }
+
+        data.batches.forEach(b => {
+            let badgeClass = 'ready';
+            if (b.status === 'VERIFIED') badgeClass = 'verified';
+            else if (b.status === 'TEST_ONLY') badgeClass = 'test_only';
+            else if (b.status === 'MISSING_ZIP') badgeClass = 'missing_zip';
+            else if (currentActiveBatch && b.id === currentActiveBatch) badgeClass = 'active';
+
+            let isCurrent = currentActiveBatch && b.id === currentActiveBatch;
+            let tr = document.createElement('tr');
+            if (isCurrent) tr.className = 'active-row';
+
+            tr.innerHTML = `
+                <td><strong>${b.id}</strong></td>
+                <td><code>${b.zip_filename}</code></td>
+                <td>${b.image_count}</td>
+                <td><span class="badge ${badgeClass}">${b.status}</span></td>
+                <td>
+                    ${b.status !== 'VERIFIED' ? 
+                        `<span class="action-link" onclick="setActiveBatch('${b.id}', '${b.zip_filename}', ${b.image_count}, '${b.physical_path || ''}')">Select Batch</span>` : 
+                        '<span style="color:#28a745; font-weight:600;">✔ Verified</span>'}
+                </td>
+            `;
+            tbody.appendChild(tr);
+        });
+
+        if (!nextBatch) {
+            document.getElementById('hero-card').style.background = '#d4edda';
+            document.getElementById('hero-card').style.borderColor = '#28a745';
+            document.getElementById('hero-title').innerText = "🎉 All Batches 100% Completed!";
+            document.getElementById('btn-save').disabled = true;
+        }
+    } catch (e) {
+        console.error("Failed to load dashboard data:", e);
     }
 }
 
-function startCapture(batchId, zipFilename, expectedCount) {
+function setActiveBatch(batchId, zipFilename, count, physicalPath) {
     currentActiveBatch = batchId;
-    document.getElementById('active-batch-id').innerText = batchId;
-    document.getElementById('active-batch-zip').innerText = zipFilename;
-    document.getElementById('r-expected').innerText = expectedCount;
-    document.getElementById('capture-section').style.display = 'block';
-    window.scrollTo({ top: document.getElementById('capture-section').offsetTop, behavior: 'smooth' });
+    currentZipFilename = zipFilename;
+    currentExpectedCount = count;
+    currentPhysicalPath = physicalPath || "";
+
+    document.getElementById('hero-batch-id').innerText = batchId;
+    document.getElementById('hero-expected-count').innerText = count;
+    document.getElementById('hero-zip-filename').innerText = zipFilename;
+    document.getElementById('step-zip-name').innerText = zipFilename;
+    document.getElementById('input-batch-label').innerText = batchId;
+    document.getElementById('hero-physical-path').value = physicalPath;
+
+    // Reset results banners
+    document.getElementById('banner-pass').style.display = 'none';
+    document.getElementById('banner-fail').style.display = 'none';
+}
+
+function copyZipPath() {
+    let p = document.getElementById('hero-physical-path').value || currentZipFilename;
+    navigator.clipboard.writeText(p).then(() => {
+        alert("Copied path to clipboard:\n" + p);
+    }).catch(() => {
+        prompt("Copy this path:", p);
+    });
+}
+
+function clearPasteArea() {
+    document.getElementById('paste-area').value = '';
+    document.getElementById('banner-pass').style.display = 'none';
+    document.getElementById('banner-fail').style.display = 'none';
 }
 
 async function processLinks(dryRun) {
-    if (!currentActiveBatch) return;
-    
-    let rawText = document.getElementById('paste-area').value;
-    if (!rawText.trim()) {
-        alert("Please paste some data first.");
+    if (!currentActiveBatch) {
+        alert("No active batch selected.");
         return;
     }
 
-    let res = await fetch('/api/capture-links-batch', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ rawText, dryRun, batchId: currentActiveBatch })
-    });
-    
-    let stats = await res.json();
-    
-    document.getElementById('results').style.display = 'block';
-    document.getElementById('run-type').innerText = dryRun ? '(DRY RUN)' : '(SAVED)';
-    document.getElementById('r-total').innerText = stats.total_rows_parsed;
-    document.getElementById('r-valid').innerText = stats.valid_meesho_links;
-    document.getElementById('r-matched').innerText = stats.matched_skus;
-    document.getElementById('r-expected-2').innerText = stats.expected_count;
-    document.getElementById('r-dup').innerText = stats.duplicates_in_paste;
-    document.getElementById('r-foreign').innerText = stats.foreign_skus;
-    document.getElementById('r-unk').innerText = stats.unknown_skus;
-    document.getElementById('r-inv').innerText = stats.invalid_urls;
-    document.getElementById('r-mis').innerText = stats.missing_files ? stats.missing_files.length : 0;
-
-    let isClean = (
-        stats.valid_meesho_links === stats.expected_count &&
-        stats.matched_skus === stats.expected_count &&
-        stats.foreign_skus === 0 &&
-        stats.unknown_skus === 0 &&
-        stats.invalid_urls === 0 &&
-        stats.duplicates_in_paste === 0 &&
-        (stats.missing_files && stats.missing_files.length === 0)
-    );
-    
-    let statusEl = document.getElementById('r-status');
-    if (isClean) {
-        statusEl.innerText = "CLEAN & READY";
-        statusEl.style.color = "green";
-        document.getElementById('btn-save').disabled = false;
-    } else {
-        statusEl.innerText = "ERRORS DETECTED - Cannot Save";
-        statusEl.style.color = "red";
-        document.getElementById('btn-save').disabled = true;
+    let rawText = document.getElementById('paste-area').value;
+    if (!rawText.trim()) {
+        alert("Please paste the Meesho Image Links table data first.");
+        return;
     }
 
-    let errCont = document.getElementById('errors-container');
-    let errList = document.getElementById('error-list');
-    if (stats.errors && stats.errors.length > 0) {
-        errCont.style.display = 'block';
-        errList.innerHTML = stats.errors.map(e => `<div>${e}</div>`).join('');
-    } else {
-        errCont.style.display = 'none';
-        errList.innerHTML = '';
-    }
-    
-    if (!dryRun && isClean) {
-        alert("Successfully verified and saved " + currentActiveBatch + "!");
-        document.getElementById('paste-area').value = ''; 
-        document.getElementById('capture-section').style.display = 'none';
-        document.getElementById('btn-save').disabled = true;
-        loadDashboard();
+    let btnSave = document.getElementById('btn-save');
+    btnSave.disabled = true;
+    btnSave.innerText = "Processing...";
+
+    try {
+        let res = await fetch('/api/capture-links-batch', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ rawText, dryRun, batchId: currentActiveBatch })
+        });
+
+        let stats = await res.json();
+        btnSave.disabled = false;
+        btnSave.innerText = "⚡ One-Click Validate & Save Batch";
+
+        let bannerPass = document.getElementById('banner-pass');
+        let bannerFail = document.getElementById('banner-fail');
+
+        if (stats.is_clean) {
+            bannerFail.style.display = 'none';
+            bannerPass.style.display = 'block';
+
+            if (dryRun) {
+                document.getElementById('pass-title').innerText = `🔍 DRY RUN PASS: ${currentActiveBatch} is 100% Clean!`;
+                document.getElementById('pass-message').innerText = `Verified all ${stats.matched_skus} SKUs with 0 errors. Ready to save!`;
+            } else {
+                document.getElementById('pass-title').innerText = `✅ PASS: ${currentActiveBatch} VERIFIED & SAVED!`;
+                document.getElementById('pass-message').innerText = `Saved ${stats.matched_skus} official image URLs to state. Next batch is ready below!`;
+                
+                // Clear paste area
+                document.getElementById('paste-area').value = '';
+
+                // Advance to next batch automatically if provided
+                if (stats.next_batch) {
+                    setActiveBatch(stats.next_batch.id, stats.next_batch.zip_filename, stats.next_batch.image_count, stats.next_batch.physical_path);
+                }
+                
+                // Reload dashboard stats and table
+                await loadDashboard();
+            }
+
+            document.getElementById('pass-valid').innerText = stats.valid_meesho_links;
+            document.getElementById('pass-matched').innerText = stats.matched_skus;
+
+        } else {
+            bannerPass.style.display = 'none';
+            bannerFail.style.display = 'block';
+
+            document.getElementById('fail-title').innerText = `❌ FAIL: ${currentActiveBatch} Validation Blocked`;
+            document.getElementById('fail-summary').innerText = `Expected ${stats.expected_count} links, but verified ${stats.matched_skus} valid clean links.`;
+            document.getElementById('fail-total').innerText = stats.total_rows_parsed;
+            document.getElementById('fail-valid').innerText = stats.valid_meesho_links;
+            document.getElementById('fail-expected').innerText = stats.expected_count;
+            document.getElementById('fail-dup').innerText = stats.duplicates_in_paste;
+            document.getElementById('fail-foreign').innerText = stats.foreign_skus;
+            document.getElementById('fail-missing').innerText = stats.missing_files.length;
+
+            let errDiv = document.getElementById('fail-errors');
+            errDiv.innerHTML = stats.errors.map(e => `<div>• ${e}</div>`).join('');
+        }
+
+    } catch (err) {
+        btnSave.disabled = false;
+        btnSave.innerText = "⚡ One-Click Validate & Save Batch";
+        alert("Server communication error: " + err.message);
     }
 }
 
+// Initial load
 loadDashboard();
 </script>
 </body>
