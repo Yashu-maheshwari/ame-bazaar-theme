@@ -2,9 +2,16 @@ const express = require('express');
 const fs = require('fs');
 const path = require('path');
 const bodyParser = require('body-parser');
+const cors = require('cors');
+const { exec } = require('child_process');
 
 const app = express();
-app.use(bodyParser.json({ limit: '20mb' }));
+app.use(cors({
+    origin: '*',
+    methods: ['GET', 'POST', 'OPTIONS'],
+    allowedHeaders: ['Content-Type']
+}));
+app.use(bodyParser.json({ limit: '25mb' }));
 
 // Disable browser caching for all responses
 app.use((req, res, next) => {
@@ -71,11 +78,29 @@ function parseSkuAndSlot(filename) {
     return null;
 }
 
+// Reveal ZIP or folder in Windows File Explorer
+app.post('/api/open-zip-folder', (req, res) => {
+    let { filename } = req.body || {};
+    let target = ZIP_DIR;
+    if (filename) {
+        let filePath = path.join(ZIP_DIR, filename);
+        if (fs.existsSync(filePath)) {
+            exec(`explorer.exe /select,"${filePath}"`);
+            return res.json({ success: true, opened: filePath });
+        }
+    }
+    exec(`explorer.exe "${target}"`);
+    res.json({ success: true, opened: target });
+});
+
 app.get('/api/batch-status', (req, res) => {
     let state = getBatchState();
     let nextBatch = null;
     let completedImages = 0;
     let totalImages = 0;
+    let verifiedBatches = 0;
+    let readyBatches = 0;
+    let failedBatches = 0;
 
     state.batches.forEach(b => {
         totalImages += b.image_count;
@@ -84,7 +109,9 @@ app.get('/api/batch-status', (req, res) => {
 
         if (b.status === 'VERIFIED') {
             completedImages += b.image_count;
+            verifiedBatches++;
         } else if (b.status === 'READY') {
+            readyBatches++;
             if (!exists) {
                 b.status = 'MISSING_ZIP';
             } else if (!nextBatch) {
@@ -98,6 +125,8 @@ app.get('/api/batch-status', (req, res) => {
                     filenames: b.filenames
                 };
             }
+        } else if (b.status === 'FAILED') {
+            failedBatches++;
         }
     });
 
@@ -106,6 +135,9 @@ app.get('/api/batch-status', (req, res) => {
         next_batch: nextBatch,
         summary: {
             total_batches: state.batches.length,
+            verified_batches: verifiedBatches,
+            ready_batches: readyBatches,
+            failed_batches: failedBatches,
             total_images: totalImages,
             completed_images: completedImages,
             remaining_images: totalImages - completedImages,
@@ -116,12 +148,18 @@ app.get('/api/batch-status', (req, res) => {
 });
 
 app.post('/api/capture-links-batch', (req, res) => {
-    let { rawText, dryRun, batchId } = req.body;
+    let { rawText, urls, dryRun, batchId } = req.body;
     let state = getState();
     let batchState = getBatchState();
     
+    // Auto-detect current batch if not explicitly passed
+    if (!batchId) {
+        let nextReady = batchState.batches.find(b => b.status === 'READY');
+        if (nextReady) batchId = nextReady.id;
+    }
+
     let batch = batchState.batches.find(b => b.id === batchId);
-    if (!batch) return res.status(400).json({ errors: [`Batch ${batchId} not found.`] });
+    if (!batch) return res.status(400).json({ is_clean: false, errors: [`Batch ${batchId} not found in manifest.`] });
     if (!state.audit_log) state.audit_log = [];
 
     let stats = {
@@ -145,19 +183,23 @@ app.post('/api/capture-links-batch', (req, res) => {
         next_batch: null
     };
 
-    if (!rawText || typeof rawText !== 'string' || !rawText.trim()) {
-        stats.errors.push("No data provided. Please paste the Meesho Image Links table.");
+    // Support both rawText string and urls array
+    let rawChunks = [];
+    if (Array.isArray(urls) && urls.length > 0) {
+        rawChunks = urls;
+    } else if (rawText && typeof rawText === 'string') {
+        rawChunks = rawText.replace(/(https?:\/\/)/gi, '|$1').split('|');
+    } else {
+        stats.errors.push("No URL data provided. Please paste or send Meesho Image Links.");
         return res.json(stats);
     }
 
-    // Split on http/https
-    let rawChunks = rawText.replace(/(https?:\/\/)/gi, '|$1').split('|');
     let processedMappings = [];
     let seenUrls = new Set();
     let seenFilenames = new Set();
 
     for (let chunk of rawChunks) {
-        chunk = chunk.trim();
+        chunk = (chunk || '').trim();
         if (!chunk.startsWith('http')) continue;
         stats.total_rows_parsed++;
 
@@ -170,14 +212,14 @@ app.post('/api/capture-links-batch', (req, res) => {
 
         if (!url.toLowerCase().startsWith('https://upload.meeshosupplyassets.com/cataloging/')) {
             stats.invalid_urls++;
-            stats.errors.push(`Invalid URL domain: ${url}`);
+            stats.errors.push(`Invalid URL domain (expected upload.meeshosupplyassets.com): ${url}`);
             continue;
         }
 
         if (seenUrls.has(url)) {
             stats.duplicates_in_paste++;
             stats.duplicate_details.push(url);
-            stats.errors.push(`Duplicate URL in paste: ${url}`);
+            stats.errors.push(`Duplicate URL: ${url}`);
             continue;
         }
         seenUrls.add(url);
@@ -188,14 +230,14 @@ app.post('/api/capture-links-batch', (req, res) => {
         let parsed = parseSkuAndSlot(filename);
         if (!parsed) {
             stats.unknown_skus++;
-            stats.errors.push(`Could not extract SKU from URL filename: ${filename}`);
+            stats.errors.push(`Could not extract SKU from filename: ${filename}`);
             continue;
         }
 
         processedMappings.push({ sku: parsed.sku, slot: parsed.slot, filename, url });
     }
 
-    // Validate membership
+    // Validate SKU membership against catalog and batch
     for (let map of processedMappings) {
         let { sku, slot, filename, url } = map;
         
@@ -219,14 +261,14 @@ app.post('/api/capture-links-batch', (req, res) => {
         if (!batch.filenames.includes(filename)) {
             stats.foreign_skus++;
             stats.foreign_details.push(filename);
-            stats.errors.push(`FOREIGN FILE: ${filename} does not belong to ${batchId}. Expected files from this batch only.`);
+            stats.errors.push(`FOREIGN FILE: ${filename} does not belong to ${batchId}.`);
             continue;
         }
 
         if (seenFilenames.has(filename)) {
             stats.duplicates_in_paste++;
             stats.duplicate_details.push(filename);
-            stats.errors.push(`Duplicate filename mapping in paste: ${filename}`);
+            stats.errors.push(`Duplicate filename: ${filename}`);
             continue;
         }
         seenFilenames.add(filename);
@@ -234,7 +276,7 @@ app.post('/api/capture-links-batch', (req, res) => {
         stats.matched_skus++;
     }
 
-    // Verify all expected filenames were found
+    // Identify missing expected files
     for (let f of batch.filenames) {
         if (!seenFilenames.has(f)) {
             stats.missing_files.push(f);
@@ -258,7 +300,7 @@ app.post('/api/capture-links-batch', (req, res) => {
         stats.errors.unshift(`VALIDATION FAILED: Expected ${stats.expected_count} links, but verified ${stats.matched_skus} valid clean links.`);
     }
 
-    // Execute atomic saves only if clean and not a dry run
+    // Execute atomic saves only if clean and not dry run
     if (!dryRun && isClean) {
         const nowIso = new Date().toISOString();
 
@@ -274,7 +316,7 @@ app.post('/api/capture-links-batch', (req, res) => {
             let prod = state.products[targetSku];
             if (!prod.meesho_image_urls) prod.meesho_image_urls = [];
             
-            // Preserve existing verified URLs, never overwrite silently
+            // Preserve existing verified URLs, never overwrite
             if (!prod.meesho_image_urls.includes(url)) {
                 if (slot === 1) {
                     prod.meesho_image_urls.unshift(url);
@@ -307,7 +349,7 @@ app.post('/api/capture-links-batch', (req, res) => {
 
         stats.saved = true;
 
-        // Automatically detect next READY batch
+        // Auto-detect next READY batch
         let nextReady = batchState.batches.find(b => b.status === 'READY');
         if (nextReady) {
             stats.next_batch = {
