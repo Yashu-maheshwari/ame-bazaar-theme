@@ -152,7 +152,7 @@
             <strong>File to Upload in Meesho:</strong><br>
             <div class="zip-pill-box">
                 <span class="zip-pill" id="hero-zip-filename">Batch_01.zip</span>
-                <button class="btn-action green" onclick="openZipFolder()">📂 Reveal ZIP in Explorer</button>
+                <button class="btn-action green" id="btn-reveal-zip" onclick="openZipFolder()">📂 Reveal ZIP in Explorer</button>
                 <button class="btn-action" onclick="copyZipPath()">📋 Copy Full Path</button>
                 <button class="btn-action orange" onclick="copyZipFilename()">📄 Copy Filename</button>
             </div>
@@ -316,6 +316,19 @@ function setActiveBatch(batchId, zipFilename, count, physicalPath) {
 }
 
 async function openZipFolder() {
+    let btn = document.getElementById('btn-reveal-zip');
+    let originalText = '📂 Reveal ZIP in Explorer';
+    if (btn) {
+        btn.disabled = true;
+        btn.innerHTML = '⏳ Opening Explorer...';
+    }
+
+    // Copy path to clipboard immediately as a guarantee
+    let pathVal = document.getElementById('hero-physical-path').value || currentZipFilename;
+    try {
+        await navigator.clipboard.writeText(pathVal);
+    } catch (_) {}
+
     try {
         let res = await fetch('/api/open-zip-folder', {
             method: 'POST',
@@ -323,9 +336,29 @@ async function openZipFolder() {
             body: JSON.stringify({ filename: currentZipFilename })
         });
         let data = await res.json();
-        if (!data.success) alert("Could not open folder automatically.");
+        if (data && data.success) {
+            if (btn) {
+                btn.innerHTML = '✔ Opened in Explorer!';
+                btn.style.background = '#155724';
+                setTimeout(() => {
+                    btn.disabled = false;
+                    btn.innerHTML = originalText;
+                    btn.style.background = '';
+                }, 3000);
+            }
+        } else {
+            alert("Could not launch Explorer directly. The file path was copied to your clipboard instead:\n" + pathVal);
+            if (btn) {
+                btn.disabled = false;
+                btn.innerHTML = originalText;
+            }
+        }
     } catch (e) {
-        alert("Server error: " + e.message);
+        alert("Server error: " + e.message + "\nFile path was copied to clipboard:\n" + pathVal);
+        if (btn) {
+            btn.disabled = false;
+            btn.innerHTML = originalText;
+        }
     }
 }
 

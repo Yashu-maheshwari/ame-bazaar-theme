@@ -3,7 +3,7 @@ const fs = require('fs');
 const path = require('path');
 const bodyParser = require('body-parser');
 const cors = require('cors');
-const { exec } = require('child_process');
+const { exec, spawn } = require('child_process');
 
 const app = express();
 app.use(cors({
@@ -78,19 +78,58 @@ function parseSkuAndSlot(filename) {
     return null;
 }
 
+function openTargetInExplorer(targetPath) {
+    const resolved = path.resolve(targetPath);
+    if (!fs.existsSync(resolved)) return false;
+
+    const isDirectory = fs.statSync(resolved).isDirectory();
+    const argList = isDirectory ? `"${resolved}"` : `'/select,"${resolved}"'`;
+
+    try {
+        const cp = spawn('powershell.exe', [
+            '-NoProfile',
+            '-Command',
+            `Start-Process explorer.exe -ArgumentList ${argList}`
+        ], {
+            detached: true,
+            stdio: 'ignore'
+        });
+        cp.unref();
+        return true;
+    } catch (e) {
+        try {
+            const cp2 = spawn('explorer.exe', isDirectory ? [resolved] : [`/select,${resolved}`], {
+                detached: true,
+                stdio: 'ignore'
+            });
+            cp2.unref();
+            return true;
+        } catch (_) {
+            return false;
+        }
+    }
+}
+
 // Reveal ZIP or folder in Windows File Explorer
 app.post('/api/open-zip-folder', (req, res) => {
     let { filename } = req.body || {};
     let target = ZIP_DIR;
+    let isFile = false;
     if (filename) {
         let filePath = path.join(ZIP_DIR, filename);
         if (fs.existsSync(filePath)) {
-            exec(`explorer.exe /select,"${filePath}"`);
-            return res.json({ success: true, opened: filePath });
+            target = filePath;
+            isFile = true;
         }
     }
-    exec(`explorer.exe "${target}"`);
-    res.json({ success: true, opened: target });
+
+    const opened = openTargetInExplorer(target);
+    res.json({
+        success: opened,
+        opened: target,
+        is_file: isFile,
+        exists: fs.existsSync(target)
+    });
 });
 
 app.get('/api/batch-status', (req, res) => {
