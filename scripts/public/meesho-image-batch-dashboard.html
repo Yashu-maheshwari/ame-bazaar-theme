@@ -27,11 +27,23 @@
         .progress-bar-container { background: #e9ecef; border-radius: 20px; height: 14px; overflow: hidden; margin-bottom: 25px; }
         .progress-bar { background: linear-gradient(90deg, #28a745, #20c997); height: 100%; width: 0%; transition: width 0.4s ease; }
 
-        /* Bookmarklet Banner */
-        .bookmarklet-card { background: #fff8e1; border: 2px dashed #ffc107; border-radius: 10px; padding: 18px; margin-bottom: 25px; display: flex; align-items: center; justify-content: space-between; gap: 20px; }
-        .bookmarklet-desc { font-size: 0.95em; line-height: 1.5; color: #664d03; }
-        .bookmarklet-btn { display: inline-block; background: #007bff; color: white !important; font-weight: 700; font-size: 1.05em; padding: 12px 20px; border-radius: 8px; text-decoration: none; cursor: grab; box-shadow: 0 3px 8px rgba(0,123,255,0.3); white-space: nowrap; border: 2px solid #0056b3; }
+        /* Bookmarklet Setup Section */
+        .bookmarklet-container { background: #ffffff; border: 2px solid #b8daff; border-radius: 10px; margin-bottom: 25px; overflow: hidden; box-shadow: 0 2px 8px rgba(0, 123, 255, 0.08); }
+        .bookmarklet-section-a { background: #f0f7ff; padding: 20px; border-bottom: 2px dashed #b8daff; }
+        .section-title { display: flex; align-items: center; gap: 10px; font-size: 1.15em; color: #004085; margin-bottom: 10px; font-weight: 800; }
+        .step-badge { background: #007bff; color: white; font-size: 0.75em; font-weight: 800; padding: 3px 8px; border-radius: 4px; letter-spacing: 0.5px; }
+        .instruction-lead { font-size: 1.1em; color: #1a1a1a; margin: 0 0 6px 0; font-weight: 600; }
+        .instruction-sub { font-size: 0.9em; color: #495057; margin: 0 0 15px 0; }
+        .instruction-sub kbd { background: #e9ecef; border: 1px solid #ced4da; border-radius: 3px; box-shadow: 0 1px 1px rgba(0,0,0,.2); font-family: monospace; font-size: 0.9em; padding: 2px 5px; }
+        .bookmarklet-buttons-row { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+        .bookmarklet-btn { display: inline-flex; align-items: center; gap: 8px; background: #007bff; color: white !important; font-weight: 700; font-size: 1.1em; padding: 12px 24px; border-radius: 8px; text-decoration: none; cursor: grab; box-shadow: 0 3px 10px rgba(0,123,255,0.35); border: 2px solid #0056b3; transition: transform 0.15s, box-shadow 0.15s; }
+        .bookmarklet-btn:hover { transform: translateY(-1px); box-shadow: 0 5px 14px rgba(0,123,255,0.45); }
         .bookmarklet-btn:active { cursor: grabbing; }
+        .btn-copy-code { background: white; color: #0056b3; border: 2px solid #007bff; padding: 11px 18px; border-radius: 8px; font-size: 0.95em; font-weight: 600; cursor: pointer; transition: all 0.2s; }
+        .btn-copy-code:hover { background: #e7f1ff; }
+        .bookmarklet-section-b { background: #fff3cd; padding: 16px 20px; border-left: 6px solid #ffc107; }
+        .warning-title { color: #856404; font-size: 1.05em; font-weight: 800; margin-bottom: 6px; display: flex; align-items: center; gap: 6px; }
+        .warning-text { color: #664d03; font-size: 0.95em; line-height: 1.5; }
 
         /* Current Active Batch Hero */
         .hero-batch { background: #f0f7ff; border: 2px solid #99c7ff; border-radius: 10px; padding: 22px; margin-bottom: 25px; }
@@ -123,16 +135,40 @@
         <div id="progress-bar" class="progress-bar"></div>
     </div>
 
-    <!-- ONE-CLICK BOOKMARKLET SETUP -->
-    <div class="bookmarklet-card">
-        <div class="bookmarklet-desc">
-            <strong style="font-size: 1.1em; color: #333;">🚀 Zero-Copy One-Click Handoff:</strong><br>
-            Drag this button directly to your Chrome Bookmarks bar. When you are on Meesho after clicking <em>"Get Image Link"</em>, click this bookmarklet once. It reads the table, validates all 50 SKUs locally, saves to state, and queues the next batch automatically!
+    <!-- BOOKMARKLET INSTALLATION & ZERO-COPY HANDOFF CONTAINER -->
+    <div class="bookmarklet-container">
+        <!-- Section A: Drag to Bookmarks Bar -->
+        <div class="bookmarklet-section-a">
+            <div class="section-title">
+                <span class="step-badge">BOOKMARKLET</span>
+                <span>DRAG THIS TO CHROME BOOKMARKS BAR</span>
+            </div>
+            <p class="instruction-lead">
+                👉 Drag the blue <strong>Send to Meesho Dashboard</strong> button to Chrome Bookmarks Bar (Ctrl+Shift+B)
+            </p>
+            <p class="instruction-sub">
+                Press <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>B</kbd> in Chrome if your Bookmarks Bar is hidden.
+            </p>
+            <div class="bookmarklet-buttons-row">
+                <a class="bookmarklet-btn" id="bookmarklet-link" href="#" onclick="handleBookmarkletClick(event)" title="Drag me to your Bookmarks Bar!">
+                    ⚡ Send to Meesho Dashboard
+                </a>
+                <button type="button" class="btn-copy-code" id="btn-copy-code" onclick="copyBookmarkletCode()">
+                    📋 Copy Bookmarklet Code
+                </button>
+                <span id="copy-status" style="font-size: 0.9em; font-weight: 600; color: #28a745; display: none;">✔ Copied to clipboard!</span>
+            </div>
         </div>
-        <div>
-            <a class="bookmarklet-btn" id="bookmarklet-link" href="#">
-                ⚡ Send to Meesho Dashboard
-            </a>
+
+        <!-- Section B: Warning Callout -->
+        <div class="bookmarklet-section-b">
+            <div class="warning-title">
+                ⚠️ DO NOT CLICK THIS BUTTON ON THE DASHBOARD
+            </div>
+            <div class="warning-text">
+                This button is a browser bookmarklet that works <strong>ONLY on the Meesho Supplier Panel</strong>.
+                Clicking it on this dashboard will not do anything. Drag it to your bookmarks bar first, then click it after you click <em>"Get Image Link"</em> on the Meesho Image Bulk Upload page!
+            </div>
         </div>
     </div>
 
@@ -234,9 +270,38 @@ let currentZipFilename = null;
 let currentExpectedCount = 50;
 let currentPhysicalPath = "";
 
-// Generate Bookmarklet Code
+// Generate Bookmarklet Code with Target Detection
 function buildBookmarkletCode() {
-    return "javascript:(async()=>{try{let trs=document.querySelectorAll('table tr'),urls=[];trs.forEach(r=>{let f='',els=r.querySelectorAll('a,input,textarea,img');for(let e of els){let c=e.href||e.value||e.src||'';if(c.includes('upload.meeshosupplyassets.com/cataloging/')){f=c;break}}if(!f){let m=(r.innerText||'').match(/https:\\/\\/upload\\.meeshosupplyassets\\.com\\/cataloging\\/[^\\s\\t]+/);if(m)f=m[0]}if(f){let x=f.match(/(.*?\\.jpg|.*?\\.jpeg|.*?\\.png)/i);urls.push(x?x[1]:f)}});if(!urls.length){let m=document.body.innerText.match(/https:\\/\\/upload\\.meeshosupplyassets\\.com\\/cataloging\\/[^\\s\\t\\n]+/gi);if(m)urls=m.map(u=>{let x=u.match(/(.*?\\.jpg|.*?\\.jpeg|.*?\\.png)/i);return x?x[1]:u})}if(!urls.length){alert('❌ No Meesho Image Links found on this page.\\nMake sure you are on the Image Bulk Upload results table!');return}let sRes=await fetch('http://localhost:3002/api/batch-status'),sData=await sRes.json(),aBatch=sData.next_batch;if(!aBatch){alert('⚠️ No READY batch found on Dashboard!');return}let pRes=await fetch('http://localhost:3002/api/capture-links-batch',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({batchId:aBatch.id,dryRun:false,urls:Array.from(new Set(urls))})}),r=await pRes.json();if(r.is_clean&&r.saved){let nInfo=r.next_batch?'\\n\\n➡ NEXT BATCH: '+r.next_batch.id+' ('+r.next_batch.zip_filename+' - '+r.next_batch.image_count+' images)':'\\n\\n🎉 ALL BATCHES COMPLETED!';alert('✅ PASS: '+aBatch.id+' VERIFIED & SAVED!\\nMatched '+r.matched_skus+' / '+r.expected_count+' SKUs'+nInfo)}else{alert('❌ VALIDATION FAILED for '+aBatch.id+':\\nExpected: '+r.expected_count+'\\nValid: '+r.valid_meesho_links+'\\nDuplicates: '+r.duplicates_in_paste+'\\nForeign: '+r.foreign_skus+'\\nMissing: '+(r.missing_files?r.missing_files.length:0))}}catch(e){alert('❌ Error contacting http://localhost:3002:\\n'+e.message)}})();";
+    return "javascript:(async()=>{try{let h=window.location.hostname||'';if(h==='localhost'||h==='127.0.0.1'){alert('ℹ️ This bookmarklet must be run on the Meesho Supplier Panel Image Bulk Upload page, not on this dashboard.\\n\\nInstallation: Drag the blue button to your Chrome Bookmarks Bar (Ctrl+Shift+B). Click it while viewing the Meesho Image Links table.');return}if(!h.includes('meesho.com')){alert('⚠️ Please navigate to Meesho Supplier Panel Image Bulk Upload results page before clicking this bookmarklet.');return}let trs=document.querySelectorAll('table tr'),urls=[];trs.forEach(r=>{let f='',els=r.querySelectorAll('a,input,textarea,img');for(let e of els){let c=e.href||e.value||e.src||'';if(c.includes('upload.meeshosupplyassets.com/cataloging/')){f=c;break}}if(!f){let m=(r.innerText||'').match(/https:\\/\\/upload\\.meeshosupplyassets\\.com\\/cataloging\\/[^\\s\\t]+/);if(m)f=m[0]}if(f){let x=f.match(/(.*?\\.jpg|.*?\\.jpeg|.*?\\.png)/i);urls.push(x?x[1]:f)}});if(!urls.length){let m=document.body.innerText.match(/https:\\/\\/upload\\.meeshosupplyassets\\.com\\/cataloging\\/[^\\s\\t\\n]+/gi);if(m)urls=m.map(u=>{let x=u.match(/(.*?\\.jpg|.*?\\.jpeg|.*?\\.png)/i);return x?x[1]:u})}if(!urls.length){alert('❌ No Meesho Image Links found on this page.\\nMake sure you are on the Image Bulk Upload results table!');return}let sRes=await fetch('http://localhost:3002/api/batch-status'),sData=await sRes.json(),aBatch=sData.next_batch;if(!aBatch){alert('⚠️ No READY batch found on Dashboard!');return}let pRes=await fetch('http://localhost:3002/api/capture-links-batch',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({batchId:aBatch.id,dryRun:false,urls:Array.from(new Set(urls))})}),r=await pRes.json();if(r.is_clean&&r.saved){let nInfo=r.next_batch?'\\n\\n➡ NEXT BATCH: '+r.next_batch.id+' ('+r.next_batch.zip_filename+' - '+r.next_batch.image_count+' images)':'\\n\\n🎉 ALL BATCHES COMPLETED!';alert('✅ PASS: '+aBatch.id+' VERIFIED & SAVED!\\nMatched '+r.matched_skus+' / '+r.expected_count+' SKUs'+nInfo)}else{alert('❌ VALIDATION FAILED for '+aBatch.id+':\\nExpected: '+r.expected_count+'\\nValid: '+r.valid_meesho_links+'\\nDuplicates: '+r.duplicates_in_paste+'\\nForeign: '+r.foreign_skus+'\\nMissing: '+(r.missing_files?r.missing_files.length:0))}}catch(e){alert('❌ Error contacting http://localhost:3002:\\n'+e.message)}})();";
+}
+
+function handleBookmarkletClick(e) {
+    if (e) e.preventDefault();
+    alert("ℹ️ DO NOT CLICK THIS BUTTON ON THE DASHBOARD!\n\nThis button is a browser bookmarklet.\n\nTo use it:\n1. Press Ctrl + Shift + B in Chrome if your Bookmarks Bar is hidden.\n2. DRAG this blue button up into your Bookmarks Bar.\n3. Open Meesho Supplier Panel -> Catalog Upload -> Bulk Upload -> Image Bulk Upload.\n4. Upload the batch images and click 'Get Image Link'.\n5. Finally, click this bookmark from your bookmarks bar!");
+}
+
+function copyBookmarkletCode() {
+    let code = buildBookmarkletCode();
+    let statusSpan = document.getElementById('copy-status');
+    let btn = document.getElementById('btn-copy-code');
+    
+    function showSuccess() {
+        if (btn) btn.innerText = "✔ Code Copied!";
+        if (statusSpan) statusSpan.style.display = "inline";
+        setTimeout(() => {
+            if (btn) btn.innerText = "📋 Copy Bookmarklet Code";
+            if (statusSpan) statusSpan.style.display = "none";
+        }, 4000);
+        alert("✔ Bookmarklet code copied to clipboard!\n\nTo install manually in Chrome:\n1. Right-click your Chrome Bookmarks Bar (press Ctrl+Shift+B if hidden).\n2. Click 'Add page...'\n3. Set Name: ⚡ Send to Meesho Dashboard\n4. Set URL: Paste the copied code (Ctrl+V) and click Save.");
+    }
+
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(code).then(showSuccess).catch(() => {
+            prompt("Copy this bookmarklet code:", code);
+        });
+    } else {
+        prompt("Copy this bookmarklet code:", code);
+    }
 }
 
 document.getElementById('bookmarklet-link').setAttribute('href', buildBookmarkletCode());
