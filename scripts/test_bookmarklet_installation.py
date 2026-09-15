@@ -29,10 +29,11 @@ async def run_bookmarklet_test():
         sec_a_text = await sec_a.inner_text()
         sec_b_text = await sec_b.inner_text()
 
-        assert "DRAG THIS TO CHROME BOOKMARKS BAR" in sec_a_text, "Section A missing header!"
-        assert "Drag the blue Send to Meesho Dashboard button to Chrome Bookmarks Bar (Ctrl+Shift+B)" in sec_a_text, "Section A missing instruction!"
+        assert "BOOKMARKLET — DRAG THIS TO CHROME BOOKMARKS BAR" in sec_a_text, "Section A missing header!"
+        assert "Drag the blue Send to Meesho Dashboard button to Chrome's Bookmarks Bar." in sec_a_text, "Section A missing exact instruction!"
         assert "DO NOT CLICK THIS BUTTON ON THE DASHBOARD" in sec_b_text, "Section B missing warning header!"
         assert "works ONLY on the Meesho Supplier Panel" in sec_b_text or "ONLY on the Meesho" in sec_b_text, "Section B missing Meesho-only notice!"
+        assert "Environment Self-Check" in sec_b_text or "Localhost Dashboard Detected" in sec_b_text, "Section B missing self-test check!"
 
         print("  -> Section A: Present and verified.")
         print("  -> Section B: Present and verified.")
@@ -88,7 +89,7 @@ async def run_bookmarklet_test():
         assert len(dialog_messages) > 0, "No alert triggered when running bookmarklet on localhost!"
         localhost_alert = dialog_messages[-1]
         print(f"  -> Localhost Execution Alert: {repr(localhost_alert)}")
-        assert "must be run on the Meesho Supplier Panel" in localhost_alert, "Localhost alert missing target instruction!"
+        assert "must be clicked from the Meesho Image Bulk Upload results page" in localhost_alert or "must be run on the Meesho" in localhost_alert, "Localhost alert missing target instruction!"
         assert "No Meesho Image Links found" not in localhost_alert, "Localhost execution leaked into extraction!"
         print("  -> Target Detection (localhost): PASS")
 
