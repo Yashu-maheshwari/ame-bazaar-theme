@@ -143,12 +143,6 @@ function ame_bazaar_get_organization_schema() {
 			'contactType' => 'customer support',
 			'email'       => $email,
 		),
-		array(
-			'@type'       => 'ContactPoint',
-			'telephone'   => '+91 90152 79670',
-			'contactType' => 'store inquiries',
-			'email'       => $email,
-		),
 	);
 	if ( $whatsapp_url ) {
 		$contact_points[0]['url'] = $whatsapp_url;
@@ -222,11 +216,6 @@ function ame_bazaar_get_clothing_store_schema() {
 				'@type'       => 'ContactPoint',
 				'telephone'   => $phone,
 				'contactType' => 'customer support',
-			),
-			array(
-				'@type'       => 'ContactPoint',
-				'telephone'   => '+91 90152 79670',
-				'contactType' => 'store inquiries',
 			),
 		),
 		'priceRange'         => $price_range,
