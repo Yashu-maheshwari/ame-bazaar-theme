@@ -54,6 +54,10 @@ jobs:
             wordpress/wp-content/mu-plugins/ame-local-inventory-feed.php \
             ${{ secrets.USERNAME }}@${{ secrets.HOST }}:domains/amebazaar.in/public_html/wp-content/mu-plugins/ame-local-inventory-feed.php
             
+          echo "Cleaning up Phase 3 test feed..."
+          ssh -p ${{ secrets.PORT }} -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null ${{ secrets.USERNAME }}@${{ secrets.HOST }} \
+            "rm -f domains/amebazaar.in/public_html/wp-content/uploads/ame_protected_inventory/local_inventory.csv"
+            
           echo "Removing physical robots.txt if it exists to allow WordPress dynamic robots.txt..."
           ssh -p ${{ secrets.PORT }} -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null ${{ secrets.USERNAME }}@${{ secrets.HOST }} \
             "rm -f domains/amebazaar.in/public_html/robots.txt"
