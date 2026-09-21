@@ -407,7 +407,8 @@
         });
 
         if (!uploadRes.ok) {
-          throw new Error('Server is busy, try again.');
+          var uploadErr = await uploadRes.text();
+          throw new Error('Upload Error: ' + uploadRes.status + ' ' + uploadErr);
         }
 
         var uploadedPaths = await uploadRes.json();
@@ -423,8 +424,8 @@
 
         var joinPayload = {
           data: [
-            { background: { path: personPath }, layers: [], composite: null },
-            { path: garmentPath },
+            { background: { path: personPath, meta: { _type: "gradio.FileData" } }, layers: [], composite: null },
+            { path: garmentPath, meta: { _type: "gradio.FileData" } },
             promptDesc,
             true,
             false,
@@ -445,7 +446,8 @@
         });
 
         if (!joinRes.ok) {
-          throw new Error('Server is busy, try again.');
+          var joinErr = await joinRes.text();
+          throw new Error('Queue Join Error: ' + joinRes.status + ' ' + joinErr);
         }
 
         // Step 4: Stream SSE
@@ -481,15 +483,17 @@
                   }
                   break;
                 } else if (eventData.msg === 'error' || eventData.success === false) {
-                  throw new Error('Server is busy, try again.');
+                  var errMsg = 'Process Failed';
+                  if (eventData.output && eventData.output.error) {
+                    errMsg = eventData.output.error;
+                  }
+                  throw new Error('API Error: ' + errMsg);
                 }
               } catch (parseErr) {
                 // Ignore parse errors on heartbeats
               }
             }
           }
-
-          if (generatedUrl) break;
         }
 
         if (generatedUrl) {
@@ -497,9 +501,10 @@
             self.displayResult(generatedUrl);
           }, 300);
         } else {
-          throw new Error('Server is busy, try again.');
+          throw new Error('Process finished but no result URL was returned.');
         }
       } catch (err) {
+        console.error("VTO Error Trace:", err);
         if (err.name === 'AbortError') return;
         self.showScreen('setup');
         self.showError(err.message || 'Server is busy, try again.');
