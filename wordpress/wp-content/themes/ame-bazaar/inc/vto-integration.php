@@ -380,14 +380,14 @@ function ame_bazaar_enqueue_vto_assets() {
 		'ame-bazaar-vto-modal',
 		AME_BAZAAR_URI . '/assets/css/vto-modal.css',
 		array( 'ame-bazaar-main' ),
-		AME_BAZAAR_VERSION
+		time()
 	);
 
 	wp_enqueue_script(
 		'ame-bazaar-vto-modal',
 		AME_BAZAAR_URI . '/assets/js/vto-modal.js',
 		array( 'jquery' ),
-		AME_BAZAAR_VERSION,
+		time(),
 		true
 	);
 
