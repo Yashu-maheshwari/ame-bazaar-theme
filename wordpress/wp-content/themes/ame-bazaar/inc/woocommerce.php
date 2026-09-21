@@ -14,7 +14,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 function ame_bazaar_woocommerce_setup() {
 	add_theme_support( 'woocommerce' );
-	add_theme_support( 'wc-product-gallery-zoom' );
+	// add_theme_support( 'wc-product-gallery-zoom' ); // Disabled to fix awkward hover zoom
 	add_theme_support( 'wc-product-gallery-lightbox' );
 	add_theme_support( 'wc-product-gallery-slider' );
 }

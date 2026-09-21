@@ -5476,6 +5476,27 @@
 	margin-bottom: 2.5rem;
 }
 
+/* Fix product gallery image width issue */
+.woocommerce-product-gallery figure {
+	margin: 0;
+	padding: 0;
+}
+.woocommerce-product-gallery .woocommerce-product-gallery__wrapper {
+	margin: 0;
+}
+.woocommerce-product-gallery .woocommerce-product-gallery__image img {
+	width: 100% !important;
+	height: auto !important;
+	object-fit: contain; /* Prevent cropping while maintaining aspect ratio */
+	display: block;
+}
+/* Ensure thumbnails in the slider also behave well */
+.woocommerce-product-gallery .flex-control-thumbs li img {
+	width: 100% !important;
+	height: auto !important;
+	object-fit: contain;
+}
+
 @media (min-width: 768px) {
 	.woocommerce-product-gallery {
 		width: 48% !important;
