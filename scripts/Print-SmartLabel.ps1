@@ -3,90 +3,167 @@
 Standalone Smart Label Printer for AME Bazaar.
 .DESCRIPTION
 Fallback utility to print a smart product label containing both the 1D staff barcode 
-and the 2D customer QR code. Bypasses Crystal Reports if CR cannot render the QR.
+and the 2D customer QR code.
 .PARAMETER ProductCode
-The SKU of the product to print (e.g., P-3660).
-.PARAMETER Barcode
-The 1D barcode string (if different from ProductCode).
-.PARAMETER ProductName
-The name of the product.
+The SKU of the product to query and print (e.g., P-3660).
+.PARAMETER Print
+Switch to actually print physically. If omitted, only saves a preview image.
 .PARAMETER PrinterName
-(Optional) Name of the thermal printer. Uses Default Printer if omitted.
+The name of the thermal printer. Defaults to "Xprinter XP-470B".
+.PARAMETER LabelWidthMm
+Width of the label in millimeters. Defaults to 50.
+.PARAMETER LabelHeightMm
+Height of the label in millimeters. Defaults to 25.
 #>
 param(
-    [string]$ProductCode = "P-3660",
-    [string]$Barcode = "1234567890",
-    [string]$ProductName = "Sample Product",
-    [string]$PrinterName = ""
+    [Parameter(Mandatory=$true)]
+    [string]$ProductCode,
+    [switch]$Print,
+    [string]$PrinterName = "Xprinter XP-470B",
+    [int]$LabelWidthMm = 50,
+    [int]$LabelHeightMm = 25
 )
 
-Add-Type -AssemblyName System.Drawing
-Add-Type -Path "C:\POS LATEST\QRCoder.dll"
-Add-Type -Path "C:\POS LATEST\Zen.Barcode.Core.dll"
+Write-Host "Validating Printer: $PrinterName"
+$printer = Get-Printer -Name $PrinterName -ErrorAction SilentlyContinue
+if (-not $printer) {
+    Write-Error "Printer '$PrinterName' not found on this system. Cannot proceed."
+    exit 1
+}
+Write-Host "Printer found: $($printer.DriverName)"
 
-$widthMm = 50
-$heightMm = 25
-# 203 DPI thermal printer assumption (8 dots per mm)
-$widthPx = 400
-$heightPx = 200
+Write-Host "Querying database for ProductCode: $ProductCode"
+$dbConnString = "Server=localhost\MSSQLSERVERPOS2;Database=Raintech_DB1;Integrated Security=True;"
+$conn = New-Object System.Data.SqlClient.SqlConnection($dbConnString)
+$conn.Open()
+$cmd = $conn.CreateCommand()
+# Use Product table for canonical data
+$cmd.CommandText = "SELECT TOP 1 ProductCode, ProductName, Barcode, SellingPrice FROM Product WHERE ProductCode = @pc"
+$cmd.Parameters.AddWithValue("@pc", $ProductCode) | Out-Null
+$reader = $cmd.ExecuteReader()
+
+if (-not $reader.Read()) {
+    Write-Error "ProductCode '$ProductCode' not found in Raintech_DB1.Product table."
+    $conn.Close()
+    exit 1
+}
+
+$dbProductCode = $reader["ProductCode"].ToString().Trim()
+$dbProductName = $reader["ProductName"].ToString().Trim()
+$dbBarcode = $reader["Barcode"].ToString().Trim()
+$dbSellingPrice = $reader["SellingPrice"].ToString().Trim()
+$conn.Close()
+
+if (-not $dbBarcode) {
+    Write-Error "Product '$dbProductName' is missing a 1D Barcode. Cannot generate label."
+    exit 1
+}
+
+Write-Host "Found Product: $dbProductName (Barcode: $dbBarcode)"
+
+Add-Type -AssemblyName System.Drawing
+try {
+    Add-Type -Path "C:\POS LATEST\QRCoder.dll"
+    Add-Type -Path "C:\POS LATEST\Zen.Barcode.Core.dll"
+} catch {
+    Write-Error "Required POS barcode DLLs not found in C:\POS LATEST\"
+    exit 1
+}
+
+# Assume 203 DPI
+$dpi = 203
+$widthPx = [int]($LabelWidthMm / 25.4 * $dpi)
+$heightPx = [int]($LabelHeightMm / 25.4 * $dpi)
 
 $bmp = New-Object System.Drawing.Bitmap($widthPx, $heightPx)
+$bmp.SetResolution($dpi, $dpi)
 $graphics = [System.Drawing.Graphics]::FromImage($bmp)
 $graphics.Clear([System.Drawing.Color]::White)
-$graphics.SmoothingMode = [System.Drawing.Drawing2D.SmoothingMode]::AntiAlias
+$graphics.SmoothingMode = [System.Drawing.Drawing2D.SmoothingMode]::None
+$graphics.TextRenderingHint = [System.Drawing.Text.TextRenderingHint]::SingleBitPerPixelGridFit
 
 # Fonts
-$fontName = New-Object System.Drawing.Font("Arial", 10, [System.Drawing.FontStyle]::Bold)
+$fontHeader = New-Object System.Drawing.Font("Arial", 8, [System.Drawing.FontStyle]::Bold)
+$fontName = New-Object System.Drawing.Font("Arial", 9, [System.Drawing.FontStyle]::Bold)
 $fontSmall = New-Object System.Drawing.Font("Arial", 7, [System.Drawing.FontStyle]::Regular)
 $brush = [System.Drawing.Brushes]::Black
 
-# 1. Draw Product Name (Top Left)
-$rectName = New-Object System.Drawing.RectangleF(10, 10, 250, 40)
-$graphics.DrawString($ProductName, $fontName, $brush, $rectName)
+# 1. Header (AME BAZAAR)
+$graphics.DrawString("AME BAZAAR", $fontHeader, $brush, 10, 5)
 
-# 2. Generate and Draw 1D Barcode (Middle Left)
-$barcodeFactory = [Zen.Barcode.BarcodeDrawFactory]::Code128WithChecksum
-$barcodeImage = $barcodeFactory.Draw($Barcode, 40, 2)
-$graphics.DrawImage($barcodeImage, 10, 60)
+# 2. Draw Product Name
+# Truncate if too long (very basic approach for script)
+$displayAppName = $dbProductName
+if ($displayAppName.Length -gt 25) { $displayAppName = $displayAppName.Substring(0, 25) + "..." }
+$graphics.DrawString($displayAppName, $fontName, $brush, 10, 22)
 
-# Draw Barcode Text
-$graphics.DrawString($Barcode, $fontSmall, $brush, 10, 105)
+# 3. Draw 1D Barcode (Middle Left) using Barcode (NOT ProductCode)
+try {
+    $barcodeFactory = [Zen.Barcode.BarcodeDrawFactory]::Code128WithChecksum
+    $barcodeImage = $barcodeFactory.Draw($dbBarcode, 35, 2)
+    $graphics.DrawImage($barcodeImage, 10, 40)
+    $graphics.DrawString($dbBarcode, $fontSmall, $brush, 10, 78)
+} catch {
+    Write-Error "Failed to generate 1D Barcode: $_"
+    exit 1
+}
 
-# 3. Generate and Draw 2D Customer QR (Right Side)
-$qrUrl = "https://amebazaar.in/p/$ProductCode"
-$qrGenerator = New-Object QRCoder.QRCodeGenerator
-$qrData = $qrGenerator.CreateQrCode($qrUrl, [QRCoder.QRCodeGenerator+ECCLevel]::Q)
-$qrCode = New-Object QRCoder.QRCode($qrData)
-$qrImage = $qrCode.GetGraphic(3)
+# 4. Generate and Draw 2D Customer QR (Right Side)
+try {
+    $qrUrl = "https://amebazaar.in/p/$dbProductCode"
+    $qrGenerator = New-Object QRCoder.QRCodeGenerator
+    $qrData = $qrGenerator.CreateQrCode($qrUrl, [QRCoder.QRCodeGenerator+ECCLevel]::Q)
+    $qrCode = New-Object QRCoder.QRCode($qrData)
+    $qrImage = $qrCode.GetGraphic(3)
+    
+    # Place QR on the right, keeping quiet zone safe
+    $qrX = $widthPx - $qrImage.Width - 15
+    $graphics.DrawImage($qrImage, $qrX, 10)
+    $graphics.DrawString("Scan for", $fontSmall, $brush, $qrX + 5, 10 + $qrImage.Height)
+    $graphics.DrawString("Details", $fontSmall, $brush, $qrX + 5, 20 + $qrImage.Height)
+} catch {
+    Write-Error "Failed to generate 2D QR Code: $_"
+    exit 1
+}
 
-# Place QR on the right
-$qrX = $widthPx - $qrImage.Width - 10
-$graphics.DrawImage($qrImage, $qrX, 20)
-
-# Draw CTA under QR
-$graphics.DrawString("Scan to view", $fontSmall, $brush, $qrX, 20 + $qrImage.Height)
+# Optional Price
+if ($dbSellingPrice) {
+    $graphics.DrawString("Rs. $dbSellingPrice", $fontHeader, $brush, 10, 95)
+}
 
 $graphics.Dispose()
 
-# Save preview for testing without wasting labels
-$previewPath = "$PSScriptRoot\label_preview_$ProductCode.png"
+$previewPath = "$PSScriptRoot\label_preview_$dbProductCode.png"
 $bmp.Save($previewPath, [System.Drawing.Imaging.ImageFormat]::Png)
-$bmp.Dispose()
 
 Write-Host "Label generated successfully at $previewPath"
-Write-Host "To print physically, uncomment the PrintDocument logic in this script."
 
-<#
-# Actual Printing Logic (Commented for safety)
-$pd = New-Object System.Drawing.Printing.PrintDocument
-if ($PrinterName) {
+if ($Print) {
+    Write-Host "Initiating physical print to $PrinterName..."
+    $pd = New-Object System.Drawing.Printing.PrintDocument
     $pd.PrinterSettings.PrinterName = $PrinterName
+    
+    # Set paper size in hundredths of an inch
+    $widthHundredths = [int]($LabelWidthMm / 25.4 * 100)
+    $heightHundredths = [int]($LabelHeightMm / 25.4 * 100)
+    $pd.DefaultPageSettings.PaperSize = New-Object System.Drawing.Printing.PaperSize("Custom", $widthHundredths, $heightHundredths)
+    $pd.DefaultPageSettings.Margins = New-Object System.Drawing.Printing.Margins(0,0,0,0)
+
+    $pd.add_PrintPage({
+        param($sender, $e)
+        $e.Graphics.DrawImage($bmp, 0, 0)
+    })
+    
+    try {
+        $pd.Print()
+        Write-Host "Print job sent successfully."
+    } catch {
+        Write-Error "Failed to send print job: $_"
+    }
+} else {
+    Write-Host "Running in PREVIEW mode. Label was not physically printed."
+    Write-Host "To print, run the script with the -Print switch."
 }
-$pd.add_PrintPage({
-    param($sender, $e)
-    $img = [System.Drawing.Image]::FromFile($previewPath)
-    $e.Graphics.DrawImage($img, 0, 0)
-    $img.Dispose()
-})
-$pd.Print()
-#>
+
+$bmp.Dispose()
+
