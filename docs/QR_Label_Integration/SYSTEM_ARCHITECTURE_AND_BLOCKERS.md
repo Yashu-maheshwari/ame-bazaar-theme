@@ -2,32 +2,25 @@
 
 ## 1. Sync Timing & URL Predictability
 **The Challenge:** 
-When staff process a Purchase Entry in Retail Daddy and click "Print Label", it happens instantly. However, the RaintechSyncWorker.ps1 runs on a schedule (e.g., every 5-15 minutes). 
-This means at the exact second the label is printed, the product *does not yet exist* on WooCommerce.
+Labels are printed instantly during Purchase Entry. The WooCommerce sync runs asynchronously on a schedule. At print time, the product may not exist on WooCommerce.
 
 **The Solution:**
-The shortlink URLs are 100% predictable: https://amebazaar.in/p/{ProductCode}.
-The label can safely be printed immediately. If a customer attempts to scan the tag before the sync worker has executed, the AME Bazaar QR Shortlink plugin gracefully catches the missing SKU and redirects them to the shop search page. Once the sync script runs and pushes the product, subsequent scans will instantly redirect to the actual product page.
+The shortlink URLs are completely predictable: https://amebazaar.in/p/{ProductCode}.
+The plugin handles missing SKUs by safely redirecting customers to the AME Bazaar search page (/?s={SKU}&post_type=product). Once the sync completes, the exact same URL automatically redirects to the published product page.
 
 ## 2. Retail Daddy 1.8 Printing Constraints (BLOCKER)
 **The Constraint:**
-Retail Daddy's native C# code strictly encodes the value of the Barcode text box into the Temp_Stock.QrBarcode image. This native logic cannot be changed without recompiling the executable.
+Retail Daddy natively couples Product.Barcode directly to Temp_Stock.QrBarcode. Modifying the C# executable is high-risk. 
 
-**Proposed Integration Strategy:**
-We are relying on **Crystal Reports** to bypass the native image generation. By ignoring Temp_Stock.QrBarcode and inserting a dynamic Formula Field in the .rpt file, Crystal Reports can theoretically render the URL QR natively.
+**Crystal Reports Approach:**
+We rely on inserting a dynamic formula field ("https://amebazaar.in/p/" + {Table1.ProductCode}) into the active BarcodeT8.rpt. 
 
-**Current Blocker:**
-While the CrystalDecisions DLLs present on the machine (May 2022) indicate support for native QR generation, **this cannot be confirmed via remote read-only inspection**. 
-Crystal Reports capabilities depend heavily on the exact designer version and runtime patch levels installed.
+**The Pending Blocker:**
+We cannot remotely automate or verify Crystal Reports Designer modifying the .rpt structure. This requires a human operator to physically open the designer, add the field, and test a physical Zebra/TSC printer printout. An experimental safe copy has been generated (BarcodeT8_SmartQR_Experiment.rpt).
 
-**Required Manual Intervention:**
-1. A technician must physically open C:\POS LATEST\CryReport\BarcodeT8.rpt in Crystal Reports Designer on the local machine.
-2. The technician must attempt to right-click a formula field and select **"Change To Barcode" ➔ "QR Code"**.
-3. If this option is missing or fails to render on the physical Zebra/TSC printer, the Crystal Reports integration is blocked.
+## 3. The Fallback Label Printer Utility (Phase 4)
+If Crystal Reports fails to render the dual-barcode layout, we have implemented a **Standalone PowerShell Label Printer** (scripts/Print-SmartLabel.ps1).
 
-**Fallback Strategy (If Crystal Reports Fails):**
-If the POS runtime refuses to render a formula-based QR code, the safest alternative is to deploy a lightweight, standalone Python or C# utility (e.g., AME_Label_Printer.exe). This utility would:
-1. Connect directly to the Raintech_DB1 database.
-2. Read the latest Purchase Entry.
-3. Generate exact Zebra Programming Language (ZPL) commands containing both the 1D barcode and the URL QR code.
-4. Send the ZPL directly to the thermal printer, completely bypassing Crystal Reports.
+* **How it works:** It uses the existing Zen.Barcode.Core.dll and QRCoder.dll libraries already present in the Retail Daddy installation directory (C:\POS LATEST\).
+* **Capabilities:** It programmatically draws a 50x25mm (400x200px) thermal label bitmap containing the product name, 1D staff billing barcode on the left, and the 2D customer web QR code on the right. 
+* **Safety:** It communicates directly with the Windows Spooler (System.Drawing.Printing.PrintDocument) completely bypassing Crystal Reports and Retail Daddy executable constraints. It is strictly read-only and does not modify the Retail Daddy database.
